@@ -12,20 +12,21 @@ import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import http from "http";
+import { createServer } from 'http';
 import SocketIO from "./socketio";
+import {Server, Socket} from "socket.io";
 
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
-  public server: http.Server;
   public socketIO: SocketIO;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     //this.port = PORT || 3000;
-    this.port = 8081;
+    this.port = 8082;
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
@@ -33,15 +34,17 @@ class App {
     this.initializeErrorHandling();
   }
 
-  public listen() {
-    this.server = this.app.listen(this.port, () => {
+  public start() {
+    const server = createServer(this.app);
+    
+    this.socketIO = new SocketIO(server); // create socketio and connection
+   
+    server.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
     });
-
-    this.socketIO = new SocketIO(this.server); // create socketio and connection
   }
 
   public getServer() {

@@ -24,6 +24,8 @@ login 시 cookie에 authorization token이 저장되며
 ## socket.io 동작 및 설치
 client에서 .emit('EVENTNAME')으로 보내면 서버에서 .on('EVENTNAME')으로 받는다.
 
+[공식 문서](https://socket.io/docs/v3/server-initialization/)
+
 아래 명령어로 typescript socketio를 설치 할 수 있다.
 ```
 npm install @types/socket.io

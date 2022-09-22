@@ -10,8 +10,8 @@ class SocketIO{
             cors: {
                 origin: "*",
             },
-            path: "/socket.io",
-            transports: ["websocket"]
+            path: "/socket.io/",
+            transports: ["websocket", "polling"]
         });
 
         this.io.on("connection", (socket: Socket) => {
@@ -21,7 +21,21 @@ class SocketIO{
             this.onJoinRoom(socket);
             this.onLeaveRoom(socket);
             this.onSendMessage(socket);
+            this.onError(socket);
+            this.onConnectError(socket);
         }); 
+    }
+
+    private onError(socket:Socket){
+        socket.on("error", (err) =>{
+            console.log("오류 발생" + err);
+        })
+    }
+
+    private onConnectError(socket:Socket){
+        socket.on("connect_error", (err) =>{
+            console.log("connection 오류 발생" + err);
+        })
     }
 
     private onDisconnect(socket: Socket){
