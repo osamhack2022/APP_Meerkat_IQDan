@@ -11,11 +11,15 @@ import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import http from "http";
+import SocketIO from "./socketio";
 
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
+  public server: http.Server;
+  public socketIO: SocketIO;
 
   constructor(routes: Routes[]) {
     this.app = express();
@@ -30,12 +34,14 @@ class App {
   }
 
   public listen() {
-    this.app.listen(this.port, () => {
+    this.server = this.app.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
     });
+
+    this.socketIO = new SocketIO(this.server); // create socketio and connection
   }
 
   public getServer() {
