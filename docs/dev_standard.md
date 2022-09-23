@@ -22,14 +22,21 @@
 
 참고: https://www.conventionalcommits.org/en/v1.0.0/
 
-#### Commit 방식 규칙
-기본적으로 stash와 rebase를 사용합니다.
+#### Commit 충돌 해결
+main의 안전을 위해 각자 branch에서 프로젝트를 수정합시다.
 ```
-git add . 
-git stash
-git fetch origin
-git rebase -i origin <현재 로컬 브랜치 이름>
-git stash pop
+git checkout -b seho/fe # 세호 프런트엔드 브랜치 생성 후 그 브랜치 사용
+```
+commit 시에는 기본적으로 stash와 rebase를 사용합니다. 자주 commit 해주어야 서로 충돌이 많이 안납니다.
+```
+git add .
+git stash # 내가 변경한 사항 모두 stash에 저장
+git fetch origin # 리모트에서 여태까지 새로운 변경사항 가져오기
+git rebase -i origin <현재 로컬 브랜치 이름> # 리모트에서 사람들이 한 커밋 가져오기
+git stash pop # stash에서 저장사항 뽑아오기. 
 ```
 이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다.
-그 다음에 
+그 다음에 rebasing 충돌을 파일 마다 들어가서 해결해주면 됩니다.
+
+이제 Pull Request를 git 홈페이지의 자신의 브랜치로 가서 생성합니다. 생성 후 중요한 사항이 아니라면 merge합니다.
+
