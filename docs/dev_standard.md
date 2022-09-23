@@ -1,4 +1,8 @@
 # 개발 규칙
+## Branch 생성 규칙
+- 그냥 main에 푸시하지 않고 Branch를 쓰는 이유는 Pull Request 때문입니다.
+- Pull Request가 중요하지 않다면 자기가 직접 merge하고, 중요할 경우 모두를 초대하여 Pull Request를 보도록 합니다.
+- Branch 이름은 `seho/fe` `exqt/be` `hyelie/be-user` `dongjin/fe-navbar` 와 같은 이름을 권장합니다.
 ## Commit 규칙
 - Commit에는 알맞은 헤더를 사용합니다. 
 - 간결하면서도 이해가 가능하게 작성합니다.
