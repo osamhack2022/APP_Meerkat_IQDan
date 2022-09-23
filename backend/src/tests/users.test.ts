@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import request from 'supertest';
 import { PrismaClient, User } from '@prisma/client';
-import App from '@/app';
-import { CreateUserDto } from '@dtos/users.dto';
-import UserRoute from '@routes/users.route';
+import App from '../app';
+import { CreateUserDto } from '../dtos/users.dto';
+import UserRoute from '../routes/users.route';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -18,17 +18,17 @@ describe('Testing Users', () => {
       users.findMany = jest.fn().mockReturnValue([
         {
           id: 1,
-          email: 'a@email.com',
+          serviceNumber: 'a@serviceNumber.com',
           password: await bcrypt.hash('q1w2e3r4!', 10),
         },
         {
           id: 2,
-          email: 'b@email.com',
+          serviceNumber: 'b@serviceNumber.com',
           password: await bcrypt.hash('a1s2d3f4!', 10),
         },
         {
           id: 3,
-          email: 'c@email.com',
+          serviceNumber: 'c@serviceNumber.com',
           password: await bcrypt.hash('z1x2c3v4!', 10),
         },
       ]);
@@ -47,7 +47,7 @@ describe('Testing Users', () => {
 
       users.findUnique = jest.fn().mockReturnValue({
         id: 1,
-        email: 'a@email.com',
+        serviceNumber: 'a@serviceNumber.com',
         password: await bcrypt.hash('q1w2e3r4!', 10),
       });
 
@@ -59,7 +59,7 @@ describe('Testing Users', () => {
   describe('[POST] /users', () => {
     it('response Create user', async () => {
       const userData: CreateUserDto = {
-        email: 'test@email.com',
+        serviceNumber: 'test@serviceNumber.com',
         password: 'q1w2e3r4',
       };
 
@@ -69,7 +69,7 @@ describe('Testing Users', () => {
       users.findUnique = jest.fn().mockReturnValue(null);
       users.create = jest.fn().mockReturnValue({
         id: 1,
-        email: userData.email,
+        serviceNumber: userData.serviceNumber,
         password: await bcrypt.hash(userData.password, 10),
       });
 
@@ -82,7 +82,7 @@ describe('Testing Users', () => {
     it('response Update user', async () => {
       const userId = 1;
       const userData: CreateUserDto = {
-        email: 'test@email.com',
+        serviceNumber: 'test@serviceNumber.com',
         password: 'q1w2e3r4',
       };
 
@@ -91,12 +91,12 @@ describe('Testing Users', () => {
 
       users.findUnique = jest.fn().mockReturnValue({
         id: userId,
-        email: userData.email,
+        serviceNumber: userData.serviceNumber,
         password: await bcrypt.hash(userData.password, 10),
       });
       users.update = jest.fn().mockReturnValue({
         id: userId,
-        email: userData.email,
+        serviceNumber: userData.serviceNumber,
         password: await bcrypt.hash(userData.password, 10),
       });
 
@@ -109,7 +109,7 @@ describe('Testing Users', () => {
     it('response Delete user', async () => {
       const userId = 1;
       const userData: CreateUserDto = {
-        email: 'test@email.com',
+        serviceNumber: 'test@serviceNumber.com',
         password: 'q1w2e3r4',
       };
 
@@ -118,12 +118,12 @@ describe('Testing Users', () => {
 
       users.findUnique = jest.fn().mockReturnValue({
         id: userId,
-        email: userData.email,
+        serviceNumber: userData.serviceNumber,
         password: await bcrypt.hash(userData.password, 10),
       });
       users.delete = jest.fn().mockReturnValue({
         id: userId,
-        email: userData.email,
+        serviceNumber: userData.serviceNumber,
         password: await bcrypt.hash(userData.password, 10),
       });
 

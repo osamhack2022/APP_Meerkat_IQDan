@@ -46,3 +46,5 @@ https://techblog.woowahan.com/2547/
 https://nrise.github.io/posts/using-rabbitmq/
 
 background는 FCM이나 SSE를 사용하면 될 것 같음. FCM은 외부 접속이니까 SSE가 좋을 듯.(동접 수가 적긴 함)
+
+redis pub/sub 방식 사용해서 분산처리도 할 수 있음.
