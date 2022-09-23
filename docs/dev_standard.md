@@ -18,7 +18,7 @@
 참고: https://www.conventionalcommits.org/en/v1.0.0/
 
 ## Commit 방식
-#### merge 방식
+#### Pull Request를 보내기
 기본적으로 stash와 rebase를 사용합니다.
 ```
 git add . 
