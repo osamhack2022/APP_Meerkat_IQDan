@@ -1,0 +1,21 @@
+# msyql 생성용 docker-compose 파일
+
+version: "3"
+
+services:
+    mysql:
+        image: mysql:5.7
+        container_name: local-mysql
+        environment:
+            MYSQL_DATABASE: test
+            MYSQL_ROOT_PASSWORD: password
+            LANG: C.UTF-8
+        volumes:
+            - ./dockervolume:/var/lib/mysql
+        expose:
+            - '3306'
+        ports:
+            - 3306:3306
+        command: 
+            --character-set-server=utf8mb4
+            --collation-server=utf8mb4_general_ci
