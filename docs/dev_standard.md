@@ -12,5 +12,20 @@
 | BREAKING CHANGE  | config 혹은 기능적으로 큰 변화가 있는 커밋 | BREAKING CHANGE: Calendar 컴포넌트를 다른 것으로 바꾸었습니다!|
 | docs  | 개발 문서 수정  | docs: minor fix in the backend readme |
 | config  | 개발 혹은 빌드 config 변경 | config: changed gitignore config to rule out more files|
+| test | test 관련 추가, 변경, 삭제 | - |
+| etc | 태그 달기 애매한 각종 사례들 | etc: added toy files to check git commands |
 
 참고: https://www.conventionalcommits.org/en/v1.0.0/
+
+## Commit 방식
+#### merge 방식
+기본적으로 stash와 rebase를 사용합니다.
+```
+git add . 
+git stash
+git fetch origin
+git rebase -i origin <현재 로컬 브랜치 이름>
+git stash pop
+```
+이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다.
+그 다음에 
