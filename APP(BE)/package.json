@@ -15,6 +15,9 @@
     "prisma:init": "prisma init",
     "prisma:migrate": "prisma migrate dev --preview-feature",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "dotenv -e .env.development.local prisma migrate dev --name devinit",
+    "prisma:migrate:prod": "dotenv -e .env.production.local prisma migrate dev --name prodinit",
+    "prisma:migrate:test": "dotenv -e .env.test.local prisma migrate dev --name testinit",
     "deploy:prod": "npm run build && pm2 start ecosystem.config.js --only prod",
     "deploy:dev": "pm2 start ecosystem.config.js --only dev"
   },
@@ -31,6 +34,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
+    "dotenv-cli": "^6.0.0",
     "envalid": "^7.3.1",
     "express": "^4.18.1",
     "helmet": "^5.1.1",
