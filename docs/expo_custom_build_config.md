@@ -18,9 +18,9 @@ export SEHOFEDIR=/workspaces/APP_Meerkat_IQDan/'APP\(Android\)'/meerkat_fe # 자
 cd /workspaces #혹은 적절한 위치로 이동.
 wget https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
 unzip commandlinetools-linux-6609375_latest.zip -d cmdline-tools
-mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
-sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/latest/"
-export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+sudo mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
+sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/latest/" 
+export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH # .bashrc에 이거 추가.
 ```
 위에 수락안하면 아래 build가 안됨.
 [출처1](https://stackoverflow.com/questions/53994924/sdkmanager-command-not-found-after-installing-android-sdk)
