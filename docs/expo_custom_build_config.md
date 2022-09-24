@@ -15,6 +15,7 @@ export SEHOFEDIR=/workspaces/APP_Meerkat_IQDan/'APP\(Android\)'/meerkat_fe # 자
 
 #### Android License 수락
 ```
+cd /workspaces #혹은 적절한 위치로 이동.
 wget https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
 unzip commandlinetools-linux-6609375_latest.zip -d cmdline-tools
 mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
