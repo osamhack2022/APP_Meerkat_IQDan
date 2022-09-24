@@ -54,11 +54,10 @@ git fetch origin # 리모트에서 여태까지 새로운 변경사항 가져오
 git rebase -i origin # 리모트에서 사람들이 한 커밋 가져오기
 git stash pop # stash에서 저장사항 뽑아오기.
 git rebase --continue # 인터랙티브 충돌 해결 후 continue하여 rebase 끝날 때까지 반복.
-git push
+git push # 자신의 remote branch에 푸시 (이후 github.com에서 풀리퀘 생성)
 ```
-이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다.
-그 다음에 rebasing 충돌을 파일 마다 들어가서 해결해주면 됩니다.
-
-이제 Pull Request를 git 홈페이지의 자신의 브랜치로 가서 생성합니다. 생성 후 중요한 사항이 아니라면 merge합니다.
-**Git Lens 사용시 ctrl+shift+p => GitLens: Disable Interactive Rebase Editor을 실행해줍니다. Interactive Rebase Editor에 현재 문제가 있는 것으로 보여집니다.**
+- 이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다. 그 다음에 rebasing 충돌을 파일 마다 들어가서 해결해주면 됩니다.
+- 이제 Pull Request를 git 홈페이지의 자신의 브랜치로 가서 생성합니다. 
+- 생성 후 중요한 사항이 아니라면 merge합니다.
+- **Git Lens 사용시 ctrl+shift+p => GitLens: Disable Interactive Rebase Editor을 실행해줍니다. Interactive Rebase Editor에 현재 문제가 있는 것으로 보여집니다.**
 
