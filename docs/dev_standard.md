@@ -47,6 +47,8 @@ main의 안전을 위해 각자 branch에서 프로젝트를 수정합시다.
 git checkout -b seho/fe # 세호 프런트엔드 브랜치 생성 후 그 브랜치 사용
 ```
 commit 시에는 기본적으로 stash와 rebase를 사용합니다. 자주 commit 해주어야 서로 충돌이 많이 안납니다.
+아래는 commit 충돌 해결법입니다. 익숙해질 때까지 모든 push 전에는 아래와 같은 절차를 밟아주시기 바랍니다.
+git merge 대신 git rebase를 사용하는 이유는 git log가 더 깔끔해지기 때문입니다. [차이점 링크](https://stackoverflow.com/questions/804115/when-do-you-use-git-rebase-instead-of-git-merge).
 ```
 git add .
 git stash # 내가 변경한 사항 모두 stash에 저장
