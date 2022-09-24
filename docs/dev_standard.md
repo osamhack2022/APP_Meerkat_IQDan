@@ -52,7 +52,9 @@ git add .
 git stash # 내가 변경한 사항 모두 stash에 저장
 git fetch origin # 리모트에서 여태까지 새로운 변경사항 가져오기
 git rebase -i origin # 리모트에서 사람들이 한 커밋 가져오기
-git stash pop # stash에서 저장사항 뽑아오기. 
+git stash pop # stash에서 저장사항 뽑아오기.
+git rebase --continue # 인터랙티브 충돌 해결 후 continue하여 rebase 끝날 때까지 반복.
+git push
 ```
 이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다.
 그 다음에 rebasing 충돌을 파일 마다 들어가서 해결해주면 됩니다.
