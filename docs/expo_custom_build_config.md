@@ -1,9 +1,4 @@
-# React Native 초기 설정
-#### Typescript로 create-expo-app
-```
-npx create-expo-app -t expo-template-blank-typescript
-```
-위 커맨드 실행 후 프로젝트 이름을 입력
+# expo-dev-client 빌드 하는 법
 
 #### Android SDK 인스톨
 ```
