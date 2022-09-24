@@ -13,6 +13,19 @@ export PATH=$PATH:$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools/
 export SEHOFEDIR=/workspaces/APP_Meerkat_IQDan/'APP\(Android\)'/meerkat_fe # 자신의 이름으로 사용. cd $SEHOFEDIR하면 편리함.
 ```
 
+#### Android License 수락
+```
+wget https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
+unzip commandlinetools-linux-6609375_latest.zip -d cmdline-tools
+mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
+sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/latest/"
+export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+```
+위에 수락안하면 아래 build가 안됨.
+[출처1](https://stackoverflow.com/questions/53994924/sdkmanager-command-not-found-after-installing-android-sdk)
+[출처2](https://stackoverflow.com/questions/54273412/failed-to-install-the-following-android-sdk-packages-as-some-licences-have-not)
+
+
 #### expo-dev-client 설정
 ```
 npx expo install expo-dev-client
@@ -34,16 +47,6 @@ project root directory에 eas.json 제작. ([출처](https://docs.expo.dev/build
   }
 }
 ```
-#### Android License 수락
-```
-wget https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
-unzip commandlinetools-linux-6609375_latest.zip -d cmdline-tools
-mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
-sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/latest/"
-export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
-```
-[출처1](https://stackoverflow.com/questions/53994924/sdkmanager-command-not-found-after-installing-android-sdk)
-[출처2](https://stackoverflow.com/questions/54273412/failed-to-install-the-following-android-sdk-packages-as-some-licences-have-not)
 
 #### expo-dev-client 실행
 ```
