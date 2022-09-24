@@ -35,7 +35,7 @@ commit 시에는 기본적으로 stash와 rebase를 사용합니다. 자주 comm
 git add .
 git stash # 내가 변경한 사항 모두 stash에 저장
 git fetch origin # 리모트에서 여태까지 새로운 변경사항 가져오기
-git rebase -i origin <현재 로컬 브랜치 이름> # 리모트에서 사람들이 한 커밋 가져오기
+git rebase -i origin # 리모트에서 사람들이 한 커밋 가져오기
 git stash pop # stash에서 저장사항 뽑아오기. 
 ```
 이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다.
