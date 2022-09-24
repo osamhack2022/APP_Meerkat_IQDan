@@ -11,6 +11,8 @@
 - 새로운 헤더 사용시 아래에 추가해주시기 바랍니다.
 - 보통의 경우엔 ClickUp과 연동된 티켓 번호를 사용합니다. => ClickUp에 초대되어야 칸반을 볼 수 있습니다. ClickUp 사용방식은 면대면으로 이세호가 알려줄 것.
 - 티켓 번호까지 붙이면 commit -m "mk-302 fix: fixed some issues" 이런식으로 헤더 앞에 티켓 고유번호가 붙게됨.
+
+
 | 헤더  | 의미  | 메시지 예시 |
 |---|---|---|
 | fix  | 각종 버그 수정  | fix: fixed logo sticking out from top navbar in mobile |
