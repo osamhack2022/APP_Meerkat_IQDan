@@ -34,5 +34,9 @@ project root directory에 eas.json 제작. ([출처](https://docs.expo.dev/build
 }
 ```
 
-
+#### expo-dev-client 실행
+```
+npx expo start --dev-client
+```
+[출처](https://docs.expo.dev/development/getting-started/)
 
