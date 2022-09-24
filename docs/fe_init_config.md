@@ -8,7 +8,7 @@ npx create-expo-app -t expo-template-blank-typescript
 #### Android SDK 인스톨
 ```
 sudo apt update && sudo apt install android-sdk
-export ANDROID_HOME=/usr/lib/android-sdk/ # 설치 경로 맞는지 확인하고 환경변수 설정.
+export ANDROID_HOME=/usr/lib/android-sdk/ # 설치 경로 맞는지 확인하고 환경변수 설정. .bashrc에 추가해주어야 매번 자동으로 설정됨.
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 ```
 
