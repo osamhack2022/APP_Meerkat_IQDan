@@ -5,11 +5,12 @@ npx create-expo-app -t expo-template-blank-typescript
 ```
 위 커맨드 실행 후 프로젝트 이름을 입력
 
-#### 기본 인스톨
+#### Android SDK 인스톨
 ```
 sudo apt update && sudo apt install android-sdk
+export ANDROID_HOME=/usr/lib/android-sdk/
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 ```
-
 
 #### expo-dev-client 설정
 ```
