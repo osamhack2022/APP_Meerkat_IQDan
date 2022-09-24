@@ -58,6 +58,6 @@ git push # 자신의 remote branch에 푸시 (이후 github.com에서 풀리퀘 
 - 이렇게 다른 사람들이 바꿔놓은 change가 모두 반영이 되고 그 위에 자신의 commit이 덮어씌워집니다. 그 다음에 rebasing 충돌을 파일 마다 들어가서 해결해주면 됩니다.
 - 이제 Pull Request를 git 홈페이지의 자신의 브랜치로 가서 생성합니다. 
 - 생성 후 중요한 사항이 아니라면 merge합니다.
-- **Git Lens 사용시 ctrl+shift+p => GitLens: Disable Interactive Rebase Editor을 실행해줍니다. Interactive Rebase Editor에 현재 문제가 있는 것으로 보여집니다. 그리고 해당 설정을 유지하려면 vs code 좌측 하단 톱니바퀴 => 설정 동기화 => github 계정 연동해야합니다. [공식문서](https://code.visualstudio.com/docs/editor/settings-sync)**
+- **Git Lens 사용시 ctrl+shift+p => GitLens: Disable Interactive Rebase Editor을 실행해줍니다. Interactive Rebase Editor에 현재 문제가 있는 것으로 보여집니다. 그리고 해당 설정을 유지하려면 vs code 좌측 하단 톱니바퀴 => 설정 동기화 => github 계정 연동해야합니다. [공식문서](https://code.visualstudio.com/docs/editor/settings-sync)**.
 
 
