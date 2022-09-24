@@ -20,7 +20,7 @@ wget https://dl.google.com/android/repository/commandlinetools-linux-6609375_lat
 unzip commandlinetools-linux-6609375_latest.zip -d cmdline-tools
 sudo mkdir --parents "$ANDROID_HOME/cmdline-tools/latest"
 sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/latest/" 
-export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH # .bashrc에 이거 추가.
+export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH # onetime으로 쓸거라 굳이 bashrc 추가 안해도됨.
 ```
 위에 수락안하면 아래 build가 안됨.
 [출처1](https://stackoverflow.com/questions/53994924/sdkmanager-command-not-found-after-installing-android-sdk)
