@@ -1,11 +1,13 @@
-# expo-dev-client 빌드 하는 법
+# Frontend 실행 방법
+## Production용 빌드하는 법
+--
+## Dev용 expo-dev-client 빌드 하는 법
 
 #### Android SDK와 JDK 인스톨
 ```
 sudo apt update && sudo apt install android-sdk
 sudo apt install openjdk-8-jdk
 ```
-
 
 #### .bashrc 설정
 ```
@@ -54,5 +56,13 @@ project root directory에 eas.json 제작. [출처](https://docs.expo.dev/build/
 ```
 npx expo start --dev-client
 ```
+
+#### 새로운 bash에서 아까 생성된 apk http-server로 열고 서빙하여 폰에서 다운로드
+```
+npm i -g http-server 
+http-server # meerkat_fe 디렉터리 내에서 실행.
+```
+이후 해당 포트를 ngrok으로 열어줍니다. 코드스페이스는 snap install ngrok이 안되므로 vs code server 익스텐션 ngrok을 받아서
+ctrl+shift+p 후 ngrok:start 실행 후 8080같은 포트 번호를 입력하여 열어줍니다. 열린 ngrok url로 폰 접속하여 apk다운로드 받습니다.
 
 
