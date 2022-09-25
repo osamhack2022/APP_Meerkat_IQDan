@@ -31,6 +31,7 @@ sudo sdkmanager --sdk_root=$ANDROID_HOME --licenses # 들어가서 모두 y로 �
 ```
 npx expo install expo-dev-client
 npm i -g eas-cli
+chmod -R 777 /lib/android-sdk # codespace의 경우 sudo eas가 안되기에 수동으로 이렇게 해야함.
 eas build --profile development --platform android --local # 로컬에서 커스텀 expo dev 앱 빌드하기.
 ```
 project root directory에 eas.json 제작. [출처](https://docs.expo.dev/build/eas-json/)
