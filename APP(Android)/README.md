@@ -33,7 +33,7 @@ npx expo install expo-dev-client
 npm i -g eas-cli
 eas build --profile development --platform android --local # 로컬에서 커스텀 expo dev 앱 빌드하기.
 ```
-project root directory에 eas.json 제작. ([출처](https://docs.expo.dev/build/eas-json/))
+project root directory에 eas.json 제작. [출처](https://docs.expo.dev/build/eas-json/)
 ```
 {
   "build": {
@@ -49,9 +49,9 @@ project root directory에 eas.json 제작. ([출처](https://docs.expo.dev/build
 }
 ```
 
-#### expo-dev-client 실행
+#### expo-dev-client 실행 [출처](https://docs.expo.dev/development/getting-started/)
 ```
 npx expo start --dev-client
 ```
-[출처](https://docs.expo.dev/development/getting-started/)
+
 
