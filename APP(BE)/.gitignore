@@ -129,6 +129,8 @@ dist
 .pnp.*
 
 # local database volume
-/localEnvSetting/dockervolume
+/EnvSetting/mariadb/data/*
+/EnvSetting/mariadb/.env.production.local
+/EnvSetting/mariadb/.env.test.local
 
 plan.md

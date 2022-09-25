@@ -1,0 +1,18 @@
+# MariaDB 생성용 docker-compose 파일
+
+version: "3"
+
+services:
+  db:
+    container_name: "mariadb"
+    image: mariadb:10.6
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mariadb/conf.d:/etc/mysql/conf.d
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
+    env_file: .env.development.local
+    environment:
+      TZ: Asia/Seoul
+    restart: always
