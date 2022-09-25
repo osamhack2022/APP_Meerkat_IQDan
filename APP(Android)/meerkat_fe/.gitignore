@@ -14,4 +14,4 @@ web-build/
 .DS_Store
 
 # custom
-.apk
+*.apk
