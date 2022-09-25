@@ -6,11 +6,11 @@ typescript
 
 Express
 
-WebSocket(Socket.io)
+WebSocket (Socket.io)
 
 WebRTC (react-native-webrtc)
 
-MySQL
+MariaDB 10.6 (LTS)
 
 ## Front-end
 
