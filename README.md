@@ -42,9 +42,9 @@ $ yarn start or npm run start
  
 ## 팀 정보 (Team Information)
 - 이세호 (koolee33@gmail.com), Github Id: seho0808
-- 전형록 (@gmail.com), Github Id: exqt
-- 정혜일 (@gmail.com), Github Id: hyelie
-- 임동진 (@gmail.com), Github Id: djlim98
+- 전형록 (dashchan@naver.com), Github Id: exqt
+- 정혜일 (hyelie@gmail.com), Github Id: hyelie
+- 임동진 (ehdwlsdudwo1@gmail.com), Github Id: djlim98
 
 ## 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
