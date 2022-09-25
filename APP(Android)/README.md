@@ -1,8 +1,9 @@
 # expo-dev-client 빌드 하는 법
 
-#### Android SDK 인스톨
+#### Android SDK와 JDK 인스톨
 ```
 sudo apt update && sudo apt install android-sdk
+sudo apt install openjdk-8-jdk
 ```
 
 
@@ -17,11 +18,9 @@ export SEHOFEDIR=/workspaces/APP_Meerkat_IQDan/'APP\(Android\)'/meerkat_fe # 자
 ```
 cd /workspaces #혹은 적절한 위치로 이동.
 sudo wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
-sudo unzip commandlinetools-linux-8512546_latest.zip -d cmdline-tools
-sudo mv cmdline-tools/* "$ANDROID_HOME/cmdline-tools/" # 압축 해제 후 위로 빼주기
-sudo rmdir cmdline-tools 
-cd cmdline-tools/tools/bion
-sdkmanager --sdk_root=$ANDROID_HOME --licenses # 들어가서 모두 y로 수락하면 끝임.
+sudo unzip commandlinetools-linux-8512546_latest.zip
+cd cmdline-tools/tools/bin
+sudo sdkmanager --sdk_root=$ANDROID_HOME --licenses # 들어가서 모두 y로 수락하면 끝임.
 ```
 위에 수락안하면 아래 build가 안됨.
 [출처1](https://stackoverflow.com/questions/53994924/sdkmanager-command-not-found-after-installing-android-sdk)
