@@ -21,7 +21,7 @@
 
 ## 기술 스택 (Technology Used) 
 ### Server(back-end)
- - Node.js 16.13.0 
+ - Node.js 16.17.0 
  - Express
  - WebSocket(Socket.io)
  - WebRTC (react-native-webrtc)
