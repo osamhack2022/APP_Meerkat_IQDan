@@ -25,7 +25,7 @@
  - Express
  - WebSocket(Socket.io)
  - WebRTC (react-native-webrtc)
- - DB not yet decided
+ - MariaDB
  
 ### Front-end
  -  React Native
