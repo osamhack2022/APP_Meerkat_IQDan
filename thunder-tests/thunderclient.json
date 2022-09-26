@@ -8,10 +8,16 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-09-26T06:49:20.823Z",
-    "modified": "2022-09-26T06:49:20.823Z",
+    "modified": "2022-09-26T07:47:12.601Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"uid\": 123,\n      \"name\": \"임동진\",\n      \"serviceNumber\": \"22-76014363\",\n      \"enlistmentDate\": \"2020.03.14\",\n      \"militaryRank\": \"일병\",\n      \"image\": \"https://cdn.image.com/1\"\n    }\n  ],\n  \"message\": \"sucess\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "\nstatus code 200:\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"uid\": 123,\n      \"name\": \"임동진\",\n      \"serviceNumber\": \"22-76014363\",\n      \"enlistmentDate\": \"2020.03.14\",\n      \"militaryRank\": \"일병\",\n      \"image\": \"https://cdn.image.com/1\"\n    }\n  ],\n  \"message\": \"sucess\"\n}\n\nstatus 400:"
   },
   {
     "_id": "554720c8-d5ec-4a6d-9e4d-0fb03ff63495",
@@ -120,9 +126,14 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-09-26T06:53:50.177Z",
-    "modified": "2022-09-26T06:53:50.177Z",
+    "modified": "2022-09-26T07:50:34.512Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"uid\":\"ehdwlsdudwo1\",\n  \"password\":\"password!!\",\n  \"name\":\"임동진\",\n  \"serviceNumber\":\"22-76014363\",\n  \"enlistmentDate\":\"2022-03-14\",\n  \"affiliated_unit\":\"계룡대근무지원단\",\n  \"military_rank\":\"일병\"\n}",
+      "form": []
+    },
     "tests": []
   },
   {
