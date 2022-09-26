@@ -5,5 +5,19 @@
     "created": "2022-09-25T14:31:40.611Z",
     "sortNum": 10000,
     "folders": []
+  },
+  {
+    "_id": "44222097-015b-41dc-9962-34e780eb6c01",
+    "colName": "room",
+    "created": "2022-09-26T06:46:28.710Z",
+    "sortNum": 20000,
+    "folders": []
+  },
+  {
+    "_id": "d80f9a45-758f-4dbc-b742-be19b35014d4",
+    "colName": "message",
+    "created": "2022-09-26T06:46:39.703Z",
+    "sortNum": 30000,
+    "folders": []
   }
 ]
