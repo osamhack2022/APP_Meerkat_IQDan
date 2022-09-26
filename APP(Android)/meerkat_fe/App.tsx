@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import ChatRoomList from "./pages/ChatRoomList";
+import ChatRoom from './pages/ChatRoom';
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from '@react-navigation/native';
+
+export type RootStackParamList = {
+  Home: undefined;
+  Chat: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -17,8 +28,20 @@ export default function App() {
   }, [])
 
   return (
-    <>
-      {fontsLoaded && <ChatRoomList />}
-    </>
-  );
+    <NavigationContainer>
+      {fontsLoaded && <Stack.Navigator
+        initialRouteName='Home'
+      >
+        <Stack.Screen
+          name='Home'
+          component={ChatRoomList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Chat'
+          component={ChatRoom}
+        />
+      </Stack.Navigator>}
+    </NavigationContainer>
+  )
 }
