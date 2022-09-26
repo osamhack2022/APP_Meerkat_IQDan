@@ -11,7 +11,83 @@ generator client {
 }
 
 model User {
-  id            Int    @id @default(autoincrement())
-  serviceNumber String @unique
-  password      String
+  id              BigInt          @id @default(autoincrement())
+  uid             String          @unique
+  password        String 
+  name            String
+  serviceNumber   String          @unique
+  affiliatedUnit  String?
+  militaryRank    String?
+  image           String?
+  enlistmentDate  DateTime?
+
+  chatrooms       UsersOnChatrooms[]
+
+  messages        Message[]
+
+  followedBy      Friends[]       @relation("following")
+  following       Friends[]       @relation("follower")
+}
+
+model Friends {
+  follower        User            @relation("follower", fields: [followerId], references: [id])
+  followerId      BigInt
+
+  following       User            @relation("following", fields: [followingId], references: [id])
+  followingId     BigInt
+
+  @@id([followerId, followingId])
+}
+
+model UsersOnChatrooms{
+  chatroom        Chatroom        @relation(fields: [chatroomId], references: [id])
+  chatroomId      BigInt
+
+  user            User            @relation(fields: [userId], references: [id])
+  userId          BigInt
+
+  @@id([chatroomId, userId])
+}
+
+enum ChatroomType{
+  SECRET
+  AIRTIGHT
+}
+
+model Chatroom{
+  id              BigInt          @id @default(autoincrement())
+  name            String?
+  type            ChatroomType    @default(SECRET)
+  createDate      DateTime        @default(now())
+  updateDate      DateTime?       @updatedAt
+
+  users           UsersOnChatrooms[]
+
+  notices         Notice[]
+
+  messages        Message[]
+}
+
+model Notice{
+  id              BigInt          @id @default(autoincrement())
+  title           String            
+  content         String
+  startDate       DateTime        @default(now())
+  endDate         DateTime?
+  category        String?
+
+  belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [id])          
+  belongChatRoomId    BigInt
+}
+
+model Message{
+  id                  BigInt          @id @default(autoincrement())
+  content             String
+  sendTime            DateTime        @default(now())
+
+  sender              User            @relation(fields: [senderId], references: [id])
+  senderId            BigInt
+
+  belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [id])          
+  belongChatRoomId    BigInt
 }
