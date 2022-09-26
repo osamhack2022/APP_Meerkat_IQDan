@@ -9,8 +9,14 @@ import ChatRoomLoading from "../components/ChatRoomLoading";
 import { ChatRoom } from "../common/types";
 // dummy data
 import dummy from "../assets/dummy_data/chatroom.json";
+// routing
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../App";
 
-export default function ChatRoomList() {
+
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+export default function ChatRoomList(props: HomeScreenProps) {
   const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
   useEffect(() => {
@@ -19,6 +25,8 @@ export default function ChatRoomList() {
     // dummy load
     setRooms(dummy.data)
   }, []);
+
+  //routing
 
   return (
     <View style={styles.container}>
@@ -44,10 +52,10 @@ export default function ChatRoomList() {
           );
         })
       )}
+      <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
