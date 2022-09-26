@@ -12,6 +12,10 @@ export default function App() {
     "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
   });
 
+  useEffect(() => {
+    // sync all data from server
+  }, [])
+
   return (
     <>
       {fontsLoaded && <ChatRoomList />}

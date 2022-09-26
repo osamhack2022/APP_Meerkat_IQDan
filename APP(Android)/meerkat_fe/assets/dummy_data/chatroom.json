@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "chatroomId": 1,
+            "creatorId": 1,
+            "name":"본부대대 1중대 분대장",
+            "type": "SECRET",
+            "createDate": "2019-08-28 00:00:00.000",
+            "updateDate": "2019-08-28 00:00:00.000"
+        },
+        {
+            "chatroomId": 2,
+            "creatorId": 1,
+            "name": "본부대대 1중대 2소대",
+            "type": "AIRTIGHT",
+            "createDate": "2019-08-28 00:00:00.000",
+            "updateDate": "2019-08-28 00:00:00.000"
+        }
+    ]
+}
