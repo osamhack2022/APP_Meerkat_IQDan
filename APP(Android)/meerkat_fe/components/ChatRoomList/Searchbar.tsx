@@ -1,11 +1,11 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-
+const searchImg = require("../../assets/icons/search.png");
 export default function Searchbar() {
   return (
     <View style={styles.container}>
       <Image
         style={styles.icon}
-        source={require("../assets/icons/search.png")}
+        source={searchImg}
       />
       <Text style={styles.text}>대화방을 검색하십시오</Text>
     </View>

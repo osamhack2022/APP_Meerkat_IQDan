@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import { ChatRoom } from "../common/types";
+import { ChatRoom } from "../../common/types";
+const dotsImage = require("../../assets/icons/dots_vertical.png");
 
 export default function ChatRoomBox(props: ChatRoom) {
   const { chatroomId, creatorId, name, type, createDate, updateDate } = props;
@@ -8,7 +9,7 @@ export default function ChatRoomBox(props: ChatRoom) {
     <View style={styles.container}>
         <View style={styles.upperContainer}>
             <Text style={styles.title}>{name}</Text>
-            <Image style={styles.dots} source={require("../assets/icons/dots_vertical.png")}/>
+            <Image style={styles.dots} source={dotsImage}/>
         </View>
         <View style={styles.lowerContainer}>
             <Text style={styles.time}>마지막 대화 1시간 전</Text>
