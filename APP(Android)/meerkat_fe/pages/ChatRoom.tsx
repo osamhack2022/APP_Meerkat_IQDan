@@ -1,49 +1,61 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
+import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
+import { io } from "socket.io-client";
 
+import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
+import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
-const BackButton = (props: {onPress: () => void}) => {
-  return (
-    <View>
-      <Text onPress={props.onPress}>back</Text>
-    </View>
-  )
-}
-
-const Title = (props: {}) => {
-  return (
-    <View>
-      <Text>{"본부대대 1중대"}</Text>
-    </View>
-  )
-}
-
-const Menu = (props: {}) => {
-  return (
-    <View>
-      <Text>{'☰'}</Text>
-    </View>
-  )
+interface RecvMessage {
+  content: string,
 }
 
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
           
   useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <BackButton onPress={() => navigation.goBack() }/>,
-      headerTitle: () => <Title/>,
-      headerRight: () => <Menu/>
+    socket.on('connect', () => {
+      console.log("conneceted!");
     })
-  })
 
+    socket.on('message', (msgStr: string) => {
+      let msgJson: RecvMessage = JSON.parse(msgStr);
+    
+      setMessages((previousMessages) => {
+        const sentMessages: IMessage[] = [
+          { 
+            _id: previousMessages.length + 1,
+            createdAt: new Date(),
+            text: msgJson.content,
+            sent: true,
+            received: true,
+            user: {
+              _id: 2,
+              name: 'React Native',
+            },
+          }
+        ];
+
+        return GiftedChat.append(
+          previousMessages,
+          sentMessages,
+        );
+      })
+    })
+
+    socket.on('disconnect', () => {
+      console.log("disconnected from server");
+    })
+  }, [socket]);
+          
   useEffect(() => {
     setMessages([
       {
@@ -109,16 +121,19 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   }, []);
 
   return (
-      <View style={styles.chat}>
-        <GiftedChat
-          messages={messages}
-          onSend={(messages: any) => onSend(messages)}
-          renderBubble={MKBubble}
-          user={{
-            _id: 1,
-          }}
-        />
-      </View>
+    <View style={styles.chat}>
+      <ChatRoomHeader onPressBack={() => navigation.goBack()}/>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages: any) => onSend(messages)}
+        renderBubble={MKBubble}
+        renderSend={MKSend}
+        renderActions={MKActions}
+        user={{
+          _id: 1,
+        }}
+      />
+    </View>
   );
 }
 
