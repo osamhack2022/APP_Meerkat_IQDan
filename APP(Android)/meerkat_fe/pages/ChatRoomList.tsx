@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // comps
-import Searchbar from "../components/Searchbar";
-import ChatRoomBox from "../components/ChatRoomBox";
-import ChatRoomLoading from "../components/ChatRoomLoading";
+import Searchbar from "../components/ChatRoomList/Searchbar";
+import ChatRoomBox from "../components/ChatRoomList/ChatRoomBox";
+import ChatRoomLoading from "../components/ChatRoomList/ChatRoomLoading";
 // type
 import { ChatRoom } from "../common/types";
 // dummy data
