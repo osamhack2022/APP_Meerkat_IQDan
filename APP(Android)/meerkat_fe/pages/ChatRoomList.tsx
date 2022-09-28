@@ -65,10 +65,11 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: "noto-bold",
+    lineHeight: 45
   },
 });

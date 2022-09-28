@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { ChatRoom } from "../common/types";
 
 export default function ChatRoomBox(props: ChatRoom) {
@@ -6,28 +6,65 @@ export default function ChatRoomBox(props: ChatRoom) {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>{name}</Text>
+        <View style={styles.upperContainer}>
+            <Text style={styles.title}>{name}</Text>
+            <Image style={styles.dots} source={require("../assets/icons/dots_vertical.png")}/>
+        </View>
+        <View style={styles.lowerContainer}>
+            <Text style={styles.time}>마지막 대화 1시간 전</Text>
+            <Text style={styles.count}>10</Text>
+        </View>
     </View>
   );
 }
-
+// #6A4035
 const styles = StyleSheet.create({
     container: {
         marginTop: 10,
-        paddingLeft: 10,
+        paddingLeft: 20,
         paddingRight: 10,
         height: 130,
         backgroundColor: "#E5B47F",
-        borderRadius: 20
+        borderRadius: 20,
+        justifyContent:"space-between"
+    },
+    upperContainer: {
+        // backgroundColor: "black",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingTop: 10
+    },
+    lowerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingBottom: 5
     },
     title: {
         color: "white",
         fontFamily: "noto-bold",
         fontSize: 20,
-        width: 130
-    }, 
+        width: 130,
+        lineHeight: 30
+    },
+    dots: {
+        tintColor: "white",
+        marginTop: 8,
+        marginRight: 8
+    },
     time: {
-
+        color: "white",
+        fontFamily: "noto-med",
+        fontSize: 10,
     }, 
-
+    count: {
+        fontFamily: "noto-med",
+        color: "white",
+        lineHeight: 20,
+        backgroundColor: "#6A4035",
+        marginRight: 8,
+        paddingRight: 15,
+        paddingLeft: 15,
+        borderRadius: 10,
+    },
 })

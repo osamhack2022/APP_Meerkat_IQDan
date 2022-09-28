@@ -7,3 +7,4 @@ export interface ChatRoom {
     createDate: string,
     updateDate: string
 }
+
