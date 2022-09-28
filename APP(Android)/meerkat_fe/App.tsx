@@ -40,6 +40,7 @@ export default function App() {
         <Stack.Screen
           name='Chat'
           component={ChatRoom}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>}
     </NavigationContainer>

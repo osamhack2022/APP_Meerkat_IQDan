@@ -1,49 +1,20 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
+import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
+import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
+import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
-
-const BackButton = (props: {onPress: () => void}) => {
-  return (
-    <View>
-      <Text onPress={props.onPress}>back</Text>
-    </View>
-  )
-}
-
-const Title = (props: {}) => {
-  return (
-    <View>
-      <Text>{"본부대대 1중대"}</Text>
-    </View>
-  )
-}
-
-const Menu = (props: {}) => {
-  return (
-    <View>
-      <Text>{'☰'}</Text>
-    </View>
-  )
-}
 
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
           
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <BackButton onPress={() => navigation.goBack() }/>,
-      headerTitle: () => <Title/>,
-      headerRight: () => <Menu/>
-    })
-  })
-
   useEffect(() => {
     setMessages([
       {
@@ -109,16 +80,19 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   }, []);
 
   return (
-      <View style={styles.chat}>
-        <GiftedChat
-          messages={messages}
-          onSend={(messages: any) => onSend(messages)}
-          renderBubble={MKBubble}
-          user={{
-            _id: 1,
-          }}
-        />
-      </View>
+    <View style={styles.chat}>
+      <ChatRoomHeader onPressBack={() => navigation.goBack()}/>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages: any) => onSend(messages)}
+        renderBubble={MKBubble}
+        renderSend={MKSend}
+        renderActions={MKActions}
+        user={{
+          _id: 1,
+        }}
+      />
+    </View>
   );
 }
 
