@@ -4,16 +4,57 @@ import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
-import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
+import { io } from "socket.io-client";
 
+import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
+interface RecvMessage {
+  content: string,
+}
+
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
+          
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log("conneceted!");
+    })
+
+    socket.on('message', (msgStr: string) => {
+      let msgJson: RecvMessage = JSON.parse(msgStr);
+    
+      setMessages((previousMessages) => {
+        const sentMessages: IMessage[] = [
+          { 
+            _id: previousMessages.length + 1,
+            createdAt: new Date(),
+            text: msgJson.content,
+            sent: true,
+            received: true,
+            user: {
+              _id: 2,
+              name: 'React Native',
+            },
+          }
+        ];
+
+        return GiftedChat.append(
+          previousMessages,
+          sentMessages,
+        );
+      })
+    })
+
+    socket.on('disconnect', () => {
+      console.log("disconnected from server");
+    })
+  }, [socket]);
           
   useEffect(() => {
     setMessages([
