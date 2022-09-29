@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import MKSend from "../components/ChatRoom/CustomChatComp/Send";
+import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
@@ -20,6 +21,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
+  const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
           
   useEffect(() => {
     socket.on('connect', () => {
@@ -121,18 +123,24 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   }, []);
 
   return (
-    <View style={styles.chat}>
-      <ChatRoomHeader onPressBack={() => navigation.goBack()}/>
-      <GiftedChat
-        messages={messages}
-        onSend={(messages: any) => onSend(messages)}
-        renderBubble={MKBubble}
-        renderSend={MKSend}
-        renderActions={MKActions}
-        user={{
-          _id: 1,
-        }}
-      />
+    <View style={{flex: 1}}>
+      { isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false) } /> : null }
+      <View style={styles.chat}>
+        <ChatRoomHeader 
+          onPressBack={() => navigation.goBack()} 
+          onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
+        />
+        <GiftedChat
+          messages={messages}
+          onSend={(messages: any) => onSend(messages)}
+          renderBubble={MKBubble}
+          renderSend={MKSend}
+          renderActions={MKActions}
+          user={{
+            _id: 1,
+          }}
+        />
+      </View>
     </View>
   );
 }
@@ -141,6 +149,9 @@ const styles = StyleSheet.create({
   chat: {
     flex: 1,
     backgroundColor: "#DDD",
+    position: "absolute",
+    width: "100%",
+    height: "100%"
   },
 })
 
