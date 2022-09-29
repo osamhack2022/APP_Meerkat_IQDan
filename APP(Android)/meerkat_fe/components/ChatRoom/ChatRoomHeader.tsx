@@ -18,16 +18,17 @@ const Title = (props: {}) => {
   )
 }
 
-const Menu = (props: {}) => {
+const Menu = (props: {onPress : () => void}) => {
   return (
     <View>
-      <Text style={styles.headerText}>{'☰'}</Text>
+      <Text style={{fontSize: 48, color: "white"}} onPress={props.onPress}>{'☰'}</Text>
     </View>
   )
 }
 
 interface ChatRoomHeaderProps {
-  onPressBack: () => void
+  onPressBack: () => void,
+  onPressSideMenu: () => void
 }
 
 const ChatRoomHeader = (props: ChatRoomHeaderProps) => {
@@ -35,7 +36,7 @@ const ChatRoomHeader = (props: ChatRoomHeaderProps) => {
     <SafeAreaView style={styles.header}>
       <BackButton onPress={props.onPressBack}/>
       <Title/>
-      <Menu/>
+      <Menu onPress={props.onPressSideMenu}/>
     </SafeAreaView>
   )
 }
@@ -46,8 +47,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "orange",
     alignItems: "flex-end",
-    paddingTop: 12,
-    paddingBottom: -12
   },
   headerText: {
     fontSize: 24,
