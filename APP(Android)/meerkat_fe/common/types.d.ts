@@ -8,3 +8,7 @@ export interface ChatRoom {
     updateDate: string
 }
 
+export interface User{
+    userId: number,
+    name: string
+}
