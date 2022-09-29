@@ -10,5 +10,12 @@ export interface ChatRoom {
 
 export interface User{
     userId: number,
-    name: string
+    uid: string,
+    password: string,
+    name: string,
+    serviceNumber: string,
+    enlistmentDate: DateTime,
+    affiliatedUnit: string,
+    militaryRank: string,
+    image: string
 }
