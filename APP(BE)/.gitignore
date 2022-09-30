@@ -129,11 +129,12 @@ dist
 .pnp.*
 
 # prisma migration files
-/src/prisma/*.sql
+/src/prisma/**/*.sql
 
 # local database volume
 /EnvSetting/mariadb/data/*
 /EnvSetting/mariadb/.env.production.local
 /EnvSetting/mariadb/.env.test.local
 
+# 
 plan.md

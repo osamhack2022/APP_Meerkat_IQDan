@@ -12,8 +12,6 @@ import { Logs } from 'expo'
 
 Logs.enableExpoCliLogging();
 
-
-
 type TestScreenProps = NativeStackScreenProps<RootStackParamList, "Test">;
 
 export default function APIExample(props: TestScreenProps) {
@@ -26,12 +24,19 @@ export default function APIExample(props: TestScreenProps) {
       console.log("엄준식");
         const response = await axios.get("https://code.seholee.com:8082/users"); // get user list
         console.log(response);
-        setUsers(response.data);
+        console.log("response.data");
+        console.log(response.data.data);
+        setUsers(response.data.data);
+        
     }
+
+
     catch(e:any){
       console.log(e);
-        setError(e);
+      setError(e);
     }
+
+    
     finally{
         setIsLoading(false);
     }
@@ -43,10 +48,11 @@ export default function APIExample(props: TestScreenProps) {
   }, []);
 
   if (isLoading) return <Text>머기중..</Text>;
-  if (error) return <Text>먼가.... 먼가 일어나고 있음... {error.message}</Text>;
+  if (error) return <Text>먼가.... 먼가 일어나고 있음... </Text>;
   if (!users) return <Text>비었습니다.</Text>;
+  console.log(users);
   return (
-
+    
     <div>
       <div>
         <b>{users[0].name}</b> <span>({users[0].userId})</span>
