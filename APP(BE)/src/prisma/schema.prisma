@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      =  "mysql://root:password@localhost:3307/dev"
 }
 
 generator client {
@@ -11,7 +11,7 @@ generator client {
 }
 
 model User {
-  userId         BigInt          @id @default(autoincrement())
+  userId          Int          @id @default(autoincrement())
   uid             String          @unique
   password        String 
   name            String
@@ -31,20 +31,20 @@ model User {
 
 model Friends {
   follower        User            @relation("follower", fields: [followerId], references: [userId])
-  followerId      BigInt
+  followerId      Int
 
   following       User            @relation("following", fields: [followingId], references: [userId])
-  followingId     BigInt
+  followingId     Int
 
   @@id([followerId, followingId])
 }
 
 model UsersOnChatrooms{
   chatroom        Chatroom        @relation(fields: [chatroomId], references: [chatroomId])
-  chatroomId      BigInt
+  chatroomId      Int
 
   user            User            @relation(fields: [userId], references: [userId])
-  userId          BigInt
+  userId          Int
 
   @@id([chatroomId, userId])
 }
@@ -55,7 +55,7 @@ enum ChatroomType{
 }
 
 model Chatroom{
-  chatroomId      BigInt          @id @default(autoincrement())
+  chatroomId      Int          @id @default(autoincrement())
   name            String?
   type            ChatroomType    @default(SECRET)
   createDate      DateTime        @default(now())
@@ -69,7 +69,7 @@ model Chatroom{
 }
 
 model Notice{
-  noticeId        BigInt          @id @default(autoincrement())
+  noticeId        Int          @id @default(autoincrement())
   title           String            
   content         String
   startDate       DateTime        @default(now())
@@ -77,17 +77,17 @@ model Notice{
   category        String?
 
   belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [chatroomId])          
-  belongChatRoomId    BigInt
+  belongChatRoomId    Int
 }
 
 model Message{
-  messageId           BigInt          @id @default(autoincrement())
+  messageId           Int          @id @default(autoincrement())
   content             String
   sendTime            DateTime        @default(now())
 
   sender              User            @relation(fields: [senderId], references: [userId])
-  senderId            BigInt
+  senderId            Int
 
   belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [chatroomId])          
-  belongChatRoomId    BigInt
+  belongChatRoomId    Int
 }

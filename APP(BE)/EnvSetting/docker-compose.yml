@@ -7,7 +7,7 @@ services:
     container_name: "mariadb"
     image: mariadb:10.6
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ./mariadb/conf.d:/etc/mysql/conf.d
       - ./mariadb/data:/var/lib/mysql
