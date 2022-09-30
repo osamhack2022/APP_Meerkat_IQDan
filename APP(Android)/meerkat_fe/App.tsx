@@ -2,13 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import ChatRoomList from "./pages/ChatRoomList";
 import ChatRoom from './pages/ChatRoom';
+import APIExample from "./pages/APIExample";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from '@react-navigation/native';
 
+
 export type RootStackParamList = {
   Home: undefined;
   Chat: undefined;
+  Test: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -40,6 +43,11 @@ export default function App() {
         <Stack.Screen
           name='Chat'
           component={ChatRoom}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Test'
+          component={APIExample}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>}

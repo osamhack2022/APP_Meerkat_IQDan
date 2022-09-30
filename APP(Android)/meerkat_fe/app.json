@@ -34,6 +34,8 @@
       "eas": {
         "projectId": "c8fbcdaf-c7bc-4b1f-8573-59c0d0fb8b7b"
       }
-    }
-  }
+    },
+    "sdkVersion": "46.0.0"
+  },
+  "name": "meerkat_fe"
 }
