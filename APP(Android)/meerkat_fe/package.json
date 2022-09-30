@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/webpack-config": "^0.16.19",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
@@ -23,8 +24,7 @@
     "react-native-gesture-handler": "~2.5.0",
     "react-native-gifted-chat": "^1.0.4",
     "react-native-web": "~0.18.7",
-    "socket.io-client": "^4.5.2",
-    "@expo/webpack-config": "^0.17.0"
+    "socket.io-client": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

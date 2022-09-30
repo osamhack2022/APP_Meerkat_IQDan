@@ -21,22 +21,13 @@ export default function APIExample(props: TestScreenProps) {
 
   const getUsers = async () => {
     try{
-      console.log("엄준식");
         const response = await axios.get("https://code.seholee.com:8082/users"); // get user list
-        console.log(response);
-        console.log("response.data");
-        console.log(response.data.data);
         setUsers(response.data.data);
-        
     }
-
-
     catch(e:any){
       console.log(e);
       setError(e);
     }
-
-    
     finally{
         setIsLoading(false);
     }
@@ -44,7 +35,6 @@ export default function APIExample(props: TestScreenProps) {
 
   useEffect(() => {
     getUsers();
-    console.log("ERR" + error);
   }, []);
 
   if (isLoading) return <Text>머기중..</Text>;
@@ -52,12 +42,18 @@ export default function APIExample(props: TestScreenProps) {
   if (!users) return <Text>비었습니다.</Text>;
   console.log(users);
   return (
-    
-    <div>
-      <div>
-        <b>{users[0].name}</b> <span>({users[0].userId})</span>
-      </div>
-    </div>
-      
+    <ul>
+        {users.map((user)=> (
+        <li key={user.userId}>
+          {user.userId}, 
+          {user.uid}, 
+          {user.password}, 
+          {user.name}, 
+          {user.serviceNumber}, 
+          {user.enlistmentDate}, 
+          {user.affiliatedUnit}, 
+          {user.userId}
+        </li>))} 
+    </ul>
   );
 }
