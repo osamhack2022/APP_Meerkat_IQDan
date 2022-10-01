@@ -1,3 +1,4 @@
+// core
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -7,31 +8,32 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-<<<<<<< Updated upstream
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-=======
 // config
-import { NODE_ENV, HTTP_PORT, HTTPS_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, SSL_URL, KEY_NAME, SSL_NAME } from '@config';
->>>>>>> Stashed changes
+import { NODE_ENV, HTTP_PORT, HTTPS_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, KEY_URL, SSL_NAME } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import http from "http";
-import { createServer } from 'http';
+import https from "https";
+import fs from "fs";
+// route
 import SocketIO from "./socketio";
-import {Server, Socket} from "socket.io";
 
 class App {
   public app: express.Application;
   public env: string;
-  public port: string | number;
   public socketIO: SocketIO;
+  public http_port: string | number;
+  public https_port: string | number;
+  private credentials: Object;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.http_port = HTTP_PORT || 3000;
+    this.https_port = HTTPS_PORT || 8443;
 
+    this.initializeSSL();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
@@ -39,32 +41,38 @@ class App {
   }
 
   public start() {
-    const server = createServer(this.app);
-    
-    this.socketIO = new SocketIO(server); // create socketio and connection
-   
-    server.listen(this.port, () => {
-      logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`=================================`);
+    // http server
+    const httpServer = http.createServer(this.app);
+    this.socketIO = new SocketIO(httpServer);
+    httpServer.listen(this.http_port, () => {
+      logger.info(`==================================`);
+      logger.info(`======= ENV: ${this.env} =========`);
+      logger.info(`🚀 HTTP listening on the port ${this.http_port}`);
+      logger.info(`==================================`);
     });
+  
+     // http server
+     const httpsServer = https.createServer(this.credentials, this.app);
+     this.socketIO = new SocketIO(httpsServer);
+     httpsServer.listen(this.https_port, () => {
+       logger.info(`==================================`);
+       logger.info(`======= ENV: ${this.env} =========`);
+       logger.info(`🚀 HTTP listening on the port ${this.https_port}`);
+       logger.info(`==================================`);
+     });
   }
 
   public getServer() {
     return this.app;
   }
 
-<<<<<<< Updated upstream
-=======
   private initializeSSL(){
     this.credentials = {
-      key: fs.readFileSync(`${SSL_URL}/${KEY_NAME}`),
-      cert: fs.readFileSync(`${SSL_URL}/${SSL_NAME}`)
+      key: fs.readFileSync(`${KEY_URL}/${SSL_NAME}.key`),
+      cert: fs.readFileSync(`${KEY_URL}/${SSL_NAME}.crt`)
     }
   }
 
->>>>>>> Stashed changes
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
