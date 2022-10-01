@@ -57,6 +57,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
 
 
       <Text onPress={() => props.navigation.push("Test")}>API example test</Text>
+      <Text onPress={() => props.navigation.push("Friend")}>Friend</Text>
     </View>
   );
 }
