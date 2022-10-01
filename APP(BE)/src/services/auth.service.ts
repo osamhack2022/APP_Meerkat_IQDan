@@ -2,7 +2,9 @@ import { compare, hash } from 'bcrypt';
 import { sign,verify } from 'jsonwebtoken';
 import { PrismaClient, User } from '@prisma/client';
 import { SECRET_KEY } from '@config';
+
 import { LoginUserDto } from '@dtos/users.dto';
+
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { isEmpty } from '@utils/util';
@@ -14,6 +16,7 @@ class AuthService {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
     const findUser: User = await this.users.findUnique({ where: { uid: userData.uid } });
+
     if (!findUser) throw new HttpException(409, `This id ${userData.uid} was not found`);
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
@@ -26,8 +29,8 @@ class AuthService {
   }
 
 
-
   public createToken(user: User): TokenData {
+
     const dataStoredInToken: DataStoredInToken = { id: user.userId, name:user.name, serviceNumber:user.serviceNumber };
     const secretKey: string = SECRET_KEY;
     const expiresIn: number = 60 * 60;

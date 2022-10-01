@@ -4,13 +4,11 @@
     "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
     "containerId": "",
     "name": "사용자 정보 조회 by id",
-    "url": "{{BASEURL}}/api/v1/user/1",
+    "url": "{{BASEURL}}/users/1",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-09-26T06:49:20.823Z",
-
-    "modified": "2022-09-26T07:47:12.601Z",
-
+    "modified": "2022-10-01T06:59:54.360Z",
     "headers": [],
     "params": [],
     "body": {
@@ -19,8 +17,7 @@
       "form": []
     },
     "tests": [],
-    "docs": "\nstatus code 200:\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"uid\": 123,\n      \"name\": \"임동진\",\n      \"serviceNumber\": \"22-76014363\",\n      \"enlistmentDate\": \"2020.03.14\",\n      \"militaryRank\": \"일병\",\n      \"image\": \"https://cdn.image.com/1\"\n    }\n  ],\n  \"message\": \"sucess\"\n}\n\nstatus 400:"
-
+    "docs": "status code 200:\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"uid\": 123,\n      \"name\": \"임동진\",\n      \"serviceNumber\": \"22-76014363\",\n      \"enlistmentDate\": \"2020.03.14\",\n      \"militaryRank\": \"일병\",\n      \"image\": \"https://cdn.image.com/1\"\n    }\n  ],\n  \"message\": \"sucess\"\n}\n\nstatus 400:"
   },
   {
     "_id": "554720c8-d5ec-4a6d-9e4d-0fb03ff63495",
@@ -125,16 +122,16 @@
     "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
     "containerId": "",
     "name": "사용자 생성",
-    "url": "{{BASEURL}}/api/v1/user",
+    "url": "{{BASEURL}}/users",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-09-26T06:53:50.177Z",
-    "modified": "2022-09-26T07:50:34.512Z",
+    "modified": "2022-10-01T07:01:16.737Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"uid\":\"ehdwlsdudwo1\",\n  \"password\":\"password!!\",\n  \"name\":\"임동진\",\n  \"serviceNumber\":\"22-76014363\",\n  \"enlistmentDate\":\"2022-03-14\",\n  \"affiliated_unit\":\"계룡대근무지원단\",\n  \"military_rank\":\"일병\"\n}",
+      "raw": "{\n  \"uid\":\"ehdwlsdudwo1\",\n  \"password\":\"password!!\",\n  \"name\":\"임동진\",\n  \"serviceNumber\":\"22-760143623\",\n  \"enlistmentDate\":\"2023-02-11T15:00:00.000Z\",\n  \"affiliatedUnit\":\"계룡대근무지원단\",\n  \"militaryRank\":\"일병\"\n}",
       "form": []
     },
     "tests": []
@@ -144,11 +141,11 @@
     "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
     "containerId": "",
     "name": "사용자 삭제",
-    "url": "{{BASEURL}}/api/v1/user",
+    "url": "{{BASEURL}}/users/7",
     "method": "DELETE",
     "sortNum": 30000,
     "created": "2022-09-26T06:54:12.036Z",
-    "modified": "2022-09-26T06:54:12.036Z",
+    "modified": "2022-10-01T07:01:48.208Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -158,39 +155,63 @@
     "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
     "containerId": "",
     "name": "사용자 수정",
-    "url": "{{BASEURL}}/api/v1/user",
+    "url": "{{BASEURL}}/users/8",
     "method": "PUT",
     "sortNum": 40000,
     "created": "2022-09-26T06:54:23.095Z",
-    "modified": "2022-09-26T06:54:23.095Z",
+    "modified": "2022-10-01T07:02:30.971Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"uid\":\"ehdwlsdudwo12\",\n  \"password\":\"password!!\",\n  \"name\":\"임동진2\",\n  \"serviceNumber\":\"22-760143623\",\n  \"enlistmentDate\":\"2023-02-11T15:00:00.000Z\",\n  \"affiliatedUnit\":\"계룡대근무지원단\",\n  \"militaryRank\":\"일병\"\n}",
+      "form": []
+    },
     "tests": []
   },
   {
     "_id": "5d31f766-9b7f-4678-965d-9a0a70116cd1",
-    "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
+    "colId": "314c6144-eb0c-464a-ba0c-f4f6f68e3841",
     "containerId": "",
     "name": "로그인",
-    "url": "{{BASEURL}}/api/v1/user/login",
+    "url": "{{BASEURL}}/auth/login",
     "method": "POST",
-    "sortNum": 60000,
+    "sortNum": 10000,
     "created": "2022-09-26T06:56:13.214Z",
-    "modified": "2022-09-26T06:56:13.214Z",
+    "modified": "2022-10-01T07:21:13.487Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"uid\":\"ehdwlsdudwo12\",\n  \"password\":\"password!!\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "b2a7a902-00c3-40a1-9d73-15f107439e52",
+    "colId": "314c6144-eb0c-464a-ba0c-f4f6f68e3841",
+    "containerId": "",
+    "name": "로그아웃",
+    "url": "{{BASEURL}}/auth/logout",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-09-26T06:56:28.659Z",
+    "modified": "2022-10-01T07:35:28.127Z",
     "headers": [],
     "params": [],
     "tests": []
   },
   {
-    "_id": "b2a7a902-00c3-40a1-9d73-15f107439e52",
+    "_id": "bd3ce065-31be-4135-8a0a-2b6b6aec04a3",
     "colId": "9d609b3d-d12d-4b2e-94eb-7ce3c0a699d7",
     "containerId": "",
-    "name": "로그아웃",
-    "url": "{{BASEURL}}/api/v1/user/logout",
+    "name": "사용자 목록 조회",
+    "url": "{{BASEURL}}/users",
     "method": "GET",
-    "sortNum": 70000,
-    "created": "2022-09-26T06:56:28.659Z",
-    "modified": "2022-09-26T06:56:28.659Z",
+    "sortNum": 50000,
+    "created": "2022-10-01T07:49:12.336Z",
+    "modified": "2022-10-01T07:49:12.336Z",
     "headers": [],
     "params": [],
     "tests": []

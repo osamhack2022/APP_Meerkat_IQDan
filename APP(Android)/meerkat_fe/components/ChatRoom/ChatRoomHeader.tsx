@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const BackButton = (props: {onPress: () => void}) => {
   return (
     <View>
-      <Text style={styles.headerText} onPress={props.onPress}>{'<'}</Text>
+      <Text style={{fontSize: 36, color: "white"}} onPress={props.onPress}>{'<'}</Text>
     </View>
   )
 }
@@ -18,25 +18,27 @@ const Title = (props: {}) => {
   )
 }
 
-const Menu = (props: {}) => {
+const Menu = (props: {onPress : () => void}) => {
   return (
     <View>
-      <Text style={styles.headerText}>{'☰'}</Text>
+      <Text style={{fontSize: 36, color: "white"}} onPress={props.onPress}>{'☰'}</Text>
     </View>
   )
 }
 
 interface ChatRoomHeaderProps {
-  onPressBack: () => void
+  onPressBack: () => void,
+  onPressSideMenu: () => void,
+  color: string
 }
 
 const ChatRoomHeader = (props: ChatRoomHeaderProps) => {
   return (
-    <SafeAreaView style={styles.header}>
+    <View style={[styles.header, {backgroundColor: props.color}]}>
       <BackButton onPress={props.onPressBack}/>
       <Title/>
-      <Menu/>
-    </SafeAreaView>
+      <Menu onPress={props.onPressSideMenu}/>
+    </View>
   )
 }
 
@@ -46,8 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "orange",
     alignItems: "flex-end",
-    paddingTop: 12,
-    paddingBottom: -12
+    paddingBottom: 16
   },
   headerText: {
     fontSize: 24,
