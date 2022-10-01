@@ -10,11 +10,23 @@ import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
+import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
 interface RecvMessage {
   content: string,
+}
+
+const user = {
+  _id: 1,
+  name: 'Developer',
+}
+
+const otherUser = {
+  _id: 2,
+  name: 'React Native',
+  avatar: 'https://facebook.github.io/react/img/logo_og.png',
 }
 
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
@@ -39,10 +51,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             text: msgJson.content,
             sent: true,
             received: true,
-            user: {
-              _id: 2,
-              name: 'React Native',
-            },
+            user: otherUser,
           }
         ];
 
@@ -82,10 +91,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             },
           ],
         },
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
+        user: otherUser,
       },
       {
         _id: 2,
@@ -108,38 +114,47 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             },
           ],
         },
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
+        user: otherUser,
       }
     ]);
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages: IMessage[]) =>
       GiftedChat.append(previousMessages, messages)
     );
   }, []);
 
+  const onSendFromUser = (msg: IMessage[] = []) => {
+    const createdAt = new Date()
+    const messagesToUpload = msg.map(message => ({
+      ...message,
+      user,
+      createdAt,
+      _id: messages.length + 1,
+    }))
+    onSend(messagesToUpload);
+  }
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: "pink"}}>
       { isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false) } /> : null }
       <View style={styles.chat}>
         <ChatRoomHeader 
           onPressBack={() => navigation.goBack()} 
           onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
         />
-        <GiftedChat
-          messages={messages}
-          onSend={(messages: any) => onSend(messages)}
-          renderBubble={MKBubble}
-          renderSend={MKSend}
-          renderActions={MKActions}
-          user={{
-            _id: 1,
-          }}
-        />
+        <View style={{flex: 1}}>
+          <GiftedChat
+            messages={messages}
+            onSend={(messages: any) => onSend(messages)}
+            renderBubble={MKBubble}
+            renderSend={MKSend}
+            renderActions={MKActions}
+            user={{ _id: 1, }}
+          />
+          <ChatRoomAccessoryBar onSend={onSendFromUser}/>
+        </View>
       </View>
     </View>
   );
