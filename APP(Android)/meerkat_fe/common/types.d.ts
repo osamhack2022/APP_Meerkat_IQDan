@@ -8,6 +8,10 @@ export interface ChatRoom {
     updateDate: string
 }
 
+export interface Category{
+    categoryName: string
+}
+
 export interface User{
     userId: number,
     uid: string,
@@ -18,4 +22,17 @@ export interface User{
     affiliatedUnit: string,
     militaryRank: string,
     image: string
+}
+
+export enum UserEvent{
+    NONE,
+    RESERVE,
+    PROMOTION
+}
+
+export interface UserProfile{
+    name: string,
+    image: string | null,
+    event: UserEvent | null,
+    statusMessage: string | null
 }
