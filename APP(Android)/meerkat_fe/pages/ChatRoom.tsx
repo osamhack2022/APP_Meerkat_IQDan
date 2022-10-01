@@ -6,7 +6,6 @@ import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
 import { io } from "socket.io-client";
 
-import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
@@ -144,17 +143,18 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
           onPressBack={() => navigation.goBack()} 
           onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
         />
-        <View style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
           <GiftedChat
             messages={messages}
             onSend={(messages: any) => onSend(messages)}
             renderBubble={MKBubble}
             renderSend={MKSend}
-            renderActions={MKActions}
             user={{ _id: 1, }}
+            wrapInSafeArea={false}
+            bottomOffset={60}
           />
           <ChatRoomAccessoryBar onSend={onSendFromUser}/>
-        </View>
+        </SafeAreaView>
       </View>
     </View>
   );
