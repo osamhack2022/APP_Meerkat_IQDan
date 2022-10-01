@@ -6,12 +6,20 @@ const MKBubble = (props: {}) => {
   return (
     <Bubble
       {...props}
-      wrapperStyle={{
-        right: {
-          backgroundColor: "#A00"
-        },
+      textStyle={{
         left: {
-          backgroundColor: "orange"
+          color: "#000"
+        },
+        right: {
+          color: "#FFF",
+        },
+      }}
+      wrapperStyle={{
+        left: {
+          backgroundColor: "#E5B47F"
+        },
+        right: {
+          backgroundColor: "#6A4035",
         }
       }}
     />

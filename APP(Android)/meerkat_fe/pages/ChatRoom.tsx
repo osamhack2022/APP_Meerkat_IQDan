@@ -155,6 +155,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
               onSend={(messages: any) => onSend(messages)}
               renderBubble={MKBubble}
               renderSend={MKSend}
+              timeTextStyle={{ left: { color: 'black' }, right: { color: 'white' } }}
               user={{ _id: 1, }}
               wrapInSafeArea={false}
               bottomOffset={60}
