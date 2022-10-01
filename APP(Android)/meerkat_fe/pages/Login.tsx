@@ -22,7 +22,14 @@ export default function Login() {
     const [pw, setPw] = useState("");
 
     const handleLogin = () => {
-        axios.post("code.seholee.com:8081/")
+        axios.post("https://code.seholee.com:8082/auth/login", {
+            uid: id,
+            password: pw
+        }).then((res) =>{
+            console.log(res.headers["set-cookie"])
+        }).catch((err)=> {
+            console.log(err.response)
+        })
     };
 
     const handleRegister = () => {
