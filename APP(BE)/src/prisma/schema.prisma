@@ -3,11 +3,7 @@
 
 datasource db {
   provider = "mysql"
-<<<<<<< Updated upstream
-  url      =  "mysql://root:password@localhost:3307/dev"
-=======
-  url      = "mysql://root:password@localhost:3307/dev"
->>>>>>> Stashed changes
+  url      = env("DATABASE_URL")
 }
 
 generator client {
