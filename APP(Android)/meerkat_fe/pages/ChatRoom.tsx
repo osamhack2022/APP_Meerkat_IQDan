@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect, Fragment } from "react";
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, Text, SafeAreaView, Platform } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
@@ -158,7 +158,10 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
               timeTextStyle={{ left: { color: 'black' }, right: { color: 'white' } }}
               user={{ _id: 1, }}
               wrapInSafeArea={false}
-              bottomOffset={60}
+              bottomOffset={Platform.OS == "ios" ? 77 : 0}
+              textInputProps={{placeholder: "메세지를 입력하세요"}}
+              // @ts-ignore
+              textInputStyle={{backgroundColor: "#EAEAEA", borderRadius: 8, marginRight: 11, fontSize: 16, paddingLeft: 12, paddingTop: 10 }}
             />
             <ChatRoomAccessoryBar onSend={onSendFromUser} />
           </SafeAreaView>
