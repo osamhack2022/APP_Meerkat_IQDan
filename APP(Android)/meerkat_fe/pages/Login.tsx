@@ -1,4 +1,5 @@
-import { useState } from "react";
+// core
+import { useContext, useState } from "react";
 import {
     StyleSheet,
     View,
@@ -8,17 +9,29 @@ import {
     Button,
     Pressable,
 } from "react-native";
+// context
+import { PageContext } from "../components/Auth"
+// thirds
+import axios from "axios";
+// assets
 const logo = require("../assets/meerkat_black.png");
 
 export default function Login() {
+    const {page, setPage} = useContext(PageContext)
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
 
-    const handleLogin = () => {};
+    const handleLogin = () => {
+        axios.post("code.seholee.com:8081/")
+    };
 
-    const handleRegister = () => {};
+    const handleRegister = () => {
+        setPage('register')
+    };
 
-    const handleForgotPw = () => {};
+    const handleForgotPw = () => {
+        setPage('changePw')
+    };
 
     return (
         <View style={styles.container}>

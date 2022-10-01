@@ -1,5 +1,5 @@
 // core
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
@@ -36,19 +36,28 @@ export default function App() {
         "noto-reg": require("./assets/fonts/NotoSansKR-Regular.otf"),
         "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
+    const [tokenRefresherFlag, setTokenRefresherFlag] =
+        useState<boolean>(false);
 
-    const loginToken = useLoginCheck();
+    const loginToken = useLoginCheck(tokenRefresherFlag);
 
+    // refreshed login token to get new data from asyncstorage
+    const refreshLoginToken = () => {
+        setTokenRefresherFlag(!tokenRefresherFlag);
+    };
+
+    // loading useEffect
     useEffect(() => {
         if (loginToken !== null && fontsLoaded) {
             setIsLoading(false);
         }
     }, [loginToken, fontsLoaded]);
 
+    // rendering part
     if (isLoading) return null; // prevent removing splash screen
     SplashScreen.hideAsync(); // remove splash screen
     if (loginToken == "") {
-        return <Auth />;
+        return <Auth refreshLoginToken={refreshLoginToken} />;
     }
     return (
         <NavigationContainer>
