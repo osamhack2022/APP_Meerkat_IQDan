@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
@@ -27,6 +27,8 @@ const otherUser = {
   name: 'React Native',
   avatar: 'https://facebook.github.io/react/img/logo_og.png',
 }
+
+const headerColor = "#DDD";
 
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
@@ -135,35 +137,41 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
     onSend(messagesToUpload);
   }
 
+  // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
-    <View style={{flex: 1, backgroundColor: "pink"}}>
-      { isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false) } /> : null }
-      <View style={styles.chat}>
-        <ChatRoomHeader 
-          onPressBack={() => navigation.goBack()} 
-          onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
-        />
-        <SafeAreaView style={{flex: 1}}>
-          <GiftedChat
-            messages={messages}
-            onSend={(messages: any) => onSend(messages)}
-            renderBubble={MKBubble}
-            renderSend={MKSend}
-            user={{ _id: 1, }}
-            wrapInSafeArea={false}
-            bottomOffset={60}
+    <Fragment>
+      {isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false)} /> : null}
+      <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
+      <View style={{ flex: 1, backgroundColor: "pink" }}>
+        <View style={styles.chat}>
+          <ChatRoomHeader
+            color={headerColor}
+            onPressBack={() => navigation.goBack()}
+            onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
           />
-          <ChatRoomAccessoryBar onSend={onSendFromUser}/>
-        </SafeAreaView>
+          <SafeAreaView style={{ flex: 1 }}>
+            <GiftedChat
+              messages={messages}
+              onSend={(messages: any) => onSend(messages)}
+              renderBubble={MKBubble}
+              renderSend={MKSend}
+              user={{ _id: 1, }}
+              wrapInSafeArea={false}
+              bottomOffset={60}
+            />
+            <ChatRoomAccessoryBar onSend={onSendFromUser} />
+          </SafeAreaView>
+        </View>
       </View>
-    </View>
+      <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} />
+    </Fragment>
   );
 }
 
 const styles = StyleSheet.create({
   chat: {
     flex: 1,
-    backgroundColor: "#DDD",
+    backgroundColor: "#EEE",
     position: "absolute",
     width: "100%",
     height: "100%"
