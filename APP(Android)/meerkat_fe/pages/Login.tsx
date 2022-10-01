@@ -1,5 +1,5 @@
 // core
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
     StyleSheet,
     View,
@@ -9,35 +9,48 @@ import {
     Button,
     Pressable,
 } from "react-native";
-// context
-import { PageContext } from "../components/Auth"
 // thirds
 import axios from "axios";
+import setCookie from "set-cookie-parser";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // assets
 const logo = require("../assets/meerkat_black.png");
 
-export default function Login() {
-    const {page, setPage} = useContext(PageContext)
-    const [id, setId] = useState("");
-    const [pw, setPw] = useState("");
+export default function Login(props: {setCurrPage: Function, refreshLoginToken: Function}) {
+    const {setCurrPage, refreshLoginToken} = props
+    const [id, setId] = useState("")
+    const [pw, setPw] = useState("")
+    const [errMsg, setErrMsg] = useState("")
 
     const handleLogin = () => {
         axios.post("https://code.seholee.com:8082/auth/login", {
             uid: id,
             password: pw
-        }).then((res) =>{
-            console.log(res.headers["set-cookie"])
+        }).then(async (res) =>{
+            // set token and expiry date. then, refresh token check
+            if (res.headers["set-cookie"] === undefined) throw new Error;
+            const cookies = setCookie.parse(res.headers["set-cookie"][0]);
+            await AsyncStorage.setItem("userToken", cookies[0].value)
+            if (cookies[0].maxAge === undefined) throw new Error;
+            const expiry = Date.now() + cookies[0].maxAge // save as milliseconds
+            await AsyncStorage.setItem("userTokenExpiration", expiry.toString())
+            refreshLoginToken();
         }).catch((err)=> {
-            console.log(err.response)
+            // show error message
+            if (err.response.status === 409) {
+                setErrMsg("아이디 또는 비밀번호가 잘못되었습니다.")
+            } else {
+                setErrMsg("알 수 없는 오류가 발생했습니다.")
+            }
         })
     };
 
     const handleRegister = () => {
-        setPage('register')
+        setCurrPage('register')
     };
 
     const handleForgotPw = () => {
-        setPage('changePw')
+        setCurrPage('changePw')
     };
 
     return (
@@ -46,6 +59,7 @@ export default function Login() {
                 <Image source={logo} style={styles.logo} />
             </View>
             <View style={styles.innerContainer}>
+                <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.text}>아이디</Text>
                 <TextInput
                     onChangeText={setId}
@@ -104,6 +118,10 @@ const styles = StyleSheet.create({
     text: {
         lineHeight: 40,
         fontFamily: "noto-bold",
+    },
+    errMsg: {
+        color: "red",
+        fontFamily: "noto-med"
     },
     textBox: {
         lineHeight: 20,

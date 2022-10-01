@@ -56,9 +56,9 @@ export default function App() {
     // rendering part
     if (isLoading) return null; // prevent removing splash screen
     SplashScreen.hideAsync(); // remove splash screen
-    // if (loginToken == "") {
-    //     return <Auth refreshLoginToken={refreshLoginToken} />;
-    // }
+    if (loginToken == "") {
+        return <Auth refreshLoginToken={refreshLoginToken} />;
+    }
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">

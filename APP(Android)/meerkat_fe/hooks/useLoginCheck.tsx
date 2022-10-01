@@ -14,7 +14,7 @@ export default function useLoginCheck(refresherFlag: boolean) {
             const expDate = await AsyncStorage.getItem('userTokenExpiration')
             if (token === null || expDate === null) { // existence check
                 setToken("")
-            } else if (Date.now() >= Date.parse(expDate)) { // expiry check
+            } else if (Date.now() >= Number(expDate)) { // expiry check
                 setToken("")
             } else {
                 setToken(token)

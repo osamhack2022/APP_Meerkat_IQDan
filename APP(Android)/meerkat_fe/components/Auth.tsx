@@ -1,30 +1,18 @@
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ChangePw from "../pages/ChangePw";
-import { useState, useContext, createContext } from "react";
-export const PageContext = createContext({
-    page: "login",
-    setPage: (s: string) => {},
-});
+import { useState } from "react";
 
 export default function Auth(props: { refreshLoginToken: Function }) {
     const { refreshLoginToken } = props;
-    const [currPage, setCurrPage] = useState<string>("login");
+    const [currPage, setCurrPage] = useState<string>("");
 
-    const showCurrPage = () => {
         switch (currPage) {
-            case "login":
-                return <Login />;
             case "register":
-                return <Register />;
+                return <Register />
             case "changePw":
-                return <ChangePw />;
+                return <ChangePw />
+            default:
+                return <Login setCurrPage={setCurrPage} refreshLoginToken={refreshLoginToken} />
         }
-    };
-
-    return (
-        <PageContext.Provider value={{ page: currPage, setPage: setCurrPage }}>
-            {showCurrPage()}
-        </PageContext.Provider>
-    );
-}
+    }
