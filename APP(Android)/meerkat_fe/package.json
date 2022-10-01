@@ -9,7 +9,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/webpack-config": "^0.16.19",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
