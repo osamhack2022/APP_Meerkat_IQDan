@@ -1,5 +1,5 @@
 # baseURL
-@baseURL = http://localhost:8082
+@baseURL = https://code.seholee.com:8082
 
 ###
 GET {{baseURL}}
@@ -18,12 +18,12 @@ Content-Type: application/json
 
 ###
 # User Login
-POST {{ baseURL }}/login
+POST {{ baseURL }}/auth/login
 Content-Type: application/json
 
 {
-    "uid": "example@email.com",
-	"password": "password"
+    "uid": "seho0808",
+	"password": "!1q2w3e4r"
 }
 
 ###
