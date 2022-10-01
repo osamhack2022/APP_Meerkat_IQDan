@@ -1,5 +1,13 @@
 import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString } from 'class-validator';
 
+export class LoginUserDto{
+  @IsString()
+  public uid: string;
+  
+  @IsString()
+  public password: string;
+}
+
 export class CreateUserDto {
   
   @IsString()
