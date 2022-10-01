@@ -35,6 +35,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
+  const [superiorOnly, setSuperiorOnly] = useState(false);
           
   useEffect(() => {
     socket.on('connect', () => {
@@ -163,7 +164,11 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
               // @ts-ignore
               textInputStyle={{backgroundColor: "#EAEAEA", borderRadius: 8, marginRight: 11, fontSize: 16, paddingLeft: 12, paddingTop: 10 }}
             />
-            <ChatRoomAccessoryBar onSend={onSendFromUser} />
+            <ChatRoomAccessoryBar 
+              superiorOnly={superiorOnly}
+              onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
+              onSend={onSendFromUser} 
+            />
           </SafeAreaView>
         </View>
       </View>
