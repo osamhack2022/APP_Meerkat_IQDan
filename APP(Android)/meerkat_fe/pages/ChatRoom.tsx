@@ -1,21 +1,34 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
 import { io } from "socket.io-client";
 
-import MKActions from "../components/ChatRoom/CustomChatComp/Actions";
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
+import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
 interface RecvMessage {
   content: string,
 }
+
+const user = {
+  _id: 1,
+  name: 'Developer',
+}
+
+const otherUser = {
+  _id: 2,
+  name: 'React Native',
+  avatar: 'https://facebook.github.io/react/img/logo_og.png',
+}
+
+const headerColor = "#DDD";
 
 const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   const { navigation } = props;
@@ -39,10 +52,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             text: msgJson.content,
             sent: true,
             received: true,
-            user: {
-              _id: 2,
-              name: 'React Native',
-            },
+            user: otherUser,
           }
         ];
 
@@ -82,10 +92,7 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             },
           ],
         },
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
+        user: otherUser,
       },
       {
         _id: 2,
@@ -108,47 +115,64 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
             },
           ],
         },
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
+        user: otherUser,
       }
     ]);
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages: IMessage[]) =>
       GiftedChat.append(previousMessages, messages)
     );
   }, []);
 
+  const onSendFromUser = (msg: IMessage[] = []) => {
+    const createdAt = new Date()
+    const messagesToUpload = msg.map(message => ({
+      ...message,
+      user,
+      createdAt,
+      _id: messages.length + 1,
+    }))
+    onSend(messagesToUpload);
+  }
+
+  // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
-    <View style={{flex: 1}}>
-      { isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false) } /> : null }
-      <View style={styles.chat}>
-        <ChatRoomHeader 
-          onPressBack={() => navigation.goBack()} 
-          onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
-        />
-        <GiftedChat
-          messages={messages}
-          onSend={(messages: any) => onSend(messages)}
-          renderBubble={MKBubble}
-          renderSend={MKSend}
-          renderActions={MKActions}
-          user={{
-            _id: 1,
-          }}
-        />
+    <Fragment>
+      {isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false)} /> : null}
+      <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
+      <View style={{ flex: 1, backgroundColor: "pink" }}>
+        <View style={styles.chat}>
+          <ChatRoomHeader
+            color={headerColor}
+            onPressBack={() => navigation.goBack()}
+            onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
+          />
+          <SafeAreaView style={{ flex: 1 }}>
+            <GiftedChat
+              messages={messages}
+              onSend={(messages: any) => onSend(messages)}
+              renderBubble={MKBubble}
+              renderSend={MKSend}
+              timeTextStyle={{ left: { color: 'black' }, right: { color: 'white' } }}
+              user={{ _id: 1, }}
+              wrapInSafeArea={false}
+              bottomOffset={60}
+            />
+            <ChatRoomAccessoryBar onSend={onSendFromUser} />
+          </SafeAreaView>
+        </View>
       </View>
-    </View>
+      <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} />
+    </Fragment>
   );
 }
 
 const styles = StyleSheet.create({
   chat: {
     flex: 1,
-    backgroundColor: "#DDD",
+    backgroundColor: "#EEE",
     position: "absolute",
     width: "100%",
     height: "100%"
