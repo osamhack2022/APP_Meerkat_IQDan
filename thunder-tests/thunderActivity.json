@@ -194,5 +194,33 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "d22cdac9-43d1-4d18-892f-83bca32842fe",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{BASEURL}}",
+    "url": "{{BASEURL}}",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-10-01T07:04:08.965Z",
+    "modified": "2022-10-01T07:04:09.139Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "7e89896b-9c78-462a-9c4a-27ec578620aa",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{BASEURL}}/users",
+    "url": "{{BASEURL}}/users",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-10-01T07:48:47.704Z",
+    "modified": "2022-10-01T07:49:15.604Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
