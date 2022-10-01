@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 // config
-import { NODE_ENV, HTTP_PORT, HTTPS_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, KEY_URL, SSL_NAME } from '@config';
+import { NODE_ENV, HTTP_PORT, HTTPS_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, SSL_URL, KEY_NAME, SSL_NAME } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
@@ -52,14 +52,14 @@ class App {
     });
   
      // http server
-     const httpsServer = https.createServer(this.credentials, this.app);
-     this.socketIO = new SocketIO(httpsServer);
+     /*const httpsServer = https.createServer(this.credentials, this.app);
+     //this.socketIO = new SocketIO(httpsServer);
      httpsServer.listen(this.https_port, () => {
        logger.info(`==================================`);
        logger.info(`======= ENV: ${this.env} =========`);
-       logger.info(`🚀 HTTP listening on the port ${this.https_port}`);
+       logger.info(`🚀 HTTPS listening on the port ${this.https_port}`);
        logger.info(`==================================`);
-     });
+     });*/
   }
 
   public getServer() {
@@ -68,8 +68,8 @@ class App {
 
   private initializeSSL(){
     this.credentials = {
-      key: fs.readFileSync(`${KEY_URL}/${SSL_NAME}.key`),
-      cert: fs.readFileSync(`${KEY_URL}/${SSL_NAME}.crt`)
+      key: fs.readFileSync(`${SSL_URL}/${SSL_NAME}`),
+      cert: fs.readFileSync(`${SSL_URL}/${KEY_NAME}`)
     }
   }
 

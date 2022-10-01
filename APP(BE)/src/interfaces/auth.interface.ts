@@ -3,6 +3,8 @@ import { User } from '@prisma/client';
 
 export interface DataStoredInToken {
   id: number;
+  name:string;
+  serviceNumber:string;
 }
 
 export interface TokenData {
