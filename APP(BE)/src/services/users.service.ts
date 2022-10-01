@@ -24,8 +24,11 @@ class UserService {
   public async createUser(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = await this.users.findUnique({ where: { uid: userData.uid } });
-    if (findUser) throw new HttpException(409, `This uid ${userData.uid} already exists`);
+    const findUserById: User = await this.users.findUnique({ where: { uid: userData.uid } });
+    if (findUserById) throw new HttpException(409, `This uid ${userData.uid} already exists`);
+
+    const findUserByServiceNumber: User = await this.users.findUnique({ where: { serviceNumber: userData.serviceNumber } });
+    if (findUserByServiceNumber) throw new HttpException(409, `This serviceNumber ${userData.serviceNumber} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await this.users.create({ data: { ...userData, password: hashedPassword } });

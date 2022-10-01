@@ -1,5 +1,13 @@
 import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString } from 'class-validator';
 
+export class LoginUserDto{
+  @IsString()
+  public uid: string;
+  
+  @IsString()
+  public password: string;
+}
+
 export class CreateUserDto {
   
   @IsString()
@@ -14,8 +22,8 @@ export class CreateUserDto {
   @IsString()
   public serviceNumber: string;
 
-  @IsDate()
-  public enlistmentDate: string;
+  @IsString()
+  public enlistmentDate: Date;
 
   @IsString()
   public affiliatedUnit:string;
@@ -50,8 +58,8 @@ export class ReadUserDto {
   public serviceNumber: string;
 
   @IsOptional()
-  @IsDate()
-  public enlistmentDate: string;
+  @IsString()
+  public enlistmentDate: Date;
 
   @IsOptional()
   @IsString()
@@ -88,8 +96,8 @@ export class UpdateUserDto {
   public serviceNumber: string;
 
   @IsOptional()
-  @IsDate()
-  public enlistmentDate: string;
+  @IsString()
+  public enlistmentDate: Date;
 
   @IsOptional()
   @IsString()

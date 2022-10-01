@@ -7,7 +7,12 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+<<<<<<< Updated upstream
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+=======
+// config
+import { NODE_ENV, HTTP_PORT, HTTPS_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, SSL_URL, KEY_NAME, SSL_NAME } from '@config';
+>>>>>>> Stashed changes
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
@@ -50,6 +55,16 @@ class App {
     return this.app;
   }
 
+<<<<<<< Updated upstream
+=======
+  private initializeSSL(){
+    this.credentials = {
+      key: fs.readFileSync(`${SSL_URL}/${KEY_NAME}`),
+      cert: fs.readFileSync(`${SSL_URL}/${SSL_NAME}`)
+    }
+  }
+
+>>>>>>> Stashed changes
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
