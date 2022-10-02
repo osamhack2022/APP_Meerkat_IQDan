@@ -6,14 +6,24 @@ export default function useLoginCheck() {
     // login state refresher
     const [refresherFlag, setTokenRefresherFlag] = useState<boolean>(false);
 
+    //flags
+    const [isLoginLoading, setIsLoginLoading] =useState(true);
+    const [isNotLoggedIn, setIsNotLoggedIn] = useState(true);
+    
+
     useEffect(() =>{
         getCurrentLoginToken();
     },[refresherFlag])
+
+    useEffect(() => {
+        loginToken === null ? setIsLoginLoading(true): setIsLoginLoading(false) 
+        loginToken === "" ? setIsNotLoggedIn(true) : setIsNotLoggedIn(false)
+    }, [loginToken])
     
     // refresh login token to get new data from asyncstorage
-    const refreshLoginToken = useCallback(() => {
+    const refreshLoginToken = () => {
         setTokenRefresherFlag(!refresherFlag);
-    }, []);
+    };
     
     const getCurrentLoginToken = async () => {
         try {
@@ -31,16 +41,6 @@ export default function useLoginCheck() {
             // also trigger system error message.
             return "unknown error"
         }
-    }
-
-    const isLoginLoading = () => {
-        if (loginToken !== null) return true;
-        return false
-    }
-    
-    const isNotLoggedIn = () => {
-        if (loginToken == "") return true;
-        return false;
     }
 
     return {loginToken, refreshLoginToken, isLoginLoading, isNotLoggedIn};

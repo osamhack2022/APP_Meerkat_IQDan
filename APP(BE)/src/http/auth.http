@@ -6,7 +6,7 @@ GET {{baseURL}}
 
 ###
 # User Signup
-POST {{ baseURL }}/signup
+POST {{ baseURL }}/users
 Content-Type: application/json
 
 {
