@@ -1,5 +1,4 @@
 // core
-import { createContext} from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
@@ -8,6 +7,7 @@ import ChatRoom from "./pages/ChatRoom";
 import APIExample from "./pages/APIExample";
 import Friend from "./pages/FriendList";
 import Auth from "./components/Auth";
+import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
@@ -20,10 +20,6 @@ export type RootStackParamList = {
     Test: undefined;
     Friend: undefined;
 };
-
-export const LoginContext = createContext({
-    refreshLoginToken: () => {},
-});
 
 // nav
 const Stack = createNativeStackNavigator<RootStackParamList>();

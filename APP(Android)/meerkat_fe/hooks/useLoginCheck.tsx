@@ -7,7 +7,7 @@ export default function useLoginCheck() {
     const [refresherFlag, setTokenRefresherFlag] = useState<boolean>(false);
 
     //flags
-    const [isLoginLoading, setIsLoginLoading] =useState(true);
+    const [isLoginLoading, setIsLoginLoading] = useState(true);
     const [isNotLoggedIn, setIsNotLoggedIn] = useState(true);
     
 
