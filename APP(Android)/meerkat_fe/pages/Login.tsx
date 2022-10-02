@@ -14,7 +14,7 @@ import axios from "axios";
 import setCookie from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // assets
-const logo = require("../assets/meerkat_black.png");
+const logo = require("../assets/logos/meerkat_black.png");
 
 export default function Login(props: {setCurrPage: Function, refreshLoginToken: Function}) {
     const {setCurrPage, refreshLoginToken} = props
