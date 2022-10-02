@@ -51,9 +51,9 @@ class App {
       logger.info(`==================================`);
     });
   
-     // http server
+     // https server
      const httpsServer = https.createServer(this.credentials, this.app);
-     //this.socketIO = new SocketIO(httpsServer);
+     this.socketIO = new SocketIO(httpsServer);
      httpsServer.listen(this.https_port, () => {
        logger.info(`==================================`);
        logger.info(`======= ENV: ${this.env} =========`);
