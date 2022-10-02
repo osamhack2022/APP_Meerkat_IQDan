@@ -1,5 +1,5 @@
 // core
-import { useEffect, useState } from "react";
+import { createContext} from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
@@ -15,11 +15,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 export type RootStackParamList = {
-  Home: undefined;
-  Chat: undefined;
-  Test: undefined;
-  Friend: undefined;
+    Home: undefined;
+    Chat: undefined;
+    Test: undefined;
+    Friend: undefined;
 };
+
+export const LoginContext = createContext({
+    refreshLoginToken: () => {},
+});
 
 // nav
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,7 +31,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [fontsLoaded] = useFonts({
         "noto-black": require("./assets/fonts/NotoSansKR-Black.otf"),
         "noto-bold": require("./assets/fonts/NotoSansKR-Bold.otf"),
@@ -36,53 +39,44 @@ export default function App() {
         "noto-reg": require("./assets/fonts/NotoSansKR-Regular.otf"),
         "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
-    const [tokenRefresherFlag, setTokenRefresherFlag] =
-        useState<boolean>(false);
 
-    const loginToken = useLoginCheck(tokenRefresherFlag);
-
-    // refreshed login token to get new data from asyncstorage
-    const refreshLoginToken = () => {
-        setTokenRefresherFlag(!tokenRefresherFlag);
-    };
-
-    // loading useEffect
-    useEffect(() => {
-        if (loginToken !== null && fontsLoaded) {
-            setIsLoading(false);
-        }
-    }, [loginToken, fontsLoaded]);
+    // login token hook
+    const { refreshLoginToken, isLoginLoading, isNotLoggedIn } = useLoginCheck();
 
     // rendering part
-    if (isLoading) return null; // prevent removing splash screen
+    if (isLoginLoading() && !fontsLoaded) return null; // prevent removing splash screen
     SplashScreen.hideAsync(); // remove splash screen
-    if (loginToken == "") {
+    if (isNotLoggedIn()) {
         return <Auth refreshLoginToken={refreshLoginToken} />;
     }
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen
-                    name="Home"
-                    component={ChatRoomList}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Chat"
-                    component={ChatRoom}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Test"
-                    component={APIExample}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name='Friend'
-                    component={Friend}
-                    options={{ headerShown: false }}
-                />
-            </Stack.Navigator>
+            <LoginContext.Provider
+                value={{ refreshLoginToken: refreshLoginToken }}
+            >
+                <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen
+                        name="Home"
+                        component={ChatRoomList}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Chat"
+                        component={ChatRoom}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Test"
+                        component={APIExample}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Friend"
+                        component={Friend}
+                        options={{ headerShown: false }}
+                    />
+                </Stack.Navigator>
+            </LoginContext.Provider>
         </NavigationContainer>
     );
 }

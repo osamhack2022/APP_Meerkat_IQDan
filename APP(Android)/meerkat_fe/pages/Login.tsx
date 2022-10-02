@@ -32,8 +32,9 @@ export default function Login(props: {setCurrPage: Function, refreshLoginToken: 
             const cookies = setCookie.parse(res.headers["set-cookie"][0]);
             await AsyncStorage.setItem("userToken", cookies[0].value)
             if (cookies[0].maxAge === undefined) throw new Error;
-            const expiry = Date.now() + cookies[0].maxAge // save as milliseconds
+            const expiry = Date.now() + cookies[0].maxAge*1000 // save as milliseconds
             await AsyncStorage.setItem("userTokenExpiration", expiry.toString())
+            console.log(expiry)
             refreshLoginToken();
         }).catch((err)=> {
             // show error message

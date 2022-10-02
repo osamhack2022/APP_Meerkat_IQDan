@@ -1,5 +1,5 @@
 // core
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // comps
 import Searchbar from "../components/ChatRoomList/Searchbar";
@@ -12,11 +12,16 @@ import dummy from "../assets/dummy_data/chatroom.json";
 // routing
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
+// thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// context
+import {LoginContext} from "../App";
 
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 export default function ChatRoomList(props: HomeScreenProps) {
+  const {refreshLoginToken} = useContext(LoginContext)
   const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
   useEffect(() => {
@@ -26,7 +31,11 @@ export default function ChatRoomList(props: HomeScreenProps) {
     setRooms(dummy.data)
   }, []);
 
-  //routing
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("userToken")
+    await AsyncStorage.removeItem("userTokenExpiration")
+    refreshLoginToken();
+  }
 
   return (
     <View style={styles.container}>
@@ -53,11 +62,9 @@ export default function ChatRoomList(props: HomeScreenProps) {
         })
       )}
       <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
-
-
-
       <Text onPress={() => props.navigation.push("Test")}>API example test</Text>
       <Text onPress={() => props.navigation.push("Friend")}>Friend</Text>
+      <Text style={{marginTop: "20"}}onPress={() => handleLogout()}>logout</Text>
     </View>
   );
 }

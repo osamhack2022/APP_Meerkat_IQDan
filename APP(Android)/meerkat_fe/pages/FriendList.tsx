@@ -35,7 +35,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
         statusMessage={"상태메시지1"}
        />
        <FriendBox
-        key={1}
+        key={2}
         name={"테스터2"}
         image={null}
         event={UserEvent.RESERVE}
@@ -44,21 +44,21 @@ export default function ChatRoomList(props: HomeScreenProps) {
 
       <CategoryBox categoryName={"곧 진급인 전우들"} />
       <FriendBox
-        key={1}
+        key={3}
         name={"테스터3"}
         image={null}
         event={UserEvent.PROMOTION}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={4}
         name={"테스터4"}
         image={null}
         event={UserEvent.PROMOTION}
         statusMessage={""}
        />
        <FriendBox
-        key={1}
+        key={5}
         name={"테스터5"}
         image={null}
         event={UserEvent.PROMOTION}
@@ -67,21 +67,21 @@ export default function ChatRoomList(props: HomeScreenProps) {
 
       <CategoryBox categoryName={"전우들"} />
       <FriendBox
-        key={1}
+        key={6}
         name={"테스터3"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={7}
         name={"테스터4"}
         image={null}
         event={null}
         statusMessage={"상태메시지4"}
        />
        <FriendBox
-        key={1}
+        key={8}
         name={"테스터5"}
         image={null}
         event={null}
@@ -95,70 +95,68 @@ export default function ChatRoomList(props: HomeScreenProps) {
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={9}
         name={"테스터7"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={10}
         name={"테스터8"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={11}
         name={"테스터9"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={12}
         name={"테스터10"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={13}
         name={"테스터11"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={14}
         name={"테스터12"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={15}
         name={"테스터13"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={16}
         name={"테스터14"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
        <FriendBox
-        key={1}
+        key={17}
         name={"테스터15"}
         image={null}
         event={null}
         statusMessage={"상태메시지3"}
        />
-       
-      
        
     </View>
   );
