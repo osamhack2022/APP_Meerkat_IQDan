@@ -40,13 +40,13 @@ export default function App() {
         "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
 
-    // login token hook
+    // // login token hook
     const { refreshLoginToken, isLoginLoading, isNotLoggedIn } = useLoginCheck();
 
-    // rendering part
-    if (isLoginLoading() && !fontsLoaded) return null; // prevent removing splash screen
+    // // rendering part
+    if (isLoginLoading || !fontsLoaded) return null; // prevent removing splash screen
     SplashScreen.hideAsync(); // remove splash screen
-    if (isNotLoggedIn()) {
+    if (isNotLoggedIn) {
         return <Auth refreshLoginToken={refreshLoginToken} />;
     }
     return (

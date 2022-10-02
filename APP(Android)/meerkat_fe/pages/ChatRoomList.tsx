@@ -32,8 +32,8 @@ export default function ChatRoomList(props: HomeScreenProps) {
   }, []);
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("userToken")
-    await AsyncStorage.removeItem("userTokenExpiration")
+    await AsyncStorage.setItem("userToken", "")
+    await AsyncStorage.setItem("userTokenExpiration", "")
     refreshLoginToken();
   }
 
@@ -64,7 +64,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
       <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
       <Text onPress={() => props.navigation.push("Test")}>API example test</Text>
       <Text onPress={() => props.navigation.push("Friend")}>Friend</Text>
-      <Text style={{marginTop: "20"}}onPress={() => handleLogout()}>logout</Text>
+      <Text style={styles.logout}onPress={() => handleLogout()}>logout</Text>
     </View>
   );
 }
@@ -84,4 +84,7 @@ const styles = StyleSheet.create({
     fontFamily: "noto-bold",
     lineHeight: 45
   },
+  logout: {
+    marginTop: 20
+  }
 });
