@@ -14,7 +14,6 @@ import axios from "axios";
 import setCookie from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 export default function Login(props: {setCurrPage: Function, refreshLoginToken: Function}) {
     const {setCurrPage, refreshLoginToken} = props
     const [id, setId] = useState("")
@@ -45,11 +44,11 @@ export default function Login(props: {setCurrPage: Function, refreshLoginToken: 
     };
 
     const handleRegister = () => {
-        setCurrPage('register')
+        setCurrPage("register")
     };
 
     const handleForgotPw = () => {
-        setCurrPage('changePw')
+        setCurrPage("changePw")
     };
 
     return (
@@ -105,7 +104,8 @@ const styles = StyleSheet.create({
     },
     errMsg: {
         color: "red",
-        fontFamily: "noto-med"
+        fontFamily: "noto-med",
+        textAlign: "center"
     },
     textBox: {
         lineHeight: 20,
