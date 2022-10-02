@@ -20,7 +20,7 @@
     "prisma:migrate:prod": "dotenv -e .env.production.local prisma migrate dev --name prodinit",
     "prisma:migrate:test": "dotenv -e .env.test.local prisma migrate dev --name testinit",
     "deploy:prod": "npm run build && pm2 start ecosystem.config.js --only prod",
-    "deploy:dev": "npx prisma generate && pm2 start ecosystem.config.js --only dev"
+    "deploy:dev": "npx prisma generate && pm2 start ecosystem.config.js --only dev --watch"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
