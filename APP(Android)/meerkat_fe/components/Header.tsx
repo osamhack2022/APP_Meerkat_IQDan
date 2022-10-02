@@ -1,10 +1,8 @@
 // core
-import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // type
 import { Category } from "../common/types";
 // dummy data
-import dummy from "../assets/dummy_data/chatroom.json";
 import Searchbar from "./ChatRoomList/Searchbar";
 
 export default function Header(props: Category) {
@@ -13,21 +11,26 @@ export default function Header(props: Category) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{categoryName}</Text>
-        <Text style={[styles.title]}>+</Text>
+        <View style={styles.titleLayout}>
+          <Text style={styles.title}>{categoryName}</Text>
+          <Text style={[styles.title]}>+</Text>
+        </View>
+        <Searchbar/>
       </View>
-      <Searchbar/>
+      <View style={styles.horizontalLine}/>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    paddingLeft: 15,
-    paddingRight: 15,
     backgroundColor: "#fff",
   },
   titleContainer: {
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  titleLayout: {
     flexDirection: "row",
     justifyContent: "space-between"
   },
@@ -35,5 +38,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: "noto-bold",
     lineHeight: 45
+  },
+  
+  horizontalLine:{
+    marginTop: 10,
+    width: "auto",
+    borderWidth: 0.2,
+    borderColor: "#EBEBEB",
   }
 });

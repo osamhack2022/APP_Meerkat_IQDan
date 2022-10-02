@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Category } from "../../common/types";
 
 export default function CategoryBox(props: Category) {
@@ -29,12 +29,14 @@ const styles = StyleSheet.create({
     categoryText:{
         marginLeft: 17,
         textAlignVertical: "center",
-        fontSize: 14
+        fontSize: 11,
+        fontFamily: "noto-reg"
     },
     horizontalLine:{
         marginLeft: 17,
+        marginRight: 17,
         width: "auto",
-        borderWidth: 0.1,
+        borderWidth: 0.2,
         borderColor: "#EBEBEB",
     }
 })
