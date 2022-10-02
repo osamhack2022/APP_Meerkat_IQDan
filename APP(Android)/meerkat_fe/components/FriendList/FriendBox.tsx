@@ -18,10 +18,10 @@ function getEventImage(event: UserEvent | null){
 
 export default function FriendBox(props: UserProfile) {
   const { name, image, event, statusMessage } = props;
-
-  const ProfileImageSource = image == null
-                                ? require('../../assets/user_event/empty_profile.jpg')
-                                : require(image);
+     const ProfileImageSource = require('../../assets/user_event/empty_profile.jpg')
+//   const ProfileImageSource = image === null
+                                // ? require('../../assets/user_event/empty_profile.jpg')
+                                // : require(image);
   const EventImageSource = getEventImage(event);
 
   return (
