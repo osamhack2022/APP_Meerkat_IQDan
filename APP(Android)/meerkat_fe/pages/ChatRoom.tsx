@@ -1,15 +1,15 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect, Fragment } from "react";
-import { View, StyleSheet, Text, SafeAreaView, Platform } from "react-native";
-import { Bubble, GiftedChat, IMessage } from "react-native-gifted-chat";
+import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
+import { Bubble, Composer, GiftedChat, IMessage } from "react-native-gifted-chat";
 import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
 import { io } from "socket.io-client";
 
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
-import MKSend from "../components/ChatRoom/CustomChatComp/Send";
 import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
 import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
+import ChatRoomTextInput from "../components/ChatRoom/ChatRoomTextInput";
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
@@ -138,40 +138,49 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
     onSend(messagesToUpload);
   }
 
+  const sendTextMessage = (text: string) => {
+    onSend([{
+      text: text,
+      user: user,
+      createdAt: new Date(),
+      _id: messages.length + 1,
+    }])
+  }
+
   // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
     <Fragment>
       {isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false)} /> : null}
       <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
-      <View style={{ flex: 1, backgroundColor: "pink" }}>
+      <ChatRoomHeader
+        color={headerColor}
+        onPressBack={() => navigation.goBack()}
+        onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
+      />
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: "#EEE" }}>
         <View style={styles.chat}>
-          <ChatRoomHeader
-            color={headerColor}
-            onPressBack={() => navigation.goBack()}
-            onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
+          <GiftedChat
+            messages={messages}
+            onSend={(messages: any) => onSend(messages)}
+            renderBubble={MKBubble}
+            timeTextStyle={{ left: { color: 'black' }, right: { color: 'white' } }}
+            user={{ _id: 1, }}
+            wrapInSafeArea={false}
+            isKeyboardInternallyHandled={false}
+            renderInputToolbar={() => null}
+            maxComposerHeight={0}
+            minInputToolbarHeight={0}
           />
-          <SafeAreaView style={{ flex: 1 }}>
-            <GiftedChat
-              messages={messages}
-              onSend={(messages: any) => onSend(messages)}
-              renderBubble={MKBubble}
-              renderSend={MKSend}
-              timeTextStyle={{ left: { color: 'black' }, right: { color: 'white' } }}
-              user={{ _id: 1, }}
-              wrapInSafeArea={false}
-              bottomOffset={Platform.OS == "ios" ? 77 : 0}
-              textInputProps={{placeholder: "메세지를 입력하세요"}}
-              // @ts-ignore
-              textInputStyle={{backgroundColor: "#EAEAEA", borderRadius: 8, marginRight: 11, fontSize: 16, paddingLeft: 12, paddingTop: 10 }}
-            />
-            <ChatRoomAccessoryBar 
-              superiorOnly={superiorOnly}
-              onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-              onSend={onSendFromUser} 
-            />
-          </SafeAreaView>
+          <ChatRoomTextInput 
+            onSendTextMessage={(text) => sendTextMessage(text)} 
+          />
         </View>
-      </View>
+      </KeyboardAvoidingView>
+      <ChatRoomAccessoryBar
+        superiorOnly={superiorOnly}
+        onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
+        onSend={onSendFromUser}
+      />
       <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} />
     </Fragment>
   );
