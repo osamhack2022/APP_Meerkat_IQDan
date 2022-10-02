@@ -36,9 +36,12 @@ export default function App() {
         "noto-reg": require("./assets/fonts/NotoSansKR-Regular.otf"),
         "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
+
+    // login state refresher
     const [tokenRefresherFlag, setTokenRefresherFlag] =
         useState<boolean>(false);
 
+    // login token hook
     const loginToken = useLoginCheck(tokenRefresherFlag);
 
     // refreshed login token to get new data from asyncstorage
