@@ -6,9 +6,14 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
   try {
     const status: number = error.status || 500;
     const message: string = error.message || 'Something went wrong';
+    const customCode: string = error.customCode || '';
 
     logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`);
-    res.status(status).json({ message });
+    if (customCode === '') {
+      res.status(status).json({ message })
+    } else {
+      res.status(status).json({ message, customCode })
+    }
   } catch (error) {
     next(error);
   }

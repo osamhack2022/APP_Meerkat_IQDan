@@ -25,10 +25,10 @@ class UserService {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
     const findUserById: User = await this.users.findUnique({ where: { uid: userData.uid } });
-    if (findUserById) throw new HttpException(409, `This uid ${userData.uid} already exists`);
+    if (findUserById) throw new HttpException(409, `This uid ${userData.uid} already exists`, 'errCode1');
 
     const findUserByServiceNumber: User = await this.users.findUnique({ where: { serviceNumber: userData.serviceNumber } });
-    if (findUserByServiceNumber) throw new HttpException(409, `This serviceNumber ${userData.serviceNumber} already exists`);
+    if (findUserByServiceNumber) throw new HttpException(409, `This serviceNumber ${userData.serviceNumber} already exists`, 'errCode2');
 
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await this.users.create({ data: { ...userData, password: hashedPassword } });
