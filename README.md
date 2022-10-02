@@ -1,6 +1,6 @@
 # APP_Meerkat_IQDan
 
-![Logo](https://i.imgur.com/xyHPVIx.png)
+![Logo](https://i.imgur.com/ExrvVIT.png)
 
 미어캣 - 안전한 군용 채팅앱 (E2EE/WEB3)
 
