@@ -42,9 +42,9 @@ export default function APIExample(props: TestScreenProps) {
   if (!users) return <Text>비었습니다.</Text>;
   console.log(users);
   return (
-    <ul>
+    <Text>
         {users.map((user)=> (
-        <li key={user.userId}>
+        <Text key={user.userId}>
           {user.userId}, 
           {user.uid}, 
           {user.password}, 
@@ -53,7 +53,7 @@ export default function APIExample(props: TestScreenProps) {
           {user.enlistmentDate}, 
           {user.affiliatedUnit}, 
           {user.userId}
-        </li>))} 
-    </ul>
+        </Text>))} 
+    </Text>
   );
 }

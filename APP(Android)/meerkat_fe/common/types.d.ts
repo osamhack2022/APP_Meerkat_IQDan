@@ -32,7 +32,7 @@ export enum UserEvent{
 
 export interface UserProfile{
     name: string,
-    image: string | null,
-    event: UserEvent | null,
-    statusMessage: string | null
+    image?: string | null | undefined,
+    event?: UserEvent | null | undefined,
+    statusMessage?: string | null | undefined
 }
