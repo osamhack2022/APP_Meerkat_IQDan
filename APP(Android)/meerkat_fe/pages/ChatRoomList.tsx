@@ -20,6 +20,7 @@ import { LoginContext } from "../common/Context";
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 export default function ChatRoomList(props: HomeScreenProps) {
+    const { navigation } = props
     const { refreshLoginToken } = useContext(LoginContext);
     const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
@@ -34,6 +35,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
         await AsyncStorage.setItem("userToken", "");
         await AsyncStorage.setItem("userTokenExpiration", "");
         refreshLoginToken();
+        navigation.navigate("Auth")
     };
 
     return (

@@ -13,8 +13,7 @@ import {
 import axios from "axios";
 import setCookie from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// assets
-const logo = require("../assets/logos/meerkat_black.png");
+
 
 export default function Login(props: {setCurrPage: Function, refreshLoginToken: Function}) {
     const {setCurrPage, refreshLoginToken} = props
@@ -54,10 +53,7 @@ export default function Login(props: {setCurrPage: Function, refreshLoginToken: 
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.logoContainer}>
-                <Image source={logo} style={styles.logo} />
-            </View>
+        <>
             <View style={styles.innerContainer}>
                 <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.text}>아이디</Text>
@@ -90,30 +86,18 @@ export default function Login(props: {setCurrPage: Function, refreshLoginToken: 
                     <Text style={styles.pressableText}>비밀번호 찾기</Text>
                 </Pressable>
             </View>
-        </View>
+       </>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 120,
-        alignItems: "center",
-    },
     innerContainer: {
-        marginBottom: 20
-    },
-    logoContainer: {
-        height: 80,
+        marginBottom: 20,
     },
     pressableContainer: {
         flexDirection: "row",
         alignItems: "center",
         marginTop: 20
-    },
-    logo: {
-        width: 40,
-        height: 40,
     },
     text: {
         lineHeight: 40,

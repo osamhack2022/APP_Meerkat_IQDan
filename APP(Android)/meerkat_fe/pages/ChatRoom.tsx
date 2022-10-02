@@ -11,7 +11,7 @@ import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
 import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
 import ChatRoomTextInput from "../components/ChatRoom/ChatRoomTextInput";
 
-type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
+export type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
 
 interface RecvMessage {
   content: string,

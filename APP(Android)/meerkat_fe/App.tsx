@@ -6,7 +6,7 @@ import ChatRoomList from "./pages/ChatRoomList";
 import ChatRoom from "./pages/ChatRoom";
 import APIExample from "./pages/APIExample";
 import Friend from "./pages/FriendList";
-import Auth from "./components/Auth";
+import Auth from "./pages/Auth";
 import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
@@ -15,6 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 export type RootStackParamList = {
+    Auth: undefined;
     Home: undefined;
     Chat: undefined;
     Test: undefined;
@@ -37,20 +38,27 @@ export default function App() {
     });
 
     // // login token hook
-    const { refreshLoginToken, isLoginLoading, isNotLoggedIn } = useLoginCheck();
+    const { refreshLoginToken, isLoginLoading, isNotLoggedIn } =
+        useLoginCheck();
 
     // // rendering part
     if (isLoginLoading || !fontsLoaded) return null; // prevent removing splash screen
     SplashScreen.hideAsync(); // remove splash screen
-    if (isNotLoggedIn) {
-        return <Auth refreshLoginToken={refreshLoginToken} />;
-    }
+
     return (
         <NavigationContainer>
             <LoginContext.Provider
-                value={{ refreshLoginToken: refreshLoginToken }}
+                value={{
+                    refreshLoginToken: refreshLoginToken,
+                    isNotLoggedIn: isNotLoggedIn,
+                }}
             >
-                <Stack.Navigator initialRouteName="Home">
+                <Stack.Navigator initialRouteName="Auth">
+                    <Stack.Screen
+                        name="Auth"
+                        component={Auth}
+                        options={{ headerShown: false }}
+                    />
                     <Stack.Screen
                         name="Home"
                         component={ChatRoomList}

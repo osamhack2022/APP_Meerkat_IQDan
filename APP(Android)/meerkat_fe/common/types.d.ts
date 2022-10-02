@@ -1,4 +1,3 @@
-
 export interface ChatRoom {
     chatroomId: number,
     creatorId: number,
