@@ -1,12 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-export default function useLoginCheck(refresherFlag: boolean) {
-    const [token, setToken] = useState<string | null>(null); // null implies loading
+export default function useLoginCheck() {
+    const [loginToken, setToken] = useState<string | null>(null); // null implies loading
+    // login state refresher
+    const [refresherFlag, setTokenRefresherFlag] = useState<boolean>(false);
 
     useEffect(() =>{
         getCurrentLoginToken();
     },[refresherFlag])
+    
+    // refresh login token to get new data from asyncstorage
+    const refreshLoginToken = useCallback(() => {
+        setTokenRefresherFlag(!refresherFlag);
+    }, []);
     
     const getCurrentLoginToken = async () => {
         try {
@@ -26,5 +33,15 @@ export default function useLoginCheck(refresherFlag: boolean) {
         }
     }
 
-    return token;
+    const isLoginLoading = () => {
+        if (loginToken !== null) return true;
+        return false
+    }
+    
+    const isNotLoggedIn = () => {
+        if (loginToken == "") return true;
+        return false;
+    }
+
+    return {loginToken, refreshLoginToken, isLoginLoading, isNotLoggedIn};
 }
