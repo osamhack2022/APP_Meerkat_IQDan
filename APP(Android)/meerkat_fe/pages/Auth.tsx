@@ -1,10 +1,10 @@
 // core
-import { useState, useContext, Fragment, useEffect } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { useState, useContext, useEffect } from "react";
+import { View, StyleSheet, Image, ScrollView, KeyboardAvoidingView} from "react-native";
 // types and comps
 import Login from "./Login";
 import Register from "./Register";
-import ChangePw from "./ChangePw";
+import ForgotPw from "./ForgotPw";
 import { LoginContext } from "../common/Context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
@@ -25,9 +25,9 @@ export default function Auth(props: AuthProps) {
     const showAuthComps = () => {
         switch (currPage) {
             case "register":
-                return <Register />;
-            case "changePw":
-                return <ChangePw />;
+                return <Register setCurrPage={setCurrPage} />;
+            case "forgotPw":
+                return <ForgotPw setCurrPage={setCurrPage} />;
             default:
                 return (
                     <Login
@@ -39,23 +39,25 @@ export default function Auth(props: AuthProps) {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.logoContainer}>
-                <Image source={logo} style={styles.logo} />
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <Image source={logo} style={styles.logo} />
+                </View>
+                {showAuthComps()}
             </View>
-            {showAuthComps()}
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 120,
+        marginTop: 100,
         alignItems: "center",
     },
     logoContainer: {
-        height: 80,
+        height: 60,
     },
 
     logo: {
