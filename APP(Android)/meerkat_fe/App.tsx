@@ -1,11 +1,5 @@
 // core
-import {
-    useEffect,
-    useState,
-    useContext,
-    createContext,
-    useCallback,
-} from "react";
+import { createContext} from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps

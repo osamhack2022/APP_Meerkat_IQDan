@@ -1,5 +1,5 @@
 // core
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // comps
 import Searchbar from "../components/ChatRoomList/Searchbar";
@@ -12,13 +12,16 @@ import dummy from "../assets/dummy_data/chatroom.json";
 // routing
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 // thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// context
+import {LoginContext} from "../App";
 
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 export default function ChatRoomList(props: HomeScreenProps) {
+  const {refreshLoginToken} = useContext(LoginContext)
   const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
   useEffect(() => {
@@ -31,6 +34,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("userToken")
     await AsyncStorage.removeItem("userTokenExpiration")
+    refreshLoginToken();
   }
 
   return (
