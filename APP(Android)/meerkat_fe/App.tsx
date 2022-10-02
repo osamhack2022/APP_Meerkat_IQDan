@@ -1,4 +1,6 @@
 // core
+import { View } from "react-native";
+import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
@@ -37,16 +39,20 @@ export default function App() {
         "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
 
-    // // login token hook
+    // login token hook
     const { refreshLoginToken, isLoginLoading, isNotLoggedIn } =
         useLoginCheck();
 
-    // // rendering part
-    if (isLoginLoading || !fontsLoaded) return null; // prevent removing splash screen
-    SplashScreen.hideAsync(); // remove splash screen
+    // splash hide callback
+    const hideSplash = useCallback(async () => {
+        if (!isLoginLoading && fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [isLoginLoading, fontsLoaded]);
 
+    if (isLoginLoading || !fontsLoaded) return null;
     return (
-        <NavigationContainer>
+        <NavigationContainer onReady={hideSplash}>
             <LoginContext.Provider
                 value={{
                     refreshLoginToken: refreshLoginToken,

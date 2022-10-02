@@ -6,10 +6,14 @@ import Login from "./Login";
 import Register from "./Register";
 import ChangePw from "./ChangePw";
 import { LoginContext } from "../common/Context";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../App";
 // assets
 const logo = require("../assets/logos/meerkat_black.png");
 
-export default function Auth(props: any) {
+type AuthProps = NativeStackScreenProps<RootStackParamList, "Auth">;
+
+export default function Auth(props: AuthProps) {
     const { navigation } = props;
     const { refreshLoginToken, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
