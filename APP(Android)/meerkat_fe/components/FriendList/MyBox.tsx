@@ -1,12 +1,11 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import { UserProfile } from "../../common/types.d";
+import getProfileSource from "./getProfileSource";
 
-export default function FriendBox(props: UserProfile) {
+export default function MyBox(props: UserProfile) {
   const { name, image, statusMessage } = props; // profile image must be delivered as prop
 
-  const ProfileImageSource = ((image === null || image === undefined)
-                                ? require('../../assets/users/emptyProfile.jpg')
-                                : image);
+  const ProfileImageSource = getProfileSource(image);
 
   return (
     <View style={styles.container}>

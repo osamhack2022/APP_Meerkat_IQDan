@@ -15,7 +15,6 @@ export default function Header(props: Category) {
           <Text style={styles.title}>{categoryName}</Text>
           <Text style={[styles.title]}>+</Text>
         </View>
-        <Searchbar/>
       </View>
       <View style={styles.horizontalLine}/>
     </View>
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
   horizontalLine:{
     marginTop: 10,
     width: "auto",
-    borderWidth: 0.2,
+    borderWidth: 0.6,
     borderColor: "#EBEBEB",
   }
 });

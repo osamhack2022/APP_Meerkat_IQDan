@@ -1,38 +1,11 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
 
-/**
- * @param event typeof enum UserEvent | null
- * @returns the image layer according to the image type.
- */
-function getEventImage(event: UserEvent | null | undefined) {
-  if (event === UserEvent.NONE || event === null || event === undefined) {
-    return <></>;
-  }
-  if (event === UserEvent.RESERVE) {
-    return (
-      <Image
-        style={styles.eventImage}
-        source={require("../../assets/users/reserving.jpg")}
-      />
-    );
-  } else if (event === UserEvent.PROMOTION) {
-    return (
-      <Image
-        style={styles.eventImage}
-        source={require("../../assets/users/promotion.jpg")}
-      />
-    );
-  }
-}
-
 export default function FriendBox(props: UserProfile) {
-  const { name, image, event, statusMessage } = props; // profile image must be delivered as prop
+  const { name, image, statusMessage } = props; // profile image must be delivered as prop
 
-  const ProfileImageSource =
-    image === null || image == undefined
-      ? require("../../assets/users/emptyProfile.jpg")
-      : image;
+  const ProfileImageSource = getProfileSource(image);
 
   return (
     <View style={styles.container}>
@@ -40,7 +13,6 @@ export default function FriendBox(props: UserProfile) {
       <View style={styles.nameContainer}>
         <View style={styles.nameLayout}>
           <Text style={styles.nameText}>{name}</Text>
-          {getEventImage(event)}
         </View>
         {statusMessage === "" ? (
           <></>
