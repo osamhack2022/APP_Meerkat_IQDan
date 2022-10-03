@@ -15,7 +15,7 @@ class UsersRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path})`, authMiddleware, this.friendsController.getFriendsById);
+    this.router.get(`${this.path}`, authMiddleware, this.friendsController.getFriendsById);
     this.router.post(`${this.path}`, validationMiddleware(InputFriendDto, 'body'), authMiddleware, this.friendsController.createFriend);
     this.router.delete(`${this.path}`, validationMiddleware(InputFriendDto, 'body'),authMiddleware,this.friendsController.deleteFriend);
   }
