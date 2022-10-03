@@ -5,21 +5,16 @@ import { StyleSheet, Text, View } from "react-native";
 import Searchbar from "../components/ChatRoomList/Searchbar";
 import ChatRoomBox from "../components/ChatRoomList/ChatRoomBox";
 import ChatRoomLoading from "../components/ChatRoomList/ChatRoomLoading";
-// type
-import { ChatRoom } from "../common/types";
+// types
+import { ChatRoom, MainTabScreenProps } from "../common/types";
 // dummy data
 import dummy from "../assets/dummy_data/chatroom.json";
-// routing
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // context
 import { LoginContext } from "../common/Context";
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
-
-export default function ChatRoomList(props: HomeScreenProps) {
+export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) {
     const { navigation } = props
     const { refreshLoginToken } = useContext(LoginContext);
     const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
@@ -63,10 +58,7 @@ export default function ChatRoomList(props: HomeScreenProps) {
                 })
             )}
             <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
-            <Text onPress={() => props.navigation.push("Test")}>
-                API example test
-            </Text>
-            <Text onPress={() => props.navigation.push("Friend")}>Friend</Text>
+            <Text onPress={() => props.navigation.push("Main", {screen: "Friends"})}>Friend</Text>
             <Text style={styles.logout} onPress={() => handleLogout()}>
                 logout
             </Text>

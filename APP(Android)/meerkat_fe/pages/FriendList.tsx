@@ -1,24 +1,16 @@
 // core
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 // comp
 import MyBox from "../components/FriendList/MyBox"
 import CategoryBox from "../components/FriendList/CategoryBox"
 import FriendBox from "../components/FriendList/FriendBox"
 import Header from "../components/Header";
 // type
-import { User, UserEvent } from "../common/types.d";
-// routing
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
-import { ScrollView } from "react-native-gesture-handler";
+import { MainTabScreenProps, User, UserEvent } from "../common/types.d";
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Friend">;
-
-export default function ChatRoomList(props: HomeScreenProps) {
+export default function FriendList(props: MainTabScreenProps<"Friends">) {
   const [users, setUsers] = useState<User[] | null>(null);
-
-  //routing
 
   return (
     <View style={styles.mainContainer}>
