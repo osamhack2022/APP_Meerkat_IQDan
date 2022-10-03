@@ -19,6 +19,7 @@ class FriendService {
     });
 
     const friendsList=findFriends.map((element)=>{
+      delete element.follower.password;
       return element.follower;
     });
 
