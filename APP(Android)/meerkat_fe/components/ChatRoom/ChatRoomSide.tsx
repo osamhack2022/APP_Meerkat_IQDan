@@ -1,14 +1,42 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, Text, Pressable, ScrollView } from "react-native";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { View, StyleSheet, Text, Pressable, ScrollView, Animated } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DrawerUser from "./DrawerComp/DrawerUser";
 
-const ChatRoomSide = (props: {onClickOutside: () => void}) => {
+const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const DURATION = 300;
+
+interface ChatRoomSideProps {
+  isOpen: boolean,
+  setIsOpen: (open: boolean) => void
+}
+
+const ChatRoomSide = (props: ChatRoomSideProps) => {
+  const opacityAnimValue = useRef(new Animated.Value(0)).current;
+  const posAnimValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (props.isOpen) {
+      Animated.timing(opacityAnimValue, { useNativeDriver:true, toValue:0.5, duration: DURATION }).start()
+      Animated.timing(posAnimValue, { useNativeDriver:false, toValue:1, duration: DURATION }).start()
+    }
+  }, [props.isOpen]);
+
+  const close = () => {
+    Animated.timing(opacityAnimValue, { useNativeDriver:true, toValue:0, duration: DURATION }).start()
+    Animated.timing(posAnimValue, { useNativeDriver:false, toValue:0, duration: DURATION }).start(() => {
+      props.setIsOpen(false);
+    })
+  }
+
+  if (!props.isOpen) return null;
+
   return (
     <View style={styles.drawer}>
-      <Pressable onPress={props.onClickOutside} style={styles.outside}>
-      </Pressable>
-      <SafeAreaView style={styles.inside}>
+      <AnimatedPressable onPress={close} style={[styles.outside, {opacity: opacityAnimValue}]}>
+      </AnimatedPressable>
+      <AnimatedSafeAreaView style={[styles.inside, {right:  posAnimValue.interpolate({ inputRange: [0, 1], outputRange: ["-65%", "0%"] }) }]}>
         <View>
           <Text>대화상대</Text>
         </View>
@@ -26,7 +54,7 @@ const ChatRoomSide = (props: {onClickOutside: () => void}) => {
           <DrawerUser name={"1중대장"}/>
           <DrawerUser name={"1중대장"}/>
         </ScrollView>
-      </SafeAreaView>
+      </AnimatedSafeAreaView>
     </View>
   )
 }
@@ -46,7 +74,6 @@ const styles = StyleSheet.create({
     height: "100%",
     top: 0,
     bottom: 0,
-    right: 0
   },
   drawer: {
     width: "100%",
