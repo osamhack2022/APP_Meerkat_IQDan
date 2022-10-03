@@ -7,3 +7,8 @@ export class FriendDto {
   @IsString()
   public followingId: number;
 }
+
+export class InputFriendDto {
+  @IsString()
+  public followingId: number;
+}

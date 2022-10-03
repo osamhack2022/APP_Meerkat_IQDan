@@ -111,3 +111,11 @@ export class UpdateUserDto {
   @IsDataURI()
   public image:string;
 }
+
+export class SearchUserDto{
+  @IsString()
+  public name:string;
+
+  @IsString()
+  public serviceNumber: string;
+}
