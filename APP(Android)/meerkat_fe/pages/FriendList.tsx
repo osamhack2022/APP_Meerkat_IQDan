@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import MyBox from "../components/FriendList/MyBox"
 import CategoryBox from "../components/FriendList/CategoryBox"
 import FriendBox from "../components/FriendList/FriendBox"
-import Header from "../components/Header";
+import Header from "../components/FriendList/Header";
 // type
 import { MainTabScreenProps, User, UserEvent } from "../common/types.d";
 import EventFriendBox from "../components/FriendList/EventFriendBox";
@@ -19,6 +19,9 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
     // setdata
     fetchFromServer()
     // setdata
+    // TODO: 친구 정보 받아오기
+    // TODO: 목록 꾹 누르면 그 사용자 친구삭제 띄워주기
+    // TODO: header + 누르면 친구 추가 창 뜨게 하기(사용자이름, 군번 입력, 검색 -> 그 사용자 프로필 띄움 + 그 사용자 프로필 띄움.)
     
     /*
       1. 둘다 로딩되지 않은 경우 -> 로딩창 띄워줌

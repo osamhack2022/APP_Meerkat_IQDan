@@ -6,7 +6,7 @@ import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
 import { io } from "socket.io-client";
 
 import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
-//import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
+import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
 import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
 import ChatRoomTextInput from "../components/ChatRoom/ChatRoomTextInput";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -156,7 +156,7 @@ const ChatRoom: React.FC<AuthScreenProps> = (props) => {
   // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
     <Fragment>
-      {/* <ChatRoomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}
+      <ChatRoomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
       <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
       <ChatRoomHeader
         color={headerColor}
