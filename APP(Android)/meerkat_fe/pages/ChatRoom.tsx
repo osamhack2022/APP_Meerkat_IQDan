@@ -150,12 +150,12 @@ const ChatRoom: React.FC<ChatScreenProps> = (props) => {
   // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
     <Fragment>
-      {isOpenSideMenu ? <ChatRoomSide onClickOutside={() => setIsOpenSideMenu(false)} /> : null}
+      <ChatRoomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
       <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
       <ChatRoomHeader
         color={headerColor}
         onPressBack={() => navigation.goBack()}
-        onPressSideMenu={() => setIsOpenSideMenu(!isOpenSideMenu)}
+        onPressSideMenu={() => setIsOpenSideMenu(true)}
       />
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: "#EEE" }}>
         <View style={styles.chat}>
