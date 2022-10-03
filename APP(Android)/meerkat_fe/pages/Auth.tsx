@@ -6,20 +6,17 @@ import Login from "./Login";
 import Register from "./Register";
 import ForgotPw from "./ForgotPw";
 import { LoginContext } from "../common/Context";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
+import { RootStackScreenProps } from "../common/types";
 // assets
 const logo = require("../assets/logos/meerkat_black.png");
 
-type AuthProps = NativeStackScreenProps<RootStackParamList, "Auth">;
-
-export default function Auth(props: AuthProps) {
+export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
     const { refreshLoginToken, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
 
     useEffect(() => {
-        if (!isNotLoggedIn) navigation.navigate('Home')
+        if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatRoomList"})
     }, [isNotLoggedIn])
 
     const showAuthComps = () => {

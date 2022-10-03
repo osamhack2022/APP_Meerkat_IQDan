@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
 import { Bubble, Composer, GiftedChat, IMessage } from "react-native-gifted-chat";
-import { RootStackParamList } from "../App";
 import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
 import { io } from "socket.io-client";
 
@@ -10,8 +9,15 @@ import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
 import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
 import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
 import ChatRoomTextInput from "../components/ChatRoom/ChatRoomTextInput";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { RootStackParamList, TabParamList } from "../common/types";
 
-type ChatScreenProps = NativeStackScreenProps<RootStackParamList, "Chat">;
+type AuthScreenProps = CompositeScreenProps<
+    StackScreenProps<RootStackParamList, 'Chat'>,
+    BottomTabScreenProps<TabParamList>
+>;
 
 interface RecvMessage {
   content: string,
@@ -30,7 +36,7 @@ const otherUser = {
 
 const headerColor = "#DDD";
 
-const ChatRoom: React.FC<ChatScreenProps> = (props) => {
+const ChatRoom: React.FC<AuthScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));

@@ -37,15 +37,6 @@ export default function Register(props: { setCurrPage: Function }) {
                 ]
             );
         }
-        console.log({
-            uid: uid,
-            password: pw,
-            name: name,
-            serviceNumber: serviceNumber,
-            enlistmentDate: enlistmentDate + "T00:00:00.000Z",
-            affiliatedUnit: affiliatedUnit,
-            militaryRank: militaryRank,
-        });
 
         axios
             .post("https://code.seholee.com:8082/users", {
@@ -66,7 +57,6 @@ export default function Register(props: { setCurrPage: Function }) {
                 ]);
             })
             .catch((err) => {
-                console.log(err.response.data);
                 let errText = "알 수 없는 이유로 회원가입에 실패하였습니다.";
                 if (err.response.status === 409) {
                     if (err.response.data.customCode === "errCode1") {

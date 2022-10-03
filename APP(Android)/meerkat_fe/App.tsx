@@ -4,28 +4,21 @@ import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-import ChatRoomList from "./pages/ChatRoomList";
+
 import ChatRoom from "./pages/ChatRoom";
-import APIExample from "./pages/APIExample";
-import Friend from "./pages/FriendList";
 import Auth from "./pages/Auth";
 import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-
-export type RootStackParamList = {
-    Auth: undefined;
-    Home: undefined;
-    Chat: undefined;
-    Test: undefined;
-    Friend: undefined;
-};
+import { RootStackParamList } from "./common/types";
+import { createStackNavigator } from "@react-navigation/stack";
+import Main from "./pages/Main";
 
 // nav
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
+
 // keep the splash screen
 SplashScreen.preventAutoHideAsync();
 
@@ -65,24 +58,14 @@ export default function App() {
                         component={Auth}
                         options={{ headerShown: false }}
                     />
-                    <Stack.Screen
-                        name="Home"
-                        component={ChatRoomList}
+                    <Stack.Screen 
+                        name="Main"
+                        component={Main}
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
                         name="Chat"
                         component={ChatRoom}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Test"
-                        component={APIExample}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Friend"
-                        component={Friend}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

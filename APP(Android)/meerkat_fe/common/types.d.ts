@@ -1,3 +1,7 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
+
 export interface ChatRoom {
     chatroomId: number,
     creatorId: number,
@@ -35,3 +39,29 @@ export interface UserProfile{
     event?: UserEvent | null | undefined,
     statusMessage?: string | null | undefined
 }
+
+
+/**
+ * react-navigation related types
+ */
+
+export type RootStackParamList = {
+    Auth: undefined;
+    Main: NavigatorScreenParams<TabParamList>;
+    Chat: undefined;
+};
+
+export type TabParamList = {
+    ChatRoomList: undefined;
+    Friends: undefined;
+    Settings: undefined;
+}
+
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+    StackScreenProps<RootStackParamList, T>;
+
+export type MainTabScreenProps<T extends keyof TabParamList> = 
+    CompositeScreenProps<
+        BottomTabScreenProps<TabParamList, T>,
+        RootStackScreenProps<keyof RootStackParamList>,
+    >;
