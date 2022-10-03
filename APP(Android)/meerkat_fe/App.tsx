@@ -11,7 +11,7 @@ import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { RootStackParamList } from "./common/types";
 import { createStackNavigator } from "@react-navigation/stack";
 import Main from "./pages/Main";
@@ -45,7 +45,13 @@ export default function App() {
 
     if (isLoginLoading || !fontsLoaded) return null;
     return (
-        <NavigationContainer onReady={hideSplash}>
+        <NavigationContainer
+            onReady={hideSplash}
+            theme={{
+                ...DefaultTheme,
+                colors: { ...DefaultTheme.colors, background: "white" },
+            }}
+        >
             <LoginContext.Provider
                 value={{
                     refreshLoginToken: refreshLoginToken,
@@ -58,7 +64,7 @@ export default function App() {
                         component={Auth}
                         options={{ headerShown: false }}
                     />
-                    <Stack.Screen 
+                    <Stack.Screen
                         name="Main"
                         component={Main}
                         options={{ headerShown: false }}
