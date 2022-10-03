@@ -12,7 +12,7 @@ export default function Main() {
     const Tab = createBottomTabNavigator<TabParamList>();
 
     return (
-        <Tab.Navigator screenOptions={{tabBarStyle: {height: 50}}}>
+        <Tab.Navigator screenOptions={{tabBarStyle: {height: 50}}} >
             <Tab.Screen
                 name="Friends"
                 component={Friend}
