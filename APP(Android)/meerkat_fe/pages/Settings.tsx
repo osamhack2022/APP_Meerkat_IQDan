@@ -1,11 +1,31 @@
-import { StyleSheet, Text, View } from "react-native";
+// core
+import { useContext } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import {
     MaterialCommunityIcons,
     MaterialIcons,
     AntDesign,
 } from "@expo/vector-icons";
+// thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// types
+import { MainTabScreenProps } from "../common/types";
+// context
+import { LoginContext } from "../common/Context";
 
-export default function Settings() {
+export default function Settings(props: MainTabScreenProps<"Settings">) {
+    const {navigation} = props;
+    
+    const { refreshLoginToken } = useContext(LoginContext);
+
+    const handleLogout = async () => {
+        await AsyncStorage.setItem("userToken", "");
+        await AsyncStorage.setItem("userTokenExpiration", "");
+        refreshLoginToken();
+        navigation.navigate("Auth")
+    };
+
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -34,13 +54,13 @@ export default function Settings() {
                 <MaterialCommunityIcons name="delete-outline" size={30} color="#6A4035" />
                 <Text style={styles.menuTitle}>{"  "}회원 탈퇴</Text>
             </View>
-            <View style={styles.menucontainer}>
+            <TouchableOpacity style={styles.menucontainer} onPress={handleLogout}>
                 <MaterialIcons name="logout" size={30} color="#6A4035" />
                 <Text style={styles.menuTitle}>
                     {"  "}
                     로그아웃
                 </Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -54,14 +74,12 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingBottom: 10
     },
     title: {
         fontSize: 25,
         fontFamily: "noto-bold",
         lineHeight: 45,
-    },
-    logout: {
-        marginTop: 20,
     },
     menucontainer: {
         flexDirection: "row",
