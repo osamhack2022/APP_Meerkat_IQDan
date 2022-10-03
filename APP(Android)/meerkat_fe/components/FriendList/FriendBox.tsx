@@ -1,9 +1,10 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
+import isEmpty from "../../common/isEmpty";
 
 export default function FriendBox(props: UserProfile) {
-  const { name, image, statusMessage } = props; // profile image must be delivered as prop
+  const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
 
   const ProfileImageSource = getProfileSource(image);
 
@@ -14,15 +15,19 @@ export default function FriendBox(props: UserProfile) {
         <View style={styles.nameLayout}>
           <Text style={styles.nameText}>{name}</Text>
         </View>
-        {statusMessage === "" ? (
+        {isEmpty(statusMessage) ? (
           <></>
         ) : (
           <Text style={styles.statusMessageText}>{statusMessage}</Text>
         )}
       </View>
-      <View style={styles.ddayContainer}>
-        <Text style={styles.ddayText}>D-100</Text>
-      </View>
+      {isEmpty(dday) ? (
+        <></>
+      ) : (
+        <View style={styles.ddayContainer}>
+          <Text style={styles.ddayText}>D-{dday}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -79,6 +84,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     fontFamily: "noto-reg",
-    lineHeight: 15
+    lineHeight: 15,
   },
 });

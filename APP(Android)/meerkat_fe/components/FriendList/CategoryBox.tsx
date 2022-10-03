@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import isEmpty from "../../common/isEmpty";
 import { Category, UserEvent } from "../../common/types.d";
 
 /**
@@ -6,7 +7,7 @@ import { Category, UserEvent } from "../../common/types.d";
  * @returns the image layer according to the image type.
  */
  function getEventImage(event: UserEvent | null | undefined) {
-    if (event === UserEvent.NONE || event === null || event === undefined) {
+    if (event === UserEvent.NONE || isEmpty(event)) {
       return <></>;
     }
     if (event === UserEvent.RESERVE) {

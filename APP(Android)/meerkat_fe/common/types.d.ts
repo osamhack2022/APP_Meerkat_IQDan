@@ -38,6 +38,7 @@ export interface UserProfile{
     name: string,
     image?: string | null | undefined,
     statusMessage?: string | null | undefined
+    dday?: number
 }
 
 
