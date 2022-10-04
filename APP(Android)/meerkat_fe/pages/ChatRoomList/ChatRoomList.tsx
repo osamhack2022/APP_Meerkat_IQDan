@@ -2,15 +2,16 @@
 import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // comps
-import Searchbar from "../components/ChatRoomList/Searchbar";
-import ChatRoomBox from "../components/ChatRoomList/ChatRoomBox";
-import ChatRoomLoading from "../components/ChatRoomList/ChatRoomLoading";
+import Searchbar from "../../components/ChatRoomList/Searchbar";
+import ChatRoomBox from "../../components/ChatRoomList/ChatRoomBox";
+import ChatRoomLoading from "../../components/ChatRoomList/ChatRoomLoading";
 // types
-import { ChatRoom, MainTabScreenProps } from "../common/types";
+import { ChatRoom, MainTabScreenProps } from "../../common/types";
 // dummy data
-import dummy from "../assets/dummy_data/chatroom.json";
+import dummy from "../../assets/dummy_data/chatroom.json";
 
 export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) {
+    const {navigation} = props;
     const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
     useEffect(() => {
@@ -20,13 +21,15 @@ export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) 
         setRooms(dummy.data);
     }, []);
 
-
+    const handleAddChatRoom = () => {
+        navigation.push("AddChatRoom")
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>대화방</Text>
-                <Text style={[styles.title]}>+</Text>
+                <Text style={[styles.title]} onPress={handleAddChatRoom}>+</Text>
             </View>
             <Searchbar />
             {rooms == null ? (
@@ -47,7 +50,6 @@ export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) 
                 })
             )}
             <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
-            <Text onPress={() => props.navigation.push("Main", {screen: "Friends"})}>Friend</Text>
         </View>
     );
 }

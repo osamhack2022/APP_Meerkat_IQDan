@@ -11,7 +11,7 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
                 <Text style={styles.title}>
                     <Ionicons
                         onPress={() => navigation.goBack()}
-                        name="chevron-back"f
+                        name="chevron-back"
                         size={24}
                         color="black"
                     />
