@@ -15,6 +15,8 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { RootStackParamList } from "./common/types";
 import { createStackNavigator } from "@react-navigation/stack";
 import Main from "./pages/Main";
+import MyProfile from "./pages/settingsPages/MyProfile";
+import ChangePw from "./pages/settingsPages/ChangePw";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -72,6 +74,16 @@ export default function App() {
                     <Stack.Screen
                         name="Chat"
                         component={ChatRoom}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="MyProfile"
+                        component={MyProfile}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="ChangePw"
+                        component={ChangePw}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

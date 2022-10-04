@@ -1,5 +1,5 @@
 # baseURL
-@baseURL = https://localhost:8090
+@baseURL = https://code.seholee.com:8082
 
 ###
 GET {{baseURL}}
@@ -8,8 +8,6 @@ GET {{baseURL}}
 # User Signup
 POST {{ baseURL }}/users
 Content-Type: application/json
-
-
     "uid": "tester3",
     "name": "로그인예제3",
     "serviceNumber": "33333333",
@@ -29,4 +27,9 @@ Content-Type: application/json
 ###
 # User Logout
 GET {{ baseURL }}/auth/logout
+Content-Type: application/json
+
+###
+# Delete Test
+DELETE {{ baseURL }}/users/4
 Content-Type: application/json

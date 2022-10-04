@@ -9,14 +9,8 @@ import ChatRoomLoading from "../components/ChatRoomList/ChatRoomLoading";
 import { ChatRoom, MainTabScreenProps } from "../common/types";
 // dummy data
 import dummy from "../assets/dummy_data/chatroom.json";
-// thirds
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// context
-import { LoginContext } from "../common/Context";
 
 export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) {
-    const { navigation } = props
-    const { refreshLoginToken } = useContext(LoginContext);
     const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
     useEffect(() => {
@@ -26,12 +20,7 @@ export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) 
         setRooms(dummy.data);
     }, []);
 
-    const handleLogout = async () => {
-        await AsyncStorage.setItem("userToken", "");
-        await AsyncStorage.setItem("userTokenExpiration", "");
-        refreshLoginToken();
-        navigation.navigate("Auth")
-    };
+
 
     return (
         <View style={styles.container}>
@@ -59,9 +48,6 @@ export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) 
             )}
             <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
             <Text onPress={() => props.navigation.push("Main", {screen: "Friends"})}>Friend</Text>
-            <Text style={styles.logout} onPress={() => handleLogout()}>
-                logout
-            </Text>
         </View>
     );
 }

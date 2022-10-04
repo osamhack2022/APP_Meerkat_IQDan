@@ -49,6 +49,8 @@ export type RootStackParamList = {
     Auth: undefined;
     Main: NavigatorScreenParams<TabParamList>;
     Chat: undefined;
+    MyProfile: undefined;
+    ChangePw: undefined;
 };
 
 export type TabParamList = {

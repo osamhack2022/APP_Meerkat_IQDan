@@ -18,7 +18,7 @@ class FriendService {
       },
     });
 
-    const friendsList=findFriends.map((element)=>{
+    const friendsList = findFriends.map(element => {
       delete element.follower.password;
       return element.follower;
     });
@@ -31,24 +31,36 @@ class FriendService {
   public async createFriend(friendData: FriendDto): Promise<Friends> {
     if (isEmpty(friendData)) throw new HttpException(400, 'friendData is empty');
 
-    const findUserById: User = await this.users.findUnique({ where: { userId: friendData.followerId } });
-    if (!findUserById) throw new HttpException(409, `This follower id ${friendData.followerId} not exists`);
+    const findUserById: User = await this.users.findUnique({
+      where: { userId: friendData.followerId },
+    });
+    if (!findUserById)
+      throw new HttpException(409, `This follower id ${friendData.followerId} not exists`);
 
-    const findFriendsForDuplicate: Friends[] = await this.friends.findMany({ where: {followerId:friendData.followerId,followingId:friendData.followingId} });
-    if (findFriendsForDuplicate) throw new HttpException(409, `This friend follwer-${friendData.followerId} and followind-${friendData.followerId} already exists`);
+    const findFriendsForDuplicate: Friends[] = await this.friends.findMany({
+      where: { followerId: friendData.followerId, followingId: friendData.followingId },
+    });
+    if (findFriendsForDuplicate)
+      throw new HttpException(
+        409,
+        `This friend follwer-${friendData.followerId} and followind-${friendData.followerId} already exists`,
+      );
 
-    const createFriendsData: Friends = await this.friends.create({ data: { ...friendData} });
+    const createFriendsData: Friends = await this.friends.create({ data: { ...friendData } });
     return createFriendsData;
   }
-
 
   public async deleteFriend(friendData: FriendDto): Promise<any> {
     if (isEmpty(friendData)) throw new HttpException(400, "User doesn't existId");
 
-    const findFriends: Friends[] = await this.friends.findMany({ where: {followerId:friendData.followerId,followingId:friendData.followingId} });
+    const findFriends: Friends[] = await this.friends.findMany({
+      where: { followerId: friendData.followerId, followingId: friendData.followingId },
+    });
     if (!findFriends) throw new HttpException(409, "Friends doesn't exist");
 
-    const deleteUserData:any = await this.friends.deleteMany({ where: {followerId:friendData.followerId,followingId:friendData.followingId} });
+    const deleteUserData: any = await this.friends.deleteMany({
+      where: { followerId: friendData.followerId, followingId: friendData.followingId },
+    });
     return deleteUserData;
   }
 }

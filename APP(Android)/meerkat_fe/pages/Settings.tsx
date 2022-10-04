@@ -1,25 +1,67 @@
-import { StyleSheet, Text, View } from "react-native";
+// core
+import { useContext } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import {
     MaterialCommunityIcons,
     MaterialIcons,
-    AntDesign,
 } from "@expo/vector-icons";
+// thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// types
+import { MainTabScreenProps } from "../common/types";
+// context
+import { LoginContext } from "../common/Context";
 
-export default function Settings() {
+export default function Settings(props: MainTabScreenProps<"Settings">) {
+    const {navigation} = props;
+    const { refreshLoginToken } = useContext(LoginContext);
+
+
+    const handleMyProfile = () => {
+        navigation.navigate("MyProfile")
+    }
+
+    const handleChangePw = () => {
+        navigation.navigate("ChangePw")
+    }
+
+
+    const handleRemoveUser = () => {
+        Alert.alert(
+            ":/",
+            "현재 지원되지 않는 기능입니다.",
+            [
+                {
+                    text: "확인",
+                    onPress: () => {},
+                },
+            ]
+        );
+    }
+
+
+    const handleLogout = async () => {
+        await AsyncStorage.setItem("userToken", "");
+        await AsyncStorage.setItem("userTokenExpiration", "");
+        refreshLoginToken();
+        navigation.navigate("Auth")
+    };
+
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>설정</Text>
             </View>
-            <View style={styles.menucontainer}>
+            <TouchableOpacity style={styles.menucontainer} onPress={handleMyProfile}>
                 <MaterialCommunityIcons
                     name="face-man-profile"
                     size={30}
                     color="#6A4035"
                 />
                 <Text style={styles.menuTitle}>{"  "}나의 프로필</Text>
-            </View>
-            <View style={styles.menucontainer}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menucontainer} onPress={handleChangePw}>
                 <MaterialCommunityIcons
                     name="form-textbox-password"
                     size={30}
@@ -29,18 +71,18 @@ export default function Settings() {
                     {"  "}
                     비밀번호 변경
                 </Text>
-            </View>
-            <View style={styles.menucontainer}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menucontainer} onPress={handleRemoveUser}>
                 <MaterialCommunityIcons name="delete-outline" size={30} color="#6A4035" />
                 <Text style={styles.menuTitle}>{"  "}회원 탈퇴</Text>
-            </View>
-            <View style={styles.menucontainer}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menucontainer} onPress={handleLogout}>
                 <MaterialIcons name="logout" size={30} color="#6A4035" />
                 <Text style={styles.menuTitle}>
                     {"  "}
                     로그아웃
                 </Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -54,14 +96,12 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingBottom: 10
     },
     title: {
         fontSize: 25,
         fontFamily: "noto-bold",
         lineHeight: 45,
-    },
-    logout: {
-        marginTop: 20,
     },
     menucontainer: {
         flexDirection: "row",
@@ -72,7 +112,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     menuTitle: {
-        fontSize: 22,
+        fontSize: 20,
         fontFamily: "noto-med",
         color: "#6A4035",
     },
