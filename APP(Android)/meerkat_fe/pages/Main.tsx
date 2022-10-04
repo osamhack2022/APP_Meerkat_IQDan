@@ -1,6 +1,6 @@
 // comps
 import Friend from "./FriendList";
-import ChatRoomList from "./ChatRoomList";
+import ChatRoomList from "./ChatRoomList/ChatRoomList";
 import Settings from "./Settings";
 // nav
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

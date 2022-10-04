@@ -1,25 +1,25 @@
 // core
-import { View } from "react-native";
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-
 import ChatRoom from "./pages/ChatRoom";
 import Auth from "./pages/Auth";
 import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, createNavigationContainerRef } from "@react-navigation/native";
 import { RootStackParamList } from "./common/types";
 import { createStackNavigator } from "@react-navigation/stack";
 import Main from "./pages/Main";
-import MyProfile from "./pages/settingsPages/MyProfile";
-import ChangePw from "./pages/settingsPages/ChangePw";
+import MyProfile from "./pages/SettingsPages/MyProfile";
+import ChangePw from "./pages/SettingsPages/ChangePw";
+import AddChatRoom from "./pages/ChatRoomList/AddChatRoom";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
+const navigationRef = createNavigationContainerRef<RootStackParamList>() // need to use composite list for tab usage
 
 // keep the splash screen
 SplashScreen.preventAutoHideAsync();
@@ -45,9 +45,13 @@ export default function App() {
         }
     }, [isLoginLoading, fontsLoaded]);
 
+    if (isNotLoggedIn && navigationRef.isReady()) {
+            navigationRef.navigate("Auth");
+    }
     if (isLoginLoading || !fontsLoaded) return null;
     return (
         <NavigationContainer
+            ref={navigationRef}
             onReady={hideSplash}
             theme={{
                 ...DefaultTheme,
@@ -84,6 +88,11 @@ export default function App() {
                     <Stack.Screen
                         name="ChangePw"
                         component={ChangePw}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="AddChatRoom"
+                        component={AddChatRoom}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
