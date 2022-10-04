@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
-import isEmpty from "../../common/isEmpty";
+import { isEmpty, isEmptyString } from "../../common/isEmpty";
 
 export default function FriendBox(props: UserProfile) {
   const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
@@ -15,7 +15,7 @@ export default function FriendBox(props: UserProfile) {
         <View style={styles.nameLayout}>
           <Text style={styles.nameText}>{name}</Text>
         </View>
-        {isEmpty(statusMessage) ? (
+        {(isEmpty(statusMessage) || isEmptyString(statusMessage!)) ? (
           <></>
         ) : (
           <Text style={styles.statusMessageText}>{statusMessage}</Text>

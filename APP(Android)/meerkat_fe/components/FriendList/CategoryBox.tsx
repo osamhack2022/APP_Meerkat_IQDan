@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import isEmpty from "../../common/isEmpty";
+import { isEmpty } from "../../common/isEmpty";
 import { Category, UserEvent } from "../../common/types.d";
 
 /**

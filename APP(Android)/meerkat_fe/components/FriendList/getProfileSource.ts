@@ -1,4 +1,4 @@
-import isEmpty from "../../common/isEmpty";
+import {isEmpty} from "../../common/isEmpty";
 
 /**
  * @param image must be delivered as 'require('image path')'
