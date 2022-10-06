@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import FriendsController from '@controllers/friends.controller';
-import { FriendDto, InputFriendDto } from '@dtos/friends.dto';
+import { InputFriendDto } from '@dtos/friends.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import authMiddleware from '@/middlewares/auth.middleware';

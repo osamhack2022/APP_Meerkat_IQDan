@@ -1,5 +1,5 @@
 # baseURL
-@baseURL = http://localhost:3000
+@baseURL = https://code.seholee.com:8082
 
 ###
 # Find All Users

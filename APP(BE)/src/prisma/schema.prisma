@@ -50,14 +50,14 @@ model UsersOnChatrooms{
 }
 
 enum ChatroomType{
-  SECRET
-  AIRTIGHT
+  SINGLE
+  MULTI
 }
 
 model Chatroom{
   chatroomId      Int          @id @default(autoincrement())
   name            String?
-  type            ChatroomType    @default(SECRET)
+  type            ChatroomType    @default(SINGLE)
   createDate      DateTime        @default(now())
   updateDate      DateTime?       @updatedAt
 
