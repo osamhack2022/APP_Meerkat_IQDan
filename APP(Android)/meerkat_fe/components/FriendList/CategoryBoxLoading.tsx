@@ -1,41 +1,43 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Animated } from "react-native";
+import { AnimatedValue } from "../../common/types";
+import getGlitterStyle from "./getGlitterStyle";
 
-export default function CategoryBox() {
+export default function CategoryBoxLoading(props: AnimatedValue) {
+    // glittering animation while loading
+    const { animatedValue } = props;
+    const glitterStyle = getGlitterStyle(animatedValue);
 
-  return (
-    <View style={styles.container}> 
-        <View style={styles.horizontalLine}/>
-        <View style={styles.categoryContainer}>
-            <Text style={styles.categoryText}> </Text>
+    return (
+        <View style={styles.container}>
+            <View style={styles.horizontalLine} />
+            <View style={styles.categoryContainer}>
+                <View style={styles.categoryText}>
+                    <Animated.View style={glitterStyle} />
+                </View>
+            </View>
         </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        
-    },
-    categoryContainer:{
+    container: {},
+    categoryContainer: {
         height: 42,
         overflow: "hidden",
         flexDirection: "row",
         alignItems: "center",
     },
-    categoryText:{
+    categoryText: {
         marginLeft: 17,
-        fontSize: 11,
         backgroundColor: "#DBDBDB",
-        width: 80
+        width: 80,
+        height: 11,
     },
-    horizontalLine:{
+    horizontalLine: {
         marginLeft: 17,
         marginRight: 17,
         width: "auto",
         borderWidth: 0.6,
         borderColor: "#EBEBEB",
-    }
-})
-
-
-
+    },
+});

@@ -24,7 +24,6 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
             uid: id,
             password: pw
         }).then(async (res) =>{
-            console.log("here", res.data.data)
             // set token and expiry date. then, refresh token check
             if (res.data.data.token === undefined) throw new Error;
             await AsyncStorage.setItem("userToken", res.data.data.token)

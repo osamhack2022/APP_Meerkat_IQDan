@@ -42,9 +42,8 @@ export interface UserProfile{
     dday?: number
 }
 
-export interface GlitterAnimation{
-    glitter: Animated.Value,
-    glitterStyle: any
+export interface AnimatedValue{
+    animatedValue: Animated.Value
 }
 
 /**
