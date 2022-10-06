@@ -20,8 +20,8 @@ POST {{ baseURL }}/auth/login
 Content-Type: application/json
 
 {
-    "uid": "example@email.com",
-    "password": "password"
+    "uid": "seho0808",
+    "password": "!1q2w3e4r"
 }
 
 ###
