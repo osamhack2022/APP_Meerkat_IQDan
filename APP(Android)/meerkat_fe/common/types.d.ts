@@ -1,6 +1,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
+import { Animated } from "react-native"
 
 export interface ChatRoom {
     chatroomId: number,
@@ -41,6 +42,10 @@ export interface UserProfile{
     dday?: number
 }
 
+export interface GlitterAnimation{
+    glitter: Animated.Value,
+    glitterStyle: any
+}
 
 /**
  * react-navigation related types

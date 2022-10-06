@@ -45,7 +45,7 @@ export default function CategoryBox(props: Category) {
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: "white"
+        
     },
     categoryContainer:{
         height: 42,

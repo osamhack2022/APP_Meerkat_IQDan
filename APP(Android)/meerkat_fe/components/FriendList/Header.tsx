@@ -1,9 +1,9 @@
 // core
 import { StyleSheet, Text, View } from "react-native";
 // type
-import { Category } from "../common/types";
+import { Category } from "../../common/types.d";
 // dummy data
-import Searchbar from "./ChatRoomList/Searchbar";
+import Searchbar from "../ChatRoomList/Searchbar";
 
 export default function Header(props: Category) {
   const { categoryName } = props;
@@ -23,7 +23,6 @@ export default function Header(props: Category) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    backgroundColor: "#fff",
   },
   titleContainer: {
     paddingLeft: 15,
