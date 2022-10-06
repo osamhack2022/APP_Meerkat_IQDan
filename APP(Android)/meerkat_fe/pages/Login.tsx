@@ -11,11 +11,10 @@ import {
 } from "react-native";
 // thirds
 import axios from "axios";
-import setCookie from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Login(props: {setCurrPage: Function, refreshLoginToken: Function}) {
-    const {setCurrPage, refreshLoginToken} = props
+export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Function}) {
+    const {setCurrPage, checkIfLoggedIn} = props
     const [id, setId] = useState("")
     const [pw, setPw] = useState("")
     const [errMsg, setErrMsg] = useState("")
@@ -25,15 +24,18 @@ export default function Login(props: {setCurrPage: Function, refreshLoginToken: 
             uid: id,
             password: pw
         }).then(async (res) =>{
+            console.log("here", res.data.data)
             // set token and expiry date. then, refresh token check
-            if (res.headers["set-cookie"] === undefined) throw new Error;
-            const cookies = setCookie.parse(res.headers["set-cookie"][0]);
-            await AsyncStorage.setItem("userToken", cookies[0].value)
-            if (cookies[0].maxAge === undefined) throw new Error;
-            const expiry = Date.now() + cookies[0].maxAge*1000 // save as milliseconds
+            if (res.data.data.token === undefined) throw new Error;
+            await AsyncStorage.setItem("userToken", res.data.data.token)
+            if (res.data.data.expiresIn === undefined) throw new Error;
+            const expiry = Date.now() + res.data.data.expiresIn*1000 // save as milliseconds
             await AsyncStorage.setItem("userTokenExpiration", expiry.toString())
-            refreshLoginToken();
+            checkIfLoggedIn();
         }).catch((err)=> {
+            if (err.response === undefined) {
+                return setErrMsg("알 수 없는 오류가 발생했습니다.")
+            }
             // show error message
             if (err.response.status === 409) {
                 setErrMsg("아이디 또는 비밀번호가 잘못되었습니다.")
