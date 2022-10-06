@@ -1,18 +1,24 @@
-import { StyleSheet, View, Text, Animated } from "react-native";
-import { GlitterAnimation } from "../../common/types.d";
+import { StyleSheet, View, Animated } from "react-native";
+import { AnimatedValue } from "../../common/types";
+import getGlitterStyle from "./getGlitterStyle";
 
-export default function MyBoxLoading(props: GlitterAnimation) {
-    const { glitterStyle } = props.glitterStyle;
+export default function MyBoxLoading(props: AnimatedValue) {
+    // glittering animation while loading
+    const { animatedValue } = props;
+    const glitterStyle = getGlitterStyle(animatedValue);
+
     return (
         <View style={styles.container}>
             <View style={styles.profileImage}>
-                <Animated.View style={glitterStyle}> </Animated.View>
+                <Animated.View style={glitterStyle} />
             </View>
-
             <View style={styles.nameContainer}>
-                <Animated.Text style={styles.nameText}> </Animated.Text>
-
-                <Text style={styles.statusMessageText}> </Text>
+                <View style={styles.nameText}>
+                    <Animated.View style={glitterStyle} />
+                </View>
+                <View style={styles.statusMessageText}>
+                    <Animated.View style={glitterStyle} />
+                </View>
             </View>
         </View>
     );

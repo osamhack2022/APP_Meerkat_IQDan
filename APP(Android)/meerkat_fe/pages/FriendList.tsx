@@ -9,39 +9,20 @@ import CategoryBox from "../components/FriendList/CategoryBox";
 import CategoryBoxLoading from "../components/FriendList/CategoryBoxLoading";
 import FriendBox from "../components/FriendList/FriendBox";
 import FriendBoxLoading from "../components/FriendList/FriendBoxLoading";
+import EventFriendBox from "../components/FriendList/EventFriendBox";
 import EventFriendBoxLoading from "../components/FriendList/EventFriendBoxLoading";
 import Header from "../components/FriendList/Header";
 // type
 import { MainTabScreenProps, User, UserEvent } from "../common/types.d";
-import EventFriendBox from "../components/FriendList/EventFriendBox";
+
 import axios from "axios";
+import getGlitterStyle from "../components/FriendList/getGlitterStyle";
 
 
 export default function FriendList(props: MainTabScreenProps<"Friends">) {
     const [users, setUsers] = useState<User[] | null>(null);
 
-    // glittering animation while loading
-    const glitter = useRef(new Animated.Value(0.4)).current;
-    Animated.loop(
-        Animated.sequence([
-            Animated.timing(glitter, {
-                toValue: 0,
-                duration: 600,
-                useNativeDriver: true,
-            }),
-            Animated.timing(glitter, {
-                toValue: 0.4,
-                duration: 600,
-                useNativeDriver: true,
-            }),
-        ])
-    ).start();
-    const glitterStyle = {
-        opacity: glitter,
-        height: "100%",
-        width: "100",
-        backgroundColor: "white",
-    };
+    const glitterAnimationValue = useRef(new Animated.Value(0.4)).current;
 
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
@@ -190,7 +171,6 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
                     <EventFriendBox
                         name={"이벤트이벤트이벤트이벤트".substr(0, 4) + "..."}
                     />
-                    <EventFriendBoxLoading />
                 </ScrollView>
 
 
@@ -219,7 +199,6 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
                 <FriendBox name={"테스터12"} statusMessage={"상태메시지3"} />
                 <FriendBox name={"테스터13"} statusMessage={"상태메시지3"} />
                 <FriendBox name={"테스터14"} statusMessage={"상태메시지3"} />
-                <FriendBoxLoading></FriendBoxLoading>
                 <FriendBox name={"테스터15"} statusMessage={"상태메시지3"} />
             </ScrollView>
         </View>
@@ -228,55 +207,58 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
         <View style={styles.mainContainer}>
             <Header categoryName="전우 목록" />
             <View>
-                <MyBoxLoading glitter={glitter} glitterStyle={glitterStyle} />
+                <MyBoxLoading animatedValue={glitterAnimationValue} />
 
-                <CategoryBoxLoading />
+                <CategoryBoxLoading animatedValue={glitterAnimationValue} />
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     style={styles.eventContainer}
                 >
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
                 </ScrollView>
 
-                <CategoryBoxLoading />
+                <CategoryBoxLoading animatedValue={glitterAnimationValue}/>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     style={styles.eventContainer}
                 >
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
-                    <EventFriendBoxLoading />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
+                    <EventFriendBoxLoading animatedValue={glitterAnimationValue} />
                 </ScrollView>
 
-                <CategoryBoxLoading />
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
-                <FriendBoxLoading></FriendBoxLoading>
+                <CategoryBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
+                <FriendBoxLoading animatedValue={glitterAnimationValue}/>
             </View>
         </View>
     );
