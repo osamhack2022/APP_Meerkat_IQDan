@@ -1,6 +1,7 @@
 // core
 import { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // comp
 import MyBox from "../components/FriendList/MyBox";
 import CategoryBox from "../components/FriendList/CategoryBox";
@@ -9,6 +10,7 @@ import Header from "../components/FriendList/Header";
 // type
 import { MainTabScreenProps, User, UserEvent } from "../common/types.d";
 import EventFriendBox from "../components/FriendList/EventFriendBox";
+import axios from "axios";
 
 export default function FriendList(props: MainTabScreenProps<"Friends">) {
   const [users, setUsers] = useState<User[] | null>(null);
@@ -19,6 +21,7 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
     // setdata
     fetchFromServer();
     // setdata
+    // TODO : 친구 이름 [계급 + 이름]으로 변경
     // TODO: 친구 정보 받아오기
     // TODO: 목록 꾹 누르면 그 사용자 친구삭제 띄워주기
     // TODO: header + 누르면 친구 추가 창 뜨게 하기(사용자이름, 군번 입력, 검색 -> 그 사용자 프로필 띄움 + 그 사용자 프로필 띄움.)
@@ -31,10 +34,28 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
     */
   }, []);
 
-  const fetchFromAsyncStorage = async () => {};
+  const fetchFromAsyncStorage = async () => {
+    //await AsyncStorage.getItem("friendList")
+    //await AsyncStorage.setItem("friendList", cookies[0].value)
+  };
 
   const fetchFromServer = async () => {
     // axios get 후에 async storage set
+    // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ? 
+
+    const userToken = await AsyncStorage.getItem("userToken");
+    console.log("token : " + userToken)
+    axios.get("https://code.seholee.com:8082/friends", {
+      headers: {
+        "Authorization": "Bearer " + userToken
+      }
+    }).then(async (res) =>{
+      console.log(res);
+    }).catch((err)=>{
+      // show error
+      console.log(err.response);
+    })
+
   };
 
   return (
