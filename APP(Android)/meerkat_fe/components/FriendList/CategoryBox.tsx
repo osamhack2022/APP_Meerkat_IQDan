@@ -1,8 +1,34 @@
-import { StyleSheet, View, Text } from "react-native";
-import { Category } from "../../common/types";
+import { StyleSheet, View, Text, Image } from "react-native";
+import { isEmpty } from "../../common/isEmpty";
+import { Category, UserEvent } from "../../common/types.d";
+
+/**
+ * @param event typeof enum UserEvent | null
+ * @returns the image layer according to the image type.
+ */
+ function getEventImage(event: UserEvent | null | undefined) {
+    if (event === UserEvent.NONE || isEmpty(event)) {
+      return <></>;
+    }
+    if (event === UserEvent.RESERVE) {
+      return (
+        <Image
+          style={styles.eventImage}
+          source={require("../../assets/users/reserving.jpg")}
+        />
+      );
+    } else if (event === UserEvent.PROMOTION) {
+      return (
+        <Image
+          style={styles.eventImage}
+          source={require("../../assets/users/promotion.jpg")}
+        />
+      );
+    }
+}
 
 export default function CategoryBox(props: Category) {
-  const { categoryName } = props;
+  const { categoryName, event } = props;
 
   return (
     <View style={styles.container}> 
@@ -11,6 +37,7 @@ export default function CategoryBox(props: Category) {
             <Text style={styles.categoryText}>
                 {categoryName}
             </Text>
+            {getEventImage(event)}
         </View>
     </View>
   );
@@ -24,7 +51,7 @@ const styles = StyleSheet.create({
         height: 42,
         overflow: "hidden",
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
     },
     categoryText:{
         marginLeft: 17,
@@ -36,8 +63,14 @@ const styles = StyleSheet.create({
         marginLeft: 17,
         marginRight: 17,
         width: "auto",
-        borderWidth: 0.2,
+        borderWidth: 0.6,
         borderColor: "#EBEBEB",
+    },
+    eventImage:{
+      marginLeft: 5,
+      marginTop: 1,
+      width: 15,
+      height: 15
     }
 })
 

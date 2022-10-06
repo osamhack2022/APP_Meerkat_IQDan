@@ -1,33 +1,20 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import getProfileSource from "./getProfileSource";
-import { UserEvent, UserProfile } from "../../common/types.d";
-import { isEmpty, isEmptyString } from "../../common/isEmpty";
+import { UserEvent, UserProfile } from "../../common/types";
 
 export default function FriendBox(props: UserProfile) {
-  const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
-
-  const ProfileImageSource = getProfileSource(image);
-
   return (
     <View style={styles.container}>
-      <Image style={styles.profileImage} source={ProfileImageSource} />
+      <View style={styles.profileImage}/>
       <View style={styles.nameContainer}>
         <View style={styles.nameLayout}>
-          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.nameText}></Text>
+          <Text style={styles.statusMessageText}></Text>
         </View>
-        {(isEmpty(statusMessage) || isEmptyString(statusMessage!)) ? (
-          <></>
-        ) : (
-          <Text style={styles.statusMessageText}>{statusMessage}</Text>
-        )}
+        <Text style={styles.statusMessageText}></Text>
       </View>
-      {isEmpty(dday) ? (
-        <></>
-      ) : (
         <View style={styles.ddayContainer}>
-          <Text style={styles.ddayText}>D-{dday}</Text>
+          
         </View>
-      )}
     </View>
   );
 }
@@ -46,6 +33,8 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     marginLeft: 18,
     marginRight: 12,
+    backgroundColor: "gray",
+    
   },
   nameContainer: {
     flexDirection: "column",
@@ -59,26 +48,37 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "noto-reg",
     lineHeight: 25,
+    backgroundColor: "gray",
   },
   statusMessageText: {
     fontSize: 11,
     color: "rgba(0, 0, 0, 0.45)",
     fontFamily: "noto-reg",
     lineHeight: 20,
+    backgroundColor: "gray",
   },
   ddayContainer: {
     position: "absolute",
     borderRadius: 4,
     padding: 4,
     right: 18,
-    backgroundColor: "#D6D6D6",
-  },
-  ddayText: {
-    flex: 1,
-    fontSize: 12,
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontFamily: "noto-reg",
-    lineHeight: 15,
-  },
+    backgroundColor: "gray",
+  }
 });
+
+/*
+@KeyframeEffect pulse {
+  0% {
+    background-color: #94a3b8;
+  }
+
+  50% {
+    background-color: #cbd5e1;
+  }
+
+  100% {
+    background-color: #94a3b8;
+  }
+}
+*/
+//https://github.com/FE-Lex-Kim/-TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%8A%A4%EC%BC%88%EB%A0%88%ED%86%A4%20UI%20(Skeleton%20UI).md

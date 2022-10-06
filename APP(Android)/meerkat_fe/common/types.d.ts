@@ -12,7 +12,8 @@ export interface ChatRoom {
 }
 
 export interface Category{
-    categoryName: string
+    categoryName: string,
+    event?: UserEvent
 }
 
 export interface User{
@@ -36,8 +37,8 @@ export enum UserEvent{
 export interface UserProfile{
     name: string,
     image?: string | null | undefined,
-    event?: UserEvent | null | undefined,
     statusMessage?: string | null | undefined
+    dday?: number
 }
 
 
