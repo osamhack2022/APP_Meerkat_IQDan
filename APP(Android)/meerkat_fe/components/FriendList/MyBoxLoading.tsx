@@ -4,33 +4,59 @@ import { StyleSheet, View, Text, Animated } from "react-native";
 export default function MyBoxLoading() {
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    const twinkle = Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-    }).start();
+    const circleAnimatedValue = new Animated.Value(0);
+    const circleAnimated = () => {
+        circleAnimatedValue.setValue(0)
+        Animated.timing(
+          circleAnimatedValue,
+          {
+              toValue: 1,
+              duration: 350,
+              useNativeDriver: false
+          }
+        ).start(() => {
+          setTimeout(() => {
+            circleAnimated()
+          }, 1000);
+        })
+      }
+      circleAnimated();
 
-    const fadeIn = () => {
-        // Will change fadeAnim value to 1 in 5 seconds
-        Animated.timing(fadeAnim, {
-            toValue: 0,
-            duration: 5000,
-            useNativeDriver: true,
-        }).start();
-    };
+      const translateX = circleAnimatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-10, 100]
+      })
 
-    const eternalfadein = () => {
-        //Animated.loop(twinkle, { iterations: -1 }).start();
-    };
 
+      const beate = useRef(new Animated.Value(0)).current;
+
+
+      Animated.loop(
+          Animated.sequence([
+              Animated.timing(beate, {
+                  toValue: 1,
+                  duration: 1000,
+                  useNativeDriver: true,
+              }),
+              Animated.timing(beate, {
+                  toValue: 0,
+                  duration: 1000,
+                  useNativeDriver: true,
+              }),
+          ])
+      ).start();
     
 
   return (
     <View style={styles.container}>
-        
-        <Animated.View style={[styles.profileImage, {opacity: fadeAnim}]}></Animated.View>
+        <View style={styles.profileImage}>
+        <Animated.View style={{ width: '30%', opacity: 0.5, height: '100%', backgroundColor: 'white', transform: [{ translateX: translateX }] }}></Animated.View>
+        </View>
+
         <View style={styles.nameContainer}>
             <Animated.Text style={styles.nameText}> </Animated.Text>
+
+            
             <Text style={styles.statusMessageText}> </Text>
         </View>
 
