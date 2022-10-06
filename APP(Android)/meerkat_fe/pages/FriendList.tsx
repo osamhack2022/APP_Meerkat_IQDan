@@ -15,12 +15,10 @@ import Header from "../components/FriendList/Header";
 import { MainTabScreenProps, User, UserEvent } from "../common/types.d";
 import EventFriendBox from "../components/FriendList/EventFriendBox";
 import axios from "axios";
-import useUserToken from "../hooks/useUserToken";
+
 
 export default function FriendList(props: MainTabScreenProps<"Friends">) {
     const [users, setUsers] = useState<User[] | null>(null);
-    const { userToken, userId, isUserTokenLoading, refreshUserToken } =
-        useUserToken();
 
     // glittering animation while loading
     const glitter = useRef(new Animated.Value(0.4)).current;
@@ -72,7 +70,7 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
     const fetchFromServer = async () => {
         // axios get 후에 async storage set
         // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ?
-        console.log("token : " + userToken);
+        /*console.log("token : " + userToken);
         axios
             .get("https://code.seholee.com:8082/friends", {
                 headers: {
@@ -85,7 +83,7 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
             .catch((err) => {
                 // TODO : show error
                 console.log(err.response);
-            });
+            });*/
     };
 
     return false ? (
