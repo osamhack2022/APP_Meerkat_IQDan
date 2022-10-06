@@ -12,7 +12,7 @@ const logo = require("../assets/logos/meerkat_black.png");
 
 export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
-    const { refreshLoginToken, isNotLoggedIn } = useContext(LoginContext);
+    const { checkIfLoggedIn, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                 return (
                     <Login
                         setCurrPage={setCurrPage}
-                        refreshLoginToken={refreshLoginToken}
+                        checkIfLoggedIn={checkIfLoggedIn}
                     />
                 );
         }

@@ -14,7 +14,7 @@ import { LoginContext } from "../common/Context";
 
 export default function Settings(props: MainTabScreenProps<"Settings">) {
     const {navigation} = props;
-    const { refreshLoginToken } = useContext(LoginContext);
+    const { checkIfLoggedIn } = useContext(LoginContext);
 
 
     const handleMyProfile = () => {
@@ -43,7 +43,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     const handleLogout = async () => {
         await AsyncStorage.setItem("userToken", "");
         await AsyncStorage.setItem("userTokenExpiration", "");
-        refreshLoginToken();
+        checkIfLoggedIn();
         navigation.navigate("Auth")
     };
 

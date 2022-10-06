@@ -1,5 +1,5 @@
 // core
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
@@ -16,6 +16,7 @@ import Main from "./pages/Main";
 import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatRoom from "./pages/ChatRoomList/AddChatRoom";
+
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -35,7 +36,7 @@ export default function App() {
     });
 
     // login token hook
-    const { refreshLoginToken, isLoginLoading, isNotLoggedIn } =
+    const { checkIfLoggedIn, isLoginLoading, isNotLoggedIn } =
         useLoginCheck();
 
     // splash hide callback
@@ -45,9 +46,12 @@ export default function App() {
         }
     }, [isLoginLoading, fontsLoaded]);
 
-    if (isNotLoggedIn && navigationRef.isReady()) {
-            navigationRef.navigate("Auth");
+    useEffect(() => {
+        if (isNotLoggedIn && navigationRef.isReady()) {
+            navigationRef.navigate("Auth"); // if not logged in, send user to login screen
     }
+    }, [navigationRef.current])
+
     if (isLoginLoading || !fontsLoaded) return null;
     return (
         <NavigationContainer
@@ -60,7 +64,7 @@ export default function App() {
         >
             <LoginContext.Provider
                 value={{
-                    refreshLoginToken: refreshLoginToken,
+                    checkIfLoggedIn: checkIfLoggedIn,
                     isNotLoggedIn: isNotLoggedIn,
                 }}
             >
