@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Animated } from "react-native";
 import { GlitterAnimation } from "../../common/types.d";
 
 export default function MyBoxLoading(props: GlitterAnimation) {
-    const {glitterStyle} = props.glitterStyle;
+    const { glitterStyle } = props.glitterStyle;
     return (
         <View style={styles.container}>
             <View style={styles.profileImage}>
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         borderRadius: 19,
         marginLeft: 18,
         marginRight: 12,
+
         backgroundColor: "#DBDBDB",
     },
     nameContainer: {

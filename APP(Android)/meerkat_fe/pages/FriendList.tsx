@@ -193,6 +193,7 @@ export default function FriendList(props: MainTabScreenProps<"Friends">) {
                     <EventFriendBoxLoading />
                 </ScrollView>
 
+
                 <CategoryBox categoryName={"전우들"} />
                 <FriendBox
                     name={"테스터33"}
