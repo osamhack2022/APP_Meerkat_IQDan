@@ -1,20 +1,13 @@
-import { StyleSheet, View, Text, Image } from "react-native";
-import { UserEvent, UserProfile } from "../../common/types";
+import { StyleSheet, View, Text } from "react-native";
 
-export default function FriendBox(props: UserProfile) {
+export default function FriendBox() {
   return (
     <View style={styles.container}>
       <View style={styles.profileImage}/>
       <View style={styles.nameContainer}>
-        <View style={styles.nameLayout}>
-          <Text style={styles.nameText}></Text>
-          <Text style={styles.statusMessageText}></Text>
-        </View>
-        <Text style={styles.statusMessageText}></Text>
+        <Text style={styles.nameText}> </Text>
+        <Text style={styles.statusMessageText}> </Text>
       </View>
-        <View style={styles.ddayContainer}>
-          
-        </View>
     </View>
   );
 }
@@ -25,7 +18,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
-    backgroundColor: "white",
   },
   profileImage: {
     width: 46,
@@ -33,36 +25,27 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     marginLeft: 18,
     marginRight: 12,
-    backgroundColor: "gray",
-    
+    backgroundColor: "#DBDBDB",
   },
   nameContainer: {
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    height: 36
   },
   nameLayout: {
     flexDirection: "row",
     alignItems: "center",
+    paddingBottom: 7,
   },
   nameText: {
-    fontSize: 18,
-    fontFamily: "noto-reg",
-    lineHeight: 25,
-    backgroundColor: "gray",
+    height: 18,
+    width: 40,
+    backgroundColor: "#DBDBDB",
   },
   statusMessageText: {
-    fontSize: 11,
-    color: "rgba(0, 0, 0, 0.45)",
-    fontFamily: "noto-reg",
-    lineHeight: 20,
-    backgroundColor: "gray",
-  },
-  ddayContainer: {
-    position: "absolute",
-    borderRadius: 4,
-    padding: 4,
-    right: 18,
-    backgroundColor: "gray",
+    height: 11,
+    width: 90,
+    backgroundColor: "#DBDBDB",
   }
 });
 

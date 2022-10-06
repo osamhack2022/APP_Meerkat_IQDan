@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
-    backgroundColor: "white",
   },
   profileImage: {
     width: 46,
