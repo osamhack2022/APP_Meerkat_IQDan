@@ -25,15 +25,20 @@ class ChatRoomController {
     }
   };
 
-  public create1to1Chat = async (
+  public createChat = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { targetUserId } = req.body;
-      const chatRoomInfo = await this.chatRoomService.create1to1Chat(userId, targetUserId);
+      const targetUserId: number[]  = req.body.targetUserId;
+      let chatRoomInfo;
+      if (targetUserId.length === 1) {
+        chatRoomInfo = await this.chatRoomService.create1to1Chat(userId, targetUserId[0]);
+      } else {
+        chatRoomInfo = await this.chatRoomService.createMultiChat(userId, targetUserId);
+      }
       res.status(200).json({ chatRoomInfo });
     } catch (error) {
       next(error);

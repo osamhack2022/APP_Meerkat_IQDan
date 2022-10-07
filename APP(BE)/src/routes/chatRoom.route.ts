@@ -15,7 +15,8 @@ class ChatRoomRoute implements Routes {
   private initializeRoutes() {
     // 모든 친구 호출
     this.router.get(`${this.path}/getAllFriends`, authMiddleware, this.chatRoomController.getAllFriends);
-    
+    // 채팅방 개설
+    this.router.post(`${this.path}/createChat`, authMiddleware, this.chatRoomController.createChat);
   }
 }
 

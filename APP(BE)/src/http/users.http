@@ -1,5 +1,5 @@
 # baseURL
-@baseURL = https://code.seholee.com:8082
+@baseURL = http://localhost:8081
 
 ###
 # Find All Users
@@ -15,8 +15,13 @@ POST {{ baseURL }}/users
 Content-Type: application/json
 
 {
-    "email": "example@email.com",
-	"password": "password"
+    "uid": "dkeim",
+	"password": "1234",
+    "name": "keim d",
+    "serviceNumber": "12k22223n",
+    "enlistmentDate": "2022-12-31T00:00:00.000Z",
+    "affiliatedUnit": "an",
+    "militaryRank": "aj"
 }
 
 ###
@@ -25,8 +30,8 @@ PUT {{ baseURL }}/users/1
 Content-Type: application/json
 
 {
-    "email": "example@email.com",
-	"password": "password"
+    "email": "123",
+	"password": "p123"
 }
 
 ###
