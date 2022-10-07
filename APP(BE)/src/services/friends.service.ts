@@ -11,16 +11,16 @@ class FriendService {
   public async findFriendsById(userId: number): Promise<User[]> {
     if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty');
 
-    const findFriends: { follower: User }[] = await this.friends.findMany({
-      where: { followingId: userId },
+    const findFriends: { following: User }[] = await this.friends.findMany({
+      where: { followerId: userId },
       select: {
-        follower: true,
+        following: true,
       },
     });
 
     const friendsList = findFriends.map(element => {
-      delete element.follower.password;
-      return element.follower;
+      delete element.following.password;
+      return element.following;
     });
 
     if (!findFriends) throw new HttpException(409, "User doesn't exist");
