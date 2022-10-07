@@ -20,7 +20,7 @@ export default function FriendListLoading() {
   const glitterAnim = useRef(new Animated.Value(0.4)).current;
 
   const generateJSX = (n: number, jsx: React.ReactElement) => {
-    return Array.from({ length: 5 }, (_, index) => {
+    return Array.from({ length: n }, (_, index) => {
       return React.cloneElement(jsx, { key: index });
     });
   };
