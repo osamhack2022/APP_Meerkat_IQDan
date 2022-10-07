@@ -1,38 +1,12 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
-
-/**
- * @param event typeof enum UserEvent | null
- * @returns the image layer according to the image type.
- */
-function getEventImage(event: UserEvent | null | undefined) {
-  if (event === UserEvent.NONE || event === null || event === undefined) {
-    return <></>;
-  }
-  if (event === UserEvent.RESERVE) {
-    return (
-      <Image
-        style={styles.eventImage}
-        source={require("../../assets/users/reserving.jpg")}
-      />
-    );
-  } else if (event === UserEvent.PROMOTION) {
-    return (
-      <Image
-        style={styles.eventImage}
-        source={require("../../assets/users/promotion.jpg")}
-      />
-    );
-  }
-}
+import { isEmpty, isEmptyString } from "../../common/isEmpty";
 
 export default function FriendBox(props: UserProfile) {
-  const { name, image, event, statusMessage } = props; // profile image must be delivered as prop
+  const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
 
-  const ProfileImageSource =
-    image === null || image == undefined
-      ? require("../../assets/users/emptyProfile.jpg")
-      : image;
+  const ProfileImageSource = getProfileSource(image);
 
   return (
     <View style={styles.container}>
@@ -40,17 +14,20 @@ export default function FriendBox(props: UserProfile) {
       <View style={styles.nameContainer}>
         <View style={styles.nameLayout}>
           <Text style={styles.nameText}>{name}</Text>
-          {getEventImage(event)}
         </View>
-        {statusMessage === "" ? (
+        {(isEmpty(statusMessage) || isEmptyString(statusMessage!)) ? (
           <></>
         ) : (
           <Text style={styles.statusMessageText}>{statusMessage}</Text>
         )}
       </View>
-      <View style={styles.ddayContainer}>
-        <Text style={styles.ddayText}>D-100</Text>
-      </View>
+      {isEmpty(dday) ? (
+        <></>
+      ) : (
+        <View style={styles.ddayContainer}>
+          <Text style={styles.ddayText}>D-{dday}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -61,7 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
-    backgroundColor: "white",
   },
   profileImage: {
     width: 46,
@@ -83,11 +59,6 @@ const styles = StyleSheet.create({
     fontFamily: "noto-reg",
     lineHeight: 25,
   },
-  eventImage: {
-    marginLeft: 6,
-    width: 15,
-    height: 15,
-  },
   statusMessageText: {
     fontSize: 11,
     color: "rgba(0, 0, 0, 0.45)",
@@ -107,6 +78,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     fontFamily: "noto-reg",
-    lineHeight: 15
+    lineHeight: 15,
   },
 });

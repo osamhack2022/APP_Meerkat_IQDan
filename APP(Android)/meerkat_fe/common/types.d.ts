@@ -1,3 +1,8 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
+import { Animated } from "react-native"
+
 export interface ChatRoom {
     chatroomId: number,
     creatorId: number,
@@ -8,7 +13,8 @@ export interface ChatRoom {
 }
 
 export interface Category{
-    categoryName: string
+    categoryName: string,
+    event?: UserEvent
 }
 
 export interface User{
@@ -32,6 +38,38 @@ export enum UserEvent{
 export interface UserProfile{
     name: string,
     image?: string | null | undefined,
-    event?: UserEvent | null | undefined,
     statusMessage?: string | null | undefined
+    dday?: number
 }
+
+export interface AnimatedValue{
+    animatedValue: Animated.Value
+}
+
+/**
+ * react-navigation related types
+ */
+
+export type RootStackParamList = {
+    Auth: undefined;
+    Main: NavigatorScreenParams<TabParamList>;
+    Chat: undefined;
+    MyProfile: undefined;
+    ChangePw: undefined;
+    AddChatRoom: undefined;
+};
+
+export type TabParamList = {
+    ChatRoomList: undefined;
+    Friends: undefined;
+    Settings: undefined;
+}
+
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+    StackScreenProps<RootStackParamList, T>;
+
+export type MainTabScreenProps<T extends keyof TabParamList> = 
+    CompositeScreenProps<
+        BottomTabScreenProps<TabParamList, T>,
+        RootStackScreenProps<keyof RootStackParamList>,
+    >;

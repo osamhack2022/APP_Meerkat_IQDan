@@ -69,8 +69,7 @@ class App {
   private initializeSSL(){
     this.credentials = {
       key: fs.readFileSync(`${SSL_URL}/${KEY_NAME}`),
-      cert: fs.readFileSync(`${SSL_URL}/${SSL_NAME}`),
-      ca: fs.readFileSync(`${SSL_URL}/${CHAIN_NAME}`)
+      cert: fs.readFileSync(`${SSL_URL}/${SSL_NAME}`)
     }
   }
 

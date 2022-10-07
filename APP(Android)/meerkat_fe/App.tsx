@@ -1,31 +1,27 @@
 // core
-import { View } from "react-native";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-import ChatRoomList from "./pages/ChatRoomList";
 import ChatRoom from "./pages/ChatRoom";
-import APIExample from "./pages/APIExample";
-import Friend from "./pages/FriendList";
 import Auth from "./pages/Auth";
 import { LoginContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, createNavigationContainerRef } from "@react-navigation/native";
+import { RootStackParamList } from "./common/types";
+import { createStackNavigator } from "@react-navigation/stack";
+import Main from "./pages/Main";
+import MyProfile from "./pages/SettingsPages/MyProfile";
+import ChangePw from "./pages/SettingsPages/ChangePw";
+import AddChatRoom from "./pages/ChatRoomList/AddChatRoom";
 
-export type RootStackParamList = {
-    Auth: undefined;
-    Home: undefined;
-    Chat: undefined;
-    Test: undefined;
-    Friend: undefined;
-};
 
 // nav
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
+const navigationRef = createNavigationContainerRef<RootStackParamList>() // need to use composite list for tab usage
+
 // keep the splash screen
 SplashScreen.preventAutoHideAsync();
 
@@ -40,7 +36,7 @@ export default function App() {
     });
 
     // login token hook
-    const { refreshLoginToken, isLoginLoading, isNotLoggedIn } =
+    const { checkIfLoggedIn, isLoginLoading, isNotLoggedIn } =
         useLoginCheck();
 
     // splash hide callback
@@ -50,12 +46,25 @@ export default function App() {
         }
     }, [isLoginLoading, fontsLoaded]);
 
+    useEffect(() => {
+        if (isNotLoggedIn && navigationRef.isReady()) {
+            navigationRef.navigate("Auth"); // if not logged in, send user to login screen
+    }
+    }, [navigationRef.current])
+
     if (isLoginLoading || !fontsLoaded) return null;
     return (
-        <NavigationContainer onReady={hideSplash}>
+        <NavigationContainer
+            ref={navigationRef}
+            onReady={hideSplash}
+            theme={{
+                ...DefaultTheme,
+                colors: { ...DefaultTheme.colors, background: "white" },
+            }}
+        >
             <LoginContext.Provider
                 value={{
-                    refreshLoginToken: refreshLoginToken,
+                    checkIfLoggedIn: checkIfLoggedIn,
                     isNotLoggedIn: isNotLoggedIn,
                 }}
             >
@@ -66,8 +75,8 @@ export default function App() {
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                        name="Home"
-                        component={ChatRoomList}
+                        name="Main"
+                        component={Main}
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
@@ -76,13 +85,18 @@ export default function App() {
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                        name="Test"
-                        component={APIExample}
+                        name="MyProfile"
+                        component={MyProfile}
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                        name="Friend"
-                        component={Friend}
+                        name="ChangePw"
+                        component={ChangePw}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="AddChatRoom"
+                        component={AddChatRoom}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

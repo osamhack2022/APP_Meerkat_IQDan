@@ -1,11 +1,20 @@
 import { hash } from 'bcrypt';
 import { PrismaClient, User } from '@prisma/client';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, SearchUserDto, UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 
 class UserService {
   public users = new PrismaClient().user;
+
+  // 유저 존재 유뮤 확인
+  public async checkUserExists(userId: number): Promise<User> {
+    const findUser: User = await this.users.findUnique({
+      where: { userId: userId },
+    });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    return findUser;
+  }
 
   public async findAllUser(): Promise<User[]> {
     const allUser: User[] = await this.users.findMany();
@@ -14,45 +23,101 @@ class UserService {
 
   public async findUserById(userId: number): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty');
+    return await this.checkUserExists(userId);
+  }
 
-    const findUser: User = await this.users.findUnique({ where: { userId: userId } });
+  public async findUserByFriend(userInfo: SearchUserDto): Promise<User> {
+    if (isEmpty(userInfo)) throw new HttpException(400, 'userInfo is empty');
+
+    const findUser: User = await this.users.findUnique({
+      where: { serviceNumber: userInfo.serviceNumber },
+    });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
-
+    if (findUser.name !== userInfo.name) throw new HttpException(409, 'User name is not match');
+    delete findUser.password;
     return findUser;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUserById: User = await this.users.findUnique({ where: { uid: userData.uid } });
-    if (findUserById) throw new HttpException(409, `This uid ${userData.uid} already exists`, 'errCode1');
+    const findUserById: User = await this.users.findUnique({
+      where: { uid: userData.uid },
+    });
+    if (findUserById)
+      throw new HttpException(409, `This uid ${userData.uid} already exists`, 'errCode1');
 
-    const findUserByServiceNumber: User = await this.users.findUnique({ where: { serviceNumber: userData.serviceNumber } });
-    if (findUserByServiceNumber) throw new HttpException(409, `This serviceNumber ${userData.serviceNumber} already exists`, 'errCode2');
+    const findUserByServiceNumber: User = await this.users.findUnique({
+      where: { serviceNumber: userData.serviceNumber },
+    });
+    if (findUserByServiceNumber)
+      throw new HttpException(
+        409,
+        `This serviceNumber ${userData.serviceNumber} already exists`,
+        'errCode2',
+      );
 
     const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = await this.users.create({ data: { ...userData, password: hashedPassword } });
+    const createUserData: User = await this.users.create({
+      data: { ...userData, password: hashedPassword },
+    });
     return createUserData;
   }
 
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User> {
+  // 나의 프로필 변경
+  public async updateUserInfo(
+    userId: number,
+    userData: {
+      enlistmentDate: Date;
+      affiliatedUnit: string;
+      militaryRank: string;
+    },
+  ): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    await this.checkUserExists(userId);
 
-    const findUser: User = await this.users.findUnique({ where: { userId: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    const updateUserData = await this.users.update({
+      where: { userId: userId },
+      data: { ...userData },
+    });
 
-    const hashedPassword = await hash(userData.password, 10);
-    const updateUserData = await this.users.update({ where: { userId: userId }, data: { ...userData, password: hashedPassword } });
+    return updateUserData;
+  }
+
+  // 프로필 사진 변경
+  public async updateProfilePic(userId: number, image: string): Promise<User> {
+    await this.checkUserExists(userId);
+    const updateUserData = await this.users.update({
+      where: { userId: userId },
+      data: { image: image },
+    });
+
+    return updateUserData;
+  }
+
+  // 비밀번호 변경
+  public async updateUserPw(userId: number, password: string): Promise<User> {
+    await this.checkUserExists(userId);
+    const hashedPassword = await hash(password, 10);
+    const updateUserData = await this.users.update({
+      where: { userId: userId },
+      data: { password: hashedPassword },
+    });
+
     return updateUserData;
   }
 
   public async deleteUser(userId: number): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, "User doesn't existId");
 
-    const findUser: User = await this.users.findUnique({ where: { userId: userId } });
+    const findUser: User = await this.users.findUnique({
+      where: { userId: userId },
+    });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-    const deleteUserData = await this.users.delete({ where: { userId: userId } });
+    const deleteUserData = await this.users.delete({
+      where: { userId: userId },
+    });
     return deleteUserData;
   }
 }

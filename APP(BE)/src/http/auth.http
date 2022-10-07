@@ -8,15 +8,10 @@ GET {{baseURL}}
 # User Signup
 POST {{ baseURL }}/users
 Content-Type: application/json
-
-{
-    "uid":"ehdwlsdudwo1a",
-    "password":"password!!",
-    "name":"임동진",
-    "serviceNumber":"22-760010211",
-    "enlistmentDate":"2023-02-11T15:00:00.000Z",
-    "affiliatedUnit":"계룡대근무지원단",
-    "militaryRank":"일병"
+    "uid": "tester3",
+    "name": "로그인예제3",
+    "serviceNumber": "33333333",
+	"password": "tester3"
 }
 
 ###
@@ -26,10 +21,15 @@ Content-Type: application/json
 
 {
     "uid": "seho0808",
-	"password": "!1q2w3e4r"
+    "password": "!1q2w3e4r"
 }
 
 ###
 # User Logout
-POST {{ baseURL }}/logout
+GET {{ baseURL }}/auth/logout
+Content-Type: application/json
+
+###
+# Delete Test
+DELETE {{ baseURL }}/users/4
 Content-Type: application/json

@@ -1,26 +1,47 @@
 import { NextFunction, Request, Response } from 'express';
-import { Friends,User } from '@prisma/client';
+import { Friends, User } from '@prisma/client';
 import { FriendDto } from '@dtos/friends.dto';
 import FriendsService from '@services/friends.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class UsersController {
   public friendsService = new FriendsService();
 
-  public getFriendsById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getFriendsById = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     try {
-      const userId = Number(req.params.id);
-      const findFriendsData: User[] = await this.friendsService.findFriendsById(userId);
+      const userId = req.user.userId;
+      const findFriendsData: User[] = await this.friendsService.findFriendsById(
+        userId,
+      );
 
-      res.status(200).json({ data: findFriendsData, message: `findFriends by userid ${userId}` });
+      res
+        .status(200)
+        .json({
+          data: findFriendsData,
+          message: `findFriends by userid ${userId}`,
+        });
     } catch (error) {
       next(error);
     }
   };
 
-  public createFriend = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public createFriend = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     try {
-      const friendData: FriendDto = req.body;
-      const createFriendData: Friends = await this.friendsService.createFriend(friendData);
+      const friendData: FriendDto = {
+        followerId: req.user.userId,
+        followingId: req.body.followingId,
+      };
+      const createFriendData: Friends = await this.friendsService.createFriend(
+        friendData,
+      );
 
       res.status(201).json({ data: createFriendData, message: 'created' });
     } catch (error) {
@@ -28,10 +49,19 @@ class UsersController {
     }
   };
 
-  public deleteFriend = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public deleteFriend = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     try {
-      const friendData: FriendDto = req.body;
-      const deleteUserData: User = await this.friendsService.deleteFriend(friendData);
+      const friendData: FriendDto = {
+        followerId: req.user.userId,
+        followingId: req.body.followingId,
+      };
+      const deleteUserData: User = await this.friendsService.deleteFriend(
+        friendData,
+      );
 
       res.status(200).json({ data: deleteUserData, message: 'deleted' });
     } catch (error) {

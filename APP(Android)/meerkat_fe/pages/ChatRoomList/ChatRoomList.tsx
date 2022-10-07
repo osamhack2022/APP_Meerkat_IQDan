@@ -2,26 +2,16 @@
 import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 // comps
-import Searchbar from "../components/ChatRoomList/Searchbar";
-import ChatRoomBox from "../components/ChatRoomList/ChatRoomBox";
-import ChatRoomLoading from "../components/ChatRoomList/ChatRoomLoading";
-// type
-import { ChatRoom } from "../common/types";
+import Searchbar from "../../components/ChatRoomList/Searchbar";
+import ChatRoomBox from "../../components/ChatRoomList/ChatRoomBox";
+import ChatRoomLoading from "../../components/ChatRoomList/ChatRoomLoading";
+// types
+import { ChatRoom, MainTabScreenProps } from "../../common/types";
 // dummy data
-import dummy from "../assets/dummy_data/chatroom.json";
-// routing
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
-// thirds
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// context
-import { LoginContext } from "../common/Context";
+import dummy from "../../assets/dummy_data/chatroom.json";
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
-
-export default function ChatRoomList(props: HomeScreenProps) {
-    const { navigation } = props
-    const { refreshLoginToken } = useContext(LoginContext);
+export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) {
+    const {navigation} = props;
     const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
 
     useEffect(() => {
@@ -31,18 +21,15 @@ export default function ChatRoomList(props: HomeScreenProps) {
         setRooms(dummy.data);
     }, []);
 
-    const handleLogout = async () => {
-        await AsyncStorage.setItem("userToken", "");
-        await AsyncStorage.setItem("userTokenExpiration", "");
-        refreshLoginToken();
-        navigation.navigate("Auth")
-    };
+    const handleAddChatRoom = () => {
+        navigation.push("AddChatRoom")
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>대화방</Text>
-                <Text style={[styles.title]}>+</Text>
+                <Text style={[styles.title]} onPress={handleAddChatRoom}>+</Text>
             </View>
             <Searchbar />
             {rooms == null ? (
@@ -63,13 +50,6 @@ export default function ChatRoomList(props: HomeScreenProps) {
                 })
             )}
             <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
-            <Text onPress={() => props.navigation.push("Test")}>
-                API example test
-            </Text>
-            <Text onPress={() => props.navigation.push("Friend")}>Friend</Text>
-            <Text style={styles.logout} onPress={() => handleLogout()}>
-                logout
-            </Text>
         </View>
     );
 }
