@@ -24,6 +24,7 @@ const pickImageAsync = async (onSend: (messages: IMessage[]) => void) => {
 interface ChatRoomAccessoryBarProps {
   onSend: (messages: IMessage[]) => void,
   onPressSuperiorSwitch: () => void
+  onPressTemplate: () => void
   superiorOnly: boolean,
 }
 
@@ -33,7 +34,7 @@ const ChatRoomAccessoryBar = (props: ChatRoomAccessoryBarProps) => {
       <TouchableOpacity style={styles.item} onPress={() => {}}>
         <MaterialIcons size={30} color={ICON_COLOR} name='calendar-today' />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.item} onPress={() => {}}>
+      <TouchableOpacity style={styles.item} onPress={() => props.onPressTemplate()}>
         <MaterialIcons size={30} color={ICON_COLOR} name='article' />
       </TouchableOpacity>
       <TouchableOpacity style={styles.item} onPress={() => pickImageAsync(props.onSend)}>

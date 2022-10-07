@@ -13,6 +13,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { RootStackParamList, TabParamList } from "../common/types";
+import ChatRoomTemplatePanel from "../components/ChatRoom/ChatRoomTemplatePanel";
 
 type AuthScreenProps = CompositeScreenProps<
     StackScreenProps<RootStackParamList, 'Chat'>,
@@ -41,7 +42,9 @@ const ChatRoom: React.FC<AuthScreenProps> = (props) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
+  const [templateVisible, setTemplateVisible] = useState(false);
   const [superiorOnly, setSuperiorOnly] = useState(false);
+  const [msgInput, setMsgInput] = useState("");
           
   useEffect(() => {
     socket.on('connect', () => {
@@ -178,14 +181,22 @@ const ChatRoom: React.FC<AuthScreenProps> = (props) => {
             minInputToolbarHeight={0}
           />
           <ChatRoomTextInput 
+            msgInput={msgInput}
+            setMsgInput={setMsgInput}
             onSendTextMessage={(text) => sendTextMessage(text)} 
           />
         </View>
       </KeyboardAvoidingView>
       <ChatRoomAccessoryBar
         superiorOnly={superiorOnly}
+        onPressTemplate={() => setTemplateVisible(true)}
         onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
         onSend={onSendFromUser}
+      />
+      <ChatRoomTemplatePanel
+        visible={templateVisible}
+        setVisible={setTemplateVisible}
+        setMsgInput={setMsgInput}
       />
       <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} />
     </Fragment>
