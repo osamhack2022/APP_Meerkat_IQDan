@@ -5,19 +5,18 @@ import getGlitterStyle from "./getGlitterStyle";
 export default function MyBoxLoading(props: AnimatedValue) {
     // glittering animation while loading
     const { animatedValue } = props;
-    const glitterStyle = getGlitterStyle(animatedValue);
 
     return (
         <View style={styles.container}>
             <View style={styles.profileImage}>
-                <Animated.View style={glitterStyle} />
+                <Animated.View style={getGlitterStyle(animatedValue)} />
             </View>
             <View style={styles.nameContainer}>
                 <View style={styles.nameText}>
-                    <Animated.View style={glitterStyle} />
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
                 </View>
                 <View style={styles.statusMessageText}>
-                    <Animated.View style={glitterStyle} />
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
                 </View>
             </View>
         </View>

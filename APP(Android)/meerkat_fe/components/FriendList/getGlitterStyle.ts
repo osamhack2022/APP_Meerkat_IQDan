@@ -10,7 +10,6 @@ import { Animated } from "react-native";
  * @returns animated style
  */
 export default function getGlitterStyle(animatedValue: Animated.Value){
-    // const glitter = useRef(new Animated.Value(0.4)).current;
     Animated.loop(
         Animated.sequence([
             Animated.timing(animatedValue, {
@@ -28,7 +27,7 @@ export default function getGlitterStyle(animatedValue: Animated.Value){
     const glitterStyle = {
         opacity: animatedValue,
         height: "100%",
-        width: "100",
+        width: "100%",
         backgroundColor: "white",
     };
     return glitterStyle;
