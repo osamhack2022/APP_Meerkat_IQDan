@@ -12,6 +12,7 @@ import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import EventFriendBox from '../components/FriendList/EventFriendBox';
 import EventFriendBoxLoading from '../components/FriendList/EventFriendBoxLoading';
 import Header from '../components/FriendList/Header';
+import UserProfilePanel from '../components/FriendList/UserProfilePanel';
 // type
 import { MainTabScreenProps, User, UserEvent } from '../common/types.d';
 
@@ -58,7 +59,10 @@ const EventFriendList = (props: {users: User[]}) => {
 }
 
 export default function FriendList(props: MainTabScreenProps<'Friends'>) {
+  const { navigation } = props;  
+
   const [pageState, setPageState] = useState<string>("loading");
+  const [currentProfileUser, setCurrentProfileUser] = useState<User|null>(null);
   const [user, setUser] = useState<User|null>(null);
   const [friends, setFriends] = useState<User[] | null>(null);
 
@@ -141,7 +145,13 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   }) || [];
 
   return (
-    <>
+    <View style={{backgroundColor: "pink", width: "100%", height: "100%"}}>
+      <UserProfilePanel 
+        user={currentProfileUser}
+        setUser={setCurrentProfileUser}
+        onClose={() => setCurrentProfileUser(null)}
+        gotoChat={() => navigation.push("Chat")}
+      />
       <View style={styles.mainContainer}>
         <Header categoryName="전우 목록" />
         <ScrollView>
@@ -171,6 +181,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
                     statusMessage={user.affiliatedUnit}
                     image={user.image}
                     dday={getDiff(getReserveDate(endDate), now)}
+                    onPress={() => setCurrentProfileUser(user)}
                   />)
               })
             }
@@ -195,7 +206,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
           <View style={{ paddingBottom: 120, backgroundColor: "pink" }} />
         </ScrollView>
       </View>
-    </>
+    </View>
   );
 }
 
