@@ -17,7 +17,6 @@ import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatRoom from "./pages/ChatRoomList/AddChatRoom";
 
-
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
 const navigationRef = createNavigationContainerRef<RootStackParamList>() // need to use composite list for tab usage
@@ -27,12 +26,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
-        "noto-black": require("./assets/fonts/NotoSansKR-Black.otf"),
         "noto-bold": require("./assets/fonts/NotoSansKR-Bold.otf"),
-        "noto-light": require("./assets/fonts/NotoSansKR-Light.otf"),
         "noto-med": require("./assets/fonts/NotoSansKR-Medium.otf"),
         "noto-reg": require("./assets/fonts/NotoSansKR-Regular.otf"),
-        "noto-thin": require("./assets/fonts/NotoSansKR-Thin.otf"),
     });
 
     // login token hook

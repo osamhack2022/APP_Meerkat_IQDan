@@ -16,6 +16,7 @@ export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) 
 
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
+        
 
         // dummy load
         setRooms(dummy.data);

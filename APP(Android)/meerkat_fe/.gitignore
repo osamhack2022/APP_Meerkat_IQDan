@@ -16,3 +16,4 @@ web-build/
 # custom
 *.apk
 temp_assets
+env.json
