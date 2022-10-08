@@ -13,6 +13,7 @@ import UserProfilePanel from '../components/FriendList/UserProfilePanel';
 import { MainTabScreenProps, User, UserEvent } from '../common/types.d';
 
 import FriendListLoading from '../components/FriendList/FriendListLoading';
+import api from '../common/api';
 
 const FriendListKey = "FriendList";
 
@@ -65,10 +66,8 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
 
     (async () => {
       await sleep(1.41412);
-      console.log("wait 1")
       await fetchFromAsyncStorage();
       await sleep(2);
-      console.log("wait 2")
       fetchFriends();
 
     })();
@@ -98,8 +97,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
 
     let userToken = await AsyncStorage.getItem("userToken")
 
-    axios
-      .get("https://code.seholee.com:8082/friends", {
+    api.get("/friends", {
         headers: {
           Authorization: "Bearer " + userToken,
         },

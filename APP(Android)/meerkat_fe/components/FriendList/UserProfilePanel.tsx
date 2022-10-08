@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { User, UserProfile } from "../../common/types";
 import getProfileSource from "./getProfileSource";
-import axios from "axios";
+import api from "../../common/api";
 
 interface UserProfilePanelProps {
   user: User|null
@@ -16,12 +16,13 @@ interface UserProfilePanelProps {
 
 const requestDeleteFriend = async (user: User) => {
   let userToken = await AsyncStorage.getItem("userToken")
-  return;
-  axios
-    .get("https://code.seholee.com:8082/friends", {
+  api.delete("/friends", {
       headers: {
         Authorization: "Bearer " + userToken,
       },
+      data: {
+        followingId: user.userId
+      }
     })
     .then(async (res) => {
       let friends = res.data.data;
