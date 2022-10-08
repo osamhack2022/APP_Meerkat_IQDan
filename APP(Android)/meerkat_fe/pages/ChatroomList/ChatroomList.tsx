@@ -1,51 +1,53 @@
 // core
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 // comps
-import Searchbar from "../../components/ChatRoomList/Searchbar";
-import ChatRoomBox from "../../components/ChatRoomList/ChatRoomBox";
-import ChatRoomLoading from "../../components/ChatRoomList/ChatRoomLoading";
+import Searchbar from "../../components/ChatroomList/Searchbar";
+import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
+import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
 // types
-import { ChatRoom, MainTabScreenProps } from "../../common/types";
+import { Chatroom, MainTabScreenProps } from "../../common/types";
 // dummy data
-import dummy from "../../assets/dummy_data/chatroom.json";
+import api from "../../common/api";
 
-export default function ChatRoomList(props: MainTabScreenProps<"ChatRoomList">) {
+export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
-    const [rooms, setRooms] = useState<ChatRoom[] | null>(null);
+    const [rooms, setRooms] = useState<Chatroom[] | null>(null);
 
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
-        
+        api.get("/chatroom/my").then((res) => {
+            console.log(res.data)
 
-        // dummy load
-        setRooms(dummy.data);
+        }).catch((err) => {
+            return Alert.alert("오류가 발생했습니다.")
+        })
     }, []);
 
-    const handleAddChatRoom = () => {
-        navigation.push("AddChatRoom")
+    const handleAddChatroom = () => {
+        navigation.push("AddChatroom")
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>대화방</Text>
-                <Text style={[styles.title]} onPress={handleAddChatRoom}>+</Text>
+                <Text style={[styles.title]} onPress={handleAddChatroom}>+</Text>
             </View>
             <Searchbar />
             {rooms == null ? (
-                <ChatRoomLoading />
+                <ChatroomLoading />
             ) : (
                 rooms.map((room) => {
                     return (
-                        <ChatRoomBox
+                        <ChatroomBox
                             key={room.chatroomId}
                             chatroomId={room.chatroomId}
-                            creatorId={room.creatorId}
                             name={room.name}
                             type={room.type}
                             createDate={room.createDate}
                             updateDate={room.updateDate}
+                            msgExpTime={room.msgExpTime}
                         />
                     );
                 })

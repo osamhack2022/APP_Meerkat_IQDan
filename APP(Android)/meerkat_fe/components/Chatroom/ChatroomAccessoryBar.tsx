@@ -21,14 +21,14 @@ const pickImageAsync = async (onSend: (messages: IMessage[]) => void) => {
   }
 }
 
-interface ChatRoomAccessoryBarProps {
+interface ChatroomAccessoryBarProps {
   onSend: (messages: IMessage[]) => void,
   onPressSuperiorSwitch: () => void
   onPressTemplate: () => void
   superiorOnly: boolean,
 }
 
-const ChatRoomAccessoryBar = (props: ChatRoomAccessoryBarProps) => {
+const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.item} onPress={() => {}}>
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ChatRoomAccessoryBar;
+export default ChatroomAccessoryBar;

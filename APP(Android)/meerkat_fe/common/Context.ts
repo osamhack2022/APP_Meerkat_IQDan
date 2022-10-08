@@ -6,7 +6,7 @@ export const LoginContext = createContext({
     isNotLoggedIn: false,
 });
 
-export const SocketContext = createContext({
-    isSocketConnected: false,
-    socket: io()
-});
+// export const SocketContext = createContext({
+//     isSocketConnected: false,
+//     socket: io()
+// });

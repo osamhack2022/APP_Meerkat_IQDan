@@ -1,6 +1,6 @@
 // comps
 import Friend from './FriendList';
-import ChatRoomList from './ChatRoomList/ChatRoomList';
+import ChatroomList from './ChatroomList/ChatroomList';
 import Settings from './Settings';
 // nav
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,12 +10,12 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 // hooks
 import { useSocketIO } from '../hooks/useSocketIO';
 // context
-import { SocketContext } from '../common/Context';
+// import { SocketContext } from '../common/Context';
 
 export default function Main() {
   const Tab = createBottomTabNavigator<TabParamList>();
 
-  const {socket, isSocketConnected } = useSocketIO();
+  // const {socket, isSocketConnected } = useSocketIO();
   // socketio using example are below: emit socketio event only connected.
   // call SocketContext in Component below 'Main'.
   // const {socket, isSocketConnected} = useContext(SocketContext);
@@ -26,9 +26,9 @@ export default function Main() {
   
 
   return (
-    <SocketContext.Provider
-      value={{socket: socket, isSocketConnected: isSocketConnected}}
-    >
+    // <SocketContext.Provider
+    //   value={{socket: socket, isSocketConnected: isSocketConnected}}
+    // >
       <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
         <Tab.Screen
           name="Friends"
@@ -48,8 +48,8 @@ export default function Main() {
           }}
         />
         <Tab.Screen
-          name="ChatRoomList"
-          component={ChatRoomList}
+          name="ChatroomList"
+          component={ChatroomList}
           options={{
             headerShown: false,
             tabBarIcon: ({ focused }) => (
@@ -82,6 +82,6 @@ export default function Main() {
           }}
         />
       </Tab.Navigator>
-    </SocketContext.Provider>
+    // </SocketContext.Provider>
   );
 }
