@@ -6,6 +6,9 @@ import { Message } from "@interfaces/message.interface"
 class SocketIO{
     private io: Server;
 
+    // TODO : header 검증
+    // socketio option 중 auth 찾아보면 됨
+
     constructor(server: http.Server | https.Server){
         this.io = new Server(server, {
             cors: {
@@ -16,22 +19,22 @@ class SocketIO{
             transports: ["polling", "websocket"]
         });
 
-        const single = this.io.of("/single");
+        const single = this.io.of("/chat");
 
         single.on("connection", (socket:Socket)=>{
-            console.log("single new user");
-        })
-        
-        this.io.on("connection", (socket: Socket) => {
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
-            console.log("default socketio new user connected");
-
+            console.log("chat new user");
             this.onDisconnect(socket);
             this.onJoinRoom(socket);
             this.onLeaveRoom(socket);
             this.onSendMessage(socket);
             this.onError(socket);
             this.onConnectError(socket);
+        })
+        
+        // 다른 connection일 경우 쳐냄.
+        this.io.on("connection", (socket: Socket) => {
+            socket.disconnect();
         });
     }
 
@@ -58,11 +61,8 @@ class SocketIO{
 
     private onJoinRoom(socket: Socket){
         socket.on("joinRoom", (message: Message) =>{
-            console.log("asdfasdf" + message.roomId);
             socket.join(message.roomId.toString());
-            console.log("asdfasdf");
             this.io.to(message.roomId.toString()).emit("joinRoom", message);
-            console.log("asdfasdf");
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
             console.log("room " + message.roomId.toString() + "에 사용자 " + message.userId + "접속");
         });
