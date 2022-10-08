@@ -141,6 +141,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
         setUser={setCurrentProfileUser}
         onClose={() => setCurrentProfileUser(null)}
         gotoChat={() => navigation.push("Chat")}
+        onDeleteFriend={() => {console.log("!?"); setCurrentProfileUser(null); fetchFriends()}}
       />
       <View style={styles.mainContainer}>
         <Header categoryName="전우 목록" />
