@@ -13,3 +13,22 @@ export class CreateChatroomDto {
     @IsArray()
     public commanderUserIds: number[];
 }
+
+export class InviteChatroomDto {
+    @IsNumber()
+    public chatroomId: number;
+
+    @IsArray()
+    public targetUserIds: number[];
+}
+
+export class UpdateChatroomDto {
+    @IsNumber()
+    public chatroomId: number;
+
+    @IsString()
+    public name: string;
+
+    @IsNumber()
+    public msgExpTime: number;
+}
