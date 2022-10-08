@@ -2,18 +2,18 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
 import { Bubble, Composer, GiftedChat, IMessage } from "react-native-gifted-chat";
-import ChatRoomHeader from "../components/ChatRoom/ChatRoomHeader";
+import ChatroomHeader from "../components/Chatroom/ChatroomHeader";
 import { io } from "socket.io-client";
 
-import MKBubble from "../components/ChatRoom/CustomChatComp/Bubble";
-// import ChatRoomSide from "../components/ChatRoom/ChatRoomSide";
-import ChatRoomAccessoryBar from "../components/ChatRoom/ChatRoomAccessoryBar";
-import ChatRoomTextInput from "../components/ChatRoom/ChatRoomTextInput";
+import MKBubble from "../components/Chatroom/CustomChatComp/Bubble";
+// import ChatroomSide from "../components/Chatroom/ChatroomSide";
+import ChatroomAccessoryBar from "../components/Chatroom/ChatroomAccessoryBar";
+import ChatroomTextInput from "../components/Chatroom/ChatroomTextInput";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { RootStackParamList, TabParamList } from "../common/types";
-import ChatRoomTemplatePanel from "../components/ChatRoom/ChatRoomTemplatePanel";
+import ChatroomTemplatePanel from "../components/Chatroom/ChatroomTemplatePanel";
 
 type AuthScreenProps = CompositeScreenProps<
     StackScreenProps<RootStackParamList, 'Chat'>,
@@ -37,7 +37,7 @@ const otherUser = {
 
 const headerColor = "#DDD";
 
-const ChatRoom: React.FC<AuthScreenProps> = (props) => {
+const Chatroom: React.FC<AuthScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socket, setSocket] = useState(io("wss://code.exqt.me:5002"));
@@ -159,9 +159,9 @@ const ChatRoom: React.FC<AuthScreenProps> = (props) => {
   // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
   return (
     <Fragment>
-      {/* <ChatRoomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}
+      {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}
       <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} />
-      <ChatRoomHeader
+      <ChatroomHeader
         color={headerColor}
         onPressBack={() => navigation.goBack()}
         onPressSideMenu={() => setIsOpenSideMenu(true)}
@@ -180,20 +180,20 @@ const ChatRoom: React.FC<AuthScreenProps> = (props) => {
             maxComposerHeight={0}
             minInputToolbarHeight={0}
           />
-          <ChatRoomTextInput 
+          <ChatroomTextInput 
             msgInput={msgInput}
             setMsgInput={setMsgInput}
             onSendTextMessage={(text) => sendTextMessage(text)} 
           />
         </View>
       </KeyboardAvoidingView>
-      <ChatRoomAccessoryBar
+      <ChatroomAccessoryBar
         superiorOnly={superiorOnly}
         onPressTemplate={() => setTemplateVisible(true)}
         onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
         onSend={onSendFromUser}
       />
-      <ChatRoomTemplatePanel
+      <ChatroomTemplatePanel
         visible={templateVisible}
         setVisible={setTemplateVisible}
         setMsgInput={setMsgInput}
@@ -213,4 +213,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ChatRoom;
+export default Chatroom;

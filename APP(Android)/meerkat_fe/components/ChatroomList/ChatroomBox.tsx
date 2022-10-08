@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import { ChatRoom } from "../../common/types";
+import { Chatroom } from "../../common/types";
 const dotsImage = require("../../assets/icons/dots_vertical.png");
 
-export default function ChatRoomBox(props: ChatRoom) {
-  const { chatroomId, creatorId, name, type, createDate, updateDate } = props;
+export default function ChatroomBox(props: Chatroom) {
+  const { chatroomId, name, type, createDate, updateDate, msgExpTime } = props;
 
   return (
     <View style={styles.container}>

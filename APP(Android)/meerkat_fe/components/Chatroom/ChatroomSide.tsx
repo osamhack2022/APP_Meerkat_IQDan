@@ -7,12 +7,12 @@ const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const DURATION = 300;
 
-interface ChatRoomSideProps {
+interface ChatroomSideProps {
   isOpen: boolean,
   setIsOpen: (open: boolean) => void
 }
 
-const ChatRoomSide = (props: ChatRoomSideProps) => {
+const ChatroomSide = (props: ChatroomSideProps) => {
   const opacityAnimValue = useRef(new Animated.Value(0)).current;
   const posAnimValue = useRef(new Animated.Value(0)).current;
 
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ChatRoomSide;
+export default ChatroomSide;

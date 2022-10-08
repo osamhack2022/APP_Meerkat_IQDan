@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons'
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import TemplateItem from "./ChatRoomTemplateItem";
+import TemplateItem from "./ChatroomTemplateItem";
 
 const TemplateStorageKey = "TemplateStorageKey"
 
-interface ChatRoomTemplateModalProps {
+interface ChatroomTemplateModalProps {
   visible: boolean
   setVisible: (visible: boolean) => void
   setMsgInput: (msg: string) => void
@@ -19,7 +19,7 @@ const defaultTemplateList: TemplateItem[] = [
   {id: 3, name: "인원 보고", content: "충성!\n9생활관 총원 9명 이상없습니다."},
 ]
 
-const ChatRoomTemplatePanel = (props: ChatRoomTemplateModalProps) => {
+const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
   let scrollRef = useRef<ScrollView>(null)  
   let [templates, settempaltes] = useState<TemplateItem[]>([]);
   
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ChatRoomTemplatePanel;
+export default ChatroomTemplatePanel;

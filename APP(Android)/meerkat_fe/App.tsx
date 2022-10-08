@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-import ChatRoom from "./pages/ChatRoom";
+import Chatroom from "./pages/Chatroom";
 import Auth from "./pages/Auth";
 import { LoginContext } from "./common/Context";
 // hooks
@@ -15,7 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Main from "./pages/Main";
 import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
-import AddChatRoom from "./pages/ChatRoomList/AddChatRoom";
+import AddChatroom from "./pages/ChatroomList/AddChatroom";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -77,7 +77,7 @@ export default function App() {
                     />
                     <Stack.Screen
                         name="Chat"
-                        component={ChatRoom}
+                        component={Chatroom}
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
@@ -91,8 +91,8 @@ export default function App() {
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                        name="AddChatRoom"
-                        component={AddChatRoom}
+                        name="AddChatroom"
+                        component={AddChatroom}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
