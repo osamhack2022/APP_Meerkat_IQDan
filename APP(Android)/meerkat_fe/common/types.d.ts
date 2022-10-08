@@ -60,6 +60,7 @@ export type RootStackParamList = {
     MyProfile: undefined;
     ChangePw: undefined;
     AddChatroom: undefined;
+    Test: undefined;
 };
 
 export type TabParamList = {

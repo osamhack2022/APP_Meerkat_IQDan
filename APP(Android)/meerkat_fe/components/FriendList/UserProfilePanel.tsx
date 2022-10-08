@@ -12,9 +12,10 @@ interface UserProfilePanelProps {
   setUser: (user: User|null) => void
   onClose: () => void
   gotoChat: () => void
+  onDeleteFriend: () => void
 }
 
-const requestDeleteFriend = async (user: User) => {
+const requestDeleteFriend = async (user: User, onDeletionSuccess: () => void) => {
   let userToken = await AsyncStorage.getItem("userToken")
   api.delete("/friends", {
       headers: {
@@ -25,7 +26,7 @@ const requestDeleteFriend = async (user: User) => {
       }
     })
     .then(async (res) => {
-      let friends = res.data.data;
+      onDeletionSuccess();
     })
     .catch((err) => {
       // TODO : show error
@@ -52,7 +53,7 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
           text: "취소",
           style: "cancel"
         },
-        { text: "삭제", onPress: () => requestDeleteFriend(user) }
+        { text: "삭제", onPress: () => requestDeleteFriend(user, props.onDeleteFriend) }
       ]
     );
   }

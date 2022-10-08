@@ -1,14 +1,14 @@
-import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FriendDto {
-  @IsString()
+  @IsNumber()
   public followerId: number;
 
-  @IsString()
+  @IsNumber()
   public followingId: number;
 }
 
 export class InputFriendDto {
-  @IsString()
+  @IsNumber()
   public followingId: number;
 }

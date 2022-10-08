@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 // type
-import { User } from "../common/types";
+import { RootStackParamList, User } from "../common/types";
 // routing
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
 
 import { Logs } from 'expo'
+import api from "../common/api";
 
 Logs.enableExpoCliLogging();
 
@@ -21,7 +21,7 @@ export default function APIExample(props: TestScreenProps) {
 
   const getUsers = async () => {
     try{
-        const response = await axios.get("https://code.seholee.com:8082/users"); // get user list
+        const response = await api.get("/users"); // get user list
         // console.log(response)
         setUsers(response.data.data);
     }

@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 // thirds
 import axios from "axios";
+import api from "../common/api";
 
 export default function Register(props: { setCurrPage: Function }) {
     const { setCurrPage } = props;
@@ -38,8 +39,8 @@ export default function Register(props: { setCurrPage: Function }) {
             );
         }
 
-        axios
-            .post("https://code.seholee.com:8082/users", {
+        api
+            .post("/users", {
                 uid: uid,
                 password: pw,
                 name: name,
