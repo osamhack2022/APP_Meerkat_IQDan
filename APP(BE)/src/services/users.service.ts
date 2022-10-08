@@ -3,7 +3,7 @@ import { PrismaClient, User } from '@prisma/client';
 import { CreateUserDto, SearchUserDto, UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
-import prisma from "../../db";
+import prisma from "../db";
 
 class UserService {
 
