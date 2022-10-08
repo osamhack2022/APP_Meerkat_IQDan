@@ -40,7 +40,7 @@ const headerColor = "#DDD";
 const ChatRoom: React.FC<AuthScreenProps> = (props) => {
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [socket, setSocket] = useState(io("ws://code.exqt.me:5002"));
+  const [socket, setSocket] = useState(io("wss://code.exqt.me:5002"));
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
   const [templateVisible, setTemplateVisible] = useState(false);
   const [superiorOnly, setSuperiorOnly] = useState(false);
