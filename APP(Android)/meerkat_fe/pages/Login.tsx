@@ -12,6 +12,7 @@ import {
 // thirds
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../common/api";
 
 export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Function}) {
     const {setCurrPage, checkIfLoggedIn} = props
@@ -20,7 +21,7 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
     const [errMsg, setErrMsg] = useState("")
 
     const handleLogin = () => {
-        axios.post("https://code.seholee.com:8082/auth/login", {
+        api.post("/auth/login", {
             uid: id,
             password: pw
         }).then(async (res) =>{
