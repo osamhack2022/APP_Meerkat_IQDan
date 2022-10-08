@@ -8,7 +8,7 @@ import { LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { isEmpty } from '@utils/util';
-import prisma from "../../db"
+import prisma from "../db"
 
 class AuthService {
 

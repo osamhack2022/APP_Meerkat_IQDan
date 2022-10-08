@@ -2,7 +2,7 @@ import { Chatroom } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
-import prisma from '../../db';
+import prisma from '../db';
 class ChatroomService {
   
 
