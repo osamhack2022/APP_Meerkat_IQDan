@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import env from '../env.json';
 
 /**
  * 사용법:
@@ -11,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
  */
 
 const api = axios.create({
-  baseURL: "https://code.seholee.com:8082"
+  baseURL: env.dev.apiBaseUrl
 })
 
 api.interceptors.request.use(

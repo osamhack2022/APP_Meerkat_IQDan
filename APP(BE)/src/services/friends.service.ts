@@ -3,7 +3,7 @@ import { PrismaClient, User, Friends } from '@prisma/client';
 import { FriendDto } from '@dtos/friends.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
-import prisma from "../../db"
+import prisma from "../db"
 class FriendService {
 
   public async findFriendsById(userId: number): Promise<User[]> {

@@ -18,7 +18,6 @@ import https from "https";
 import fs from "fs";
 // route
 import SocketIO from "./socketio";
-import { PrismaClient } from '@prisma/client';
 
 class App {
   public app: express.Application;
