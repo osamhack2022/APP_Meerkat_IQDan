@@ -7,9 +7,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabParamList } from "../common/types";
 // assets
 import { Ionicons, Entypo } from "@expo/vector-icons";
+import { useEffect } from "react";
+// socket
+import getSocketIO from "./socket";
 
 export default function Main() {
     const Tab = createBottomTabNavigator<TabParamList>();
+
+    // initialize socket
+    useEffect(()=>{
+        const socket = getSocketIO();
+    }, []);
 
     return (
         <Tab.Navigator screenOptions={{tabBarStyle: {height: 50}}} >
