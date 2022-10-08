@@ -1,6 +1,6 @@
 // core
 import { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, ScrollView, Animated } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // comp
 import MyBox from '../components/FriendList/MyBox';
@@ -19,16 +19,63 @@ import axios from 'axios';
 import getGlitterStyle from '../components/FriendList/getGlitterStyle';
 import FriendListLoading from '../components/FriendList/FriendListLoading';
 
+const FriendListKey = "FriendList";
+
+const getReserveDate = (d: Date) => {
+  let r = new Date(d);
+  r.setMonth(r.getMonth() + 18);
+  return r;
+}
+
+const getDiff = (d1:Date, d2: Date) => {
+  return Math.ceil((d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+const sleep = (time: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("slept well"), time*1000)
+  })
+}
+
+const EventFriendList = (props: {users: User[]}) => {
+  if (props.users.length == 0) {
+    return <Text style={{color: "#555", alignSelf: "center", margin: 4}}>해당하는 전우가 없습니다.</Text>
+  }
+
+  return (
+    <ScrollView
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      style={styles.eventContainer}
+    >
+      {
+        props.users.map((user) => 
+          <EventFriendBox key={user.uid} name={`${user.militaryRank} ${user.name}`}/>
+        )
+      }
+    </ScrollView>
+  )
+}
+
 export default function FriendList(props: MainTabScreenProps<'Friends'>) {
-  const [users, setUsers] = useState<User[] | null>(null);
+  const [pageState, setPageState] = useState<string>("loading");
+  const [user, setUser] = useState<User|null>(null);
+  const [friends, setFriends] = useState<User[] | null>(null);
 
   const glitterAnimationValue = useRef(new Animated.Value(0.4)).current;
 
   useEffect(() => {
     // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
-    fetchFromAsyncStorage();
-    // setdata
-    fetchFromServer();
+
+    (async () => {
+      await sleep(1.41412);
+      console.log("wait 1")
+      await fetchFromAsyncStorage();
+      await sleep(2);
+      console.log("wait 2")
+      fetchFriends();
+
+    })();
     // setdata
     // TODO : 친구 이름 [계급 + 이름]으로 변경
     // TODO: 친구 정보 받아오기, 못 받아오면 Loading component 띄워주기
@@ -44,163 +91,108 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   }, []);
 
   const fetchFromAsyncStorage = async () => {
-    //await AsyncStorage.getItem("friendList")
-    //await AsyncStorage.setItem("friendList", cookies[0].value)
+    let friends = JSON.parse(await AsyncStorage.getItem(FriendListKey) || "[]")
+    setPageState("loaded");
+    setFriends(friends);
   };
 
-  const fetchFromServer = async () => {
+  const fetchFriends = async () => {
     // axios get 후에 async storage set
     // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ?
-    /*console.log("token : " + userToken);
-        axios
-            .get("https://code.seholee.com:8082/friends", {
-                headers: {
-                    Authorization: "Bearer " + userToken,
-                },
-            })
-            .then(async (res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                // TODO : show error
-                console.log(err.response);
-            });*/
+
+    let userToken = await AsyncStorage.getItem("userToken")
+
+    axios
+      .get("https://code.seholee.com:8082/friends", {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      })
+      .then(async (res) => {
+        let friends = res.data.data;
+        setFriends(friends);
+        setPageState("loaded");
+        AsyncStorage.setItem(FriendListKey, JSON.stringify(friends));
+      })
+      .catch((err) => {
+        // TODO : show error
+        setPageState("error");
+        console.log(err.response);
+      })
   };
 
-  if (true) {return <FriendListLoading />}
+  if (pageState == "loading") {return <FriendListLoading />}
+  else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
+
+  const now = new Date();
+
+  const reserveUsers = friends?.filter((user) => {
+    let d = new Date(user.enlistmentDate);
+    let diff = getDiff(getReserveDate(d), now);
+    return 0 <= diff && diff <= 50;
+  }) || [];
+
+  const promotionUsers = friends?.filter((user) => {
+    let d = new Date(user.enlistmentDate);
+    let diff = getDiff(getReserveDate(d), now);
+    return (100 <= diff && diff <= 120) ||
+      (280 <= diff && diff <= 310) ||
+      (480 <= diff && diff <= 500);
+  }) || [];
+
   return (
     <>
       <View style={styles.mainContainer}>
         <Header categoryName="전우 목록" />
         <ScrollView>
-          <MyBox name={'나'} statusMessage={'나의 메시지'} />
+          <MyBox name={`나`} statusMessage={'나의 메시지'} />
 
           <CategoryBox
             categoryName={'곧 전역인 전우들'}
             event={UserEvent.RESERVE}
           />
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={styles.eventContainer}
-          >
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-          </ScrollView>
+          <EventFriendList users={reserveUsers}/>
 
           <CategoryBox
             categoryName={'곧 진급인 전우들'}
             event={UserEvent.PROMOTION}
           />
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={styles.eventContainer}
-          >
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-            <EventFriendBox
-              name={'이벤트이벤트이벤트이벤트'.substr(0, 4) + '...'}
-            />
-          </ScrollView>
+          <EventFriendList users={promotionUsers}/>
 
           <CategoryBox categoryName={'전우들'} />
-          <FriendBox
-            name={'테스터33'}
-            image={require('../assets/users/promotion.jpg')}
-            statusMessage={'상태메시지3'}
-          />
-          <FriendBox name={'테스터4'} statusMessage={'상태메시지4'} />
-          <FriendBox name={'테스터5'} statusMessage={'상태메시지3'} />
-          <FriendBox name={'테스터6'} statusMessage={'상태메시지3'} />
-          <FriendBox
-            name={'테스터7'}
-            statusMessage={'상태메시지3'}
-            dday={100}
-          />
-          <FriendBox name={'테스터8'} statusMessage={''} />
-          <FriendBox name={'테스터9'} />
-          <FriendBox
-            name={'테스터10'}
-            statusMessage={'상태메시지3'}
-            dday={150}
-          />
-          <FriendBox name={'테스터11'} statusMessage={'상태메시지3'} />
-          <FriendBox name={'테스터12'} statusMessage={'상태메시지3'} />
-          <FriendBox name={'테스터13'} statusMessage={'상태메시지3'} />
-          <FriendBox name={'테스터14'} statusMessage={'상태메시지3'} />
-          <FriendBox name={'테스터15'} statusMessage={'상태메시지3'} />
+          <View>
+            {
+              friends?.map((user) => {
+                let endDate = (new Date(user.enlistmentDate));
+                return (
+                  <FriendBox
+                    key={user.uid}
+                    name={`${user.militaryRank} ${user.name}`}  
+                    statusMessage={user.affiliatedUnit}
+                    image={user.image}
+                    dday={getDiff(getReserveDate(endDate), now)}
+                  />)
+              })
+            }
+            <FriendBox
+              name={'테스터33'}
+              image={require('../assets/users/promotion.jpg')}
+              statusMessage={'상태메시지3'}
+            />
+            <FriendBox name={'테스터4'} statusMessage={'상태메시지4'} />
+            <FriendBox name={'테스터5'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터6'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터7'} statusMessage={'상태메시지3'} dday={100} />
+            <FriendBox name={'테스터8'} statusMessage={''} />
+            <FriendBox name={'테스터9'} />
+            <FriendBox name={'테스터10'} statusMessage={'상태메시지3'} dday={150} />
+            <FriendBox name={'테스터11'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터12'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터13'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터14'} statusMessage={'상태메시지3'} />
+            <FriendBox name={'테스터15'} statusMessage={'상태메시지3'} />
+          </View>
+          <View style={{ paddingBottom: 120, backgroundColor: "pink" }} />
         </ScrollView>
       </View>
     </>

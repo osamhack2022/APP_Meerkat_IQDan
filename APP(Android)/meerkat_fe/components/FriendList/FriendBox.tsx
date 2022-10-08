@@ -4,9 +4,11 @@ import { UserEvent, UserProfile } from "../../common/types.d";
 import { isEmpty, isEmptyString } from "../../common/isEmpty";
 
 export default function FriendBox(props: UserProfile) {
-  const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
+  const { name, image, statusMessage } = props; // profile image must be delivered as prop
 
+  const dday: number = props.dday as number;
   const ProfileImageSource = getProfileSource(image);
+  const ddayStr = `D${dday > 0 ? '-' : '+'}${Math.abs(dday)}`
 
   return (
     <View style={styles.container}>
@@ -25,7 +27,7 @@ export default function FriendBox(props: UserProfile) {
         <></>
       ) : (
         <View style={styles.ddayContainer}>
-          <Text style={styles.ddayText}>D-{dday}</Text>
+          <Text style={styles.ddayText}>{ddayStr}</Text>
         </View>
       )}
     </View>
