@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '@prisma/client';
-import { CreateUserDto, SearchUserDto, UpdateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, SearchUserDto, UpdateUserDto, UpdatePasswordDto } from '@dtos/users.dto';
 import userService from '@services/users.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import AuthService from '@services/auth.service';
 
 class UsersController {
   public userService = new userService();
+  public authService = new AuthService();
 
   public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -99,8 +101,11 @@ class UsersController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const userId = req.user.userId;
-      const { password } = req.body as UpdateUserDto;
+      const uid = req.user.uid;
+      const userId= req.user.userId;
+      const { password, currentPassword } = req.body as UpdatePasswordDto;
+
+      await this.authService.login({uid,password:currentPassword});
       await this.userService.updateUserPw(userId, password);
 
       res.status(200).json({ message: 'updated' });

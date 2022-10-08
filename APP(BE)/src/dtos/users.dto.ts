@@ -123,3 +123,11 @@ export class SearchUserDto {
   @IsString()
   public serviceNumber: string;
 }
+
+export class UpdatePasswordDto {
+  @IsString()
+  public currentPassword: string;
+
+  @IsString()
+  public password: string;
+}
