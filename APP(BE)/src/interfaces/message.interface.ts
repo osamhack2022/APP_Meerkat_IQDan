@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 
 export interface Message {
-  user: User;
+  userId: number;
   content: string;
-  room: string;
+  roomId: number;
 }

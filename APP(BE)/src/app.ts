@@ -18,6 +18,7 @@ import https from "https";
 import fs from "fs";
 // route
 import SocketIO from "./socketio";
+import { PrismaClient } from '@prisma/client';
 
 class App {
   public app: express.Application;
@@ -27,13 +28,14 @@ class App {
   public https_port: string | number;
   private credentials: Object;
 
+
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.http_port = HTTP_PORT || 3000;
     this.https_port = HTTPS_PORT || 8443;
 
-    this.initializeSSL();
+    // this.initializeSSL();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
@@ -52,14 +54,14 @@ class App {
     });
   
      // https server
-     const httpsServer = https.createServer(this.credentials, this.app);
-     this.socketIO = new SocketIO(httpsServer);
-     httpsServer.listen(this.https_port, () => {
-       logger.info(`==================================`);
-       logger.info(`======= ENV: ${this.env} =========`);
-       logger.info(`🚀 HTTPS listening on the port ${this.https_port}`);
-       logger.info(`==================================`);
-     });
+    //  const httpsServer = https.createServer(this.credentials, this.app);
+    //  this.socketIO = new SocketIO(httpsServer);
+    //  httpsServer.listen(this.https_port, () => {
+    //    logger.info(`==================================`);
+    //    logger.info(`======= ENV: ${this.env} =========`);
+    //    logger.info(`🚀 HTTPS listening on the port ${this.https_port}`);
+    //    logger.info(`==================================`);
+    //  });
   }
 
   public getServer() {
