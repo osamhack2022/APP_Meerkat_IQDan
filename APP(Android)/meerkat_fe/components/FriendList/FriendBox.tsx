@@ -2,33 +2,46 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
 import { isEmpty, isEmptyString } from "../../common/isEmpty";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
-export default function FriendBox(props: UserProfile) {
-  const { name, image, statusMessage, dday } = props; // profile image must be delivered as prop
+interface FriendBoxProps extends UserProfile {
+  onPress?: () => void
+}
 
+export default function FriendBox(props: FriendBoxProps) {
+  const { name, image, statusMessage } = props; // profile image must be delivered as prop
+
+  const dday: number = props.dday as number;
   const ProfileImageSource = getProfileSource(image);
+  const ddayStr = `D${dday > 0 ? '-' : '+'}${Math.abs(dday)}`
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.profileImage} source={ProfileImageSource} />
-      <View style={styles.nameContainer}>
-        <View style={styles.nameLayout}>
-          <Text style={styles.nameText}>{name}</Text>
+    <TouchableHighlight
+      activeOpacity={0.6}
+      underlayColor="#DDDDDD"
+      onPress={props.onPress}
+    >
+      <View style={styles.container}>
+        <Image style={styles.profileImage} source={ProfileImageSource} />
+        <View style={styles.nameContainer}>
+          <View style={styles.nameLayout}>
+            <Text style={styles.nameText}>{name}</Text>
+          </View>
+          {(isEmpty(statusMessage) || isEmptyString(statusMessage!)) ? (
+            <></>
+          ) : (
+            <Text style={styles.statusMessageText}>{statusMessage}</Text>
+          )}
         </View>
-        {(isEmpty(statusMessage) || isEmptyString(statusMessage!)) ? (
+        {isEmpty(dday) ? (
           <></>
         ) : (
-          <Text style={styles.statusMessageText}>{statusMessage}</Text>
+          <View style={styles.ddayContainer}>
+            <Text style={styles.ddayText}>{ddayStr}</Text>
+          </View>
         )}
       </View>
-      {isEmpty(dday) ? (
-        <></>
-      ) : (
-        <View style={styles.ddayContainer}>
-          <Text style={styles.ddayText}>D-{dday}</Text>
-        </View>
-      )}
-    </View>
+    </TouchableHighlight>
   );
 }
 
