@@ -4,20 +4,14 @@ import { Text, StyleSheet, View, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // comp
 import MyBox from '../components/FriendList/MyBox';
-import MyBoxLoading from '../components/FriendList/MyBoxLoading';
 import CategoryBox from '../components/FriendList/CategoryBox';
-import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBox from '../components/FriendList/FriendBox';
-import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import EventFriendBox from '../components/FriendList/EventFriendBox';
-import EventFriendBoxLoading from '../components/FriendList/EventFriendBoxLoading';
 import Header from '../components/FriendList/Header';
 import UserProfilePanel from '../components/FriendList/UserProfilePanel';
 // type
 import { MainTabScreenProps, User, UserEvent } from '../common/types.d';
 
-import axios from 'axios';
-import getGlitterStyle from '../components/FriendList/getGlitterStyle';
 import FriendListLoading from '../components/FriendList/FriendListLoading';
 
 const FriendListKey = "FriendList";
@@ -65,8 +59,6 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   const [currentProfileUser, setCurrentProfileUser] = useState<User|null>(null);
   const [user, setUser] = useState<User|null>(null);
   const [friends, setFriends] = useState<User[] | null>(null);
-
-  const glitterAnimationValue = useRef(new Animated.Value(0.4)).current;
 
   useEffect(() => {
     // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
