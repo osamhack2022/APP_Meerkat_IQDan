@@ -59,7 +59,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   const [pageState, setPageState] = useState<string>("loading");
   const [currentProfileUser, setCurrentProfileUser] = useState<User|null>(null);
   const [user, setUser] = useState<User|null>(null);
-  const [friends, setFriends] = useState<User[] | null>(null);
+  const [friends, setFriends] = useState<User[]>([]);
 
   useEffect(() => {
     // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
@@ -71,6 +71,12 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
       fetchFriends();
 
     })();
+    
+    (async () => {
+      fetchMe(); 
+    })();
+    
+
     // setdata
     // TODO : 친구 이름 [계급 + 이름]으로 변경
     // TODO: 친구 정보 받아오기, 못 받아오면 Loading component 띄워주기
@@ -90,6 +96,18 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
     setPageState("loaded");
     setFriends(friends);
   };
+
+  const fetchMe = async () => {
+    api
+      .get("/users/me")
+      .then((res) => {
+        let data = res.data.data;
+        setUser(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   const fetchFriends = async () => {
     // axios get 후에 async storage set
@@ -141,12 +159,12 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
         setUser={setCurrentProfileUser}
         onClose={() => setCurrentProfileUser(null)}
         gotoChat={() => navigation.push("Chat")}
-        onDeleteFriend={() => {console.log("!?"); setCurrentProfileUser(null); fetchFriends()}}
+        onDeleteFriend={() => {setCurrentProfileUser(null); fetchFriends()}}
       />
       <View style={styles.mainContainer}>
         <Header categoryName="전우 목록" />
         <ScrollView>
-          <MyBox name={`나`} statusMessage={'나의 메시지'} />
+          <MyBox name={`${user?.militaryRank} ${user?.name}`} statusMessage={user?.affiliatedUnit} />
 
           <CategoryBox
             categoryName={'곧 전역인 전우들'}
