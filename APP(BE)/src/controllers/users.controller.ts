@@ -28,6 +28,17 @@ class UsersController {
     }
   };
 
+  public getUserMe = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const findOneUserData: User = await this.userService.findUserById(userId);
+
+      res.status(200).json({ data: findOneUserData, message: 'findOne' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getUserForFriend = async (
     req: Request,
     res: Response,

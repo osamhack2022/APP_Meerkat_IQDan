@@ -142,3 +142,6 @@ plan.md
 # deploy file
 prod.ecosystem.config.js
 src/http/*
+
+# ssl
+meerkat_ssl/
