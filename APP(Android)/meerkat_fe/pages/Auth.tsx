@@ -1,6 +1,6 @@
 // core
 import { useState, useContext, useEffect } from "react";
-import { View, StyleSheet, Image, ScrollView, KeyboardAvoidingView} from "react-native";
+import { View, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Text} from "react-native";
 // types and comps
 import Login from "./Login";
 import Register from "./Register";
