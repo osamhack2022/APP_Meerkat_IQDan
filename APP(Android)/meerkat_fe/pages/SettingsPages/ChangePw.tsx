@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
+import { StyleSheet, Text, View, TextInput, Alert, Button } from "react-native";
 import { RootStackScreenProps } from "../../common/types";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
     const { navigation } = props;
     const [errMsg, setErrMsg] = useState("");
+    const [currentPw, setCurrentPw] = useState("");
     const [pw, setPw] = useState("");
     const [pwCheck, setPwCheck] = useState("");
 
@@ -17,6 +19,37 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
             setErrMsg("");
         }
     }, [pw, pwCheck]);
+
+    const handleChangePassword = () => {
+        axios
+            .put("https://code.seholee.com:8082/users/updateUserPw", {
+                password: pw,
+            })
+            .then(async (res) => {
+                Alert.alert("비밀번호변경 완료", "비밀번호 변경이 완료되었습니다.", [
+                    {
+                        text: "확인",
+                        onPress: () => navigation.goBack(),
+                    },
+                ]);
+            })
+            .catch((err) => {
+                let errText = "알 수 없는 이유로 회원가입에 실패하였습니다.";
+                if (err.response.status === 409) {
+                    if (err.response.data.customCode === "errCode1") {
+                        errText = "이미 존재하는 아이디입니다.";
+                    } else if (err.response.data.customCode === "errCode2") {
+                        errText = "이미 존재하는 군번입니다.";
+                    }
+                }
+                Alert.alert(":(", errText, [
+                    {
+                        text: "확인",
+                        onPress: () => {},
+                    },
+                ]);
+            });
+    };
 
     return (
         <View style={styles.container}>
@@ -30,8 +63,15 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
                         color="black"
                     />비밀번호 변경</Text>    
                </View>
-               <View style={styles.row}>
-               <Text style={styles.text}>비밀번호</Text>
+               <Text style={styles.errMsg}>{errMsg}</Text>
+               <Text style={styles.text}>현재 비밀번호</Text>
+                <TextInput
+                    onChangeText={setCurrentPw}
+                    value={currentPw}
+                    style={styles.textBox}
+                    secureTextEntry={true}
+                />
+               <Text style={styles.text}>변경할 비밀번호</Text>
                 <TextInput
                     onChangeText={setPw}
                     value={pw}
@@ -45,9 +85,7 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
                     style={styles.textBox}
                     secureTextEntry={true}
                 />
-               </View>
-
-            
+               <Button onPress={handleChangePassword} title="변경하기" color="#6A4035" />
         </View>
     );
 }
@@ -88,5 +126,10 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: "row",
+    },
+    errMsg: {
+        color: "red",
+        fontFamily: "noto-med",
+        textAlign: "center",
     },
 });

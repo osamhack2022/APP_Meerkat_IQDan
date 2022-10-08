@@ -5,6 +5,7 @@ import {
     MaterialCommunityIcons,
     Feather,
     MaterialIcons,
+    AntDesign
 } from "@expo/vector-icons";
 import {
     Avatar,
@@ -12,7 +13,9 @@ import {
     Caption,
     Text,
     TouchableRipple,
+    Colors,
   } from 'react-native-paper';
+
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // types
@@ -69,12 +72,12 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             }}
             size={80}
           /> */}
-          {/* <Feather
+          <Feather
                         onPress={() => navigation.goBack()}
                         name="user"
                         size={80}
                         color="black"
-                    /> */}
+                    />
           <View style={{marginLeft: 20}}>
             <Title style={[styles.title, {
               marginTop:15,
@@ -88,15 +91,18 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Feather name="home" color="#black" size={20}/>
+          <Text style={{color:"black", marginLeft: 20}}>소속부대</Text>
           <Text style={{color:"#777777", marginLeft: 20}}>계룡대근무지원단</Text>
         </View>
         <View style={styles.row}>
           <MaterialIcons  name="confirmation-number" color="#black" size={20}/>
+          <Text style={{color:"black", marginLeft: 20}}>군번</Text>
           <Text style={{color:"#777777", marginLeft: 20}}>22-76014363</Text>
         </View>
         <View style={styles.row}>
-        <MaterialIcons name="date-range" size={20} color="black" />
-          <Text style={{color:"#777777", marginLeft: 20}}>2022-09-24</Text>
+        <AntDesign name="idcard" size={20} color="black" />
+        <Text style={{color:"black", marginLeft: 20}}>아이디</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>test</Text>
         </View>
       </View>
 
@@ -105,25 +111,25 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title>D-100</Title>
-            <Caption>전역까지</Caption>
+            <Title style={styles.infoBoxText}>D-100</Title>
+            <Caption style={styles.caption}>전역까지</Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title>12</Title>
-            <Caption>친구</Caption>
+            <Title style={styles.infoBoxText}>12</Title>
+            <Caption style={styles.caption}>친구</Caption>
           </View>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={handleChangePw}>
           <View style={styles.menuItem}>
           <MaterialCommunityIcons name="key-change" size={24} color="black" />
             <Text style={styles.menuItemText}>비밀번호 변경</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={()=>{}}>
+        <TouchableRipple onPress={handleMyProfile}>
           <View style={styles.menuItem}>
-          <MaterialCommunityIcons name="face-man-profile" size={24} color="black" />
+          <AntDesign name="profile" size={24} color="black" />
             <Text style={styles.menuItemText}>프로필 변경</Text>
           </View>
         </TouchableRipple>
@@ -167,45 +173,65 @@ const styles = StyleSheet.create({
         fontFamily: "noto-med",
         color: "#6A4035",
     },
-  
     userInfoSection: {
       paddingHorizontal: 30,
       marginBottom: 25,
     },
-   
     caption: {
       fontSize: 14,
       lineHeight: 14,
       fontWeight: '500',
+      fontFamily: "noto-bold",
+      color: '#6A4035',
     },
     row: {
       flexDirection: 'row',
       marginBottom: 10,
     },
+    column: {
+        flexDirection: 'column',
+        marginBottom: 10,
+      }
+    ,
     infoBoxWrapper: {
-      borderBottomColor: '#dddddd',
-      borderBottomWidth: 1,
-      borderTopColor: '#dddddd',
-      borderTopWidth: 1,
       flexDirection: 'row',
       height: 100,
+      borderRadius: 20,
     },
     infoBox: {
       width: '50%',
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor:'#E5B47F',
+      fontFamily: "noto-bold",
+      borderRadius: 20,
+      margin:2
+    },
+    infoBoxText:{
+      fontFamily: "noto-bold",
+      color: 'white',
     },
     menuWrapper: {
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 1,
+        borderTopColor: '#dddddd',
+        borderTopWidth: 1,
       marginTop: 10,
     },
     menuItem: {
+      borderBottomColor: '#dddddd',
+      borderBottomWidth: 1,
+      borderTopColor: '#dddddd',
+      borderTopWidth: 1,
       flexDirection: 'row',
       paddingVertical: 15,
       paddingHorizontal: 30,
+      
     },
     menuItemText: {
-      color: 'black',
+      color: '#6A4035',
       marginLeft: 20,
+      fontFamily: "noto-bold",
       fontWeight: '600',
       fontSize: 16,
       lineHeight: 26,
