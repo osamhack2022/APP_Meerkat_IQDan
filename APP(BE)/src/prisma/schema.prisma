@@ -19,14 +19,13 @@ model User {
   affiliatedUnit  String?
   militaryRank    String?
   image           String?
-  enlistmentDate  DateTime?
+  enlistmentDate  DateTime?       @default(now())
 
   chatrooms       UsersOnChatrooms[]
-
   messages        Message[]
-
   followedBy      Friends[]       @relation("following")
   following       Friends[]       @relation("follower")
+  commanders      ChatroomCommanders[]
 }
 
 model Friends {
@@ -60,12 +59,20 @@ model Chatroom{
   type            ChatroomType    @default(SINGLE)
   createDate      DateTime        @default(now())
   updateDate      DateTime?       @updatedAt
+  msgExpTime      Int             @default(2592000) /// 30 days till expiration
 
   users           UsersOnChatrooms[]
-
   notices         Notice[]
-
   messages        Message[]
+  commanders      ChatroomCommanders[]
+}
+
+model ChatroomCommanders{
+  commanderId     Int         @id @default(autoincrement())
+  chatroom        Chatroom    @relation(fields: [chatroomId], references: [chatroomId])
+  chatroomId      Int        
+  user            User        @relation(fields: [userId], references: [userId])
+  userId          Int         
 }
 
 model Notice{
@@ -76,8 +83,8 @@ model Notice{
   endDate         DateTime?
   category        String?
 
-  belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [chatroomId])          
-  belongChatRoomId    Int
+  belongChatroom      Chatroom        @relation(fields: [belongChatroomId], references: [chatroomId])          
+  belongChatroomId    Int
 }
 
 model Message{
@@ -88,6 +95,6 @@ model Message{
   sender              User            @relation(fields: [senderId], references: [userId])
   senderId            Int
 
-  belongChatRoom      Chatroom        @relation(fields: [belongChatRoomId], references: [chatroomId])          
-  belongChatRoomId    Int
+  belongChatroom      Chatroom        @relation(fields: [belongChatroomId], references: [chatroomId])          
+  belongChatroomId    Int
 }
