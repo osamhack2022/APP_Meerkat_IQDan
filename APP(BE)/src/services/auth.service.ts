@@ -8,14 +8,14 @@ import { LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { isEmpty } from '@utils/util';
+import prisma from "../../db"
 
 class AuthService {
-  public users = new PrismaClient().user;
 
   public async login(userData: LoginUserDto): Promise<{ tokenData: TokenData; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
-    const findUser: User = await this.users.findUnique({ where: { uid: userData.uid } });
+    const findUser: User = await prisma.user.findUnique({ where: { uid: userData.uid } });
 
     if (!findUser) throw new HttpException(409, `This id ${userData.uid} was not found`);
 

@@ -18,6 +18,7 @@ import https from "https";
 import fs from "fs";
 // route
 import SocketIO from "./socketio";
+import { PrismaClient } from '@prisma/client';
 
 class App {
   public app: express.Application;
@@ -26,6 +27,7 @@ class App {
   public http_port: string | number;
   public https_port: string | number;
   private credentials: Object;
+
 
   constructor(routes: Routes[]) {
     this.app = express();

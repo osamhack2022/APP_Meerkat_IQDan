@@ -1,25 +1,24 @@
-import { PrismaClient, Chatroom } from '@prisma/client';
+import { Chatroom } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
-
+import prisma from '../../db';
 
 // 채팅방 한 개 불러오기 
 class ChatroomService {
-  public prisma = new PrismaClient();
 
   public async getChatRoom(
     userId: number,
     chatroomId: number
   ): Promise<Chatroom> {
-    const chatroom = await this.prisma.chatroom.findUnique({
+    const chatroom = await prisma.chatroom.findUnique({
       where: {
         chatroomId: chatroomId
       }
     })
 
     // 해당 request를 보낸 유저가 그 방의 멤버인지 확인합니다.
-    const members = await this.prisma.usersOnChatrooms.findMany({
+    const members = await prisma.usersOnChatrooms.findMany({
       where:{
         chatroomId: chatroom.chatroomId
       }
@@ -40,7 +39,7 @@ class ChatroomService {
     msgExpTime: number
   ): Promise<{alreadyExists: boolean, chatroomId: number}> {
     // 이미 존재하는 1to1 채팅방이면 기존 채팅방 id를 돌려보내줍니다.
-    let chatroomIdObjs: {chatroomId: number}[] = await this.prisma.$queryRaw`Select A.chatroomId
+    let chatroomIdObjs: {chatroomId: number}[] = await prisma.$queryRaw`Select A.chatroomId
     from Chatroom A join UsersOnChatrooms B on A.chatroomId=B.chatroomId
     where B.userId = ${userId} AND A.chatroomId IN (
           select A.chatroomId
@@ -55,7 +54,7 @@ class ChatroomService {
 
     // 존재하지 않는 채팅방이면 채팅방을 만듭니다.
     // 채팅방 생성
-    let newChatroom: Chatroom = await this.prisma.chatroom.create({
+    let newChatroom: Chatroom = await prisma.chatroom.create({
       data: {
         name: name,
         type: 'SINGLE',
@@ -64,13 +63,13 @@ class ChatroomService {
     })
 
     // 채팅방 인원 생성
-    await this.prisma.usersOnChatrooms.create({
+    await prisma.usersOnChatrooms.create({
       data: {
         chatroomId: newChatroom.chatroomId,
         userId: userId
       }
     })
-    await this.prisma.usersOnChatrooms.create({
+    await prisma.usersOnChatrooms.create({
       data: {
         chatroomId: newChatroom.chatroomId,
         userId: targetUserId
