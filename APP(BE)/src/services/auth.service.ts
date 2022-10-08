@@ -32,7 +32,7 @@ class AuthService {
 
     const dataStoredInToken: DataStoredInToken = { id: user.userId, name:user.name, serviceNumber:user.serviceNumber };
     const secretKey: string = SECRET_KEY;
-    const expiresIn: number = 60 * 60;
+    const expiresIn: number = 60 * 60 * 5;
 
     return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
   }
