@@ -3,14 +3,17 @@ import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/n
 import { StackScreenProps } from "@react-navigation/stack"
 import { Animated } from "react-native"
 
-export interface ChatRoom {
-    chatroomId: number,
-    creatorId: number,
-    name: string,
-    type: string,
-    createDate: string,
-    updateDate: string
-}
+export type Chatroom = {
+    chatroomId: number
+    name: string | null
+    type: 'SINGLE' | 'MULTI'
+    createDate: Date
+    updateDate: Date | null
+    /**
+     * 30 days till expiration
+     */
+    msgExpTime: number
+  }
 
 export interface Category{
     categoryName: string,
@@ -56,12 +59,12 @@ export type RootStackParamList = {
     Chat: undefined;
     MyProfile: undefined;
     ChangePw: undefined;
-    AddChatRoom: undefined;
+    AddChatroom: undefined;
     Test: undefined;
 };
 
 export type TabParamList = {
-    ChatRoomList: undefined;
+    ChatroomList: undefined;
     Friends: undefined;
     Settings: undefined;
 }

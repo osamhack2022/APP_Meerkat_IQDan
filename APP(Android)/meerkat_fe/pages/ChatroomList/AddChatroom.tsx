@@ -10,7 +10,7 @@ type Friend = {
     militaryRank: string,
 }
 
-export default function AddChatRoom(props: RootStackScreenProps<"AddChatRoom">) {
+export default function AddChatroom(props: RootStackScreenProps<"AddChatroom">) {
     const { navigation } = props;
     const [friends, setFriends] = useState<Friend[]>([])
 

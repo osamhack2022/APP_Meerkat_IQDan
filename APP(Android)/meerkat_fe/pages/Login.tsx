@@ -12,16 +12,16 @@ import {
 // thirds
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "../common/api";
+import env from "../env.json";
 
 export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Function}) {
     const {setCurrPage, checkIfLoggedIn} = props
     const [id, setId] = useState("")
     const [pw, setPw] = useState("")
     const [errMsg, setErrMsg] = useState("")
-
+    
     const handleLogin = () => {
-        api.post("/auth/login", {
+        axios.post(env.dev.apiBaseUrl + "/auth/login", {
             uid: id,
             password: pw
         }).then(async (res) =>{
@@ -33,6 +33,7 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
             await AsyncStorage.setItem("userTokenExpiration", expiry.toString())
             checkIfLoggedIn();
         }).catch((err)=> {
+            console.log(err.response)
             if (err.response === undefined) {
                 return setErrMsg("알 수 없는 오류가 발생했습니다.")
             }

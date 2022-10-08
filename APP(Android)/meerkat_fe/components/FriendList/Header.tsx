@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 // type
 import { Category } from "../../common/types.d";
 // dummy data
-import Searchbar from "../ChatRoomList/Searchbar";
+import Searchbar from "../ChatroomList/Searchbar";
 
 export default function Header(props: Category) {
   const { categoryName } = props;

@@ -2,13 +2,13 @@ import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons'
 
-interface ChatRoomTextInputProps {
+interface ChatroomTextInputProps {
   onSendTextMessage: (msg: string) => void
   msgInput: string
   setMsgInput: (msg: string) => void
 }
 
-const ChatRoomTextInput = (props: ChatRoomTextInputProps) => {
+const ChatroomTextInput = (props: ChatroomTextInputProps) => {
   const { msgInput, setMsgInput } = props;
 
   const onSend = () => {
@@ -33,4 +33,4 @@ const ChatRoomTextInput = (props: ChatRoomTextInputProps) => {
   )
 }
 
-export default ChatRoomTextInput;
+export default ChatroomTextInput;

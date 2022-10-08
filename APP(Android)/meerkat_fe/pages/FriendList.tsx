@@ -65,9 +65,9 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
     // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
 
     (async () => {
-      await sleep(1.41412);
+      await sleep(0.7);
       await fetchFromAsyncStorage();
-      await sleep(2);
+      // await sleep(2);
       fetchFriends();
 
     })();

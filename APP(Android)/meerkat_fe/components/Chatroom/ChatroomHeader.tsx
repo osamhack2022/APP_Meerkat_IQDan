@@ -26,13 +26,13 @@ const Menu = (props: {onPress : () => void}) => {
   )
 }
 
-interface ChatRoomHeaderProps {
+interface ChatroomHeaderProps {
   onPressBack: () => void,
   onPressSideMenu: () => void,
   color: string
 }
 
-const ChatRoomHeader = (props: ChatRoomHeaderProps) => {
+const ChatroomHeader = (props: ChatroomHeaderProps) => {
   return (
     <View style={[styles.header, {backgroundColor: props.color}]}>
       <BackButton onPress={props.onPressBack}/>
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ChatRoomHeader;
+export default ChatroomHeader;
