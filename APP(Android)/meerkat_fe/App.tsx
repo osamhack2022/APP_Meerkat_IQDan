@@ -16,6 +16,7 @@ import Main from "./pages/Main";
 import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatroom from "./pages/ChatroomList/AddChatroom";
+import AddFriend from "./pages/AddFriend";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -93,6 +94,11 @@ export default function App() {
                     <Stack.Screen
                         name="AddChatroom"
                         component={AddChatroom}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="AddFriend"
+                        component={AddFriend}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

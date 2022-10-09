@@ -14,6 +14,7 @@ import { MainTabScreenProps, User, UserEvent } from '../common/types.d';
 
 import FriendListLoading from '../components/FriendList/FriendListLoading';
 import api from '../common/api';
+import {DeviceEventEmitter} from "react-native"
 
 const FriendListKey = "FriendList";
 
@@ -62,8 +63,6 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   const [friends, setFriends] = useState<User[]>([]);
 
   useEffect(() => {
-    // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
-
     (async () => {
       await sleep(0.7);
       await fetchFromAsyncStorage();
@@ -76,19 +75,13 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
       fetchMe(); 
     })();
     
+    DeviceEventEmitter.addListener("fetchFriends", (eventData) => {
+      fetchFriends();
+    });
 
-    // setdata
-    // TODO : 친구 이름 [계급 + 이름]으로 변경
-    // TODO: 친구 정보 받아오기, 못 받아오면 Loading component 띄워주기
-    // TODO: 목록 꾹 누르면 그 사용자 친구삭제 띄워주기
-    // TODO: header + 누르면 친구 추가 창 뜨게 하기(사용자이름, 군번 입력, 검색 -> 그 사용자 프로필 띄움 + 그 사용자 프로필 띄움.)
-
-    /*
-      1. 둘다 로딩되지 않은 경우 -> 로딩창 띄워줌
-      2. async만 로딩된 경우 -> 그거 띄워줌
-          이후 server 로딩 완료된 경우 -> 그거 띄워줌
-      3. server만 로딩된 경우 -> 그거 띄워주고 async에 넣음
-    */
+    return () => {
+      DeviceEventEmitter.removeAllListeners("fetchFriends");
+    }
   }, []);
 
   const fetchFromAsyncStorage = async () => {
@@ -162,7 +155,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
         onDeleteFriend={() => {setCurrentProfileUser(null); fetchFriends()}}
       />
       <View style={styles.mainContainer}>
-        <Header categoryName="전우 목록" />
+        <Header categoryName="전우 목록" onPressAddFriend={() => navigation.push("AddFriend")} />
         <ScrollView>
           <MyBox name={`${user?.militaryRank} ${user?.name}`} statusMessage={user?.affiliatedUnit} />
 
