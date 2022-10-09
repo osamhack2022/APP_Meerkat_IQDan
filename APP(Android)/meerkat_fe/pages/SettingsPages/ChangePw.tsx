@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Alert, Button } from "react-native";
 import { RootStackScreenProps } from "../../common/types";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../common/api";
 
 export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
     const { navigation } = props;
@@ -21,7 +21,7 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
     }, [pw, pwCheck]);
 
     const handleChangePassword = () => {
-        axios
+        api
             .put("https://code.seholee.com:8082/users/updateUserPw", {
                 password: pw,
             })

@@ -1,6 +1,6 @@
 // core
-import { useContext } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Alert, Image } from "react-native";
 import {
     MaterialCommunityIcons,
     Feather,
@@ -19,14 +19,51 @@ import {
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // types
-import { MainTabScreenProps } from "../common/types";
+import { MainTabScreenProps, User } from "../common/types";
 // context
 import { LoginContext } from "../common/Context";
+import api from "../common/api";
+
+import getProfileSource from "../components/FriendList/getProfileSource";
 
 export default function Settings(props: MainTabScreenProps<"Settings">) {
     const {navigation} = props;
     const { checkIfLoggedIn } = useContext(LoginContext);
+    const [user, setUser] = useState<User|null>(null);
+    const [dDay, setDDday] = useState(0);
 
+    useEffect(() => {
+      // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
+      
+      (async () => {
+        fetchMe(); 
+      })();
+         }, []);
+
+  const fetchMe = async () => {
+      api
+        .get("/users/me")
+        .then((res) => {
+          let data = res.data.data as User;
+          setUser(data);
+          setDDday(computedDday(data.enlistmentDate));
+    
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
+
+    
+
+  const computedDday=(enlistmentDate:any)=>{
+  const currentDate= new Date();
+  const enlistmentDateToDate= new Date(enlistmentDate);
+
+  const diffDate = currentDate.getTime() - enlistmentDateToDate.getTime();
+  return Math.floor(Math.abs(diffDate / (1000 * 60 * 60 * 24))); 
+  };
 
     const handleMyProfile = () => {
         navigation.navigate("MyProfile")
@@ -66,24 +103,16 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             </View>
             <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
-          {/* <Avatar.Image 
-            source={{
-              uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
-            }}
-            size={80}
-          /> */}
-          <Feather
-                        onPress={() => navigation.goBack()}
-                        name="user"
-                        size={80}
-                        color="black"
-                    />
+          <Image style={styles.profileImage}
+            source={getProfileSource(user?.image)}
+          />
+         
           <View style={{marginLeft: 20}}>
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>임동진</Title>
-            <Caption style={styles.caption}>일병</Caption>
+            }]}>{user?.name}</Title>
+            <Caption style={styles.caption}>{user?.militaryRank}</Caption>
           </View>
         </View>
       </View>
@@ -92,17 +121,17 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
         <View style={styles.row}>
           <Feather name="home" color="#black" size={20}/>
           <Text style={{color:"black", marginLeft: 20}}>소속부대</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>계룡대근무지원단</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{user?.affiliatedUnit}</Text>
         </View>
         <View style={styles.row}>
           <MaterialIcons  name="confirmation-number" color="#black" size={20}/>
           <Text style={{color:"black", marginLeft: 20}}>군번</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>22-76014363</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{user?.serviceNumber}</Text>
         </View>
         <View style={styles.row}>
         <AntDesign name="idcard" size={20} color="black" />
         <Text style={{color:"black", marginLeft: 20}}>아이디</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>test</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{user?.uid}</Text>
         </View>
       </View>
 
@@ -111,7 +140,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title style={styles.infoBoxText}>D-100</Title>
+            <Title style={styles.infoBoxText}>D-{dDay}</Title>
             <Caption style={styles.caption}>전역까지</Caption>
           </View>
           <View style={styles.infoBox}>
@@ -235,5 +264,10 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       fontSize: 16,
       lineHeight: 26,
+    },
+    profileImage: {
+      width: 80,
+      height: 80,
+      borderRadius: 17,
     },
 });

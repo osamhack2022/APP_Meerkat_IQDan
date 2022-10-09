@@ -1,9 +1,11 @@
 import { StyleSheet,  View, TouchableOpacity, Alert, Text, TextInput, Button } from "react-native";
-import { RootStackScreenProps } from "../../common/types";
+import { RootStackScreenProps, User } from "../../common/types";
 import { Ionicons, Feather, MaterialIcons, AntDesign, MaterialCommunityIcons  } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import api from "../../common/api";
 
 export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
     const { navigation } = props;
@@ -12,6 +14,32 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
     const [enlistmentDate, setEnlistmentDate] = useState("");
     const [affiliatedUnit, setAffiliatedUnit] = useState("");
     const [militaryRank, setMilitaryRank] = useState("");
+    const [user, setUser] = useState<User|null>(null);
+
+    useEffect(() => {
+        // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
+        
+        (async () => {
+          fetchMe(); 
+        })();
+           }, []);
+
+    const fetchMe = async () => {
+        api
+          .get("/users/me")
+          .then((res) => {
+            let data = res.data.data as User;
+            setUser(data);
+            setAffiliatedUnit(data.affiliatedUnit);
+            setEnlistmentDate(data.enlistmentDate);
+            setMilitaryRank(data.militaryRank);
+            setName(data.name);
+            
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      }
 
     const handleChangeProfile = () => {
       if (!isEnlistmentDateValid()) {
@@ -27,8 +55,9 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
           );
       }
 
-      axios
-          .put("https://code.seholee.com:8082/users/updateUserInfo", {
+
+      api
+          .put("/users/updateUserInfo", {
               name: name,
               enlistmentDate: enlistmentDate + "T00:00:00.000Z",
               affiliatedUnit: affiliatedUnit,
