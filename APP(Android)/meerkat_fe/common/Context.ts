@@ -1,7 +1,7 @@
 
 import { createContext } from "react";
 import { io } from "socket.io-client";
-import { getEmptySocketIO } from "../hooks/useSocketIO";
+import { getEmptySocketIO } from "./socket";
 export const LoginContext = createContext({
     checkIfLoggedIn: () => {},
     isNotLoggedIn: false,

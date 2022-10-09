@@ -50,7 +50,7 @@ export default function App() {
     }
     }, [navigationRef.current])
     // socket
-    const {socket, isSocketConnected} = useSocketIO();
+    const {socket, isSocketConnected} = useSocketIO(isNotLoggedIn);
 
     if (isLoginLoading || !fontsLoaded) return null;
     return (
