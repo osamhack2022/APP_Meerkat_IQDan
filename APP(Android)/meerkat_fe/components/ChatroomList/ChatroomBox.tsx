@@ -6,7 +6,7 @@ export default function ChatroomBox(props: any) { // TODO: Chatroom + navigation
   const { chatroomId, name, type, createDate, updateDate, msgExpTime, navigation } = props;
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.push("Chat")} >
+    <TouchableOpacity style={styles.container} onPress={() => navigation.push("Chat", {chatroomId: chatroomId})} >
         <View style={styles.upperContainer}>
             <Text style={styles.title}>{name}</Text>
             <Image style={styles.dots} source={dotsImage}/>

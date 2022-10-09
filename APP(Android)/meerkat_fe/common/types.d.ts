@@ -13,6 +13,7 @@ export type Chatroom = {
      * 30 days till expiration
      */
     msgExpTime: number
+    removeAfterRead: boolean
   }
 
 export interface Category{
@@ -56,7 +57,7 @@ export interface AnimatedValue{
 export type RootStackParamList = {
     Auth: undefined;
     Main: NavigatorScreenParams<TabParamList>;
-    Chat: undefined;
+    Chat: {chatroomId: number};
     MyProfile: undefined;
     ChangePw: undefined;
     AddChatroom: undefined;

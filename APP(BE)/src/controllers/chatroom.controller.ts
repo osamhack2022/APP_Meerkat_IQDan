@@ -3,7 +3,7 @@ import { Chatroom, Friends, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
-import { CreateChatroomDto, InviteChatroomDto } from '@/dtos/chatroom.dto';
+import { CreateChatroomDto, InviteChatroomDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
 import { nextTick } from 'process';
 
 class ChatroomController {
@@ -73,7 +73,8 @@ class ChatroomController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { name, targetUserIds, msgExpTime, commanderUserIds } = req.body as CreateChatroomDto;
+      const { name, targetUserIds, msgExpTime, commanderUserIds, removeAfterRead } =
+        req.body as CreateChatroomDto;
       let chatroomInfo;
       if (targetUserIds.length === 1) {
         chatroomInfo = await this.chatroomService.create1to1Chat(
@@ -81,6 +82,7 @@ class ChatroomController {
           targetUserIds[0],
           name,
           msgExpTime,
+          removeAfterRead
         );
       } else {
         chatroomInfo = await this.chatroomService.createMultiChat(
@@ -89,6 +91,7 @@ class ChatroomController {
           name,
           msgExpTime,
           commanderUserIds,
+          removeAfterRead
         );
       }
       res.status(200).json({ data: chatroomInfo, message: `success` });
@@ -140,8 +143,14 @@ class ChatroomController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { chatroomId, name, msgExpTime } = req.body;
-      await this.chatroomService.UpdateChatroom(userId, chatroomId, name, msgExpTime);
+      const { chatroomId, name, msgExpTime, removeAfterRead } = req.body as UpdateChatroomDto;
+      await this.chatroomService.UpdateChatroom(
+        userId,
+        chatroomId,
+        name,
+        msgExpTime,
+        removeAfterRead,
+      );
       res.status(200).json({
         message: `success`,
       });
