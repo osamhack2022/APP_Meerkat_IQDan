@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { RootStackScreenProps } from '../../common/types';
+import { Chatroom, RootStackScreenProps } from '../../common/types';
 import { useEffect, useState } from 'react';
 import api from '../../common/api';
 import Select from './Select';
@@ -53,9 +53,20 @@ export default function AddChatroom(
   };
 
   const handleSubmit = () => {
-    if (name === "") {
-      return Alert.alert('초대방 이름을 정해주세요.')
+    if (name === '') {
+      return Alert.alert('초대방 이름을 정해주세요.');
     }
+    api.post('/chatroom/create', {
+      name: name,
+      msgExpTime: msgExpTime,
+      removeAfterRead: readOption === '하고',
+      commanderUserIds: [],
+      targetUserIds: selectedFriends
+    }).then((res) => {
+      navigation.navigate("Chat", {chatroomId: res.data.data.chatroomId})
+    }).catch((err) => {
+      Alert.alert('채팅방 개설에 실패했습니다.')
+    });
   };
 
   return (
@@ -97,7 +108,9 @@ export default function AddChatroom(
           />
         </View>
         <View style={styles.subTitleContainer}>
-          <Text style={styles.subTitle2}>이후 메시지가 서버에서 삭제됩니다.</Text>
+          <Text style={styles.subTitle2}>
+            이후 메시지가 서버에서 삭제됩니다.
+          </Text>
         </View>
         <View style={styles.subTitleContainer}>
           <Text style={styles.subTitle2}>초대할 전우를 선택해주세요.</Text>

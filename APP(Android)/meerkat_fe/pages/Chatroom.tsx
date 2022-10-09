@@ -40,6 +40,7 @@ const otherUser = {
 const headerColor = "#DDD";
 
 const Chatroom: React.FC<AuthScreenProps> = (props) => {
+  const {chatroomId} = props.route.params // 현 채팅방의 chatroomId
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
   const {isSocketConnected, socket}=useContext(SocketContext);

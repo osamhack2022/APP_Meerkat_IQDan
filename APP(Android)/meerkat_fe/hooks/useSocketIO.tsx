@@ -26,29 +26,29 @@ export function useSocketIO() {
   const { isNotLoggedIn } = useContext(LoginContext);
 
   // create socket connection when login state changes.
-  useEffect(() => {
-    AsyncStorage.getItem('userToken').then(userToken => {
-      setSocket(
-        io('https://dev.hyelie.site:8090/chat', {
-          path: '/socket.io',
-          transports: ['websocket'],
-          reconnectionAttempts: 2,
-          auth: { token: userToken },
-        }),
-      );
-    });    
-  }, [isNotLoggedIn]);
+  // useEffect(() => {
+  //   AsyncStorage.getItem('userToken').then(userToken => {
+  //     setSocket(
+  //       io('https://dev.hyelie.site:8090/chat', {
+  //         path: '/socket.io',
+  //         transports: ['websocket'],
+  //         reconnectionAttempts: 2,
+  //         auth: { token: userToken },
+  //       }),
+  //     );
+  //   });    
+  // }, [isNotLoggedIn]);
 
-  useEffect(()=>{
-    initSocketIO(socket);
-    setIsSocketConnected(socket.connected);
+  // useEffect(()=>{
+  //   initSocketIO(socket);
+  //   setIsSocketConnected(socket.connected);
 
-    // cleanup
-    return () => {
-      socket.removeAllListeners();
-      socket.disconnect();
-    };
-  }, [socket])
+  //   // cleanup
+  //   return () => {
+  //     socket.removeAllListeners();
+  //     socket.disconnect();
+  //   };
+  // }, [socket])
 
   // updated connected state
   useEffect(() => {
