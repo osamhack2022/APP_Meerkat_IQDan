@@ -34,7 +34,7 @@ class App {
     this.http_port = HTTP_PORT || 3000;
     this.https_port = HTTPS_PORT || 8443;
 
-    // this.initializeSSL();
+    this.initializeSSL();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
@@ -52,15 +52,15 @@ class App {
       logger.info(`==================================`);
     });
   
-     // https server
-    //  const httpsServer = https.createServer(this.credentials, this.app);
-    //  this.socketIO = new SocketIO(httpsServer);
-    //  httpsServer.listen(this.https_port, () => {
-    //    logger.info(`==================================`);
-    //    logger.info(`======= ENV: ${this.env} =========`);
-    //    logger.info(`🚀 HTTPS listening on the port ${this.https_port}`);
-    //    logger.info(`==================================`);
-    //  });
+    // https server
+    const httpsServer = https.createServer(this.credentials, this.app);
+    this.socketIO = new SocketIO(httpsServer);
+    httpsServer.listen(this.https_port, () => {
+      logger.info(`==================================`);
+      logger.info(`======= ENV: ${this.env} =========`);
+      logger.info(`🚀 HTTPS listening on the port ${this.https_port}`);
+      logger.info(`==================================`);
+    });
   }
 
   public getServer() {

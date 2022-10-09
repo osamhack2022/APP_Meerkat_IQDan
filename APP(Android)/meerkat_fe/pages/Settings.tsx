@@ -7,14 +7,7 @@ import {
     MaterialIcons,
     AntDesign
 } from "@expo/vector-icons";
-import {
-    Avatar,
-    Title,
-    Caption,
-    Text,
-    TouchableRipple,
-    Colors,
-  } from 'react-native-paper';
+import * as reactNativePaper from 'react-native-paper';
 
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -144,7 +137,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>설정</Text>
+                <reactNativePaper.Text style={styles.title}>설정</reactNativePaper.Text>
             </View>
             <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
@@ -153,17 +146,20 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
           />
          
           <View style={{marginLeft: 20}}>
-            <Title style={[styles.title, {
+            <reactNativePaper.Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
+
             }]}>{user?.name}</Title>
             <Caption style={styles.caption}>{user?.militaryRank}</Caption>
+
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
+
           <Feather name="home" color="#6A4035" size={20}/>
           <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>소속부대</Text>
           <Text style={{color:"#6A4035", marginLeft: 20}}>{user?.affiliatedUnit}</Text>
@@ -177,6 +173,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
         <AntDesign name="idcard" size={20} color="#6A4035" />
         <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>아이디</Text>
           <Text style={{color:"#6A4035", marginLeft: 20}}>{user?.uid}</Text>
+
         </View>
       </View>
 
@@ -185,34 +182,42 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
+
             <Title style={styles.infoBoxText}>D-{dDay}</Title>
             <Caption style={styles.caption}>전역까지</Caption>
           </View>
           <View style={styles.infoBox}>
             <Title style={styles.infoBoxText}>{friends.length}</Title>
             <Caption style={styles.caption}>친구</Caption>
+
           </View>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={handleChangePw}>
+        <reactNativePaper.TouchableRipple onPress={handleChangePw}>
           <View style={styles.menuItem}>
+
           <MaterialCommunityIcons name="key-change" size={24} color="#6A4035" />
             <Text style={styles.menuItemText}>비밀번호 변경</Text>
+
           </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={handleMyProfile}>
+        </reactNativePaper.TouchableRipple>
+        <reactNativePaper.TouchableRipple onPress={handleMyProfile}>
           <View style={styles.menuItem}>
+
           <AntDesign name="profile" size={24} color="#6A4035" />
             <Text style={styles.menuItemText}>프로필 변경</Text>
+
           </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={handleLogout}>
+        </reactNativePaper.TouchableRipple>
+        <reactNativePaper.TouchableRipple onPress={handleLogout}>
           <View style={styles.menuItem}>
+
           <MaterialIcons name="logout" size={24} color="#6A4035" />
             <Text style={styles.menuItemText}>로그아웃</Text>
+
           </View>
-        </TouchableRipple>
+        </reactNativePaper.TouchableRipple>
       </View>
         </View>
     );

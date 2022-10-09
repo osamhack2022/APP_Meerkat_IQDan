@@ -61,6 +61,7 @@ export type RootStackParamList = {
     ChangePw: undefined;
     AddChatroom: undefined;
     Test: undefined;
+    AddFriend: undefined;
 };
 
 export type TabParamList = {

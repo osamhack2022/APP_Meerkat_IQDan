@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
 import { isEmpty, isEmptyString } from "../../common/isEmpty";
@@ -16,9 +16,8 @@ export default function FriendBox(props: FriendBoxProps) {
   const ddayStr = `D${dday > 0 ? '-' : '+'}${Math.abs(dday)}`
 
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       activeOpacity={0.6}
-      underlayColor="#DDDDDD"
       onPress={props.onPress}
     >
       <View style={styles.container}>
@@ -41,7 +40,7 @@ export default function FriendBox(props: FriendBoxProps) {
           </View>
         )}
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 
