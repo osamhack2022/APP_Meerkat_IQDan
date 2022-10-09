@@ -24,7 +24,7 @@ class UsersRoute implements Routes {
       this.usersController.createUser,
     );
     this.router.post(
-      `${this.path}`,
+      `${this.path}/friends`,
       validationMiddleware(SearchUserDto, 'body'),
       this.usersController.getUserForFriend,
     );

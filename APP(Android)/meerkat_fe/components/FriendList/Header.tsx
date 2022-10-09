@@ -1,11 +1,16 @@
 // core
 import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 // type
 import { Category } from "../../common/types.d";
 // dummy data
 import Searchbar from "../ChatroomList/Searchbar";
 
-export default function Header(props: Category) {
+interface HeaderProps extends Category {
+  onPressAddFriend: () => void
+}
+
+export default function Header(props: HeaderProps) {
   const { categoryName } = props;
 
   return (
@@ -13,7 +18,9 @@ export default function Header(props: Category) {
       <View style={styles.titleContainer}>
         <View style={styles.titleLayout}>
           <Text style={styles.title}>{categoryName}</Text>
-          <Text style={[styles.title]}>+</Text>
+          <TouchableOpacity onPress={props.onPressAddFriend}>
+            <Text style={{fontSize: 36}}>+</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.horizontalLine}/>
