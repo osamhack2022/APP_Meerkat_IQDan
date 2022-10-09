@@ -1,12 +1,12 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity, Touchable } from "react-native";
 import { Chatroom } from "../../common/types";
 const dotsImage = require("../../assets/icons/dots_vertical.png");
 
-export default function ChatroomBox(props: Chatroom) {
-  const { chatroomId, name, type, createDate, updateDate, msgExpTime } = props;
+export default function ChatroomBox(props: any) { // TODO: Chatroom + navigation으로 수정
+  const { chatroomId, name, type, createDate, updateDate, msgExpTime, navigation } = props;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.push("Chat")} >
         <View style={styles.upperContainer}>
             <Text style={styles.title}>{name}</Text>
             <Image style={styles.dots} source={dotsImage}/>
@@ -15,7 +15,7 @@ export default function ChatroomBox(props: Chatroom) {
             <Text style={styles.time}>마지막 대화 1시간 전</Text>
             <Text style={styles.count}>10</Text>
         </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 // #6A4035
