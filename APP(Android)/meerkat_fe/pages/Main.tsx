@@ -7,28 +7,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../common/types';
 // assets
 import { Ionicons, Entypo } from '@expo/vector-icons';
-// hooks
-import { useSocketIO } from '../hooks/useSocketIO';
-// context
-// import { SocketContext } from '../common/Context';
 
 export default function Main() {
   const Tab = createBottomTabNavigator<TabParamList>();
-
-  // const {socket, isSocketConnected } = useSocketIO();
-  // socketio using example are below: emit socketio event only connected.
-  // call SocketContext in Component below 'Main'.
-  // const {socket, isSocketConnected} = useContext(SocketContext);
-  // if(isSocketConnected){
-  //   socket.timeout(5000).emit(EVENT_NAME, EVENT_BODY);
-  //   socket.timeout(5000).emit(EVENT_NAME, EVENT_BODY);
-  // }  
   
-
   return (
-    // <SocketContext.Provider
-    //   value={{socket: socket, isSocketConnected: isSocketConnected}}
-    // >
       <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
         <Tab.Screen
           name="Friends"
@@ -82,6 +65,5 @@ export default function Main() {
           }}
         />
       </Tab.Navigator>
-    // </SocketContext.Provider>
   );
 }

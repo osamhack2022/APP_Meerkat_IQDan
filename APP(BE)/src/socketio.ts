@@ -8,6 +8,8 @@ class SocketIO{
 
     // TODO : header 검증
     // socketio option 중 auth 찾아보면 됨
+    // https://www.npmjs.com/package/socketio-auth
+    // https://socket.io/docs/v3/client-initialization/
 
     constructor(server: http.Server | https.Server){
         this.io = new Server(server, {
@@ -22,18 +24,29 @@ class SocketIO{
         const single = this.io.of("/chat");
 
         single.on("connection", (socket:Socket)=>{
-            // TODO : console log는 디버깅용, 추후 완성되면 삭제
             console.log("chat new user");
+            console.log(socket.handshake.auth);
+            socket.on("testsend", (message:string)=>{
+                console.log("testsend")
+                socket.broadcast.emit("testsendmessage", message);
+            });
+            // TODO : auth 이상하면 disconnect 시킴.
+
+            // TODO : console log는 디버깅용, 추후 완성되면 삭제
+            
             this.onDisconnect(socket);
             this.onJoinRoom(socket);
             this.onLeaveRoom(socket);
             this.onSendMessage(socket);
             this.onError(socket);
             this.onConnectError(socket);
+           
+
         })
         
         // 다른 connection일 경우 쳐냄.
         this.io.on("connection", (socket: Socket) => {
+            console.log("disconnect default connection");
             socket.disconnect();
         });
     }

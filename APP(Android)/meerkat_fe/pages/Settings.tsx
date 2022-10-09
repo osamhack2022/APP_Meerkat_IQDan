@@ -7,14 +7,7 @@ import {
     MaterialIcons,
     AntDesign
 } from "@expo/vector-icons";
-import {
-    Avatar,
-    Title,
-    Caption,
-    Text,
-    TouchableRipple,
-    Colors,
-  } from 'react-native-paper';
+import * as reactNativePaper from 'react-native-paper';
 
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -62,7 +55,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>설정</Text>
+                <reactNativePaper.Text style={styles.title}>설정</reactNativePaper.Text>
             </View>
             <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
@@ -79,11 +72,11 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
                         color="black"
                     />
           <View style={{marginLeft: 20}}>
-            <Title style={[styles.title, {
+            <reactNativePaper.Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>임동진</Title>
-            <Caption style={styles.caption}>일병</Caption>
+            }]}>임동진</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>일병</reactNativePaper.Caption>
           </View>
         </View>
       </View>
@@ -91,18 +84,18 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Feather name="home" color="#black" size={20}/>
-          <Text style={{color:"black", marginLeft: 20}}>소속부대</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>계룡대근무지원단</Text>
+          <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>소속부대</reactNativePaper.Text>
+          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>계룡대근무지원단</reactNativePaper.Text>
         </View>
         <View style={styles.row}>
           <MaterialIcons  name="confirmation-number" color="#black" size={20}/>
-          <Text style={{color:"black", marginLeft: 20}}>군번</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>22-76014363</Text>
+          <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>군번</reactNativePaper.Text>
+          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>22-76014363</reactNativePaper.Text>
         </View>
         <View style={styles.row}>
         <AntDesign name="idcard" size={20} color="black" />
-        <Text style={{color:"black", marginLeft: 20}}>아이디</Text>
-          <Text style={{color:"#777777", marginLeft: 20}}>test</Text>
+        <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>아이디</reactNativePaper.Text>
+          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>test</reactNativePaper.Text>
         </View>
       </View>
 
@@ -111,34 +104,34 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title style={styles.infoBoxText}>D-100</Title>
-            <Caption style={styles.caption}>전역까지</Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>D-100</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>전역까지</reactNativePaper.Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title style={styles.infoBoxText}>12</Title>
-            <Caption style={styles.caption}>친구</Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>12</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>친구</reactNativePaper.Caption>
           </View>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={handleChangePw}>
+        <reactNativePaper.TouchableRipple onPress={handleChangePw}>
           <View style={styles.menuItem}>
           <MaterialCommunityIcons name="key-change" size={24} color="black" />
-            <Text style={styles.menuItemText}>비밀번호 변경</Text>
+            <reactNativePaper.Text style={styles.menuItemText}>비밀번호 변경</reactNativePaper.Text>
           </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={handleMyProfile}>
+        </reactNativePaper.TouchableRipple>
+        <reactNativePaper.TouchableRipple onPress={handleMyProfile}>
           <View style={styles.menuItem}>
           <AntDesign name="profile" size={24} color="black" />
-            <Text style={styles.menuItemText}>프로필 변경</Text>
+            <reactNativePaper.Text style={styles.menuItemText}>프로필 변경</reactNativePaper.Text>
           </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={handleLogout}>
+        </reactNativePaper.TouchableRipple>
+        <reactNativePaper.TouchableRipple onPress={handleLogout}>
           <View style={styles.menuItem}>
           <MaterialIcons name="logout" size={24} color="black" />
-            <Text style={styles.menuItemText}>로그아웃</Text>
+            <reactNativePaper.Text style={styles.menuItemText}>로그아웃</reactNativePaper.Text>
           </View>
-        </TouchableRipple>
+        </reactNativePaper.TouchableRipple>
       </View>
         </View>
     );
