@@ -38,7 +38,8 @@ class FriendService {
     const findFriendsForDuplicate: Friends[] = await prisma.friends.findMany({
       where: { followerId: friendData.followerId, followingId: friendData.followingId },
     });
-    if (findFriendsForDuplicate)
+
+    if (findFriendsForDuplicate.length != 0)
       throw new HttpException(
         409,
         `This friend follwer-${friendData.followerId} and followind-${friendData.followerId} already exists`,
