@@ -39,6 +39,10 @@ export enum UserEvent{
     PROMOTION
 }
 
+export interface LoginStatus{
+    isNotLoggedIn: string
+}
+
 export interface UserProfile{
     name: string,
     image?: string | null | undefined,
