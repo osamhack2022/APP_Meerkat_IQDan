@@ -1,6 +1,6 @@
 // core
 import { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity,Text, Alert, Image } from "react-native";
 import {
     MaterialCommunityIcons,
     Feather,
@@ -149,9 +149,8 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             <reactNativePaper.Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-
-            }]}>{user?.name}</Title>
-            <Caption style={styles.caption}>{user?.militaryRank}</Caption>
+            }]}>{user?.name}</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>{user?.militaryRank}</reactNativePaper.Caption>
 
           </View>
         </View>
@@ -183,12 +182,12 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightWidth: 1
           }]}>
 
-            <Title style={styles.infoBoxText}>D-{dDay}</Title>
-            <Caption style={styles.caption}>전역까지</Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>D-{dDay}</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>전역까지</reactNativePaper.Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title style={styles.infoBoxText}>{friends.length}</Title>
-            <Caption style={styles.caption}>친구</Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>{friends.length}</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.caption}>친구</reactNativePaper.Caption>
 
           </View>
       </View>
