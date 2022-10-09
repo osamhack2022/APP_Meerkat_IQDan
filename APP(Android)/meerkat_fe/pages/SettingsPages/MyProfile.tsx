@@ -1,9 +1,11 @@
 import { StyleSheet,  View, TouchableOpacity, Alert, Text, TextInput, Button } from "react-native";
-import { RootStackScreenProps } from "../../common/types";
+import { RootStackScreenProps, User } from "../../common/types";
 import { Ionicons, Feather, MaterialIcons, AntDesign, MaterialCommunityIcons  } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import api from "../../common/api";
 
 export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
     const { navigation } = props;
@@ -12,9 +14,43 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
     const [enlistmentDate, setEnlistmentDate] = useState("");
     const [affiliatedUnit, setAffiliatedUnit] = useState("");
     const [militaryRank, setMilitaryRank] = useState("");
+    const [user, setUser] = useState<User|null>(null);
+    const [apiResult,setApiResult]=useState({status:false,msg:""});
 
-    const handleChangeProfile = () => {
+    useEffect(() => {
+        // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
+        (async () => {
+          fetchMe(); 
+        })();
+
+        if (apiResult.status){
+            setErrMsg(apiResult.msg);
+        }
+    
+
+           }, [apiResult]);
+
+    const fetchMe = async () => {
+        api
+          .get("/users/me")
+          .then((res) => {
+            let data = res.data.data as User;
+            setUser(data);
+            setAffiliatedUnit(data.affiliatedUnit);
+            setEnlistmentDate(data.enlistmentDate.substring(0,10));
+            setMilitaryRank(data.militaryRank);
+            setName(data.name);
+            
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      }
+
+    const handleChangeProfile = async () => {
       if (!isEnlistmentDateValid()) {
+        let errText="입대일을 2000-01-01 형식으로 적어주세요."
+        setApiResult({status:true, msg:errText});
           return Alert.alert(
               ":/",
               "입대일을 2000-01-01 형식으로 적어주세요.",
@@ -27,15 +63,17 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
           );
       }
 
-      axios
-          .put("https://code.seholee.com:8082/users/updateUserInfo", {
+
+      return await api
+          .put("/users/updateUserInfo", {
               name: name,
               enlistmentDate: enlistmentDate + "T00:00:00.000Z",
               affiliatedUnit: affiliatedUnit,
               militaryRank: militaryRank,
           })
           .then(async (res) => {
-              Alert.alert("프로필변경", "프로필변경이 완료되었습니다.", [
+            navigation.goBack();
+            return Alert.alert("프로필변경", "프로필변경이 완료되었습니다.", [
                   {
                       text: "확인",
                       onPress: () => navigation.goBack(),
@@ -43,18 +81,12 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
               ]);
           })
           .catch((err) => {
-              let errText = "알 수 없는 이유로 회원가입에 실패하였습니다.";
-              if (err.response.status === 409) {
-                  if (err.response.data.customCode === "errCode1") {
-                      errText = "이미 존재하는 아이디입니다.";
-                  } else if (err.response.data.customCode === "errCode2") {
-                      errText = "이미 존재하는 군번입니다.";
-                  }
-              }
-              Alert.alert(":(", errText, [
+              let errText = "알 수 없는 이유로 프로필변경에 실패하였습니다.";
+              setApiResult({status:true, msg:errText});
+              return Alert.alert(":(", errText, [
                   {
                       text: "확인",
-                      onPress: () => {},
+                      onPress: () => navigation.goBack(),
                   },
               ]);
           });

@@ -1,6 +1,6 @@
 // core
-import { useContext } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Alert, Image } from "react-native";
 import {
     MaterialCommunityIcons,
     Feather,
@@ -12,14 +12,96 @@ import * as reactNativePaper from 'react-native-paper';
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // types
-import { MainTabScreenProps } from "../common/types";
+import { MainTabScreenProps, User } from "../common/types";
 // context
 import { LoginContext } from "../common/Context";
+import api from "../common/api";
+
+import getProfileSource from "../components/FriendList/getProfileSource";
+import { useIsFocused } from "@react-navigation/native";
+
+const FriendListKey = "FriendList";
 
 export default function Settings(props: MainTabScreenProps<"Settings">) {
     const {navigation} = props;
     const { checkIfLoggedIn } = useContext(LoginContext);
+    const [user, setUser] = useState<User|null>(null);
+    const [dDay, setDDday] = useState(0);
+    const [pageState, setPageState] = useState<string>("loading");
+    const [friends, setFriends] = useState<User[]>([]);
+    const isFocused = useIsFocused();
 
+    useEffect(() => {
+      // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
+      if(isFocused){
+      (async () => {
+        await sleep(0.7);
+        await fetchFromAsyncStorage();
+        // await sleep(2);
+        fetchFriends();
+  
+      })();
+      (async () => {
+        fetchMe(); 
+      })();}
+         }, [isFocused]);
+
+  const fetchMe = async () => {
+      api
+        .get("/users/me")
+        .then((res) => {
+          let data = res.data.data as User;
+          setUser(data);
+          setDDday(computedDday(data.enlistmentDate));
+    
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
+    const fetchFromAsyncStorage = async () => {
+      let friends = JSON.parse(await AsyncStorage.getItem(FriendListKey) || "[]")
+      setPageState("loaded");
+      setFriends(friends);
+    };
+
+    const fetchFriends = async () => {
+      // axios get 후에 async storage set
+      // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ?
+  
+      let userToken = await AsyncStorage.getItem("userToken")
+  
+      api.get("/friends", {
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        })
+        .then(async (res) => {
+          let friends = res.data.data;
+          setFriends(friends);
+          setPageState("loaded");
+          AsyncStorage.setItem(FriendListKey, JSON.stringify(friends));
+        })
+        .catch((err) => {
+          // TODO : show error
+          setPageState("error");
+          console.log(err.response);
+        })
+    };
+    
+  const sleep = (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve("slept well"), time*1000)
+    });
+};
+  const computedDday=(enlistmentDate:any)=>{
+  const currentDate= new Date();
+  const enlistmentDateToDate= new Date(enlistmentDate);
+
+  const diffDate = currentDate.getTime() - enlistmentDateToDate.getTime();
+  return Math.floor(Math.abs(diffDate / (1000 * 60 * 60 * 24))); 
+  };
 
     const handleMyProfile = () => {
         navigation.navigate("MyProfile")
@@ -59,43 +141,39 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             </View>
             <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
-          {/* <Avatar.Image 
-            source={{
-              uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
-            }}
-            size={80}
-          /> */}
-          <Feather
-                        onPress={() => navigation.goBack()}
-                        name="user"
-                        size={80}
-                        color="black"
-                    />
+          <Image style={styles.profileImage}
+            source={getProfileSource(user?.image)}
+          />
+         
           <View style={{marginLeft: 20}}>
             <reactNativePaper.Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>임동진</reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>일병</reactNativePaper.Caption>
+
+            }]}>{user?.name}</Title>
+            <Caption style={styles.caption}>{user?.militaryRank}</Caption>
+
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Feather name="home" color="#black" size={20}/>
-          <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>소속부대</reactNativePaper.Text>
-          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>계룡대근무지원단</reactNativePaper.Text>
+
+          <Feather name="home" color="#6A4035" size={20}/>
+          <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>소속부대</Text>
+          <Text style={{color:"#6A4035", marginLeft: 20}}>{user?.affiliatedUnit}</Text>
         </View>
         <View style={styles.row}>
-          <MaterialIcons  name="confirmation-number" color="#black" size={20}/>
-          <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>군번</reactNativePaper.Text>
-          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>22-76014363</reactNativePaper.Text>
+          <MaterialIcons  name="confirmation-number" color="#6A4035" size={20}/>
+          <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>군번</Text>
+          <Text style={{color:"#6A4035", marginLeft: 20}}>{user?.serviceNumber}</Text>
         </View>
         <View style={styles.row}>
-        <AntDesign name="idcard" size={20} color="black" />
-        <reactNativePaper.Text style={{color:"black", marginLeft: 20}}>아이디</reactNativePaper.Text>
-          <reactNativePaper.Text style={{color:"#777777", marginLeft: 20}}>test</reactNativePaper.Text>
+        <AntDesign name="idcard" size={20} color="#6A4035" />
+        <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>아이디</Text>
+          <Text style={{color:"#6A4035", marginLeft: 20}}>{user?.uid}</Text>
+
         </View>
       </View>
 
@@ -104,32 +182,40 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <reactNativePaper.Title style={styles.infoBoxText}>D-100</reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>전역까지</reactNativePaper.Caption>
+
+            <Title style={styles.infoBoxText}>D-{dDay}</Title>
+            <Caption style={styles.caption}>전역까지</Caption>
           </View>
           <View style={styles.infoBox}>
-            <reactNativePaper.Title style={styles.infoBoxText}>12</reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>친구</reactNativePaper.Caption>
+            <Title style={styles.infoBoxText}>{friends.length}</Title>
+            <Caption style={styles.caption}>친구</Caption>
+
           </View>
       </View>
 
       <View style={styles.menuWrapper}>
         <reactNativePaper.TouchableRipple onPress={handleChangePw}>
           <View style={styles.menuItem}>
-          <MaterialCommunityIcons name="key-change" size={24} color="black" />
-            <reactNativePaper.Text style={styles.menuItemText}>비밀번호 변경</reactNativePaper.Text>
+
+          <MaterialCommunityIcons name="key-change" size={24} color="#6A4035" />
+            <Text style={styles.menuItemText}>비밀번호 변경</Text>
+
           </View>
         </reactNativePaper.TouchableRipple>
         <reactNativePaper.TouchableRipple onPress={handleMyProfile}>
           <View style={styles.menuItem}>
-          <AntDesign name="profile" size={24} color="black" />
-            <reactNativePaper.Text style={styles.menuItemText}>프로필 변경</reactNativePaper.Text>
+
+          <AntDesign name="profile" size={24} color="#6A4035" />
+            <Text style={styles.menuItemText}>프로필 변경</Text>
+
           </View>
         </reactNativePaper.TouchableRipple>
         <reactNativePaper.TouchableRipple onPress={handleLogout}>
           <View style={styles.menuItem}>
-          <MaterialIcons name="logout" size={24} color="black" />
-            <reactNativePaper.Text style={styles.menuItemText}>로그아웃</reactNativePaper.Text>
+
+          <MaterialIcons name="logout" size={24} color="#6A4035" />
+            <Text style={styles.menuItemText}>로그아웃</Text>
+
           </View>
         </reactNativePaper.TouchableRipple>
       </View>
@@ -203,6 +289,7 @@ const styles = StyleSheet.create({
     infoBoxText:{
       fontFamily: "noto-bold",
       color: 'white',
+      marginBottom: 5
     },
     menuWrapper: {
         borderBottomColor: '#dddddd',
@@ -228,5 +315,10 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       fontSize: 16,
       lineHeight: 26,
+    },
+    profileImage: {
+      width: 80,
+      height: 80,
+      borderRadius: 17,
     },
 });
