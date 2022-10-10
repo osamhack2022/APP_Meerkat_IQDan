@@ -31,7 +31,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { isLoading } = useDoubleFetchAndSave<Chatroom | null>(
     chatroomInfo,
     setChatroomInfo,
-    'chatroom' + chatroomId,
     '/chatroom/' + chatroomId,
   );
 
@@ -100,8 +99,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       },
     ]);
   };
-
-  // https://stackoverflow.com/questions/47725607/react-native-safeareaview-background-color-how-to-assign-two-different-backgro
+  
   return (
     <>
       <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
