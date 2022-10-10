@@ -131,3 +131,8 @@ export class UpdatePasswordDto {
   @IsString()
   public password: string;
 }
+
+export class updatePublicKeyDto {
+  @IsString()
+  public publicKey: string;
+}

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '@prisma/client';
-import { CreateUserDto, SearchUserDto, UpdateUserDto, UpdatePasswordDto } from '@dtos/users.dto';
+import { CreateUserDto, SearchUserDto, UpdateUserDto, UpdatePasswordDto, updatePublicKeyDto } from '@dtos/users.dto';
 import userService from '@services/users.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import AuthService from '@services/auth.service';
@@ -131,6 +131,20 @@ class UsersController {
       await this.userService.deleteUser(userId);
 
       res.status(200).json({ message: 'deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updatePublicKey = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const uid = req.user.uid;
+      const userId = req.user.userId;
+      const { publicKey } = req.body as updatePublicKeyDto;
+
+      await this.userService.updatePublicKey(userId, publicKey);
+
+      res.status(200).json({ message: 'updated' });
     } catch (error) {
       next(error);
     }

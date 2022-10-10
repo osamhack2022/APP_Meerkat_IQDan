@@ -102,6 +102,11 @@ export default function App() {
                 component={AddChatroom}
                 options={{ headerShown: false }}
               />
+              <Stack.Screen
+                name="AddFriend"
+                component={AddFriend}
+                options={{ headerShown: false }}
+              />
             </Stack.Navigator>
           </SocketContext.Provider>
         </LoginContext.Provider>
