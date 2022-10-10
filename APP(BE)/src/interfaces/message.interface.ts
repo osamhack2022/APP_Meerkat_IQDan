@@ -1,6 +1,11 @@
 import { User } from '@prisma/client';
 
 export interface MessageDto {
+  messageId: number;
+
+  belongChatroomId: number;
+  senderId: number;
+
   content: string;
-  roomId: number;
+  deleteTime: Date;
 }

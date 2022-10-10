@@ -3,14 +3,12 @@ import https from "https";
 import { Server, Socket } from "socket.io"
 import { MessageDto } from "@interfaces/message.interface"
 import { validateSocketToken } from "./middlewares/auth.middleware";
+import MessageSerivce from "@services/message.service";
 
 class SocketIO{
     private ioServer: Server;
-
-    // TODO : header 검증
-    // socketio option 중 auth 찾아보면 됨
-    // https://www.npmjs.com/package/socketio-auth
-    // https://socket.io/docs/v3/client-initialization/
+    private messageService: MessageSerivce = new MessageSerivce();
+    
 
     constructor(server: http.Server | https.Server){
         this.ioServer = new Server(server, {
@@ -29,8 +27,7 @@ class SocketIO{
             console.log(socket.handshake.auth);
             socket.use((connection, next)=>{
                 console.log("in valid");
-                validateSocketToken(socket.handshake.auth, next);
-                console.log("validation end, uid: " + socket.handshake.auth.userId);
+                validateSocketToken(socket.handshake.auth, next); // 실행되면 socket.handshake.auth.userId에 userId값이 들어 있음.
             });
 
             // default
@@ -48,7 +45,7 @@ class SocketIO{
 
            
             
-            // this.onLeaveRoom(socket);
+            // this.onLeaveRoom(socket); // TODO : 채팅방 나가기
             // this.onSendMessage(socket);
 
         });
@@ -88,16 +85,29 @@ class SocketIO{
     }
 
     private onSpeakMessage(socket: Socket){
-        socket.on("speakMessage", (message: MessageDto) =>{
-            console.log(message);
-            socket.broadcast.to(message.roomId.toString()).emit("hearMessage", message);
+        socket.on("speakMessage", (messageDto: MessageDto) =>{
+            console.log(messageDto);
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
-            console.log("room " + message.roomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + message.content + "를 보냄."); 
-            //socket.emit("hearMessage", message);
-            // this.ioServer.in("2").emit("hearMessage", message);
-            // socket.emit("hearMessage", message);
+            console.log("room " + messageDto.belongChatroomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + messageDto.content + "를 보냄."); 
             //////////////
-            
+            try{
+
+                /*async ()=> {
+                    const messageId = await this.messageService.storeMessageAndGetId(messageDto); // DB에 넣음
+                    messageDto.messageId = messageId;
+                    socket.broadcast.to(messageDto.belongChatroomId.toString()).emit("hearMessage", messageDto);
+                }*/
+                messageDto.senderId = socket.handshake.auth.userId;
+                this.messageService.storeMessageAndGetId(messageDto).then((messageId)=>{
+                    console.log("id: " +messageId )
+                    messageDto.messageId = messageId;
+                    
+                    socket.broadcast.to(messageDto.belongChatroomId.toString()).emit("hearMessage", messageDto);
+                })
+            } catch (error){
+                // error가 발생해도 터트리지 않고 계속 진행
+                console.log(error);
+            }            
         })
     }
 

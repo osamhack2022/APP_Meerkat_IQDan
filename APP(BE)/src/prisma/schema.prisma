@@ -26,7 +26,6 @@ model User {
   followedBy      Friends[]       @relation("following")
   following       Friends[]       @relation("follower")
   commanders      ChatroomCommanders[]
-  messageReads    MessageRead[]
   publicKeys      PublicKey[]
   chatroomKeys    ChatroomKey[]
 }
@@ -42,11 +41,13 @@ model Friends {
 }
 
 model UsersOnChatrooms{
-  chatroom        Chatroom        @relation(fields: [chatroomId], references: [chatroomId])
-  chatroomId      Int
+  chatroom            Chatroom        @relation(fields: [chatroomId], references: [chatroomId])
+  chatroomId          Int
 
-  user            User            @relation(fields: [userId], references: [userId])
-  userId          Int
+  user                User            @relation(fields: [userId], references: [userId])
+  userId              Int
+
+  recentReadMessageId Int             @default(-1)
 
   @@id([chatroomId, userId])
 }
@@ -103,20 +104,6 @@ model Message{
 
   belongChatroom      Chatroom        @relation(fields: [belongChatroomId], references: [chatroomId])          
   belongChatroomId    Int
-
-  messageReads      MessageRead[]
-}
-
-model MessageRead{
-  message             Message         @relation(fields: [messageId], references: [messageId])
-  messageId           Int           
-
-  user                User           @relation(fields: [userId], references: [userId])
-  userId              Int
-
-  isRead              Boolean         @default(false)
-
-  @@id([messageId, userId])
 }
 
 model PublicKey{
