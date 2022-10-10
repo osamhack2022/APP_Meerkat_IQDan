@@ -22,7 +22,6 @@ class SocketIO{
             transports: ["websocket", "polling"],
         });
 
-
         const chatio = this.ioServer.of("/chat");
         chatio.on("connection", (socket:Socket)=>{
             // token validator middleware. if unauthorized, then disconnect.
@@ -31,6 +30,7 @@ class SocketIO{
             socket.use((connection, next)=>{
                 console.log("in valid");
                 validateSocketToken(socket.handshake.auth, next);
+<<<<<<< HEAD
                 console.log("validation end, uid: " + socket.handshake.auth.userId);
             });
 
@@ -53,6 +53,7 @@ class SocketIO{
             // this.onSendMessage(socket);
 
         });
+
 
         // 다른 connection일 경우 쳐냄.
         this.ioServer.on("connection", (socket: Socket) => {
@@ -106,6 +107,7 @@ class SocketIO{
         socket.on("error", (err) =>{
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
             console.log("오류 발생" + err);
+            socket.disconnect();
         })
     }
 
@@ -122,7 +124,6 @@ class SocketIO{
             console.log("a user disconnected");
         })
     }
-
 }
 
 export default SocketIO;

@@ -1,5 +1,6 @@
 // chat
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { getEmptySocketIO } from '../common/socket';
@@ -24,7 +25,7 @@ export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function) {
           io(env.prod.apiBaseUrl + '/chat', {
             path: '/socket.io',
             transports: ['websocket'],
-            reconnectionAttempts: -1,
+            reconnectionAttempts: 2,
             auth: { token: userToken },
           }),
         );
