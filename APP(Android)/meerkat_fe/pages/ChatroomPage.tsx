@@ -1,6 +1,6 @@
 // core
 import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import ChatroomSide from '../components/Chatroom/ChatroomSide';
@@ -103,7 +103,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   return (
     <>
       <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
-      {/* <SafeAreaView style={{ flex:0, backgroundColor: headerColor }} /> */}
+      <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
         onPressBack={() => navigation.goBack()}
         onPressSideMenu={() => setIsOpenSideMenu(true)}
@@ -111,7 +111,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       />
       <KeyboardAvoidingView
         behavior="padding"
-        style={{ flex: 1, backgroundColor: '#EEE' }}
+        style={{ flex: 1}}
+        keyboardVerticalOffset={-300} // should be 0 for ios, but Platform.select not working currnetly.
       >
         <View style={styles.chat}>
           <GiftedChat
@@ -147,7 +148,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         setVisible={setTemplateVisible}
         setMsgInput={setMsgInput}
       />
-      {/* <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} /> */}
+      <SafeAreaView style={{ flex:0, backgroundColor: 'white' }} />
     </>
   );
 }
@@ -155,7 +156,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 const styles = StyleSheet.create({
   chat: {
     flex: 1,
-    backgroundColor: '#EEE',
+    backgroundColor: 'white',
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -169,7 +170,7 @@ const user = {
 const otherUser = {
   _id: 2,
   name: 'React Native',
-  avatar: 'https://facebook.github.io/react/img/logo_og.png',
+  avatar: require('../assets/users/emptyProfile.jpg'),
 };
 
 const msgSample: IMessage[] = [
