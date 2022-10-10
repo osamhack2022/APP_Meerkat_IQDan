@@ -19,7 +19,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetch';
 import { useSocketIO } from '../hooks/useSocketIO';
 import { Socket } from 'socket.io-client';
-import { roomSocketFunction } from '../common/roomSocket';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -39,14 +38,14 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 
   
   const {isNotLoggedIn} = useContext(LoginContext);
-  const { socket } = useSocketIO(isNotLoggedIn, roomSocketFunction);
+  const { socket } = useSocketIO(isNotLoggedIn, null);
 
   // TODO: 나중에 여기 socket 부분 분리.
   useEffect(() => {
     socket.connect();
 
-    // if(isSocketConnected && socket.connected) socket.emit("event name", "msg");
     socket.on('connect', () =>{
+      console.log('--------------- room socket ---------------');
       console.log(chatroomId + " socket connection 시작");
       socket.on('hearMessage', (messageDto: MessageDto) => {
         console.log(chatroomId + "message 수신: ");
@@ -70,12 +69,18 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           });
         }
       });
+
+      socket.on("disconnect", () => {
+        console.log('--------------- room disconnected ---------------');
+      });
     })
    
 
     socket.on('disconnect', () => {
       console.log('disconnected from server');
     });
+
+    // clean은 hooks에서 해 줌.
   }, [socket]);
 
   useEffect(() => {

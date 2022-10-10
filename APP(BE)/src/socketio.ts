@@ -30,7 +30,6 @@ class SocketIO{
             socket.use((connection, next)=>{
                 console.log("in valid");
                 validateSocketToken(socket.handshake.auth, next);
-<<<<<<< HEAD
                 console.log("validation end, uid: " + socket.handshake.auth.userId);
             });
 
