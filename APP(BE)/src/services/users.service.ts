@@ -1,5 +1,5 @@
 import { hash } from 'bcrypt';
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, PublicKey, User } from '@prisma/client';
 import { CreateUserDto, SearchUserDto, UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
@@ -119,6 +119,19 @@ class UserService {
       where: { userId: userId },
     });
     return deleteUserData;
+  }
+
+  // 퍼블릭키 변경
+  public async updatePublicKey(userId: number, publicKey: string): Promise<PublicKey> {
+    await this.checkUserExists(userId);
+
+    const updateUserData = await prisma.publicKey.upsert({
+      where: { userId: userId },
+      create: { userId: userId, publicKey: publicKey },
+      update: { publicKey: publicKey },
+    });
+
+    return updateUserData;
   }
 }
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UsersController from '@controllers/users.controller';
-import { CreateUserDto, SearchUserDto, UpdateUserDto, UpdatePasswordDto } from '@dtos/users.dto';
+import { CreateUserDto, SearchUserDto, UpdateUserDto, UpdatePasswordDto, updatePublicKeyDto } from '@dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import authMiddleware from '@/middlewares/auth.middleware';
@@ -45,6 +45,13 @@ class UsersRoute implements Routes {
       validationMiddleware(UpdatePasswordDto, 'body', true),
       authMiddleware,
       this.usersController.updateUserPw,
+    );
+    // 퍼블릭 키 업데이트
+    this.router.put(
+      `${this.path}/updatePublicKey`,
+      validationMiddleware(updatePublicKeyDto, 'body'),
+      authMiddleware,
+      this.usersController.updatePublicKey,
     );
     this.router.delete(
       `${this.path}/:id(\\d+)`,
