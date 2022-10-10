@@ -1,9 +1,11 @@
+import { Alert } from "react-native";
 import { io, Socket } from "socket.io-client";
 import env from "../env.json";
-
+import { Chatroom } from "../common/types";
+import api from "./api";
 
 export function getEmptySocketIO(): Socket {
-    return io('https://dev.hyelie.site:8090/', {
+    return io(env.dev.apiBaseUrl, {
       path: '/socket.io',
       transports: ['websocket'],
       reconnectionAttempts: 0,
@@ -11,15 +13,46 @@ export function getEmptySocketIO(): Socket {
     });
   }
   
+  interface MessageDto {
+    userId: number;
+    content: string;
+    // TODO : 사진 들어갈수도. type을 추가해서 처리하면 될듯.
+    roomId: number;
+  }
 
 // set all of socketio events in this function
 export function attachSocket(socket: Socket) {
     socket.on('connect', () => {
       // TODO : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('--------------- socket ---------------');
-  
-      // TODO : 재접속 시 DB에서 속해있는 모든 방의 정보를 가져온 후, 그 방에 전부 접속해야 함.
+      
+      // 재접속 시 DB에서 속해있는 모든 방의 정보를 가져온 후, 그 방에 전부 접속해야 함.
+      api.get('/chatroom/my')
+      .then((res) => {
+        const chatrooms:Chatroom[] = res.data.data;
+        const chatroomIds:number[] = chatrooms.map(chatroom=>chatroom.chatroomId);
+        console.log(chatroomIds);
+        socket.emit("connectionJoinRoom", chatroomIds);
+      })
+      .catch((err)=>{
+        Alert.alert("네트워크 접속 오류입니다.")
+      });
     });
+
+    // emit
+
+    
+
+    ////////////////////////// DEBUG: just for debug
+    // 방에 접속한 목록 출력
+    socket.on("connectionJoinRoomDebug", msg =>{
+      console.log(msg);
+    })
+
+    socket.on("testsendmessage", (message:string) => {
+      console.log(message);
+    });
+    //////////////////////////
   
     socket.on("disconnect", () => {
       console.log('--------------- disconnected ---------------' + socket.id);
