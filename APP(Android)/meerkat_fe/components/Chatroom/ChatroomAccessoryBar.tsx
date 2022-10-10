@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     padding: 4,
     backgroundColor: 'white',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     // borderTopWidth: StyleSheet.hairlineWidth,
     // borderTopColor: 'rgba(0,0,0,0.3)',
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
     padding: 6,
     borderRadius: 4,
+    marginLeft: 10
   },
 });
 
