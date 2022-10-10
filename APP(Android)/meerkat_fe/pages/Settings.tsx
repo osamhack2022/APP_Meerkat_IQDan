@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MainTabScreenProps } from "../common/types";
 // context
 import { LoginContext } from "../common/Context";
+import { generateRSAKeys } from "../common/crypto";
 
 export default function Settings(props: MainTabScreenProps<"Settings">) {
     const {navigation} = props;
@@ -58,6 +59,14 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
         navigation.navigate("Auth")
     };
 
+    const generateKeys = async () => {
+      let keys = generateRSAKeys();
+
+      // api .post("")
+
+      AsyncStorage.setItem("PublicKey", keys.getPublicKey());
+      AsyncStorage.setItem("PrivateKey", keys.getPrivateKey());
+    }
 
     return (
         <View style={styles.container}>
@@ -137,6 +146,12 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
           <View style={styles.menuItem}>
           <MaterialIcons name="logout" size={24} color="black" />
             <Text style={styles.menuItemText}>로그아웃</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={generateKeys}>
+          <View style={styles.menuItem}>
+          <AntDesign name="key" size={24} color="black" />
+            <Text style={styles.menuItemText}>보안키 생성</Text>
           </View>
         </TouchableRipple>
       </View>
