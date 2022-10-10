@@ -192,20 +192,20 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
 
 
         <View style={styles.userInfoSection}>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
 
             <Feather name="home" color="#6A4035" size={20} />
             <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>소속부대</Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.affiliatedUnit}</Text>
           </View>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
             <MaterialIcons name="confirmation-number" color="#6A4035" size={20} />
-            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>군번</Text>
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>군번        </Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.serviceNumber}</Text>
           </View>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
             <AntDesign name="idcard" size={20} color="#6A4035" />
-            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>아이디</Text>
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>아이디    </Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.uid}</Text>
 
           </View>
