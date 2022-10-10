@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 // comps
 import Chatroom from "./pages/Chatroom";
 import Auth from "./pages/Auth";
-import { LoginContext } from "./common/Context";
+import { LoginContext, SocketContext } from "./common/Context";
 // hooks
 import useLoginCheck from "./hooks/useLoginCheck";
 // nav
@@ -17,6 +17,7 @@ import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatroom from "./pages/ChatroomList/AddChatroom";
 import AddFriend from "./pages/AddFriend";
+import { useSocketIO } from "./hooks/useSocketIO";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -48,61 +49,62 @@ export default function App() {
             navigationRef.navigate("Auth"); // if not logged in, send user to login screen
     }
     }, [navigationRef.current])
+    // socket
+    const {socket, isSocketConnected} = useSocketIO(isNotLoggedIn);
 
     if (isLoginLoading || !fontsLoaded) return null;
     return (
-        <NavigationContainer
-            ref={navigationRef}
-            onReady={hideSplash}
-            theme={{
-                ...DefaultTheme,
-                colors: { ...DefaultTheme.colors, background: "white" },
-            }}
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={hideSplash}
+        theme={{
+          ...DefaultTheme,
+          colors: { ...DefaultTheme.colors, background: 'white' },
+        }}
+      >
+        <LoginContext.Provider
+          value={{
+            checkIfLoggedIn: checkIfLoggedIn,
+            isNotLoggedIn: isNotLoggedIn,
+          }}
         >
-            <LoginContext.Provider
-                value={{
-                    checkIfLoggedIn: checkIfLoggedIn,
-                    isNotLoggedIn: isNotLoggedIn,
-                }}
-            >
-                <Stack.Navigator initialRouteName="Auth">
-                    <Stack.Screen
-                        name="Auth"
-                        component={Auth}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Main"
-                        component={Main}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Chat"
-                        component={Chatroom}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="MyProfile"
-                        component={MyProfile}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="ChangePw"
-                        component={ChangePw}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="AddChatroom"
-                        component={AddChatroom}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="AddFriend"
-                        component={AddFriend}
-                        options={{ headerShown: false }}
-                    />
-                </Stack.Navigator>
-            </LoginContext.Provider>
-        </NavigationContainer>
+          <SocketContext.Provider
+            value={{ socket: socket, isSocketConnected: isSocketConnected }}
+          >
+            <Stack.Navigator initialRouteName="Auth">
+              <Stack.Screen
+                name="Auth"
+                component={Auth}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Chat"
+                component={Chatroom}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MyProfile"
+                component={MyProfile}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ChangePw"
+                component={ChangePw}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AddChatroom"
+                component={AddChatroom}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </SocketContext.Provider>
+        </LoginContext.Provider>
+      </NavigationContainer>
     );
 }

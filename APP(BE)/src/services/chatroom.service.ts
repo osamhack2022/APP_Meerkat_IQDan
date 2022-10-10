@@ -4,11 +4,9 @@ import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
 import prisma from '../db';
 class ChatroomService {
-  
-
   /**
    * 내가 해당한 모든 채팅방 가져오기
-   * @param userId 
+   * @param userId
    * @returns 내가 들어있는 모든 채팅방 정보
    */
   public async getMyChatrooms(userId: number): Promise<Chatroom[]> {
@@ -30,8 +28,8 @@ class ChatroomService {
 
   /**
    * 특정 채팅방 정보 불러오기
-   * @param userId 
-   * @param chatroomId 
+   * @param userId
+   * @param chatroomId
    * @returns 하나의 채팅방 정보
    */
   public async getChatroom(userId: number, chatroomId: number): Promise<Chatroom> {
@@ -56,10 +54,10 @@ class ChatroomService {
 
   /**
    * 1대1 채팅방 생성
-   * @param userId 
-   * @param targetUserId 
-   * @param name 
-   * @param msgExpTime 
+   * @param userId
+   * @param targetUserId
+   * @param name
+   * @param msgExpTime
    * @returns 추가된 채팅방 chatroomId 혹은 이미 존재하는 채팅방 chatroomId
    */
   public async create1to1Chat(
@@ -67,6 +65,7 @@ class ChatroomService {
     targetUserId: number,
     name: string,
     msgExpTime: number,
+    removeAfterRead: boolean
   ): Promise<{ alreadyExists: boolean; chatroomId: number }> {
     // 이미 존재하는 1to1 채팅방이면 기존 채팅방 id를 돌려보내줍니다.
     let chatroomIdObjs: { chatroomId: number }[] = await prisma.$queryRaw`Select A.chatroomId
@@ -89,6 +88,7 @@ class ChatroomService {
         name: name,
         type: 'SINGLE',
         msgExpTime: msgExpTime,
+        removeAfterRead: removeAfterRead
       },
     });
 
@@ -111,11 +111,11 @@ class ChatroomService {
 
   /**
    * 채팅방 생성
-   * @param userId 
-   * @param targetUserId 
-   * @param name 
-   * @param msgExpTime 
-   * @param commanderUserIds 
+   * @param userId
+   * @param targetUserId
+   * @param name
+   * @param msgExpTime
+   * @param commanderUserIds
    * @returns 추가된 채팅방 chatroomId
    */
   public async createMultiChat(
@@ -124,6 +124,7 @@ class ChatroomService {
     name: string,
     msgExpTime: number,
     commanderUserIds: number[],
+    removeAfterRead: boolean
   ): Promise<number> {
     // 누가 참여하는가와 상관 없이 새로운 채팅방을 만듭니다.
     let newChatroom: Chatroom = await prisma.chatroom.create({
@@ -131,6 +132,7 @@ class ChatroomService {
         name: name,
         type: 'MULTI',
         msgExpTime: msgExpTime,
+        removeAfterRead: removeAfterRead
       },
     });
 
@@ -143,20 +145,20 @@ class ChatroomService {
             chatroomId: newChatroom.chatroomId,
           },
         });
-      })
-    )
+      }),
+    );
 
-    // 상급자 추가    
+    // 상급자 추가
     await Promise.all(
       commanderUserIds.map(id => {
         return prisma.chatroomCommanders.create({
           data: {
             userId: id,
-            chatroomId: newChatroom.chatroomId
-          }
-        })
-      })
-    )
+            chatroomId: newChatroom.chatroomId,
+          },
+        });
+      }),
+    );
 
     // IF: 트랜잭션 형식으로 만들 수 있으면 더 좋을듯.
 
@@ -165,24 +167,24 @@ class ChatroomService {
 
   /**
    * 여러명 있는 채팅방에 초대하기
-   * @param userId 
-   * @param chatroomId 
-   * @param targetUserIds 
+   * @param userId
+   * @param chatroomId
+   * @param targetUserIds
    * @returns nothing
    */
   public async inviteToChat(
     userId: number, // 나중에 E2EE 추가할 때 필요함.
     chatroomId: number,
-    targetUserIds: number[]
+    targetUserIds: number[],
   ): Promise<void> {
     // 1대1 채팅방이라면 reject
     const chatroom = await prisma.chatroom.findUnique({
       where: {
-        chatroomId: chatroomId
-      }
-    })
-    if(chatroom.type === 'SINGLE') {
-      throw new HttpException(400, 'You cannot invite people to 1 to 1 chatrooms.')
+        chatroomId: chatroomId,
+      },
+    });
+    if (chatroom.type === 'SINGLE') {
+      throw new HttpException(400, 'You cannot invite people to 1 to 1 chatrooms.');
     }
     // 아니라면 초대하기.
     await Promise.all(
@@ -190,11 +192,11 @@ class ChatroomService {
         return prisma.usersOnChatrooms.create({
           data: {
             chatroomId: chatroomId,
-            userId: id
-          }
-        })
-      })
-    )
+            userId: id,
+          },
+        });
+      }),
+    );
 
     return;
   }
@@ -203,44 +205,41 @@ class ChatroomService {
    * 채팅방 떠나기.
    * 1대1 채팅은 프런트에서 떠나도 백엔드에서 아무조치를 해주지 않음.
    * 아래 leaveChat은 오로지 MULTI 채팅방만 떠나는 용도임.
-   * @param userId 
-   * @param chatroomId 
+   * @param userId
+   * @param chatroomId
    * @returns nothing
    */
-  public async leaveChat(
-    userId: number,
-    chatroomId: number
-  ): Promise<void> {
+  public async leaveChat(userId: number, chatroomId: number): Promise<void> {
     const chatroom = await prisma.chatroom.findUnique({
       where: {
-        chatroomId: chatroomId
-      }
-    })
+        chatroomId: chatroomId,
+      },
+    });
     if (chatroom.type === 'SINGLE') {
-      throw new HttpException(400, 'You cannot leave 1 to 1 chat here.')
+      throw new HttpException(400, 'You cannot leave 1 to 1 chat here.');
     }
 
     const record = await prisma.usersOnChatrooms.findUnique({
       where: {
         chatroomId_userId: {
           chatroomId: chatroomId,
-          userId: userId
-        }
-      }
-    })
-    
+          userId: userId,
+        },
+      },
+    });
+
     if (record === null) {
-      throw new HttpException(400, 'You are not in this chat.')
+      throw new HttpException(400, 'You are not in this chat.');
     }
 
     await prisma.usersOnChatrooms.delete({
       where: {
         chatroomId_userId: {
           chatroomId: chatroomId,
-          userId: userId
-        }
-      }
-    })
+          userId: userId,
+        },
+      },
+    });
 
     return;
   }
@@ -248,39 +247,42 @@ class ChatroomService {
   /**
    * 채팅방 제목이나 메시지 삭제 시간 수정시 사용되는 함수.
    * @deprecated 모든 채팅방이랑 메시지는 처음에만 설정 가능하고 수정 불가능한 것으로 설계 변경.
+   * => 시간 남으면 구현.
    */
   public async UpdateChatroom(
-    userId: number, chatroomId: number, name: string, msgExpTime: number
+    userId: number,
+    chatroomId: number,
+    name: string,
+    msgExpTime: number,
+    removeAfterRead: boolean,
   ): Promise<void> {
-    throw new HttpException(400, 'This function is deprecated')
+    throw new HttpException(400, 'This function is deprecated');
     // check if user is in the chat
     const userInChatroom = await prisma.usersOnChatrooms.findUnique({
       where: {
         chatroomId_userId: {
           chatroomId: chatroomId,
-          userId: userId
-        }
-      }
-    })
+          userId: userId,
+        },
+      },
+    });
 
     if (userInChatroom === null) {
-      throw new HttpException(403, 'You are not in this chat.')
+      throw new HttpException(403, 'You are not in this chat.');
     }
 
     await prisma.chatroom.update({
       where: {
-        chatroomId: chatroomId
+        chatroomId: chatroomId,
       },
-      data:{
+      data: {
         name: name,
-        msgExpTime: msgExpTime
-      }
-    })
-
+        msgExpTime: msgExpTime,
+      },
+    });
 
     return;
   }
-
 }
 
 export default ChatroomService;

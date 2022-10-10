@@ -14,6 +14,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { RootStackParamList, TabParamList } from "../common/types";
 import ChatroomTemplatePanel from "../components/Chatroom/ChatroomTemplatePanel";
+import { useContext } from "react";
+import { SocketContext } from "../common/Context";
 
 type AuthScreenProps = CompositeScreenProps<
     StackScreenProps<RootStackParamList, 'Chat'>,
@@ -38,15 +40,20 @@ const otherUser = {
 const headerColor = "#DDD";
 
 const Chatroom: React.FC<AuthScreenProps> = (props) => {
+  const {chatroomId} = props.route.params // 현 채팅방의 chatroomId
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [socket, setSocket] = useState(io("wss://code.exqt.me:5002"));
+  const {isSocketConnected, socket}=useContext(SocketContext);
+  //const [socket, setSocket] = useState(io("wss://code.exqt.me:5002"));
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
   const [templateVisible, setTemplateVisible] = useState(false);
   const [superiorOnly, setSuperiorOnly] = useState(false);
   const [msgInput, setMsgInput] = useState("");
           
   useEffect(() => {
+    // only use socket.emit when connected.
+    // ex)
+    // if(isSocketConnected && socket.connected) socket.emit("event name", "msg");
     socket.on('connect', () => {
       console.log("conneceted!");
     })

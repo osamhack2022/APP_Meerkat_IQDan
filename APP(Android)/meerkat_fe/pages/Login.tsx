@@ -33,7 +33,6 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
             await AsyncStorage.setItem("userTokenExpiration", expiry.toString())
             checkIfLoggedIn();
         }).catch((err)=> {
-            console.log(err.response)
             if (err.response === undefined) {
                 return setErrMsg("알 수 없는 오류가 발생했습니다.")
             }

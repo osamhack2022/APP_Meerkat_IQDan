@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Alert, Button } from "react-native";
 import { RootStackScreenProps } from "../../common/types";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../common/api";
 
 export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
     const { navigation } = props;
@@ -10,6 +10,7 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
     const [currentPw, setCurrentPw] = useState("");
     const [pw, setPw] = useState("");
     const [pwCheck, setPwCheck] = useState("");
+    const [apiResult,setApiResult]=useState({status:false,msg:""});
 
     useEffect(() => {
         if (pwCheck === "") return;
@@ -18,12 +19,16 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
         } else {
             setErrMsg("");
         }
-    }, [pw, pwCheck]);
+        if (apiResult.status){
+            setErrMsg(apiResult.msg);
+        }
+    }, [pw, pwCheck, apiResult]);
 
     const handleChangePassword = () => {
-        axios
-            .put("https://code.seholee.com:8082/users/updateUserPw", {
-                password: pw,
+        api
+            .put("/users/updateUserPw", {
+            currentPassword: currentPw,   
+            password: pw,
             })
             .then(async (res) => {
                 Alert.alert("비밀번호변경 완료", "비밀번호 변경이 완료되었습니다.", [
@@ -32,15 +37,16 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
                         onPress: () => navigation.goBack(),
                     },
                 ]);
+                console.log('?');
+                navigation.goBack();
             })
             .catch((err) => {
                 let errText = "알 수 없는 이유로 회원가입에 실패하였습니다.";
+                console.log(err);
                 if (err.response.status === 409) {
-                    if (err.response.data.customCode === "errCode1") {
-                        errText = "이미 존재하는 아이디입니다.";
-                    } else if (err.response.data.customCode === "errCode2") {
-                        errText = "이미 존재하는 군번입니다.";
-                    }
+                    if (err.response.message === "Password is not matching") {
+                        errText = "현재 비밀번호가 일치하지않습니다";
+                    } 
                 }
                 Alert.alert(":(", errText, [
                     {
@@ -48,7 +54,10 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
                         onPress: () => {},
                     },
                 ]);
+                setApiResult({status:true, msg:errText});
             });
+            
+            
     };
 
     return (

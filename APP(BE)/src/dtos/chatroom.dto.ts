@@ -1,4 +1,4 @@
-import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString, isArray, IsArray, IsNumber } from 'class-validator';
+import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString, isArray, IsArray, IsNumber, IsBoolean } from 'class-validator';
 
 export class CreateChatroomDto {
     @IsString()
@@ -12,6 +12,9 @@ export class CreateChatroomDto {
 
     @IsArray()
     public commanderUserIds: number[];
+
+    @IsBoolean()
+    public removeAfterRead: boolean;
 }
 
 export class InviteChatroomDto {
@@ -31,4 +34,7 @@ export class UpdateChatroomDto {
 
     @IsNumber()
     public msgExpTime: number;
+
+    @IsBoolean()
+    public removeAfterRead: boolean;
 }

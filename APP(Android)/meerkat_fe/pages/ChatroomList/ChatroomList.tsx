@@ -1,6 +1,6 @@
 // core
 import { useEffect, useState, useContext } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View, ScrollView } from "react-native";
 // comps
 import Searchbar from "../../components/ChatroomList/Searchbar";
 import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
@@ -17,10 +17,9 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
         api.get("/chatroom/my").then((res) => {
-            console.log(res.data)
-
+            setRooms(res.data.data)
         }).catch((err) => {
-            return Alert.alert("오류가 발생했습니다.")
+            Alert.alert("오류가 발생했습니다.")
         })
     }, []);
 
@@ -35,7 +34,8 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
                 <Text style={[styles.title]} onPress={handleAddChatroom}>+</Text>
             </View>
             <Searchbar />
-            {rooms == null ? (
+            <ScrollView>
+            {rooms === null ? (
                 <ChatroomLoading />
             ) : (
                 rooms.map((room) => {
@@ -48,11 +48,14 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
                             createDate={room.createDate}
                             updateDate={room.updateDate}
                             msgExpTime={room.msgExpTime}
+                            navigation={navigation}
                         />
                     );
                 })
             )}
-            <Text onPress={() => props.navigation.push("Chat")}>goto Chat</Text>
+            <View style={{height: 200}}>
+            </View>
+            </ScrollView>
         </View>
     );
 }
