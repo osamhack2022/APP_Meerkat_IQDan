@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View, ScrollView } from "react-native";
 import Searchbar from "../../components/ChatroomList/Searchbar";
 import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
 import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
+import useDoubleFetchAndSave from "../../hooks/useDoubleFetch";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
 // dummy data
@@ -22,6 +23,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
     const [pageState, setPageState] = useState<string>("loading");
 
+
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
         api.get("/chatroom/my").then((res) => {
@@ -31,6 +33,9 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
             Alert.alert("오류가 발생했습니다.")
         })
     }, []);
+
+    const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
+
 
     const handleAddChatroom = () => {
         navigation.push("AddChatroom")

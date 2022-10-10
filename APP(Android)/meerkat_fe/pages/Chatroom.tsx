@@ -3,7 +3,6 @@ import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
 import { Bubble, Composer, GiftedChat, IMessage } from "react-native-gifted-chat";
 import ChatroomHeader from "../components/Chatroom/ChatroomHeader";
-import { io } from "socket.io-client";
 
 import MKBubble from "../components/Chatroom/CustomChatComp/Bubble";
 // import ChatroomSide from "../components/Chatroom/ChatroomSide";
@@ -12,7 +11,7 @@ import ChatroomTextInput from "../components/Chatroom/ChatroomTextInput";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { RootStackParamList, TabParamList } from "../common/types";
+import { MessageDto, RootStackParamList, TabParamList } from "../common/types";
 import ChatroomTemplatePanel from "../components/Chatroom/ChatroomTemplatePanel";
 import { useContext } from "react";
 import { SocketContext } from "../common/Context";
@@ -43,23 +42,17 @@ const Chatroom: React.FC<AuthScreenProps> = (props) => {
   const {chatroomId} = props.route.params // 현 채팅방의 chatroomId
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const {isSocketConnected, socket}=useContext(SocketContext);
-  //const [socket, setSocket] = useState(io("wss://code.exqt.me:5002"));
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
   const [templateVisible, setTemplateVisible] = useState(false);
   const [superiorOnly, setSuperiorOnly] = useState(false);
   const [msgInput, setMsgInput] = useState("");
+
+  const {isSocketConnected, socket}=useContext(SocketContext);
           
   useEffect(() => {
-    // only use socket.emit when connected.
-    // ex)
     // if(isSocketConnected && socket.connected) socket.emit("event name", "msg");
-    socket.on('connect', () => {
-      console.log("conneceted!");
-    })
-
-    socket.on('message', (msgStr: string) => {
-      let msgJson: RecvMessage = JSON.parse(msgStr);
+    socket.on('hearMessage', (messageDto: MessageDto) => {
+      let msgJson: RecvMessage = JSON.parse(messageDto.content);
     
       setMessages((previousMessages) => {
         const sentMessages: IMessage[] = [
@@ -83,7 +76,7 @@ const Chatroom: React.FC<AuthScreenProps> = (props) => {
     socket.on('disconnect', () => {
       console.log("disconnected from server");
     })
-  }, [socket]);
+  }, []);
           
   useEffect(() => {
     setMessages([

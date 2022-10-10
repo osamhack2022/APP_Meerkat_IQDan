@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-import Chatroom from "./pages/Chatroom";
+import ChatroomPage from "./pages/ChatroomPage";
 import Auth from "./pages/Auth";
 import { LoginContext, SocketContext } from "./common/Context";
 // hooks
@@ -18,6 +18,7 @@ import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatroom from "./pages/ChatroomList/AddChatroom";
 import AddFriend from "./pages/AddFriend";
 import { useSocketIO } from "./hooks/useSocketIO";
+import { globalSocketFunction } from "./common/globalSocket";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,7 +51,8 @@ export default function App() {
     }
     }, [navigationRef.current])
     // socket
-    const {socket, isSocketConnected} = useSocketIO(isNotLoggedIn);
+    const {socket} = useSocketIO(isNotLoggedIn, globalSocketFunction);
+
 
     if (isLoginLoading || !fontsLoaded) return null;
     return (
@@ -69,7 +71,7 @@ export default function App() {
           }}
         >
           <SocketContext.Provider
-            value={{ socket: socket, isSocketConnected: isSocketConnected }}
+            value={{ socket: socket }}
           >
             <Stack.Navigator initialRouteName="Auth">
               <Stack.Screen
@@ -84,7 +86,7 @@ export default function App() {
               />
               <Stack.Screen
                 name="Chat"
-                component={Chatroom}
+                component={ChatroomPage}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
@@ -100,6 +102,11 @@ export default function App() {
               <Stack.Screen
                 name="AddChatroom"
                 component={AddChatroom}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AddFriend"
+                component={AddFriend}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>

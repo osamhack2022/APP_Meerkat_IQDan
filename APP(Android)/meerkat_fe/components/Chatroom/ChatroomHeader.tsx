@@ -1,42 +1,43 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, Text, TouchableOpacity, Touchable } from "react-native";
+import { AntDesign } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons'; 
 
 const BackButton = (props: {onPress: () => void}) => {
   return (
-    <View>
-      <Text style={{fontSize: 36, color: "white"}} onPress={props.onPress}>{'<'}</Text>
-    </View>
+    <TouchableOpacity onPress={props.onPress}>
+      <AntDesign style={{color: "#6A4035",  marginLeft: 20}}  name="arrowleft" size={24} color="black" />
+    </TouchableOpacity>
   )
 }
 
-const Title = (props: {}) => {
+const Title = (props: {name: string}) => {
   return (
     <View>
-      <Text style={styles.headerText}>{"본부대대 1중대"}</Text>
+      <Text style={styles.headerText}>{props.name}</Text>
     </View>
   )
 }
 
 const Menu = (props: {onPress : () => void}) => {
   return (
-    <View>
-      <Text style={{fontSize: 36, color: "white"}} onPress={props.onPress}>{'☰'}</Text>
-    </View>
+    <TouchableOpacity onPress={props.onPress}>
+      <Feather style={{ color: "#6A4035", marginRight: 20, marginBottom: 1}}  name="menu" size={26} color="black" />
+    </TouchableOpacity>
   )
 }
 
 interface ChatroomHeaderProps {
   onPressBack: () => void,
   onPressSideMenu: () => void,
-  color: string
+  name: string
 }
 
 const ChatroomHeader = (props: ChatroomHeaderProps) => {
   return (
-    <View style={[styles.header, {backgroundColor: props.color}]}>
+    <View style={[styles.header]}>
       <BackButton onPress={props.onPressBack}/>
-      <Title/>
+      <Title name={props.name}/>
       <Menu onPress={props.onPressSideMenu}/>
     </View>
   )
@@ -46,13 +47,18 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "orange",
-    alignItems: "flex-end",
-    paddingBottom: 16
+    backgroundColor: "white",
+    alignItems: "center",
+    marginTop: 35,
+    height: 50,
+    // borderBottomWidth: 1,
+    borderBottomColor: "#6A4035"
   },
   headerText: {
-    fontSize: 24,
-    color: "white"
+    fontSize: 18,
+    color: "#6A4035",
+    fontFamily: "noto-med",
+    lineHeight: 48
   }
 })
 

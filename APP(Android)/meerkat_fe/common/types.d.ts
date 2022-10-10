@@ -54,6 +54,12 @@ export interface AnimatedValue{
     animatedValue: Animated.Value
 }
 
+export interface MessageDto {
+    content: string;
+    // TODO : 사진 들어갈수도. type을 추가해서 처리하면 될듯.
+    roomId: number;
+  }
+
 /**
  * react-navigation related types
  */
