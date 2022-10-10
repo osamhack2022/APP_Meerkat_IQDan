@@ -72,7 +72,7 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
               militaryRank: militaryRank,
           })
           .then(async (res) => {
-            navigation.goBack();
+            //navigation.goBack();
             return Alert.alert("프로필변경", "프로필변경이 완료되었습니다.", [
                   {
                       text: "확인",
@@ -116,12 +116,6 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
             </View>
             <View style={styles.innerContainer}>
                 <Text style={styles.errMsg}>{errMsg}</Text>
-                <Text style={styles.text}>이름</Text>
-                <TextInput
-                    onChangeText={setName}
-                    value={name}
-                    style={styles.textBox}
-                />
                 <Text style={styles.text}>입대일</Text>
                 <TextInput
                     onChangeText={setEnlistmentDate}

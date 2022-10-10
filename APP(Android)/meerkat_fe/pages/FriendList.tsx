@@ -126,6 +126,27 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
       })
   };
 
+  const FriendListPage=()=>{
+    if (friends.length == 0) {
+      return <Text style={{color: "#555", alignSelf: "center", margin: 4}}>해당하는 전우가 없습니다.</Text>
+    }
+  
+    return (
+      friends?.map((user) => {
+        let endDate = (new Date(user.enlistmentDate));
+        return (
+          <FriendBox
+            key={user.uid}
+            name={`${user.militaryRank} ${user.name}`}  
+            statusMessage={user.affiliatedUnit}
+            image={user.image}
+            dday={getDiff(getReserveDate(endDate), now)}
+            onPress={() => setCurrentProfileUser(user)}
+          />)
+      })
+    )
+  };
+
   if (pageState == "loading") {return <FriendListLoading />}
   else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
 
@@ -174,36 +195,9 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
           <CategoryBox categoryName={'전우들'} />
           <View>
             {
-              friends?.map((user) => {
-                let endDate = (new Date(user.enlistmentDate));
-                return (
-                  <FriendBox
-                    key={user.uid}
-                    name={`${user.militaryRank} ${user.name}`}  
-                    statusMessage={user.affiliatedUnit}
-                    image={user.image}
-                    dday={getDiff(getReserveDate(endDate), now)}
-                    onPress={() => setCurrentProfileUser(user)}
-                  />)
-              })
+              FriendListPage()
             }
-            <FriendBox
-              name={'테스터33'}
-              image={require('../assets/users/promotion.jpg')}
-              statusMessage={'상태메시지3'}
-            />
-            <FriendBox name={'테스터4'} statusMessage={'상태메시지4'} />
-            <FriendBox name={'테스터5'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터6'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터7'} statusMessage={'상태메시지3'} dday={100} />
-            <FriendBox name={'테스터8'} statusMessage={''} />
-            <FriendBox name={'테스터9'} />
-            <FriendBox name={'테스터10'} statusMessage={'상태메시지3'} dday={150} />
-            <FriendBox name={'테스터11'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터12'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터13'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터14'} statusMessage={'상태메시지3'} />
-            <FriendBox name={'테스터15'} statusMessage={'상태메시지3'} />
+            
           </View>
           <View style={{ paddingBottom: 120, backgroundColor: "pink" }} />
         </ScrollView>
