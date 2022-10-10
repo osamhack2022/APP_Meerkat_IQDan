@@ -15,7 +15,7 @@ import env from "../env.json";
  * }
  * @returns 
  */
-export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function) {
+export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | null) {
   const [socket, setSocket] = useState<Socket>(getEmptySocketIO);
 
   // create socket connection when login state changes.
@@ -37,7 +37,7 @@ export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function) {
   }, [isNotLoggedIn]);
 
   useEffect(()=>{
-    if(isNotLoggedIn === false){
+    if(isNotLoggedIn === false && attachFunction !== null){
       attachFunction(socket);
     }
 
