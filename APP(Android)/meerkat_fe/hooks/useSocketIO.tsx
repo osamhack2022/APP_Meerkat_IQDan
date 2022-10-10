@@ -1,5 +1,6 @@
 // chat
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { attachSocket, getEmptySocketIO } from '../common/socket';
@@ -20,23 +21,27 @@ export function useSocketIO(isNotLoggedIn: boolean) {
 
   // create socket connection when login state changes.
   useEffect(() => {
-    if(!isNotLoggedIn){
-    AsyncStorage.getItem('userToken').then(userToken => {
-      setSocket(
-        io(env.hyelie.apiBaseUrl + '/chat', {
-          path: '/socket.io',
-          transports: ['websocket'],
-          reconnectionAttempts: 2,
-          auth: { token: userToken },
-        }),
-      );
-    });
-    }
+      AsyncStorage.getItem('userToken').then(userToken => {
+        setSocket(
+          io(env.prod.apiBaseUrl + '/chat', {
+            path: '/socket.io',
+            transports: ['websocket'],
+            reconnectionAttempts: 2,
+            auth: { token: userToken },
+          }),
+        );
+      });
+      if(isNotLoggedIn){
+        socket.removeAllListeners();
+        socket.disconnect();
+      }
   }, [isNotLoggedIn]);
 
   useEffect(()=>{
-    attachSocket(socket);
-    setIsSocketConnected(socket.connected);
+    if(isNotLoggedIn === false){
+      attachSocket(socket);
+      setIsSocketConnected(socket.connected);
+    }  
 
     // cleanup
     return () => {
