@@ -40,6 +40,7 @@ export const validateSocketToken = async (auth, next) => {
     const findUser = await prisma.user.findUnique({ where: { userId: Number(userId) } });
 
     if (findUser) {
+      auth.userId = userId;
       next();
     } else {
       next(new Error('Wrong authentication token'));

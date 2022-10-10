@@ -55,7 +55,6 @@ export interface AnimatedValue{
 }
 
 export interface MessageDto {
-    userId: number;
     content: string;
     // TODO : 사진 들어갈수도. type을 추가해서 처리하면 될듯.
     roomId: number;

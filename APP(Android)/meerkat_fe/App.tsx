@@ -18,6 +18,7 @@ import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatroom from "./pages/ChatroomList/AddChatroom";
 import AddFriend from "./pages/AddFriend";
 import { useSocketIO } from "./hooks/useSocketIO";
+import { globalSocketFunction } from "./common/globalSocket";
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,7 +51,8 @@ export default function App() {
     }
     }, [navigationRef.current])
     // socket
-    const {socket, isSocketConnected} = useSocketIO(isNotLoggedIn);
+    const {socket} = useSocketIO(isNotLoggedIn, globalSocketFunction);
+
 
     if (isLoginLoading || !fontsLoaded) return null;
     return (
@@ -69,7 +71,7 @@ export default function App() {
           }}
         >
           <SocketContext.Provider
-            value={{ socket: socket, isSocketConnected: isSocketConnected }}
+            value={{ socket: socket }}
           >
             <Stack.Navigator initialRouteName="Auth">
               <Stack.Screen

@@ -1,7 +1,7 @@
 import http from "http";
 import https from "https";
 import { Server, Socket } from "socket.io"
-import { Message } from "@interfaces/message.interface"
+import { MessageDto } from "@interfaces/message.interface"
 import { validateSocketToken } from "./middlewares/auth.middleware";
 
 class SocketIO{
@@ -22,7 +22,7 @@ class SocketIO{
             transports: ["websocket", "polling"],
         });
 
-        // chat namespace
+
         const chatio = this.ioServer.of("/chat");
         chatio.on("connection", (socket:Socket)=>{
             // token validator middleware. if unauthorized, then disconnect.
@@ -31,21 +31,29 @@ class SocketIO{
             socket.use((connection, next)=>{
                 console.log("in valid");
                 validateSocketToken(socket.handshake.auth, next);
+                console.log("validation end, uid: " + socket.handshake.auth.userId);
             });
 
-            this.onConnectionJoinRoom(socket); // connection 시 속해있는 모든 room에 join시킴
-            // TODO 모든 메시지 방별로 받아와서 socket 전송해야 함.
-            this.onSpeakMessage(socket);
-
+            // default
             this.onError(socket);
             this.onConnectError(socket);
             this.onDisconnect(socket);
+
+            // global socket
+            // TODO 모든 메시지 방별로 받아와서 socket 전송해야 함.
+            this.onConnectionJoinRoom(socket); // connection 시 속해있는 모든 room에 join시킴
+
+            // room socket
+            this.onJoinRoom(socket);
+            this.onSpeakMessage(socket);
+
+           
             
             // this.onLeaveRoom(socket);
             // this.onSendMessage(socket);
-            
+
         });
-        
+
         // 다른 connection일 경우 쳐냄.
         this.ioServer.on("connection", (socket: Socket) => {
             console.log("disconnect default connection");
@@ -53,11 +61,51 @@ class SocketIO{
         });
     }
 
+
+    //////////////////////// global ////////////////////////
+    // socket 접속 시 FE에서 방 목록을 받아와서, 그 방에 전부 join시킴.
+    // 방에 누군가를 초대해서 새 사람이 들어올 때는, 그 사람이 'OO가 들어왔습니다' 발송하고, 메시지를 서버에 기록으로 남기는게 맞을듯.
+    private onConnectionJoinRoom(socket: Socket){
+        socket.on("connectionJoinRoom", (chatroomIds: number[]) =>{
+            chatroomIds.forEach((chatroomId)=>{
+                socket.join(chatroomId.toString());
+                // TODO : console log는 디버깅용, 추후 완성되면 삭제
+                console.log("room " + chatroomId + "에 사용자 " + socket.handshake.auth.userId + "접속");
+                socket.emit("connectionJoinRoomDebug", chatroomId + "에 접속함.");
+                //////////////
+            });
+        });
+    }
+
+    //////////////////////// room ////////////////////////
+    private onJoinRoom(socket:Socket){
+        socket.on("joinRoom", (roomId: number) =>{
+            // TODO  console log는 디버깅용, 추후 완성되면 삭제
+            console.log("room " + roomId + "에 사용자 " + socket.handshake.auth.userId + "접속");
+            //
+            socket.join(roomId.toString());
+        });
+    }
+
+    private onSpeakMessage(socket: Socket){
+        socket.on("speakMessage", (message: MessageDto) =>{
+            console.log(message);
+            socket.broadcast.to(message.roomId.toString()).emit("hearMessage", message);
+            // TODO : console log는 디버깅용, 추후 완성되면 삭제
+            console.log("room " + message.roomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + message.content + "를 보냄."); 
+            //socket.emit("hearMessage", message);
+            // this.ioServer.in("2").emit("hearMessage", message);
+            // socket.emit("hearMessage", message);
+            //////////////
+            
+        })
+    }
+
+    //////////////////////// default ////////////////////////
     private onError(socket:Socket){
         socket.on("error", (err) =>{
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
             console.log("오류 발생" + err);
-            socket.disconnect();
         })
     }
 
@@ -72,30 +120,6 @@ class SocketIO{
         socket.on("disconnect", () =>{
             // TODO : console log는 디버깅용, 추후 완성되면 삭제
             console.log("a user disconnected");
-        })
-    }
-
-    // socket 접속 시 FE에서 방 목록을 받아와서, 그 방에 전부 join시킴.
-    // 방에 누군가를 초대해서 새 사람이 들어올 때는, 그 사람이 'OO가 들어왔습니다' 발송하고, 메시지를 서버에 기록으로 남기는게 맞을듯.
-    private onConnectionJoinRoom(socket: Socket){
-        socket.on("connectionJoinRoom", (chatroomIds: number[]) =>{
-            chatroomIds.forEach((chatroomId)=>{
-                socket.join(chatroomId.toString());
-                // TODO : console log는 디버깅용, 추후 완성되면 삭제
-                console.log("room " + chatroomId + "에 사용자 " + socket.id + "접속");
-                socket.emit("connectionJoinRoomDebug", chatroomId + "에 접속함.");
-                //////////////
-            });
-        });
-    }
-
-    private onSpeakMessage(socket: Socket){
-        socket.on("speakMessage", (message: Message) =>{
-            socket.broadcast.to(message.roomId.toString()).emit("hearMessage", message);
-            // TODO : console log는 디버깅용, 추후 완성되면 삭제
-            console.log("room " + message.roomId.toString() + "에 사용자 " + message.userId + "가 메시지 " + message.content + "를 보냄."); 
-            this.ioServer.in(message.roomId.toString()).emit("hearMessage", message);
-            //////////////
         })
     }
 
