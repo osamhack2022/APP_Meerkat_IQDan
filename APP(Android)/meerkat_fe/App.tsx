@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 // comps
-import Chatroom from "./pages/Chatroom";
+import ChatroomPage from "./pages/ChatroomPage";
 import Auth from "./pages/Auth";
 import { LoginContext, SocketContext } from "./common/Context";
 // hooks
@@ -84,7 +84,7 @@ export default function App() {
               />
               <Stack.Screen
                 name="Chat"
-                component={Chatroom}
+                component={ChatroomPage}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
