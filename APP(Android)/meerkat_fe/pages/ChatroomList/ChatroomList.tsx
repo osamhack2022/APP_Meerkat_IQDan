@@ -10,14 +10,23 @@ import { Chatroom, MainTabScreenProps } from "../../common/types";
 // dummy data
 import api from "../../common/api";
 
+import {
+    MaterialCommunityIcons,
+    Feather,
+    MaterialIcons,
+    AntDesign
+} from "@expo/vector-icons";
+
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
+    const [pageState, setPageState] = useState<string>("loading");
 
     useEffect(() => {
         // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
         api.get("/chatroom/my").then((res) => {
-            setRooms(res.data.data)
+            //setRooms(res.data.data)
+            setPageState("loaded");
         }).catch((err) => {
             Alert.alert("오류가 발생했습니다.")
         })
@@ -27,6 +36,26 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         navigation.push("AddChatroom")
     }
 
+    const roomsComponent=()=>{
+        if (pageState == "loading") {return <ChatroomLoading />}
+        else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
+        else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
+        return rooms.map((room) => {
+            return (
+                <ChatroomBox
+                    key={room.chatroomId}
+                    chatroomId={room.chatroomId}
+                    name={room.name}
+                    type={room.type}
+                    createDate={room.createDate}
+                    updateDate={room.updateDate}
+                    msgExpTime={room.msgExpTime}
+                    navigation={navigation}
+                />
+            );
+        });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -35,24 +64,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
             </View>
             <Searchbar />
             <ScrollView>
-            {rooms === null ? (
-                <ChatroomLoading />
-            ) : (
-                rooms.map((room) => {
-                    return (
-                        <ChatroomBox
-                            key={room.chatroomId}
-                            chatroomId={room.chatroomId}
-                            name={room.name}
-                            type={room.type}
-                            createDate={room.createDate}
-                            updateDate={room.updateDate}
-                            msgExpTime={room.msgExpTime}
-                            navigation={navigation}
-                        />
-                    );
-                })
-            )}
+            {roomsComponent()}
             <View style={{height: 200}}>
             </View>
             </ScrollView>
@@ -78,4 +90,17 @@ const styles = StyleSheet.create({
     logout: {
         marginTop: 20,
     },
+    titleMsgContainer:{
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    titleMsg:{
+        alignSelf:"center",
+        justifyContent: "center",
+        fontSize: 15,
+        fontFamily: "noto-reg",
+        color:"#979797",
+        lineHeight: 45,
+        marginTop:50
+    }
 });

@@ -36,6 +36,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
       // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
       if(isFocused){
       (async () => {
+        //setPageState("loading");
         await fetchFromAsyncStorage();
         // await sleep(2);
         await fetchFriends();
