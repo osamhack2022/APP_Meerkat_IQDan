@@ -15,7 +15,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const {navigation} = props;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
 
-    const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatrooms/my")
+    const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
 
     const handleAddChatroom = () => {
         navigation.push("AddChatroom")
