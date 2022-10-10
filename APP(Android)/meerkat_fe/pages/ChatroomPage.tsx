@@ -9,21 +9,24 @@ import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
 import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel';
 // types
-import { Chatroom, RootStackScreenProps } from '../common/types';
+import { Chatroom, MessageDto, RootStackScreenProps } from '../common/types';
 // context
-import { SocketContext } from '../common/Context';
+import { LoginContext, SocketContext } from '../common/Context';
 // thirds
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetch';
+import { useSocketIO } from '../hooks/useSocketIO';
+import { Socket } from 'socket.io-client';
+import { roomSocketFunction } from '../common/roomSocket';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [chatroomInfo, setChatroomInfo] = useState<Chatroom | null>(null);
-  const { isSocketConnected, socket } = useContext(SocketContext);
+  
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false); // 우측 메뉴
   const [templateVisible, setTemplateVisible] = useState(false); // 메시징 템플릿
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
@@ -34,33 +37,41 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     '/chatroom/' + chatroomId,
   );
 
+  
+  const {isNotLoggedIn} = useContext(LoginContext);
+  const { socket } = useSocketIO(isNotLoggedIn, roomSocketFunction);
+
   // TODO: 나중에 여기 socket 부분 분리.
   useEffect(() => {
-    // only use socket.emit when connected.
-    // ex)
+    socket.connect();
+
     // if(isSocketConnected && socket.connected) socket.emit("event name", "msg");
-    socket.on('connect', () => {
-      console.log('conneceted!');
-    });
-
-    socket.on('message', (msgStr: string) => {
-      let msgJson: { content: string } = JSON.parse(msgStr);
-
-      setMessages(previousMessages => {
-        const sentMessages: IMessage[] = [
-          {
-            _id: previousMessages.length + 1,
-            createdAt: new Date(),
-            text: msgJson.content,
-            sent: true,
-            received: true,
-            user: otherUser,
-          },
-        ];
-
-        return GiftedChat.append(previousMessages, sentMessages);
+    socket.on('connect', () =>{
+      console.log(chatroomId + " socket connection 시작");
+      socket.on('hearMessage', (messageDto: MessageDto) => {
+        console.log(chatroomId + "message 수신: ");
+        console.log(messageDto);
+  
+        if(messageDto.roomId == chatroomId){
+          console.log(messageDto.roomId);
+          setMessages(previousMessages => {
+            const sentMessages: IMessage[] = [
+              {
+                _id: previousMessages.length + 1,
+                createdAt: new Date(),
+                text: messageDto.content,
+                sent: true,
+                received: true,
+                user: otherUser,
+              },
+            ];
+    
+            return GiftedChat.append(previousMessages, sentMessages);
+          });
+        }
       });
-    });
+    })
+   
 
     socket.on('disconnect', () => {
       console.log('disconnected from server');
@@ -90,14 +101,23 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   };
 
   const sendTextMessage = (text: string) => {
-    onSend([
-      {
-        text: text,
-        user: user,
-        createdAt: new Date(),
-        _id: messages.length + 1,
-      },
-    ]);
+
+    // TODO : disconneted일 때 예외처리 해야 할 듯.
+    if(socket.connected){
+      const messageDto:MessageDto = {
+        content: text,
+        roomId: chatroomId
+      };
+      socket.emit("speakMessage", messageDto);
+      onSend([
+        {
+          text: text,
+          user: user,
+          createdAt: new Date(),
+          _id: messages.length + 1,
+        },
+      ]);
+    }
   };
   
   return (

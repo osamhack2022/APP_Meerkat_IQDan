@@ -8,6 +8,5 @@ export const LoginContext = createContext({
 });
 
 export const SocketContext = createContext({
-    isSocketConnected: false,
     socket: getEmptySocketIO()
 });
