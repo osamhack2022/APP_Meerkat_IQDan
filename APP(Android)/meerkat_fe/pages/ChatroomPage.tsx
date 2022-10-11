@@ -16,7 +16,7 @@ import { LoginContext, SocketContext } from '../common/Context';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useDoubleFetchAndSave from '../hooks/useDoubleFetch';
+import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
 import { Socket } from 'socket.io-client';
 
