@@ -31,7 +31,6 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
         return rooms.map((room) => {
             return (
-                <ScrollView>
                 <ChatroomBox
                     key={room.chatroomId}
                     chatroomId={room.chatroomId}
@@ -42,7 +41,6 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
                     msgExpTime={room.msgExpTime}
                     navigation={navigation}
                 />
-            </ScrollView>
             );
         });
     };
@@ -53,7 +51,9 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         <View style={styles.container}>
             
             <Searchbar />
+            <ScrollView>
             {roomsComponent()}
+            </ScrollView>
             <View style={{height: 200}}>
             </View>
         </View>
