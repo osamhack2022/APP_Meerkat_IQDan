@@ -46,9 +46,15 @@ class UsersRoute implements Routes {
       authMiddleware,
       this.usersController.updateUserPw,
     );
+    // 퍼블릭 키 가져오기
+    this.router.get(
+      `${this.path}/publicKey/:id(\\d+)`,
+      authMiddleware,
+      this.usersController.getPublicKey,
+    );
     // 퍼블릭 키 업데이트
     this.router.put(
-      `${this.path}/updatePublicKey`,
+      `${this.path}/publicKey`,
       validationMiddleware(updatePublicKeyDto, 'body'),
       authMiddleware,
       this.usersController.updatePublicKey,

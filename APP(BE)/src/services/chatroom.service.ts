@@ -283,6 +283,25 @@ class ChatroomService {
 
     return;
   }
+
+  /**
+   * 유저에게 대칭기 발송.
+   */
+  public async putChatroomKey(userId: number, chatroomId: number, encrypedKey: string): Promise<void> {
+    const chatroom = await prisma.chatroom.findUnique({
+      where: { chatroomId: chatroomId, },
+    });
+
+    let res = await prisma.chatroomKey.create({
+      data: {
+        forUserId: userId,
+        forChatroomId: chatroomId,
+        encryptedKey: encrypedKey
+      }
+    })
+
+    return;
+  }
 }
 
 export default ChatroomService;

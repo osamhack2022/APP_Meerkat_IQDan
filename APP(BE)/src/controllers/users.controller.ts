@@ -136,6 +136,17 @@ class UsersController {
     }
   };
 
+  public getPublicKey = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = Number(req.params.id);
+      let key = await this.userService.getPublicKey(userId);
+
+      res.status(200).json({ message: 'updated', key });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updatePublicKey = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const uid = req.user.uid;

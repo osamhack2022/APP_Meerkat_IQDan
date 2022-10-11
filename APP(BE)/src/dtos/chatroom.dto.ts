@@ -38,3 +38,14 @@ export class UpdateChatroomDto {
     @IsBoolean()
     public removeAfterRead: boolean;
 }
+
+export class PutChatroomKeyDto {
+    @IsNumber()
+    public forUserId: number;
+
+    @IsNumber()
+    public chatroomId: number;
+
+    @IsString()
+    public encrypedKey: string;
+}
