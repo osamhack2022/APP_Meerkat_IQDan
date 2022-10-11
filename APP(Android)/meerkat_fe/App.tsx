@@ -35,7 +35,7 @@ export default function App() {
     });
 
     // login token hook
-    const { checkIfLoggedIn, isLoginLoading, isNotLoggedIn } =
+    const { checkIfLoggedIn, isLoginLoading, isNotLoggedIn, userId } =
         useLoginCheck();
 
     // splash hide callback
@@ -66,6 +66,7 @@ export default function App() {
       >
         <LoginContext.Provider
           value={{
+            userId: userId,
             checkIfLoggedIn: checkIfLoggedIn,
             isNotLoggedIn: isNotLoggedIn,
           }}

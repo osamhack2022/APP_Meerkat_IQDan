@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState, useCallback } from "react";
+import jwtDecode from 'jwt-decode';
 
 export default function useLoginCheck() {
     // login state refresher
@@ -8,6 +9,8 @@ export default function useLoginCheck() {
     //flags
     const [isLoginLoading, setIsLoginLoading] = useState(true);
     const [isNotLoggedIn, setIsNotLoggedIn] = useState(true);
+    
+    const [userId, setUserId] = useState<number>(-1);
 
     useEffect(() =>{
         getCurrentLoginToken();
@@ -32,6 +35,11 @@ export default function useLoginCheck() {
             } 
             loginToken === null ? setIsLoginLoading(true): setIsLoginLoading(false) 
             loginToken === "" ? setIsNotLoggedIn(true) : setIsNotLoggedIn(false)
+
+            if (token !== null) {
+                const tokenObject: any = jwtDecode(token)
+                setUserId(tokenObject.id)
+            }
         } catch(e) {
             // may be leave a log to a .log or db
             // also trigger system error message.
@@ -39,5 +47,5 @@ export default function useLoginCheck() {
         }
     }
 
-    return { checkIfLoggedIn, isLoginLoading, isNotLoggedIn};
+    return { checkIfLoggedIn, isLoginLoading, isNotLoggedIn, userId};
 }

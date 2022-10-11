@@ -37,9 +37,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     '/chatroom/' + chatroomId,
   );
 
-  console.log(chatroomInfo)
-
-  const { isNotLoggedIn } = useContext(LoginContext);
+  const { isNotLoggedIn, userId } = useContext(LoginContext);
   const { socket } = useSocketIO(isNotLoggedIn, null);
 
   const [initialLoad, setInitialLoad] = useState(true)
@@ -62,39 +60,20 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
 
-        if (messageDto.isSender) {
-          onSend([
-            {
-              _id: messageDto._id,
-              text: messageDto.text,
-              user: user,
-              createdAt: messageDto.sendTime
-            },
-          ]);
-        }
-        else{
-          setMessages(previousMessages => {
-            const sentMessages: IMessage[] = [
-              {
-                _id: messageDto._id,
-                createdAt: new Date(),
-                text: messageDto.text,
-                sent: true,
-                received: true,
-                user: messageDto.isSender? user: otherUser
-              },
-            ];
-    
-            return GiftedChat.append(previousMessages, sentMessages);
-          });
-        }
+        onSend([
+          {
+            _id: messageDto._id,
+            text: messageDto.text,
+            user: messageDto.senderId === userId ? user : otherUser,// TODO : 다른 유저일 때 처리
+            createdAt: messageDto.sendTime
+          },
+        ]);
       });
 
       socket.on("disconnect", () => {
         console.log('--------------- room disconnected ---------------');
       });
-    })
-   
+    });
 
     socket.on('disconnect', () => {
       console.log('disconnected from server');
@@ -107,9 +86,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   }, [socket]);
 
   useEffect(() => {
-    // dummy data
-    setMessages(msgSample);
-
+    // fetch from server
     const messageDto2IMessage = (message: any):IMessage=>{
       return {
         _id:message._id,
@@ -127,31 +104,57 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       .then(res => {
         let result: IMessageDto[] = res.data.data;
         const unreads: IMessage[] = result.map(message => {
-          console.log(message);
           return messageDto2IMessage(message);
         });
         setMessages(unreads);
       });
-
-
   }, []);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages: IMessage[]) =>
-      GiftedChat.append(previousMessages, messages),
+      GiftedChat.append(messages, previousMessages),
     );
   }, []);
 
+  // deprecated
   const onSendFromUser = (msg: IMessage[] = []) => {
     const createdAt = new Date();
     const messagesToUpload = msg.map(message => ({
       ...message,
       user,
       createdAt,
-      _id: messages.length + 1,
     }));
     onSend(messagesToUpload);
   };
+
+  // me
+  const user = {
+    _id: userId,
+    name: 'Developer',
+  };
+  
+  // other user
+  const otherUser = {
+    _id: 2,
+    name: 'React Native',
+    avatar: require('../assets/users/emptyProfile.jpg'),
+  };
+
+  const msgSample: IMessage[] = [
+    {
+      _id: 1,
+      text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
+      createdAt: new Date(),
+      user: otherUser,
+    },
+    {
+      _id: 2,
+      text: 'This is a quick reply. Do you love Gifted Chat? (checkbox)',
+      createdAt: new Date(),
+      user: otherUser,
+    },
+  ];
+  
 
   const sendTextMessage = (text: string) => {
 
@@ -191,7 +194,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
               left: { color: 'black' },
               right: { color: 'white' },
             }}
-            user={{ _id: 1 }}
+            user={{ _id: userId }}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
             renderInputToolbar={() => null}
@@ -231,28 +234,5 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-const user = {
-  _id: 1,
-  name: 'Developer',
-};
 
-const otherUser = {
-  _id: 2,
-  name: 'React Native',
-  avatar: require('../assets/users/emptyProfile.jpg'),
-};
 
-const msgSample: IMessage[] = [
-  {
-    _id: 1,
-    text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
-    createdAt: new Date(),
-    user: otherUser,
-  },
-  {
-    _id: 2,
-    text: 'This is a quick reply. Do you love Gifted Chat? (checkbox)',
-    createdAt: new Date(),
-    user: otherUser,
-  },
-];
