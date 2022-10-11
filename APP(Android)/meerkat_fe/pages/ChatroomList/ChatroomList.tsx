@@ -11,8 +11,15 @@ import { Chatroom, MainTabScreenProps } from "../../common/types";
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
+    const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
-    const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
+    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
+
+    useEffect(() => {    
+        if (rerender) {
+            reFetch()
+        }   
+    }, [rerender])
 
     const handleAddChatroom = () => {
         navigation.push("AddChatroom")

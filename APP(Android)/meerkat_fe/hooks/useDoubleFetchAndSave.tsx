@@ -67,5 +67,10 @@ export default function useDoubleFetchAndSave<T>(
       });
   };
 
-  return { isLoading };
+  const reFetch = () => {
+    fetchFromLocal();
+    fetchFromServer();
+  }
+
+  return { isLoading, reFetch};
 }
