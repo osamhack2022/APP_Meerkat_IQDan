@@ -140,8 +140,10 @@ class UsersController {
     try {
       const userId = Number(req.params.id);
       let data = await this.userService.getPublicKey(userId);
+      let key = null;
+      if (data) key = data.publicKey;
 
-      res.status(200).json({ message: 'updated', data: {key: data.publicKey}});
+      res.status(200).json({ message: 'updated', data: {key: key}});
     } catch (error) {
       next(error);
     }
