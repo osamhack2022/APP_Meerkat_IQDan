@@ -36,13 +36,18 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     '/chatroom/' + chatroomId,
   );
 
-  console.log(chatroomInfo)
-  const {isNotLoggedIn} = useContext(LoginContext);
+  const { isNotLoggedIn } = useContext(LoginContext);
   const { socket } = useSocketIO(isNotLoggedIn, null);
+
+  const [initialLoad, setInitialLoad] = useState(true)
 
   // TODO: 나중에 여기 socket 부분 분리.
   // TODO : 방 나갈 때 event 만들고 서버에서 받기.
   useEffect(() => {
+    if (initialLoad) {
+      return setInitialLoad(false)
+    }
+    
     socket.connect();
 
     socket.on('connect', () =>{
