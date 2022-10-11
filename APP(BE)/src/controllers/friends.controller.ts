@@ -4,7 +4,7 @@ import { FriendDto } from '@dtos/friends.dto';
 import FriendsService from '@services/friends.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 
-class UsersController {
+class FriendsController {
   public friendsService = new FriendsService();
 
   public getFriendsById = async (
@@ -70,4 +70,4 @@ class UsersController {
   };
 }
 
-export default UsersController;
+export default FriendsController;

@@ -5,7 +5,7 @@ import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import authMiddleware from '@/middlewares/auth.middleware';
 
-class UsersRoute implements Routes {
+class FriendsRouter implements Routes {
   public path = '/friends';
   public router = Router();
   public friendsController = new FriendsController();
@@ -22,4 +22,4 @@ class UsersRoute implements Routes {
   }
 }
 
-export default UsersRoute;
+export default FriendsRouter;
