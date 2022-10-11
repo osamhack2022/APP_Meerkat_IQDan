@@ -46,14 +46,21 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
         console.log("cached", cachedMessages)
         console.log("new", newMessages)
 
-        setMessages([...cachedMessages, ...newMessages])
-        await saveNewMessagesToLocal(newMessages)
+        // setMessages([...cachedMessages, ...newMessages])
+        // await saveNewMessagesToLocal(newMessages)
     }
     init()
   }, [chatroomId]);
 
   /**
    * 새로온 메시지 가져오기.
+   * - 여기서 E2EE 메세지 내용 복호화하기.
+   * => 로컬에서 복호화된 ChatroomKey 가져오기.
+   * [=> 없으면 서버 ChatroomKey에서 열쇠 가져오기
+   * => 로컬에서 PrivateKey 가져오기 (이건 로그인시 있는지 확인하기에 무조건 있음.)
+   * => PrivateKey로 ChatroomKey 복호화 후 로컬에 저장]
+   * => 복호화된 ChatroomKey로 처음 메세지 복호화하고, 
+   * => 이후 소켓 메세지도 로컬에서 키 가져와서 복호화.
    * @return 새로온 메시지.
    */
   const fetchNewMessagesFromServer = async () => {
@@ -72,6 +79,8 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
 
   /**
    * 로컬에 새로온 메시지 저장하기.
+   * - 여긴 일반 E2EE 적용 안해도 되는 곳임.
+   * - 여긴 비밀방일 때만 양방향 비밀번호로 암호화.
    */
   const saveNewMessagesToLocal = async (newMessages: IMessage[]) => {
     await Promise.all(
@@ -99,6 +108,8 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
   /**
    * 로컬에서 메시지 가져오기.
    * 처음에만 로컬에서 가져오고, 그 다음부터는 로컬에는 저장만함.
+   * - 여긴 일반 E2EE 적용 안해도 되는 곳임.
+   * - 여긴 비밀방일 때만 양방향 비밀번호로 복호화
    */
   const fetchMessagesFromLocal = async () => {
     const messagePointers = await AsyncStorage.getItem('chatroom' + chatroomId + 'pointers')
@@ -116,6 +127,8 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
 
   /**
    * 소켓에서 새로운 메세지 받아오기.
+   * - 채팅방 들어올 때 로컬에 복호화한 ChatroomKey 가져와서 새 메세지도 복호화하기.
+   * - 복호화 후 로컬 저장과 onSend에 넣어준다.
    * @param message 
    */
   const getNewMessagesFromSocket = async (message: IMessage[]) => {
@@ -125,6 +138,7 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
 
   /**
    * 내가 보낸 메시지 서버에 보내기.
+   * - 채팅방 들어올 때 로컬에 복호화한 ChatroomKey로 text 암호화하고 보내기.
    */
   const sendNewMessageToServer = (text: string) => {
         // TODO : disconneted일 때 예외처리 해야 할 듯.
@@ -158,6 +172,7 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
     name: 'React Native',
     avatar: require('../assets/users/emptyProfile.jpg'),
   };
+  
   /**
    * 메시지 가져오기 helper function
    * @param message
