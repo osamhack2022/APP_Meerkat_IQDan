@@ -8,42 +8,18 @@ import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
 import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
-// dummy data
-import api from "../../common/api";
-
-import {
-    MaterialCommunityIcons,
-    Feather,
-    MaterialIcons,
-    AntDesign
-} from "@expo/vector-icons";
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
-    const [pageState, setPageState] = useState<string>("loading");
-
-
-    useEffect(() => {
-        // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
-        api.get("/chatroom/my").then((res) => {
-            //setRooms(res.data.data)
-            setPageState("loaded");
-        }).catch((err) => {
-            Alert.alert("오류가 발생했습니다.")
-        })
-    }, []);
-
     const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
-
 
     const handleAddChatroom = () => {
         navigation.push("AddChatroom")
     }
 
     const roomsComponent=()=>{
-        if (pageState == "loading") {return <ChatroomLoading />}
-        else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
+        if (isLoading) {return <ChatroomLoading />}
         else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
         return rooms.map((room) => {
             return (
