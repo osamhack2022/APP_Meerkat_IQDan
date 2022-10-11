@@ -44,8 +44,8 @@ export class PutChatroomKeyDto {
     public forUserId: number;
 
     @IsNumber()
-    public chatroomId: number;
+    public forChatroomId: number;
 
     @IsString()
-    public encrypedKey: string;
+    public encryptedKey: string;
 }

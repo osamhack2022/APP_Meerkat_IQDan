@@ -170,9 +170,9 @@ class ChatroomController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { chatroomId, forUserId, encrypedKey } = req.body as PutChatroomKeyDto;
+      const { forChatroomId, forUserId, encryptedKey } = req.body as PutChatroomKeyDto;
       
-      await this.chatroomService.putChatroomKey(forUserId, chatroomId, encrypedKey);
+      await this.chatroomService.putChatroomKey(forUserId, forChatroomId, encryptedKey);
 
       res.status(200).json({
         message: `success`,
