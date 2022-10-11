@@ -167,7 +167,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
   }) || [];
 
   return (
-    <View style={{backgroundColor: "pink", width: "100%", height: "100%"}}>
+    <View style={{backgroundColor: "white", width: "100%", height: "100%"}}>
       <UserProfilePanel 
         user={currentProfileUser}
         setUser={setCurrentProfileUser}
@@ -199,7 +199,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
             }
             
           </View>
-          <View style={{ paddingBottom: 120, backgroundColor: "pink" }} />
+          <View style={{ paddingBottom: 120, backgroundColor: "white" }} />
         </ScrollView>
       </View>
     </View>

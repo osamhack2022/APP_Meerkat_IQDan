@@ -174,17 +174,14 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
           <reactNativePaper.Text style={styles.title}>설정</reactNativePaper.Text>
         </View>
         <View style={styles.userInfoSection}>
-          <View style={{ flexDirection: 'row', marginTop: 15 }}>
+          <View style={{ flexDirection: 'row', alignItems:"center" }}>
             <Image style={styles.profileImage}
               source={getProfileSource(user?.image)}
             />
-
             <View style={{ marginLeft: 20 }}>
-              <reactNativePaper.Title style={[styles.title, {
-                marginTop: 15,
-                marginBottom: 5,
-              }]}>{user?.name}</reactNativePaper.Title>
+              <reactNativePaper.Title style={[styles.nameTitle,]}>{user?.name}</reactNativePaper.Title>
               <reactNativePaper.Caption style={styles.caption}>{user?.militaryRank}</reactNativePaper.Caption>
+              <reactNativePaper.Caption style={styles.captionForStatus}>{'상태메시지'}</reactNativePaper.Caption>
 
             </View>
           </View>
@@ -222,7 +219,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
           </View>
           <View style={styles.infoBox}>
             <reactNativePaper.Title style={styles.infoBoxText}>{friends ? friends.length : 0}</reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>친구</reactNativePaper.Caption>
+            <reactNativePaper.Caption style={styles.caption}>전우</reactNativePaper.Caption>
 
           </View>
         </View>
@@ -247,7 +244,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
 
           <reactNativePaper.TouchableRipple onPress={generateKeys}>
             <View style={styles.menuItem}>
-              <AntDesign name="key" size={24} color="black" />
+              <AntDesign name="key" size={24} color="#6A4035" />
               <Text style={styles.menuItemText}>보안키 생성</Text>
             </View>
           </reactNativePaper.TouchableRipple>
@@ -283,6 +280,11 @@ const styles = StyleSheet.create({
         fontFamily: "noto-bold",
         lineHeight: 45,
     },
+    nameTitle:{
+        fontSize: 20,
+        fontFamily: "noto-bold",
+        lineHeight: 25,
+    },
     menucontainer: {
         flexDirection: "row",
         alignItems: "center",
@@ -301,11 +303,20 @@ const styles = StyleSheet.create({
       marginBottom: 25,
     },
     caption: {
+      marginTop:5,
       fontSize: 14,
       lineHeight: 16,
       fontWeight: '500',
       fontFamily: "noto-bold",
       color: '#6A4035',
+    },
+    captionForStatus: {
+      marginTop:10,
+      fontSize: 14,
+      lineHeight: 16,
+      fontWeight: '500',
+      fontFamily: "noto-med",
+      color: 'black',
     },
     row: {
       flexDirection: 'row',

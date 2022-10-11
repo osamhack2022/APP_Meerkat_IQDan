@@ -20,6 +20,17 @@ export default function ChatroomLoading() {
 <View style={styles.container}>
     <Animated.View style={getGlitterStyle(animatedValue)} />
 </View>
+<View style={styles.container}>
+    <Animated.View style={getGlitterStyle(animatedValue)} />
+</View>
+<View style={styles.container}>
+    <Animated.View style={getGlitterStyle(animatedValue)} />
+</View>
+<View style={styles.container}>
+    <Animated.View style={getGlitterStyle(animatedValue)} />
+</View>
+<View style={{height: 200}}>
+            </View>
 
 </>
     )

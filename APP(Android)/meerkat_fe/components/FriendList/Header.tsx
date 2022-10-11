@@ -19,11 +19,11 @@ export default function Header(props: HeaderProps) {
         <View style={styles.titleLayout}>
           <Text style={styles.title}>{categoryName}</Text>
           <TouchableOpacity onPress={props.onPressAddFriend}>
-            <Text style={{fontSize: 36}}>+</Text>
+            <Text style={styles.titleForIcon}>+</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.horizontalLine}/>
+      {/* <View style={styles.horizontalLine}/> */}
     </View>
   );
 }
@@ -37,12 +37,18 @@ const styles = StyleSheet.create({
   },
   titleLayout: {
     flexDirection: "row",
+    alignItems:"center",
     justifyContent: "space-between"
   },
   title: {
     fontSize: 25,
     fontFamily: "noto-bold",
     lineHeight: 45
+  },
+  titleForIcon:{
+    fontSize: 32,
+    fontFamily: "noto-bold",
+    lineHeight: 38
   },
   
   horizontalLine:{

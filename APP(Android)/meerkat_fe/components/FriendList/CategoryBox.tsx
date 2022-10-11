@@ -45,7 +45,7 @@ export default function CategoryBox(props: Category) {
 
 const styles = StyleSheet.create({
     container:{
-        
+        marginBottom:10
     },
     categoryContainer:{
         height: 42,

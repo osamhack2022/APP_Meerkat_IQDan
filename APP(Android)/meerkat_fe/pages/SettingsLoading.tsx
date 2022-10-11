@@ -33,47 +33,52 @@ export default function SettingsLoading() {
             <View style={styles.titleContainer}>
                 <reactNativePaper.Text style={styles.title}>설정</reactNativePaper.Text>
             </View>
-            <View style={styles.userInfoSection}>
-        <View style={{flexDirection: 'row', marginTop: 15}}>
-        <View style={styles.profileImage}>
+
+      <View style={styles.userInfoSection}>
+          <View style={{ flexDirection: 'row', alignItems:"center" }}>
+          <View style={styles.profileImage}>
                 <Animated.View style={getGlitterStyle(animatedValue)} />
             </View>
-         
-          <View style={{marginLeft: 20}}>
-          <View style={styles.titleText}>
+            <View style={{ marginLeft: 20 }}>
+              <View style={styles.titleText}>
                     <Animated.View style={getGlitterStyle(animatedValue)} />
                 </View>
-                <View style={styles.nameText}>
+                <View style={styles.caption}>
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
+                </View>
+                <View style={styles.captionForStatus}>
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
+                </View>
+            </View>
+          </View>
+        </View>
+
+
+        <View style={styles.userInfoSection}>
+          <View style={styles.userInfo}>
+
+            <Feather name="home" color="#6A4035" size={20} />
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>소속부대</Text>
+            <View style={styles.nameText}>
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
+                </View>
+          </View>
+          <View style={styles.userInfo}>
+            <MaterialIcons name="confirmation-number" color="#6A4035" size={20} />
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>군번        </Text>
+            <View style={styles.nameText}>
+                    <Animated.View style={getGlitterStyle(animatedValue)} />
+                </View>
+          </View>
+          <View style={styles.userInfo}>
+            <AntDesign name="idcard" size={20} color="#6A4035" />
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>아이디    </Text>
+            <View style={styles.nameText}>
                     <Animated.View style={getGlitterStyle(animatedValue)} />
                 </View>
 
           </View>
         </View>
-      </View>
-
-      <View style={styles.userInfoSection}>
-        <View style={styles.userInfo}>
-          <Feather name="home" color="#6A4035" size={20}/>
-          <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>소속부대</Text>
-          <View style={styles.nameText}>
-                    <Animated.View style={getGlitterStyle(animatedValue)} />
-                </View>
-        </View>
-        <View style={styles.userInfo}>
-          <MaterialIcons  name="confirmation-number" color="#6A4035" size={20}/>
-          <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>군번        </Text>
-          <View style={styles.nameText}>
-                    <Animated.View style={getGlitterStyle(animatedValue)} />
-                </View>
-        </View>
-        <View style={styles.userInfo}>
-        <AntDesign name="idcard" size={20} color="#6A4035" />
-        <Text style={{color:"black", marginLeft: 20,fontFamily: "noto-bold",}}>아이디    </Text>
-        <View style={styles.nameText}>
-                    <Animated.View style={getGlitterStyle(animatedValue)} />
-                </View>
-        </View>
-      </View>
 
       <View style={styles.infoBoxWrapper}>
           <View style={[styles.infoBox, {
@@ -81,12 +86,12 @@ export default function SettingsLoading() {
             borderRightWidth: 1
           }]}>
 
-            <reactNativePaper.Title style={styles.infoBoxText}><Animated.View style={getGlitterStyle(animatedValue)} /></reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>전역까지</reactNativePaper.Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>D-0</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.captionForBig}>전역까지</reactNativePaper.Caption>
           </View>
           <View style={styles.infoBox}>
-            <reactNativePaper.Title style={styles.infoBoxText}><Animated.View style={getGlitterStyle(animatedValue)} /></reactNativePaper.Title>
-            <reactNativePaper.Caption style={styles.caption}>친구</reactNativePaper.Caption>
+            <reactNativePaper.Title style={styles.infoBoxText}>0</reactNativePaper.Title>
+            <reactNativePaper.Caption style={styles.captionForBig}>전우</reactNativePaper.Caption>
 
           </View>
       </View>
@@ -154,13 +159,21 @@ const styles = StyleSheet.create({
       paddingHorizontal: 30,
       marginBottom: 25,
     },
-    caption: {
+    captionForBig: {
       fontSize: 14,
       lineHeight: 16,
       fontWeight: '500',
       fontFamily: "noto-bold",
       color: '#6A4035',
     },
+    captionForStatus:{
+      marginTop:10,
+      height: 14,
+      lineHeight: 16,
+      width: 90,
+      backgroundColor: '#DBDBDB',
+    },
+
     row: {
       flexDirection: 'row',
       marginBottom: 10,
@@ -225,18 +238,22 @@ const styles = StyleSheet.create({
     },
     nameText: {
       lineHeight: 25,
-      height: 19,
+      height: 20,
       backgroundColor: "#DBDBDB",
-      width: 45,
+      width: 60,
       marginLeft: 20
   },
   titleText: {
     lineHeight: 25,
-    height: 30,
+    height: 20,
     backgroundColor: "#DBDBDB",
     width: 80,
-    marginLeft: 20,
-    marginTop:15,
-    marginBottom: 5,
+},
+caption: {
+  marginTop:5,
+  height: 14,
+  width:40,
+  lineHeight: 16,
+  backgroundColor: '#DBDBDB',
 },
 });
