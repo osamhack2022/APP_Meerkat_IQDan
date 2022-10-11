@@ -18,7 +18,7 @@ import env from "../env.json";
 export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | null) {
   const [socket, setSocket] = useState<Socket>(getEmptySocketIO);
 
-  // create socket connection when login state changes.
+  // 로그인 되면 socket을 생성해주는 effect
   useEffect(() => {
     if(isNotLoggedIn){
       socket.removeAllListeners();
@@ -43,6 +43,7 @@ export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | nu
     };
   }, [isNotLoggedIn]);
 
+  // auth가 있는 socket이 제대로 생성되면 그 socket에 리스너들을 붙여주는 effect
   useEffect(()=> {
     // empty socket은 socket.auth가 undefined입니다.
     if(socket.auth !== undefined && attachFunction !== null){
