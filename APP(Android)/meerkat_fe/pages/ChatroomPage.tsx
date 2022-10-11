@@ -47,7 +47,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     if (initialLoad) {
       return setInitialLoad(false)
     }
-    
+
     socket.connect();
 
     socket.on('connect', () =>{
@@ -60,7 +60,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
   
-        if(messageDto.belongChatroomId == chatroomId){
+        if(messageDto.belongChatroomId === chatroomId){
           console.log(messageDto.belongChatroomId);
           setMessages(previousMessages => {
             const sentMessages: IMessage[] = [
@@ -148,7 +148,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       <KeyboardAvoidingView
         behavior="padding"
         style={{ flex: 1}}
-        keyboardVerticalOffset={-300} // should be 0 for ios, but Platform.select not working currnetly.
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300} // should be 0 for ios, but Platform.select not working currnetly.
       >
         <View style={styles.chat}>
           <GiftedChat
