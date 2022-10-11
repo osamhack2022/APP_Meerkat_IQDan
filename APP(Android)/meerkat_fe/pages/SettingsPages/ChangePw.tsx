@@ -37,11 +37,10 @@ export default function ChangePw(props: RootStackScreenProps<"ChangePw">) {
                         onPress: () => navigation.goBack(),
                     },
                 ]);
-                console.log('?');
-                navigation.goBack();
+                //navigation.goBack();
             })
             .catch((err) => {
-                let errText = "알 수 없는 이유로 회원가입에 실패하였습니다.";
+                let errText = "알 수 없는 이유로 비밀번호 변경에 실패하였습니다.";
                 console.log(err);
                 if (err.response.status === 409) {
                     if (err.response.message === "Password is not matching") {

@@ -17,7 +17,7 @@ import http from "http";
 import https from "https";
 import fs from "fs";
 // route
-import SocketIO from "./socketio";
+import SocketIO from "./socket/socketio";
 
 class App {
   public app: express.Application;

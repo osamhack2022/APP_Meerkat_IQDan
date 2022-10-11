@@ -18,6 +18,7 @@ import { LoginContext } from "../common/Context";
 import api from "../common/api";
 
 import getProfileSource from "../components/FriendList/getProfileSource";
+import SettingsLoading from '../pages/SettingsLoading';
 import { useIsFocused } from "@react-navigation/native";
 
 import { generateRSAKeys } from "../common/crypto";
@@ -38,61 +39,61 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     // load chat room data from async storage / also check for updates? no. data is updated via websocket or polling.
     if (isFocused) {
       (async () => {
-        await sleep(0.7);
+        //setPageState("loading");
         await fetchFromAsyncStorage();
         // await sleep(2);
-        fetchFriends();
 
+        await fetchFriends();
+        await fetchMe(); 
+        await sleep(0.7);
+        setPageState("loaded");
       })();
-      (async () => {
-        fetchMe();
-      })();
-    }
-  }, [isFocused]);
+      }
+         }, [isFocused]);
 
   const fetchMe = async () => {
-    api
-      .get("/users/me")
-      .then((res) => {
-        let data = res.data.data as User;
-        setUser(data);
-        setDDday(computedDday(data.enlistmentDate));
+      api
+        .get("/users/me")
+        .then((res) => {
+          let data = res.data.data as User;
+          setUser(data);
+          setDDday(computedDday(data.enlistmentDate));
 
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
+    const fetchFromAsyncStorage = async () => {
+      let friends = JSON.parse(await AsyncStorage.getItem(FriendListKey) || "[]")
+      
+      setFriends(friends);
+    };
 
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
-  const fetchFromAsyncStorage = async () => {
-    let friends = JSON.parse(await AsyncStorage.getItem(FriendListKey) || "[]")
-    setPageState("loaded");
-    setFriends(friends);
-  };
-
-  const fetchFriends = async () => {
-    // axios get 후에 async storage set
-    // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ?
-
-    let userToken = await AsyncStorage.getItem("userToken")
-
-    api.get("/friends", {
-      headers: {
-        Authorization: "Bearer " + userToken,
-      },
-    })
-      .then(async (res) => {
-        let friends = res.data.data;
-        setFriends(friends);
-        setPageState("loaded");
-        AsyncStorage.setItem(FriendListKey, JSON.stringify(friends));
-      })
-      .catch((err) => {
-        // TODO : show error
-        setPageState("error");
-        console.log(err.response);
-      })
-  };
+    const fetchFriends = async () => {
+      // axios get 후에 async storage set
+      // async storge에 넣고, async에서 받아오고, 그걸 리턴하면 ?
+  
+      let userToken = await AsyncStorage.getItem("userToken")
+  
+      api.get("/friends", {
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        })
+        .then(async (res) => {
+          let friends = res.data.data;
+          setFriends(friends);
+          AsyncStorage.setItem(FriendListKey, JSON.stringify(friends));
+        })
+        .catch((err) => {
+          // TODO : show error
+          setPageState("error");
+          console.log(err.response);
+        })
+    };
+    
 
   const sleep = (time: number) => {
     return new Promise((resolve) => {
@@ -137,6 +138,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     navigation.navigate("Auth")
   };
 
+
   const generateKeys = async () => {
     setGenearting(true);
     setTimeout(async () => {
@@ -161,7 +163,9 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
       }
     }, 1000)
   }
-
+  
+ if (pageState == "loading") {return <SettingsLoading />}
+    else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
   return (
     <>
       {generating && <View style={{position: "absolute", height: "200%", width: "100%", backgroundColor: "rgba(50, 50, 50, 0.6)", zIndex: 100}}></View>}
@@ -186,21 +190,22 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
           </View>
         </View>
 
+
         <View style={styles.userInfoSection}>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
 
             <Feather name="home" color="#6A4035" size={20} />
             <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>소속부대</Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.affiliatedUnit}</Text>
           </View>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
             <MaterialIcons name="confirmation-number" color="#6A4035" size={20} />
-            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>군번</Text>
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>군번        </Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.serviceNumber}</Text>
           </View>
-          <View style={styles.row}>
+          <View style={styles.userInfo}>
             <AntDesign name="idcard" size={20} color="#6A4035" />
-            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>아이디</Text>
+            <Text style={{ color: "black", marginLeft: 20, fontFamily: "noto-bold", }}>아이디    </Text>
             <Text style={{ color: "#6A4035", marginLeft: 20 }}>{user?.uid}</Text>
 
           </View>
@@ -262,102 +267,105 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 50,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: "#fff",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10
-  },
-  title: {
-    fontSize: 25,
-    fontFamily: "noto-bold",
-    lineHeight: 45,
-  },
-  menucontainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#E5B47F",
-    margin: 5,
-    paddingLeft: 20,
-    borderRadius: 10,
-  },
-  menuTitle: {
-    fontSize: 20,
-    fontFamily: "noto-med",
-    color: "#6A4035",
-  },
-  userInfoSection: {
-    paddingHorizontal: 30,
-    marginBottom: 25,
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    fontWeight: '500',
-    fontFamily: "noto-bold",
-    color: '#6A4035',
-  },
-  row: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  column: {
-    flexDirection: 'column',
-    marginBottom: 10,
-  }
-  ,
-  infoBoxWrapper: {
-    flexDirection: 'row',
-    height: 100,
-    borderRadius: 20,
-  },
-  infoBox: {
-    width: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E5B47F',
-    fontFamily: "noto-bold",
-    borderRadius: 20,
-    margin: 2
-  },
-  infoBoxText: {
-    fontFamily: "noto-bold",
-    color: 'white',
-    marginBottom: 5
-  },
-  menuWrapper: {
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
-    marginTop: 10,
-  },
-  menuItem: {
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-
-  },
-  menuItemText: {
-    color: '#6A4035',
-    marginLeft: 20,
-    fontFamily: "noto-bold",
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 26,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 17,
-  },
+    container: {
+        paddingTop: 50,
+        paddingLeft: 15,
+        paddingRight: 15,
+        backgroundColor: "#fff",
+    },
+    titleContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingBottom: 10
+    },
+    title: {
+        fontSize: 25,
+        fontFamily: "noto-bold",
+        lineHeight: 45,
+    },
+    menucontainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#E5B47F",
+        margin: 5,
+        paddingLeft: 20,
+        borderRadius: 10,
+    },
+    menuTitle: {
+        fontSize: 20,
+        fontFamily: "noto-med",
+        color: "#6A4035",
+    },
+    userInfoSection: {
+      paddingHorizontal: 30,
+      marginBottom: 25,
+    },
+    caption: {
+      fontSize: 14,
+      lineHeight: 16,
+      fontWeight: '500',
+      fontFamily: "noto-bold",
+      color: '#6A4035',
+    },
+    row: {
+      flexDirection: 'row',
+      marginBottom: 10,
+    },
+    column: {
+        flexDirection: 'column',
+        marginBottom: 10,
+      }
+    ,
+    infoBoxWrapper: {
+      flexDirection: 'row',
+      height: 100,
+      borderRadius: 20,
+    },
+    infoBox: {
+      width: '50%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor:'#E5B47F',
+      fontFamily: "noto-bold",
+      borderRadius: 20,
+      margin:2
+    },
+    infoBoxText:{
+      fontFamily: "noto-bold",
+      color: 'white',
+    },
+    menuWrapper: {
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 1,
+        borderTopColor: '#dddddd',
+        borderTopWidth: 1,
+      marginTop: 10,
+    },
+    menuItem: {
+      borderBottomColor: '#dddddd',
+      borderBottomWidth: 1,
+      borderTopColor: '#dddddd',
+      borderTopWidth: 1,
+      flexDirection: 'row',
+      paddingVertical: 15,
+      paddingHorizontal: 30,
+      
+    },
+    menuItemText: {
+      color: '#6A4035',
+      marginLeft: 20,
+      fontFamily: "noto-bold",
+      fontWeight: '600',
+      fontSize: 16,
+      lineHeight: 26,
+    },
+    profileImage: {
+      width: 80,
+      height: 80,
+      borderRadius: 17,
+    },
+    userInfo:{
+      flexDirection: 'row',
+      alignItems: 'center'
+    }
 });

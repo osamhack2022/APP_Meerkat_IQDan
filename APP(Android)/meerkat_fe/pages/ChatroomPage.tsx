@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
-import ChatroomSide from '../components/Chatroom/ChatroomSide';
+//import ChatroomSide from '../components/Chatroom/ChatroomSide';
 import MKBubble from '../components/Chatroom/CustomChatComp/Bubble';
 import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
@@ -16,7 +16,7 @@ import { LoginContext, SocketContext } from '../common/Context';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useDoubleFetchAndSave from '../hooks/useDoubleFetch';
+import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
 import { Socket } from 'socket.io-client';
 
@@ -41,18 +41,22 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { socket } = useSocketIO(isNotLoggedIn, null);
 
   // TODO: 나중에 여기 socket 부분 분리.
+  // TODO : 방 나갈 때 event 만들고 서버에서 받기.
   useEffect(() => {
     socket.connect();
 
     socket.on('connect', () =>{
       console.log('--------------- room socket ---------------');
       console.log(chatroomId + " socket connection 시작");
+
+      socket.emit("joinRoom", chatroomId);
+
       socket.on('hearMessage', (messageDto: MessageDto) => {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
   
-        if(messageDto.roomId == chatroomId){
-          console.log(messageDto.roomId);
+        if(messageDto.belongChatroomId == chatroomId){
+          console.log(messageDto.belongChatroomId);
           setMessages(previousMessages => {
             const sentMessages: IMessage[] = [
               {
@@ -111,8 +115,10 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     if(socket.connected){
       const messageDto:MessageDto = {
         content: text,
-        roomId: chatroomId
+        belongChatroomId: chatroomId,
+        deleteTime: new Date()
       };
+
       socket.emit("speakMessage", messageDto);
       onSend([
         {
@@ -127,7 +133,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   
   return (
     <>
-      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
+      {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}  
       <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
         onPressBack={() => navigation.goBack()}

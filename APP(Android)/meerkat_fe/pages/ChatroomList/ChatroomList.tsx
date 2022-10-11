@@ -5,21 +5,37 @@ import { Alert, StyleSheet, Text, View, ScrollView } from "react-native";
 import Searchbar from "../../components/ChatroomList/Searchbar";
 import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
 import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
-import useDoubleFetchAndSave from "../../hooks/useDoubleFetch";
+import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
-// dummy data
-import api from "../../common/api";
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
-
     const {isLoading} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
 
     const handleAddChatroom = () => {
         navigation.push("AddChatroom")
     }
+
+    const roomsComponent=()=>{
+        if (isLoading) {return <ChatroomLoading />}
+        else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
+        return rooms.map((room) => {
+            return (
+                <ChatroomBox
+                    key={room.chatroomId}
+                    chatroomId={room.chatroomId}
+                    name={room.name}
+                    type={room.type}
+                    createDate={room.createDate}
+                    updateDate={room.updateDate}
+                    msgExpTime={room.msgExpTime}
+                    navigation={navigation}
+                />
+            );
+        });
+    };
 
     return (
         <View style={styles.container}>
@@ -29,24 +45,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
             </View>
             <Searchbar />
             <ScrollView>
-            {rooms === null ? (
-                <ChatroomLoading />
-            ) : (
-                rooms.map((room) => {
-                    return (
-                        <ChatroomBox
-                            key={room.chatroomId}
-                            chatroomId={room.chatroomId}
-                            name={room.name}
-                            type={room.type}
-                            createDate={room.createDate}
-                            updateDate={room.updateDate}
-                            msgExpTime={room.msgExpTime}
-                            navigation={navigation}
-                        />
-                    );
-                })
-            )}
+            {roomsComponent()}
             <View style={{height: 200}}>
             </View>
             </ScrollView>
@@ -72,4 +71,17 @@ const styles = StyleSheet.create({
     logout: {
         marginTop: 20,
     },
+    titleMsgContainer:{
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    titleMsg:{
+        alignSelf:"center",
+        justifyContent: "center",
+        fontSize: 15,
+        fontFamily: "noto-reg",
+        color:"#979797",
+        lineHeight: 45,
+        marginTop:50
+    }
 });
