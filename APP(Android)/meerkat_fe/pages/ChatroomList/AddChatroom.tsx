@@ -21,6 +21,7 @@ export default function AddChatroom(
 ) {
   const { navigation } = props;
 
+  const [isSubmitActive, setIsSubmitActive] = useState(true);
   const [selectedFriends, setSelectedFrineds] = useState<number[]>([]);
   const [name, setName] = useState('');
   const [msgExpTime, setMsgExpTime] = useState(3600 * 24 * 30);
@@ -55,7 +56,9 @@ export default function AddChatroom(
   };
 
   const handleSubmit = async () => {
+    disableSubmit()
     if (name === '') {
+      enableSubmit()
       return Alert.alert('초대방 이름을 정해주세요.');
     }
 
@@ -70,9 +73,13 @@ export default function AddChatroom(
         commanderUserIds: [],
         targetUserIds: selectedFriends
       })
+
+      if (res.data.data.alreadyExists) {
+        enableSubmit()
+        return Alert.alert('이미 존재하는 1대1 채팅방입니다.')
+      }
       
-      let chatroomId = res.data.data;
-      
+      let chatroomId = res.data.data.chatroomId;
       // 대칭키 생성
       let roomkey = generateAESKey();
 
@@ -106,9 +113,18 @@ export default function AddChatroom(
       navigation.navigate("Chat", {chatroomId})
     }
     catch (e) {
+      enableSubmit()
       Alert.alert('채팅방 개설에 실패했습니다.')
     }
   };
+
+  const enableSubmit = () => {
+    setIsSubmitActive(true)
+  }
+
+  const disableSubmit = () => {
+    setIsSubmitActive(false)
+  }
 
   return (
     <View style={styles.container}>
@@ -164,7 +180,7 @@ export default function AddChatroom(
         setSelectedFriends={setSelectedFrineds}
       />
       <View style={{ alignItems: 'center' }}>
-        <Button onPress={handleSubmit} title="추가하기" color="#6A4035" />
+        <Button onPress={handleSubmit} disabled={!isSubmitActive} title="추가하기" color="#6A4035" />
       </View>
     </View>
   );

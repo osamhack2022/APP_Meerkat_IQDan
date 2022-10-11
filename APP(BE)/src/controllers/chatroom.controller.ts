@@ -89,7 +89,7 @@ class ChatroomController {
 
         res.status(200).json({ data: chatroomInfo, message: `success` });
       } else {
-        let chatroomId = await this.chatroomService.createMultiChat(
+        let chatroomInfo = await this.chatroomService.createMultiChat(
           userId,
           targetUserIds,
           name,
@@ -98,7 +98,7 @@ class ChatroomController {
           removeAfterRead
         );
 
-        res.status(200).json({ data: chatroomId, message: `success` });
+        res.status(200).json({ data: chatroomInfo, message: `success` });
       }
       
     } catch (error) {
