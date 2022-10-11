@@ -29,7 +29,7 @@ class SocketIO{
 
             // token validator middleware. if unauthorized, then disconnect.
             socketMiddleware(chatio, socket);
-            console.log(socket.handshake.auth.userId); // userId value가 나옴.
+            // socket.handshake.auth.userId => userId value가 나옴.
             
             // default socket
             defaultSocketHandler(chatio, socket);
