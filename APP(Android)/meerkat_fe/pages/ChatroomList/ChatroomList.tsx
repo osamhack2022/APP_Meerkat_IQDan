@@ -8,6 +8,7 @@ import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
 import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
+import Header from '../../components/FriendList/Header';
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const {navigation} = props;
@@ -30,6 +31,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
         return rooms.map((room) => {
             return (
+                <ScrollView>
                 <ChatroomBox
                     key={room.chatroomId}
                     chatroomId={room.chatroomId}
@@ -40,28 +42,27 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
                     msgExpTime={room.msgExpTime}
                     navigation={navigation}
                 />
+            </ScrollView>
             );
         });
     };
 
     return (
+        <>
+        <Header categoryName="대화방" onPressAddFriend={handleAddChatroom} />
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>대화방</Text>
-                <Text style={[styles.title]} onPress={handleAddChatroom}>+</Text>
-            </View>
+            
             <Searchbar />
-            <ScrollView>
             {roomsComponent()}
             <View style={{height: 200}}>
             </View>
-            </ScrollView>
         </View>
+        </>
     );
 }
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 50,
+        paddingTop: 10,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: "#fff",
