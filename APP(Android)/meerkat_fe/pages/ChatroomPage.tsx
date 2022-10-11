@@ -9,7 +9,7 @@ import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
 import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel';
 // types
-import { Chatroom, MessageDto, RootStackScreenProps } from '../common/types';
+import { ChatroomWithKey, MessageDto, RootStackScreenProps } from '../common/types';
 // context
 import { LoginContext, SocketContext } from '../common/Context';
 // thirds
@@ -24,19 +24,19 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
   const { navigation } = props;
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [chatroomInfo, setChatroomInfo] = useState<Chatroom | null>(null);
+  const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(null);
   
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false); // 우측 메뉴
   const [templateVisible, setTemplateVisible] = useState(false); // 메시징 템플릿
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
-  const { isLoading } = useDoubleFetchAndSave<Chatroom | null>(
+  const { isLoading } = useDoubleFetchAndSave<ChatroomWithKey | null>(
     chatroomInfo,
     setChatroomInfo,
     '/chatroom/' + chatroomId,
   );
 
-  
+  console.log(chatroomInfo)
   const {isNotLoggedIn} = useContext(LoginContext);
   const { socket } = useSocketIO(isNotLoggedIn, null);
 
