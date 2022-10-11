@@ -18,6 +18,7 @@ export default function useDoubleFetchAndSave<T>(
   originalState: T, // 데이터를 저장할 state
   setOriginalState: Function, // 데이터를 저장할 state의 set 함수
   apiUrl: string, // 서버에서 불러올 api url. Async key값도 동일하게 사용함.
+  handleResCallback?: Function // api결과를 후처리 해주어야할 때 넣어주는 콜백. api.then 안에 들어갈 res처리용 함수.
 ) {
   const [localData, setLocalData] = useState<T | null>(null);
   const [serverData, setServerData] = useState<T | null>(null);
@@ -57,10 +58,14 @@ export default function useDoubleFetchAndSave<T>(
     api
       .get(apiUrl)
       .then(res => {
-        setServerData(res.data.data);
-        AsyncStorage.setItem(apiUrl, JSON.stringify(res.data.data)).catch(err => {
-          Alert.alert('로컬에 데이터를 저장할 수 없었습니다.');
-        });
+        if (handleResCallback) {
+          handleResCallback(res)
+        } else {
+          setServerData(res.data.data);
+          AsyncStorage.setItem(apiUrl, JSON.stringify(res.data.data)).catch(err => {
+            Alert.alert('로컬에 데이터를 저장할 수 없었습니다.');
+          });
+        }
       })
       .catch(err => {
         Alert.alert('서버에서 데이터를 가져올 수 없었습니다.');

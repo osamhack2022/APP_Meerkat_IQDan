@@ -46,7 +46,7 @@ const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.item}
-        onPress={() => pickImageAsync(props.onSend)}
+        // onPress={() => pickImageAsync(props.onSend)} // TODO: 나중에 image 시간되면 활성화.
       >
         <MaterialIcons size={24} color="black" name="photo" />
       </TouchableOpacity>

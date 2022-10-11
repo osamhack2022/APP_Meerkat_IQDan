@@ -9,7 +9,7 @@ import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
 import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel';
 // types
-import { ChatroomWithKey, Chatroom, IMessageDto, IMessageSendDto, RootStackScreenProps } from '../common/types';
+import { ChatroomWithKey, Chatroom, IMessageDto, IMessageSendDto, RootStackScreenProps, User } from '../common/types';
 // context
 import { LoginContext, SocketContext } from '../common/Context';
 // thirds
@@ -18,27 +18,46 @@ import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
+import useMessage from '../hooks/useMessage';
 
 
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
   const { navigation } = props;
-  const [messages, setMessages] = useState<IMessage[]>([]);
-  const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(null);
+
+
+  // userId 가져오기
+  const { isNotLoggedIn, userId } = useContext(LoginContext);
+  // 소켓
+  const { socket } = useSocketIO(isNotLoggedIn, null);
+
+  // 채팅 메시지 리스트
   
+  // UI 변화
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false); // 우측 메뉴
   const [templateVisible, setTemplateVisible] = useState(false); // 메시징 템플릿
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
-  const { isLoading } = useDoubleFetchAndSave<ChatroomWithKey | null>(
+  
+  
+
+  // 메시지 가져오기
+  const { messages, sendNewMessageToServer, getNewMessagesFromSocket} = useMessage(chatroomId, userId, socket)
+  
+  // 채팅방 정보 가져오기
+  const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(null);
+  const {isLoading: isChatroomInfoLoading} = useDoubleFetchAndSave<ChatroomWithKey | null>(
     chatroomInfo,
     setChatroomInfo,
     '/chatroom/' + chatroomId,
   );
 
-  const { isNotLoggedIn, userId } = useContext(LoginContext);
-  const { socket } = useSocketIO(isNotLoggedIn, null);
+  // 유저 정보 가져오기
+  const [usersInfo, setUsersInfo] = useState<User[]>([])
+  const {isLoading: isUserInfoLoading} = useDoubleFetchAndSave<User[] | null>(
+    usersInfo, setUsersInfo, '/chatroom/getAllUsersInfo/' + chatroomId
+  )
 
   const [initialLoad, setInitialLoad] = useState(true)
 
@@ -48,7 +67,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     if (initialLoad) {
       return setInitialLoad(false)
     }
-
 
     socket.on('connect', () =>{
       console.log('--------------- room socket ---------------');
@@ -60,7 +78,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
 
-        onSend([
+        getNewMessagesFromSocket([
           {
             _id: messageDto._id,
             text: messageDto.text,
@@ -85,47 +103,18 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     }
   }, [socket]);
 
-  useEffect(() => {
-    // fetch from server
-    const messageDto2IMessage = (message: any):IMessage=>{
-      return {
-        _id:message._id,
-        text:message.text,
-        createdAt:message.sendTime,
-        user: message.isSender?user:otherUser
-        // TODO : sender가 아닌 경우 해당 user로 fetch해야 함.
-      }
-    }
 
-    api
-      .post('/messages/unread', {
-        chatroomId: chatroomId,
-      })
-      .then(res => {
-        let result: IMessageDto[] = res.data.data;
-        const unreads: IMessage[] = result.map(message => {
-          return messageDto2IMessage(message);
-        });
-        setMessages(unreads);
-      });
-  }, []);
-
-  const onSend = useCallback((messages: IMessage[] = []) => {
-    setMessages((previousMessages: IMessage[]) =>
-      GiftedChat.append(messages, previousMessages),
-    );
-  }, []);
 
   // deprecated
-  const onSendFromUser = (msg: IMessage[] = []) => {
-    const createdAt = new Date();
-    const messagesToUpload = msg.map(message => ({
-      ...message,
-      user,
-      createdAt,
-    }));
-    onSend(messagesToUpload);
-  };
+  // const onSendFromUser = (msg: IMessage[] = []) => {
+  //   const createdAt = new Date();
+  //   const messagesToUpload = msg.map(message => ({
+  //     ...message,
+  //     user,
+  //     createdAt,
+  //   }));
+  //   onSend(messagesToUpload);
+  // };
 
   // me
   const user = {
@@ -156,20 +145,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   ];
   
 
-  const sendTextMessage = (text: string) => {
 
-    // TODO : disconneted일 때 예외처리 해야 할 듯.
-    if(socket.connected){
-      const IMessageSendDto:IMessageSendDto = {
-        text: text,
-        belongChatroomId: chatroomId,
-        deleteTime: new Date(),
-        sendTime: new Date()
-      };
-
-      socket.emit("speakMessage", IMessageSendDto);
-    }
-  };
   
   return (
     <>
@@ -188,7 +164,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         <View style={styles.chat}>
           <GiftedChat
             messages={messages}
-            onSend={(messages: any) => onSend(messages)}
+            // onSend={(messages: any) => onSend(messages)} // TODO: ??
             renderBubble={MKBubble}
             timeTextStyle={{
               left: { color: 'black' },
@@ -205,7 +181,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           <ChatroomTextInput
             msgInput={msgInput}
             setMsgInput={setMsgInput}
-            onSendTextMessage={text => sendTextMessage(text)}
+            onSendTextMessage={text => sendNewMessageToServer(text)}
           />
         </View>
       </KeyboardAvoidingView>
@@ -213,7 +189,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         superiorOnly={superiorOnly}
         onPressTemplate={() => setTemplateVisible(true)}
         onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-        onSend={onSendFromUser}
+        // onSend={onSendFromUser}
+        onSend ={() => {}}
       />
       <ChatroomTemplatePanel
         visible={templateVisible}

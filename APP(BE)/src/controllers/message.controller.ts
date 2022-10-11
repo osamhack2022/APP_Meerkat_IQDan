@@ -10,7 +10,7 @@ class MessagesController {
   public getUnreadMessages = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const findMessagDto: FindMessageDto = {
-        chatroomId: req.body.chatroomId,
+        chatroomId: Number(req.params.id),
         userId: req.user.userId
       };
       const unreadMessage: Message[] = await this.messagesService.getUnreadChats(findMessagDto);
