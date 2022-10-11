@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 import api from '../../common/api';
 import Select from './Select';
 import SelectFriends from './SelectFriends';
-import { generateAESKey } from '../../common/crypto';
+import { decryptRSA, encryptRSA, generateAESKey } from '../../common/crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddChatroom(
   props: RootStackScreenProps<'AddChatroom'>,
@@ -59,6 +60,9 @@ export default function AddChatroom(
     }
 
     try {
+      let me = (await api.get("/users/me")).data.data;
+      console.log(me);
+      
       let res = await api.post('/chatroom/create', {
         name: name,
         msgExpTime: msgExpTime,
@@ -67,28 +71,33 @@ export default function AddChatroom(
         targetUserIds: selectedFriends
       })
       
-      let chatroomId = res.data.data.chatroomId;
+      let chatroomId = res.data.data;
       
       // 대칭키 생성
-      let key = generateAESKey();
+      let roomkey = generateAESKey();
+
+      let targetUsers = selectedFriends.slice();
+      targetUsers.push(me.userId);
 
       // 모든 유저 공개키 가져오기
       let getPublicKeyTasks = [];
-      for (let i=0; i<selectedFriends.length; i++) {
-        let id = selectedFriends[i];
+      for (let i=0; i<targetUsers.length; i++) {
+        let id = targetUsers[i];
         getPublicKeyTasks.push(api.get(`users/publicKey/${id}`));
       }
-      let publicKeys = await Promise.all(getPublicKeyTasks);
+      let publicKeysRes = await Promise.all(getPublicKeyTasks);
+      let publicKeys = publicKeysRes.map((r) => r.data.data.key);
+      let encryptedKeys = publicKeys.map((pkey) => encryptRSA(roomkey, pkey));
       
       // 공개키로 룸키(대칭키) 를 암호화 한 후 유저들에게 전송
       let putChatroomKeyTasks = [];
-      for (let i=0; i<selectedFriends.length; i++) {
-        let id = selectedFriends[i];
+      for (let i=0; i<targetUsers.length; i++) {
+        let id = targetUsers[i];
         putChatroomKeyTasks.push(
           api.post("chatroom/chatroomKey", {
             forUserId: id,
             forChatroomId: chatroomId,
-            encryptedKey: publicKeys[i]
+            encryptedKey: encryptedKeys[i]
           })
         )
       }

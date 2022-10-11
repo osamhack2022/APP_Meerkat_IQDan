@@ -30,6 +30,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
+    this.app.disable('etag');
     this.env = NODE_ENV || 'development';
     this.http_port = HTTP_PORT || 3000;
     this.https_port = HTTPS_PORT || 8443;

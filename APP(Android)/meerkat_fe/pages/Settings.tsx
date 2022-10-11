@@ -145,7 +145,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
       let keys = generateRSAKeys();
 
       try {
-        let res = await api.put("/users/publicKey", {
+        let res = await api.post("/users/publicKey", {
           publicKey: keys.getPublicKey()
         })
 

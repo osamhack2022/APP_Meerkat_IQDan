@@ -34,7 +34,7 @@ export const decryptRSA = (msg: string, privateKey: string) => {
 
 export const generateAESKey = () => {
   //TODO: Math.random이 보안적으로 취약할듯?
-  const key = genRanHex(32); 
+  const key = genRanHex(16); 
   return key;
 }
 

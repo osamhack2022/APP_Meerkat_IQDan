@@ -53,7 +53,7 @@ class UsersRoute implements Routes {
       this.usersController.getPublicKey,
     );
     // 퍼블릭 키 업데이트
-    this.router.put(
+    this.router.post(
       `${this.path}/publicKey`,
       validationMiddleware(updatePublicKeyDto, 'body'),
       authMiddleware,

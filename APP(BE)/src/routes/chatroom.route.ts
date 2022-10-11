@@ -56,7 +56,7 @@ class ChatroomRoute implements Routes {
       this.chatroomController.updateChat
     );
     // 암호화 된 챗룸키 서버에 남기기
-    this.router.put(
+    this.router.post(
       `${this.path}/chatroomKey`,
       validationMiddleware(PutChatroomKeyDto, 'body'),
       authMiddleware,
