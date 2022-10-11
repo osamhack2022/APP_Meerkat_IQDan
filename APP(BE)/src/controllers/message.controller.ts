@@ -14,8 +14,22 @@ class MessagesController {
         userId: req.user.userId
       };
       const unreadMessage: Message[] = await this.messagesService.getUnreadChats(findMessagDto);
+
+      const result = [...unreadMessage].map((message)=>{
+        return {
+        "_id" : message.messageId,
+        "text": message.content,
+        "sendTime": message.sendTime,
+        "deleteTime": message.deleteTime,
+        "senderId": message.senderId,
+        "belongChatroomId": message.belongChatroomId,
+        "isSender": req.user.userId === message.senderId
+        }
+      });
+      
+
       res.status(200).json({
-        data: unreadMessage,
+        data: result,
         message: `get unread messages`
       })
     }

@@ -1,6 +1,6 @@
 import { HttpException } from '@exceptions/HttpException';
 import prisma from "../db";
-import { MessageDto } from '@/interfaces/message.interface';
+import { IMessageDto } from '@/interfaces/message.interface';
 import { isEmpty } from 'class-validator';
 import { Message } from '@prisma/client';
 import { FindMessageDto } from '@/dtos/messages.dto';
@@ -11,7 +11,7 @@ class MessageService {
    * @param messageDto : 저장할 메시지
    * @returns 저장된 message id
    */
-  public async storeMessageAndGetId(messageDto: MessageDto): Promise<number> {
+  public async storeMessageAndGetId(messageDto: IMessageDto): Promise<number> {
     const chatRoom = await prisma.chatroom.findUnique({
       where: {
         chatroomId: messageDto.belongChatroomId
@@ -38,7 +38,8 @@ class MessageService {
 
     const message = await prisma.message.create({
       data: {
-        content: messageDto.content,
+        content: messageDto.text,
+        sendTime: messageDto.sendTime,
         deleteTime: messageDto.deleteTime,
         senderId: messageDto.senderId,
         belongChatroomId: messageDto.belongChatroomId
@@ -87,7 +88,7 @@ class MessageService {
     order by m.messageId asc;`
 
     
-
+        console.log(unreadChats);
     return unreadChats;
   }
 }

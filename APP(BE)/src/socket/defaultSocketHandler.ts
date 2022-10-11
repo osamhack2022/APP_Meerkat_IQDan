@@ -15,6 +15,6 @@ export default (io: Namespace, socket: Socket) =>{
 
     socket.on("disconnect", () =>{
         // TODO : console log는 디버깅용, 추후 완성되면 삭제
-        console.log("a user disconnected");
+        console.log("chat user disconnected");
     });
 };

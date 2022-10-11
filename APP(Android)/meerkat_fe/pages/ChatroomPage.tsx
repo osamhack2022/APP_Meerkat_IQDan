@@ -9,7 +9,7 @@ import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
 import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel';
 // types
-import { ChatroomWithKey, MessageDto, RootStackScreenProps } from '../common/types';
+import { ChatroomWithKey, Chatroom, IMessageDto, IMessageSendDto, RootStackScreenProps } from '../common/types';
 // context
 import { LoginContext, SocketContext } from '../common/Context';
 // thirds
@@ -18,7 +18,8 @@ import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
-import { Socket } from 'socket.io-client';
+
+
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -50,7 +51,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       return setInitialLoad(false)
     }
 
-    socket.connect();
 
     socket.on('connect', () =>{
       console.log('--------------- room socket ---------------');
@@ -58,21 +58,30 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 
       socket.emit("joinRoom", chatroomId);
 
-      socket.on('hearMessage', (messageDto: MessageDto) => {
+      socket.on('hearMessage', (messageDto: IMessageDto) => {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
-  
-        if(messageDto.belongChatroomId === chatroomId){
-          console.log(messageDto.belongChatroomId);
+
+        if (messageDto.isSender) {
+          onSend([
+            {
+              _id: messageDto._id,
+              text: messageDto.text,
+              user: user,
+              createdAt: messageDto.sendTime
+            },
+          ]);
+        }
+        else{
           setMessages(previousMessages => {
             const sentMessages: IMessage[] = [
               {
-                _id: previousMessages.length + 1,
+                _id: messageDto._id,
                 createdAt: new Date(),
-                text: messageDto.content,
+                text: messageDto.text,
                 sent: true,
                 received: true,
-                user: otherUser,
+                user: messageDto.isSender? user: otherUser
               },
             ];
     
@@ -92,11 +101,39 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     });
 
     // clean은 hooks에서 해 줌.
+    return()=>{
+      socket.disconnect();
+    }
   }, [socket]);
 
   useEffect(() => {
     // dummy data
     setMessages(msgSample);
+
+    const messageDto2IMessage = (message: any):IMessage=>{
+      return {
+        _id:message._id,
+        text:message.text,
+        createdAt:message.sendTime,
+        user: message.isSender?user:otherUser
+        // TODO : sender가 아닌 경우 해당 user로 fetch해야 함.
+      }
+    }
+
+    api
+      .post('/messages/unread', {
+        chatroomId: chatroomId,
+      })
+      .then(res => {
+        let result: IMessageDto[] = res.data.data;
+        const unreads: IMessage[] = result.map(message => {
+          console.log(message);
+          return messageDto2IMessage(message);
+        });
+        setMessages(unreads);
+      });
+
+
   }, []);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
@@ -120,21 +157,14 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 
     // TODO : disconneted일 때 예외처리 해야 할 듯.
     if(socket.connected){
-      const messageDto:MessageDto = {
-        content: text,
+      const IMessageSendDto:IMessageSendDto = {
+        text: text,
         belongChatroomId: chatroomId,
-        deleteTime: new Date()
+        deleteTime: new Date(),
+        sendTime: new Date()
       };
 
-      socket.emit("speakMessage", messageDto);
-      onSend([
-        {
-          text: text,
-          user: user,
-          createdAt: new Date(),
-          _id: messages.length + 1,
-        },
-      ]);
+      socket.emit("speakMessage", IMessageSendDto);
     }
   };
   
@@ -167,6 +197,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             renderInputToolbar={() => null}
             maxComposerHeight={0}
             minInputToolbarHeight={0}
+            inverted={false}
           />
           <ChatroomTextInput
             msgInput={msgInput}

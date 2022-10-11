@@ -59,14 +59,23 @@ export interface AnimatedValue{
     animatedValue: Animated.Value
 }
 
-export interface MessageDto {
-    messageId?: number;
-  
+export interface IMessageDto{
+    _id : number;
+    text: string;
+    sendTime: Date;
+    deleteTime: Date;
+    senderId: number;
+    belongChatroomId: number;
+    isSender:boolean;
+}
+
+export interface IMessageSendDto{
     belongChatroomId: number;
     senderId?: number;
   
-    content: string;
+    text: string;
     deleteTime: Date;
+    sendTime: Date;
     // TODO : 사진 들어갈수도. type을 추가해서 처리하면 될듯.
 }
 
