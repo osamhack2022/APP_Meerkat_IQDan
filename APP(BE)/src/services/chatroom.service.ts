@@ -3,6 +3,8 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
 import prisma from '../db';
+import { ChatroomWithKey } from '../interfaces/chatroom.interface';
+
 class ChatroomService {
   /**
    * 내가 해당한 모든 채팅방 가져오기
@@ -30,9 +32,9 @@ class ChatroomService {
    * 특정 채팅방 정보 불러오기
    * @param userId
    * @param chatroomId
-   * @returns 하나의 채팅방 정보
+   * @returns 하나의 채팅방 정보. encryptedKey없으면 encryptedKey: null로 넘어감.
    */
-  public async getChatroom(userId: number, chatroomId: number): Promise<Chatroom> {
+  public async getChatroom(userId: number, chatroomId: number): Promise<ChatroomWithKey> {
     const chatroom = await prisma.chatroom.findUnique({
       where: {
         chatroomId: chatroomId,
@@ -49,7 +51,27 @@ class ChatroomService {
     if (i === -1) {
       throw new HttpException(403, 'You are not a member of this chat room.');
     }
-    return chatroom;
+
+    // 해당 방에서 나의 키를 찾아서 반환합니다.
+    const myRoomKey = await prisma.chatroomKey.findUnique({
+      where: {
+        forUserId_forChatroomId: {
+          forUserId: userId,
+          forChatroomId: chatroomId,
+        },
+      },
+      select: {
+        encryptedKey: true,
+      },
+    });
+
+    // myRoomKey 안에 encryptedKey가 없을 경우 null로 넘어감.
+    const chatroomWithKey = {
+      ...chatroom,
+      encryptedKey: myRoomKey === null ? null : myRoomKey.encryptedKey,
+    };
+
+    return chatroomWithKey;
   }
 
   /**
@@ -65,7 +87,7 @@ class ChatroomService {
     targetUserId: number,
     name: string,
     msgExpTime: number,
-    removeAfterRead: boolean
+    removeAfterRead: boolean,
   ): Promise<{ alreadyExists: boolean; chatroomId: number }> {
     // 이미 존재하는 1to1 채팅방이면 기존 채팅방 id를 돌려보내줍니다.
     let chatroomIdObjs: { chatroomId: number }[] = await prisma.$queryRaw`Select A.chatroomId
@@ -88,7 +110,7 @@ class ChatroomService {
         name: name,
         type: 'SINGLE',
         msgExpTime: msgExpTime,
-        removeAfterRead: removeAfterRead
+        removeAfterRead: removeAfterRead,
       },
     });
 
@@ -124,7 +146,7 @@ class ChatroomService {
     name: string,
     msgExpTime: number,
     commanderUserIds: number[],
-    removeAfterRead: boolean
+    removeAfterRead: boolean,
   ): Promise<number> {
     // 누가 참여하는가와 상관 없이 새로운 채팅방을 만듭니다.
     let newChatroom: Chatroom = await prisma.chatroom.create({
@@ -132,7 +154,7 @@ class ChatroomService {
         name: name,
         type: 'MULTI',
         msgExpTime: msgExpTime,
-        removeAfterRead: removeAfterRead
+        removeAfterRead: removeAfterRead,
       },
     });
 
@@ -287,18 +309,22 @@ class ChatroomService {
   /**
    * 유저에게 대칭기 발송.
    */
-  public async putChatroomKey(userId: number, chatroomId: number, encrypedKey: string): Promise<void> {
+  public async putChatroomKey(
+    userId: number,
+    chatroomId: number,
+    encrypedKey: string,
+  ): Promise<void> {
     const chatroom = await prisma.chatroom.findUnique({
-      where: { chatroomId: chatroomId, },
+      where: { chatroomId: chatroomId },
     });
 
     let res = await prisma.chatroomKey.create({
       data: {
         forUserId: userId,
         forChatroomId: chatroomId,
-        encryptedKey: encrypedKey
-      }
-    })
+        encryptedKey: encrypedKey,
+      },
+    });
 
     return;
   }

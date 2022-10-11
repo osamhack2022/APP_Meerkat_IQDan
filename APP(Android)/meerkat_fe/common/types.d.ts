@@ -3,6 +3,7 @@ import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/n
 import { StackScreenProps } from "@react-navigation/stack"
 import { Animated } from "react-native"
 
+
 export type Chatroom = {
     chatroomId: number
     name: string | null
@@ -15,6 +16,10 @@ export type Chatroom = {
     msgExpTime: number
     removeAfterRead: boolean
   }
+
+export type ChatroomWithKey = Chatroom & {
+    encryptedKey: string
+}
 
 export interface Category{
     categoryName: string,

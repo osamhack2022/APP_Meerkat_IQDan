@@ -4,11 +4,13 @@ import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
 import { CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
-import { nextTick } from 'process';
+import {ChatroomWithKey} from "../interfaces/chatroom.interface"
+
 
 class ChatroomController {
   public friendsService = new FriendsService();
   public chatroomService = new ChatroomService();
+
 
   // 내가 속해있는 채팅방 정보 모두 가져오기
   public getMyChatrooms = async (
@@ -37,7 +39,7 @@ class ChatroomController {
     try {
       const userId = req.user.userId;
       const chatroomId = Number(req.params.id);
-      const chatroomData: Chatroom = await this.chatroomService.getChatroom(userId, chatroomId);
+      const chatroomData: ChatroomWithKey = await this.chatroomService.getChatroom(userId, chatroomId);
       res.status(200).json({
         data: chatroomData,
         message: `found the matching chatroom`,
