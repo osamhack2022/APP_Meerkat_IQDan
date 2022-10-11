@@ -147,7 +147,7 @@ class ChatroomService {
     msgExpTime: number,
     commanderUserIds: number[],
     removeAfterRead: boolean,
-  ): Promise<number> {
+  ): Promise<{chatroomId: number, alreadyExists: boolean}> {
     // 누가 참여하는가와 상관 없이 새로운 채팅방을 만듭니다.
     let newChatroom: Chatroom = await prisma.chatroom.create({
       data: {
@@ -184,7 +184,7 @@ class ChatroomService {
 
     // IF: 트랜잭션 형식으로 만들 수 있으면 더 좋을듯.
 
-    return newChatroom.chatroomId;
+    return {chatroomId: newChatroom.chatroomId, alreadyExists: false}
   }
 
   /**
@@ -317,6 +317,8 @@ class ChatroomService {
     const chatroom = await prisma.chatroom.findUnique({
       where: { chatroomId: chatroomId },
     });
+
+    console.log(chatroomId)
 
     let res = await prisma.chatroomKey.create({
       data: {

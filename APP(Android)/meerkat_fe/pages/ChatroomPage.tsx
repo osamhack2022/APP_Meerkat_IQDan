@@ -36,6 +36,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     '/chatroom/' + chatroomId,
   );
 
+  console.log(chatroomInfo)
+
   const { isNotLoggedIn } = useContext(LoginContext);
   const { socket } = useSocketIO(isNotLoggedIn, null);
 
