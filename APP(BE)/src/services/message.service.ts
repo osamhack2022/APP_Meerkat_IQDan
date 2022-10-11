@@ -1,27 +1,26 @@
 import { HttpException } from '@exceptions/HttpException';
 import prisma from "../db";
-import { IMessageDto } from '@/interfaces/message.interface';
 import { isEmpty } from 'class-validator';
 import { Message } from '@prisma/client';
-import { FindMessageDto } from '@/dtos/messages.dto';
+import { FindMessageDto, IMessageDto } from '@/dtos/messages.dto';
 
 class MessageService {
   /**
-   * messageDto에 있는 chatRoom이 없거나, user가 없거나, user가 chatroom에 없는 경우 throw error
-   * @param messageDto : 저장할 메시지
+   * iMessageDto 있는 chatRoom이 없거나, user가 없거나, user가 chatroom에 없는 경우 throw error
+   * @param iMessageDto : 저장할 메시지
    * @returns 저장된 message id
    */
-  public async storeMessageAndGetId(messageDto: IMessageDto): Promise<number> {
+  public async storeMessageAndGetId(iMessageDto: IMessageDto): Promise<number> {
     const chatRoom = await prisma.chatroom.findUnique({
       where: {
-        chatroomId: messageDto.belongChatroomId
+        chatroomId: iMessageDto.belongChatroomId
       }
     });
     if (isEmpty(chatRoom)) throw new Error('404 Chatroom does not exist.');
 
     const user = await prisma.user.findUnique({
       where: {
-        userId: messageDto.senderId
+        userId: iMessageDto.senderId
       }
     });
     if (isEmpty(user)) throw new Error('400 You are not exist.');
@@ -29,8 +28,8 @@ class MessageService {
     const usersOnChatrooms = await prisma.usersOnChatrooms.findUnique({
       where: {
         chatroomId_userId: {
-          chatroomId: messageDto.belongChatroomId,
-          userId: messageDto.senderId,
+          chatroomId: iMessageDto.belongChatroomId,
+          userId: iMessageDto.senderId,
         },
       }
     })
@@ -38,11 +37,11 @@ class MessageService {
 
     const message = await prisma.message.create({
       data: {
-        content: messageDto.text,
-        sendTime: messageDto.sendTime,
-        deleteTime: messageDto.deleteTime,
-        senderId: messageDto.senderId,
-        belongChatroomId: messageDto.belongChatroomId
+        content: iMessageDto.text,
+        sendTime: iMessageDto.sendTime,
+        deleteTime: iMessageDto.deleteTime,
+        senderId: iMessageDto.senderId,
+        belongChatroomId: iMessageDto.belongChatroomId
       }
     });
     return message.messageId;
@@ -87,8 +86,6 @@ class MessageService {
       and m.belongChatroomId = ${findMessagDto.chatroomId}
     order by m.messageId asc;`
 
-    
-        console.log(unreadChats);
     return unreadChats;
   }
 }

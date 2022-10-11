@@ -1,4 +1,4 @@
-import { IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FindMessageDto{
   @IsNumber()
@@ -7,13 +7,12 @@ export class FindMessageDto{
   @IsNumber()
   public userId: number;
 }
-
-export class MessageDto {
+export class IMessageDto {
   @IsNumber()
-  public messageId: number;
+  public _id : number;
 
   @IsString()
-  public content: string;
+  public text: string;
 
   @IsDate()
   public sendTime: Date;
@@ -26,4 +25,7 @@ export class MessageDto {
 
   @IsNumber()
   public belongChatroomId: number;
+
+  @IsBoolean()
+  public isSender:boolean;
 }
