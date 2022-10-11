@@ -121,6 +121,17 @@ class UserService {
     return deleteUserData;
   }
 
+  // 퍼블릭키 가져오기
+  public async getPublicKey(userId: number): Promise<PublicKey> {
+    await this.checkUserExists(userId);
+
+    const res = await prisma.publicKey.findUnique({
+      where: { userId: userId },
+    });
+
+    return res;
+  }
+
   // 퍼블릭키 변경
   public async updatePublicKey(userId: number, publicKey: string): Promise<PublicKey> {
     await this.checkUserExists(userId);

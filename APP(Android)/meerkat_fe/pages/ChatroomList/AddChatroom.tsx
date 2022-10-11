@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import api from '../../common/api';
 import Select from './Select';
 import SelectFriends from './SelectFriends';
+import { generateAESKey } from '../../common/crypto';
 
 export default function AddChatroom(
   props: RootStackScreenProps<'AddChatroom'>,
@@ -52,21 +53,52 @@ export default function AddChatroom(
     setCloseFlag(!closeFlag);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (name === '') {
       return Alert.alert('초대방 이름을 정해주세요.');
     }
-    api.post('/chatroom/create', {
-      name: name,
-      msgExpTime: msgExpTime,
-      removeAfterRead: readOption === '하고',
-      commanderUserIds: [],
-      targetUserIds: selectedFriends
-    }).then((res) => {
-      navigation.navigate("Chat", {chatroomId: res.data.data.chatroomId})
-    }).catch((err) => {
+
+    try {
+      let res = await api.post('/chatroom/create', {
+        name: name,
+        msgExpTime: msgExpTime,
+        removeAfterRead: readOption === '하고',
+        commanderUserIds: [],
+        targetUserIds: selectedFriends
+      })
+      
+      let chatroomId = res.data.data.chatroomId;
+      
+      // 대칭키 생성
+      let key = generateAESKey();
+
+      // 모든 유저 공개키 가져오기
+      let getPublicKeyTasks = [];
+      for (let i=0; i<selectedFriends.length; i++) {
+        let id = selectedFriends[i];
+        getPublicKeyTasks.push(api.get(`users/publicKey/${id}`));
+      }
+      let publicKeys = await Promise.all(getPublicKeyTasks);
+      
+      // 공개키로 룸키(대칭키) 를 암호화 한 후 유저들에게 전송
+      let putChatroomKeyTasks = [];
+      for (let i=0; i<selectedFriends.length; i++) {
+        let id = selectedFriends[i];
+        putChatroomKeyTasks.push(
+          api.post("chatroom/chatroomKey", {
+            forUserId: id,
+            forChatroomId: chatroomId,
+            encryptedKey: publicKeys[i]
+          })
+        )
+      }
+      await Promise.all(putChatroomKeyTasks);
+
+      navigation.navigate("Chat", {chatroomId})
+    }
+    catch (e) {
       Alert.alert('채팅방 개설에 실패했습니다.')
-    });
+    }
   };
 
   return (

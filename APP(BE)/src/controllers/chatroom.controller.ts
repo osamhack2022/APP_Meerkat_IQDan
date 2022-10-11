@@ -3,7 +3,7 @@ import { Chatroom, Friends, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
-import { CreateChatroomDto, InviteChatroomDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
+import { CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
 import { nextTick } from 'process';
 
 class ChatroomController {
@@ -75,17 +75,19 @@ class ChatroomController {
       const userId = req.user.userId;
       const { name, targetUserIds, msgExpTime, commanderUserIds, removeAfterRead } =
         req.body as CreateChatroomDto;
-      let chatroomInfo;
+
       if (targetUserIds.length === 1) {
-        chatroomInfo = await this.chatroomService.create1to1Chat(
+        let chatroomInfo = await this.chatroomService.create1to1Chat(
           userId,
           targetUserIds[0],
           name,
           msgExpTime,
           removeAfterRead
         );
+
+        res.status(200).json({ data: chatroomInfo, message: `success` });
       } else {
-        chatroomInfo = await this.chatroomService.createMultiChat(
+        let chatroomId = await this.chatroomService.createMultiChat(
           userId,
           targetUserIds,
           name,
@@ -93,8 +95,10 @@ class ChatroomController {
           commanderUserIds,
           removeAfterRead
         );
+
+        res.status(200).json({ data: chatroomId, message: `success` });
       }
-      res.status(200).json({ data: chatroomInfo, message: `success` });
+      
     } catch (error) {
       next(error);
     }
@@ -158,6 +162,26 @@ class ChatroomController {
       next(error);
     }
   };
+
+  public putChatroomKey = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const { chatroomId, forUserId, encrypedKey } = req.body as PutChatroomKeyDto;
+      
+      await this.chatroomService.putChatroomKey(forUserId, chatroomId, encrypedKey);
+
+      res.status(200).json({
+        message: `success`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 }
 
 export default ChatroomController;

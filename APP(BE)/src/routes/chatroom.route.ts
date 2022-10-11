@@ -4,6 +4,7 @@ import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import validationMiddleware from '@/middlewares/validation.middleware';
 import { CreateChatroomDto, InviteChatroomDto, UpdateChatroomDto} from '@/dtos/chatroom.dto';
+import { PutChatroomKeyDto } from '../dtos/chatroom.dto';
 
 class ChatroomRoute implements Routes {
   public path = '/chatroom';
@@ -54,6 +55,13 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.updateChat
     );
+    // 암호화 된 챗룸키 서버에 남기기
+    this.router.put(
+      `${this.path}/chatroomKey`,
+      validationMiddleware(PutChatroomKeyDto, 'body'),
+      authMiddleware,
+      this.chatroomController.putChatroomKey
+    )
   }
 }
 
