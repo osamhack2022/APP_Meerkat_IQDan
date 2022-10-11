@@ -5,7 +5,7 @@ import { Alert, StyleSheet, Text, View, ScrollView } from "react-native";
 import Searchbar from "../../components/ChatroomList/Searchbar";
 import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
 import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
-import useDoubleFetchAndSave from "../../hooks/useDoubleFetch";
+import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
 // dummy data
