@@ -43,7 +43,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   
 
   // 메시지 가져오기
-  const { messages, sendNewMessageToServer, getNewMessagesFromSocket} = useMessage(chatroomId, userId, socket)
+  const { messages, sendNewMessageToServer, getNewMessagesFromSocket, onSend} = useMessage(chatroomId, userId, socket)
   
   // 채팅방 정보 가져오기
   const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(null);
@@ -103,19 +103,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     }
   }, [socket]);
 
-
-
-  // deprecated
-  // const onSendFromUser = (msg: IMessage[] = []) => {
-  //   const createdAt = new Date();
-  //   const messagesToUpload = msg.map(message => ({
-  //     ...message,
-  //     user,
-  //     createdAt,
-  //   }));
-  //   onSend(messagesToUpload);
-  // };
-
   // me
   const user = {
     _id: userId,
@@ -143,8 +130,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       user: otherUser,
     },
   ];
-  
-
 
   
   return (
@@ -164,7 +149,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         <View style={styles.chat}>
           <GiftedChat
             messages={messages}
-            // onSend={(messages: any) => onSend(messages)} // TODO: ??
+            onSend={(messages: any) => onSend(messages)} // TODO: ??
             renderBubble={MKBubble}
             timeTextStyle={{
               left: { color: 'black' },

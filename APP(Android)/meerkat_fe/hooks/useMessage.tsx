@@ -1,6 +1,6 @@
 import {Alert } from 'react-native'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import api from '../common/api';
 import {
   ChatroomWithKey,
@@ -133,11 +133,11 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
   };
 
   // TODO: giftedchat 오브젝트 없이 해보고 안되면 이걸로 ㄱ.
-//   const onSend = useCallback((messages: IMessage[] = []) => {
-//     setMessages((previousMessages: IMessage[]) =>
-//       GiftedChat.append(messages, previousMessages),
-//     );
-//   }, []);
+  const onSend = useCallback((messages: IMessage[] = []) => {
+    setMessages((previousMessages: IMessage[]) =>
+      GiftedChat.append(messages, previousMessages),
+    );
+  }, []);
 
 
   // me
@@ -167,5 +167,5 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
     };
   };
 
-  return { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket };
+  return { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket, onSend };
 }
