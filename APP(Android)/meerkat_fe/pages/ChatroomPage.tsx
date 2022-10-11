@@ -143,7 +143,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}  
       <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
-        onPressBack={() => navigation.goBack()}
+        onPressBack={() => navigation.navigate("Main", {screen:"ChatroomList", params: {rerender: true}})}
         onPressSideMenu={() => setIsOpenSideMenu(true)}
         name={chatroomInfo?.name || ''}
       />
