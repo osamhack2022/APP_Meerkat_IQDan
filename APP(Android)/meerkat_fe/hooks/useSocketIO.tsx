@@ -20,33 +20,35 @@ export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | nu
 
   // create socket connection when login state changes.
   useEffect(() => {
-      AsyncStorage.getItem('userToken').then(userToken => {
-        setSocket(
-          io(env.prod.apiBaseUrl + '/chat', {
-            path: '/socket.io',
-            transports: ['websocket'],
-            reconnectionAttempts: 2,
-            auth: { token: userToken },
-          }),
-        );
-      });
-      if(isNotLoggedIn){
-        socket.removeAllListeners();
-        socket.disconnect();
-      }
-  }, [isNotLoggedIn]);
-
-  useEffect(()=>{
-    if(isNotLoggedIn === false && attachFunction !== null){
-      attachFunction(socket);
+    if(isNotLoggedIn){
+      socket.removeAllListeners();
+      socket.disconnect();
+      return;
     }
+    AsyncStorage.getItem('userToken').then(userToken => {
+      setSocket(
+        io(env.prod.apiBaseUrl + '/chat', {
+          path: '/socket.io',
+          transports: ['websocket'],
+          reconnectionAttempts: 2,
+          auth: { token: userToken },
+        }),
+      );
+    });
 
     // cleanup
     return () => {
       socket.removeAllListeners();
       socket.disconnect();
     };
-  }, [socket, isNotLoggedIn]);
+  }, [isNotLoggedIn]);
+
+  useEffect(()=> {
+    // empty socket은 socket.auth가 undefined입니다.
+    if(socket.auth !== undefined && attachFunction !== null){
+      attachFunction(socket);
+    }
+  }, [socket]);
 
   return { socket };
 }
