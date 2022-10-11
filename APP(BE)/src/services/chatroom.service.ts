@@ -1,4 +1,4 @@
-import { Chatroom } from '@prisma/client';
+import { Chatroom, User } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
@@ -28,6 +28,24 @@ class ChatroomService {
     return chatrooms;
   }
 
+
+  /**
+   * 유저가 그 방의 멤버인지 확인합니다.
+   * @param chatroomId 
+   * @param userId 
+   */
+  public async checkUserIsInChatroom (chatroomId: number, userId: number) {
+    const members = await prisma.usersOnChatrooms.findMany({
+      where: {
+        chatroomId: chatroomId,
+      },
+    });
+    const i = members.findIndex(e => e.userId === userId);
+    if (i === -1) {
+      throw new HttpException(403, 'You are not a member of this chat room.');
+    }
+  }
+
   /**
    * 특정 채팅방 정보 불러오기
    * @param userId
@@ -42,15 +60,7 @@ class ChatroomService {
     });
 
     // 해당 request를 보낸 유저가 그 방의 멤버인지 확인합니다.
-    const members = await prisma.usersOnChatrooms.findMany({
-      where: {
-        chatroomId: chatroom.chatroomId,
-      },
-    });
-    const i = members.findIndex(e => e.userId === userId);
-    if (i === -1) {
-      throw new HttpException(403, 'You are not a member of this chat room.');
-    }
+    await this.checkUserIsInChatroom(chatroom.chatroomId, userId)
 
     // 해당 방에서 나의 키를 찾아서 반환합니다.
     const myRoomKey = await prisma.chatroomKey.findUnique({
@@ -72,6 +82,44 @@ class ChatroomService {
     };
 
     return chatroomWithKey;
+  }
+
+  /**
+   * 특정 채팅방에 속한 모든 유저정보 불러오기
+   * @param userId
+   * @param chatroomId
+   */
+  public async getAllUsersInChat(
+    userId: number,
+    chatroomId: number,
+  ): Promise<{ userId: number; name: string; image: string }[]> {
+    const userIds = await prisma.usersOnChatrooms.findMany({
+      where: {
+        chatroomId: chatroomId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    await this.checkUserIsInChatroom(chatroomId, userId)
+
+    const usersInfo = await Promise.all(
+      userIds.map(id =>
+        prisma.user.findUnique({
+          where: {
+            userId: id.userId,
+          },
+          select: {
+            userId: true,
+            name: true,
+            image: true,
+          },
+        }),
+      ),
+    );
+
+    return usersInfo;
   }
 
   /**
@@ -147,7 +195,7 @@ class ChatroomService {
     msgExpTime: number,
     commanderUserIds: number[],
     removeAfterRead: boolean,
-  ): Promise<{chatroomId: number, alreadyExists: boolean}> {
+  ): Promise<{ chatroomId: number; alreadyExists: boolean }> {
     // 누가 참여하는가와 상관 없이 새로운 채팅방을 만듭니다.
     let newChatroom: Chatroom = await prisma.chatroom.create({
       data: {
@@ -184,7 +232,7 @@ class ChatroomService {
 
     // IF: 트랜잭션 형식으로 만들 수 있으면 더 좋을듯.
 
-    return {chatroomId: newChatroom.chatroomId, alreadyExists: false}
+    return { chatroomId: newChatroom.chatroomId, alreadyExists: false };
   }
 
   /**
@@ -318,7 +366,7 @@ class ChatroomService {
       where: { chatroomId: chatroomId },
     });
 
-    console.log(chatroomId)
+    console.log(chatroomId);
 
     let res = await prisma.chatroomKey.create({
       data: {

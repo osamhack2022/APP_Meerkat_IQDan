@@ -16,7 +16,7 @@ class MessagesRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}/unread`, authMiddleware, this.messagesController.getUnreadMessages);
+    this.router.get(`${this.path}/unread/:id(\\d+)`, authMiddleware, this.messagesController.getUnreadMessages);
   }
 }
 

@@ -49,6 +49,28 @@ class ChatroomController {
     }
   };
 
+  
+  // 특정 채팅방에 속한 모든 유저정보 불러오기
+  public getAllUsersInChat = async(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => { 
+    try {
+      const userId = req.user.userId
+      const chatroomId = Number(req.params.id);
+      const usersInChat = await this.chatroomService.getAllUsersInChat(userId, chatroomId)
+      
+      res.status(200).json({
+        data: usersInChat,
+        message: `success`
+      })
+
+    } catch (error) {
+      next(error)
+    }
+  }
+
   // 해당 유저 모든 친구 불러오기
   public getAllFriends = async (
     req: RequestWithUser,
@@ -142,6 +164,8 @@ class ChatroomController {
     }
   };
 
+
+  // 채팅방 정보 변경
   public updateChat = async (
     req: RequestWithUser,
     res: Response,
@@ -165,6 +189,8 @@ class ChatroomController {
     }
   };
 
+
+  // 프런트에서 생성한 채팅방 키 업로드
   public putChatroomKey = async (
     req: RequestWithUser,
     res: Response,

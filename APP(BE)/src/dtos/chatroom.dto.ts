@@ -49,3 +49,9 @@ export class PutChatroomKeyDto {
     @IsString()
     public encryptedKey: string;
 }
+
+
+export class GetChatroomUsersInfoDto {
+    @IsNumber()
+    public chatroomId: number;
+}
