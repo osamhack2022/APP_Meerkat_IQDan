@@ -31,19 +31,26 @@ import { Socket } from 'socket.io-client';
 export default function useMessage(chatroomId: number, userId: number, socket: Socket) {
   const [messages, setMessages] = useState<IMessage[]>([]);
 
+  console.log(messages)
+
   /**
    * 첫 메시지 가져오는 effect
    * 첫 메시지 때 모든 새로운 메시지를 asyncstorage에 저장.
    */
   useEffect(() => {
     async function init() {
+        console.log("init")
         const cachedMessages = await fetchMessagesFromLocal()
         const newMessages = await fetchNewMessagesFromServer()
+
+        console.log("cached", cachedMessages)
+        console.log("new", newMessages)
+
         setMessages([...cachedMessages, ...newMessages])
         await saveNewMessagesToLocal(newMessages)
     }
     init()
-  }, []);
+  }, [chatroomId]);
 
   /**
    * 새로온 메시지 가져오기.
@@ -71,7 +78,7 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
       newMessages.map(message => {
         return AsyncStorage.setItem(
           'message' + message._id.toString(),
-          message.text,
+          JSON.stringify(message),
         );
       }),
     );
@@ -113,7 +120,7 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
    */
   const getNewMessagesFromSocket = async (message: IMessage[]) => {
         saveNewMessagesToLocal(message) // 새 메세지 오는 순간 로컬로 저장.
-        setMessages((prev) => [...prev, ...message]) //  새 메세지 오는 순간 append.
+        onSend(message) //  새 메세지 오는 순간 append.
     }
 
   /**
@@ -132,7 +139,6 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
         }
   };
 
-  // TODO: giftedchat 오브젝트 없이 해보고 안되면 이걸로 ㄱ.
   const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages: IMessage[]) =>
       GiftedChat.append(messages, previousMessages),
