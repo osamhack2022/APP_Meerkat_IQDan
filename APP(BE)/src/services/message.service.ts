@@ -1,5 +1,5 @@
 import { HttpException } from '@exceptions/HttpException';
-import prisma from "../db";
+import prisma from '../db';
 import { isEmpty } from 'class-validator';
 import { Message } from '@prisma/client';
 import { FindMessageDto, IMessageDto } from '@/dtos/messages.dto';
@@ -13,15 +13,15 @@ class MessageService {
   public async storeMessageAndGetId(iMessageDto: IMessageDto): Promise<number> {
     const chatRoom = await prisma.chatroom.findUnique({
       where: {
-        chatroomId: iMessageDto.belongChatroomId
-      }
+        chatroomId: iMessageDto.belongChatroomId,
+      },
     });
     if (isEmpty(chatRoom)) throw new Error('404 Chatroom does not exist.');
 
     const user = await prisma.user.findUnique({
       where: {
-        userId: iMessageDto.senderId
-      }
+        userId: iMessageDto.senderId,
+      },
     });
     if (isEmpty(user)) throw new Error('400 You are not exist.');
 
@@ -31,8 +31,8 @@ class MessageService {
           chatroomId: iMessageDto.belongChatroomId,
           userId: iMessageDto.senderId,
         },
-      }
-    })
+      },
+    });
     if (isEmpty(usersOnChatrooms)) throw new Error('400 You are not in that chat.');
 
     const message = await prisma.message.create({
@@ -41,9 +41,13 @@ class MessageService {
         sendTime: iMessageDto.sendTime,
         deleteTime: iMessageDto.deleteTime,
         senderId: iMessageDto.senderId,
-        belongChatroomId: iMessageDto.belongChatroomId
-      }
+        belongChatroomId: iMessageDto.belongChatroomId,
+      },
     });
+
+    // 내가 보낸 메세지도 최근에 내가 읽은 것으로 표기해주어야함.
+    await this.setRecentReadMessage(message.senderId, message.belongChatroomId, message.messageId)
+    
     return message.messageId;
   }
 
@@ -54,15 +58,15 @@ class MessageService {
   public async getUnreadChats(findMessagDto: FindMessageDto): Promise<Message[]> {
     const chatRoom = await prisma.chatroom.findUnique({
       where: {
-        chatroomId: findMessagDto.chatroomId
-      }
+        chatroomId: findMessagDto.chatroomId,
+      },
     });
     if (isEmpty(chatRoom)) throw new HttpException(404, 'Chatroom does not exist.');
 
     const user = await prisma.user.findUnique({
       where: {
-        userId: findMessagDto.userId
-      }
+        userId: findMessagDto.userId,
+      },
     });
     if (isEmpty(user)) throw new HttpException(400, 'You are not exist.');
 
@@ -70,10 +74,10 @@ class MessageService {
       where: {
         chatroomId_userId: {
           chatroomId: findMessagDto.chatroomId,
-          userId: findMessagDto.userId
+          userId: findMessagDto.userId,
         },
-      }
-    })
+      },
+    });
     if (isEmpty(usersOnChatrooms)) throw new HttpException(400, 'You are not in that chat.');
 
     const unreadChats: Message[] = await prisma.$queryRaw<Message[]>`
@@ -84,9 +88,35 @@ class MessageService {
         where p.chatroomId = ${findMessagDto.chatroomId} and p.userId = ${findMessagDto.userId}
       )
       and m.belongChatroomId = ${findMessagDto.chatroomId}
-    order by m.messageId asc;`
+    order by m.messageId asc;`;
 
     return unreadChats;
+  }
+
+  /**
+   * 가장 최근에 본 메세지 번호 update 해주기.
+   * @param userId
+   * @param chatroomId
+   * @param messageId
+   */
+  public async setRecentReadMessage(
+    userId: number,
+    chatroomId: number,
+    messageId: number,
+  ): Promise<void> {
+    await prisma.usersOnChatrooms.update({
+      where: {
+        chatroomId_userId: {
+          chatroomId: chatroomId,
+          userId: userId,
+        },
+      },
+      data: {
+        recentReadMessageId: messageId,
+      },
+    });
+
+    return;
   }
 }
 

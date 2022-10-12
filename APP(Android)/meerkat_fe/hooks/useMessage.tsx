@@ -1,4 +1,4 @@
-import {Alert } from 'react-native'
+import { Alert } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import { useEffect, useState, useCallback } from 'react';
 import api from '../common/api';
@@ -22,44 +22,45 @@ function replacer(key: any, value: string) {
  * Message 라이프 사이클
  * 동번호는 동시 진행.
  * 1. async storage에서 과거 메시지를 가져옴. (일단 개수 20개로 한정.)
-*     1번이 끝난 후에는, async에서는 불러오지 않고 저장만해줌.
+ *     1번이 끝난 후에는, async에서는 불러오지 않고 저장만해줌.
  * 2. Message unread를 서버에서 가져옴.
  * 3. unread message를 로컬에 저장해줌.
  * 4. 새 메세지는 오는 순간 local로 저장.
  * 4. 새 메세지는 오는 순간 setMessage로 append.
- * 
- * @param chatroomId 
- * @param userId 
- * @param socket 
- * @returns 
+ *
+ * @param chatroomId
+ * @param userId
+ * @param socket
+ * @returns
  */
-export default function useMessage(chatroomId: number, userId: number, socket: Socket) {
+export default function useMessage(
+  chatroomId: number,
+  userId: number,
+  socket: Socket,
+) {
   const [messages, setMessages] = useState<IMessage[]>([]);
-
-  console.log(messages)
-
   /**
    * 첫 메시지 가져오는 effect
    * 첫 메시지 때 모든 새로운 메시지를 asyncstorage에 저장.
    */
   useEffect(() => {
     async function init() {
-        console.log("init")
-        const cachedMessages = await fetchMessagesFromLocal()
-        const newMessages = await fetchNewMessagesFromServer()
+      const cachedMessages = await fetchMessagesFromLocal();
+      const newMessages = await fetchNewMessagesFromServer();
 
-        console.log("cached", cachedMessages)
-        console.log("new", newMessages)
+      // console.log('cached', cachedMessages);
+      // console.log('new', newMessages);
 
-        // for (let i = 0; i < 100; i++) {
-        //   await AsyncStorage.removeItem("message" + i)
-        //   await AsyncStorage.removeItem("chatroom" + i + "pointers")
-        // }
+      // 데이터 게워내기
+      // for (let i = 0; i < 100; i++) {
+        // await AsyncStorage.removeItem("message" + i) 
+        // await AsyncStorage.removeItem("chatroom" + i + "pointers")
+      // }
 
-        // setMessages([...cachedMessages, ...newMessages])
-        // await saveNewMessagesToLocal(newMessages)
+      setMessages([...cachedMessages, ...newMessages])
+      await saveNewMessagesToLocal(newMessages)
     }
-    init()
+    init();
   }, [chatroomId]);
 
   /**
@@ -69,21 +70,39 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
    * [=> 없으면 서버 ChatroomKey에서 열쇠 가져오기
    * => 로컬에서 PrivateKey 가져오기 (이건 로그인시 있는지 확인하기에 무조건 있음.)
    * => PrivateKey로 ChatroomKey 복호화 후 로컬에 저장]
-   * => 복호화된 ChatroomKey로 처음 메세지 복호화하고, 
+   * => 복호화된 ChatroomKey로 처음 메세지 복호화하고,
    * => 이후 소켓 메세지도 로컬에서 키 가져와서 복호화.
    * @return 새로온 메시지.
    */
   const fetchNewMessagesFromServer = async () => {
+    let flag = 1;
     try {
-        const res = await api.get('/messages/unread/' + chatroomId);
-        let result: IMessageDto[] = res.data.data;
-        const unreads: IMessage[] = result.map(message => {
-            return messageDto2IMessage(message);
-        });
-        return unreads;
+      const res = await api.get('/messages/unread/' + chatroomId);
+      let result: IMessageDto[] = res.data.data;
+      const unreads: IMessage[] = result.map(message => {
+        return messageDto2IMessage(message);
+      });
+
+      if (unreads.length === 0) {
+        return unreads
+      }
+      flag = 2;
+      // 최근 읽은 메세지 업데이트.
+      await api.post('/messages/setRecentRead', {
+        chatroomId: chatroomId,
+        recentMessageId: unreads[unreads.length - 1]._id,
+      });
+
+      return unreads;
     } catch (err) {
-        Alert.alert('서버에서 메시지를 불러오지 못했습니다.')
-        return []
+      if (flag === 1) {
+        Alert.alert('서버에서 메시지를 불러오지 못했습니다.');
+      } else {
+        Alert.alert(
+          '서버에 어디까지 읽었는지 보내지 못했습니다. 치명적인 오류입니다.',
+        );
+      }
+      return [];
     }
   };
 
@@ -122,47 +141,50 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
    * - 여긴 비밀방일 때만 양방향 비밀번호로 복호화
    */
   const fetchMessagesFromLocal = async () => {
-    const messagePointers = await AsyncStorage.getItem('chatroom' + chatroomId + 'pointers')
+    const messagePointers = await AsyncStorage.getItem(
+      'chatroom' + chatroomId + 'pointers',
+    );
     if (messagePointers === null) {
-        // 로컬에 저장된 메시지가 없다면 빈 리스트 리턴.
-        return [];
+      // 로컬에 저장된 메시지가 없다면 빈 리스트 리턴.
+      return [];
     }
-    const newIMessages: string[] = await Promise.all(JSON.parse(messagePointers).map((pointer: number) => {
-        return AsyncStorage.getItem('message' + pointer) // pointer is alias for messageId or _id.
-    }))
+    const newIMessages: string[] = await Promise.all(
+      JSON.parse(messagePointers).map((pointer: number) => {
+        return AsyncStorage.getItem('message' + pointer); // pointer is alias for messageId or _id.
+      }),
+    );
 
-    return newIMessages.map((message) => {
-      return JSON.parse(message) as IMessage
-    })
+    return newIMessages.map(message => {
+      return JSON.parse(message) as IMessage;
+    });
   };
-
 
   /**
    * 소켓에서 새로운 메세지 받아오기.
    * - 채팅방 들어올 때 로컬에 복호화한 ChatroomKey 가져와서 새 메세지도 복호화하기.
    * - 복호화 후 로컬 저장과 onSend에 넣어준다.
-   * @param message 
+   * @param message
    */
   const getNewMessagesFromSocket = async (message: IMessage[]) => {
-        saveNewMessagesToLocal(message) // 새 메세지 오는 순간 로컬로 저장.
-        onSend(message) //  새 메세지 오는 순간 append.
-    }
+    saveNewMessagesToLocal(message); // 새 메세지 오는 순간 로컬로 저장.
+    onSend(message); //  새 메세지 오는 순간 append.
+  };
 
   /**
    * 내가 보낸 메시지 서버에 보내기.
    * - 채팅방 들어올 때 로컬에 복호화한 ChatroomKey로 text 암호화하고 보내기.
    */
   const sendNewMessageToServer = (text: string) => {
-        // TODO : disconneted일 때 예외처리 해야 할 듯.
-        if(socket.connected){
-          const IMessageSendDto:IMessageSendDto = {
-            text: text,
-            belongChatroomId: chatroomId,
-            deleteTime: new Date(),
-            sendTime: new Date()
-          };
-          socket.emit("speakMessage", IMessageSendDto);
-        }
+    // TODO : disconneted일 때 예외처리 해야 할 듯.
+    if (socket.connected) {
+      const IMessageSendDto: IMessageSendDto = {
+        text: text,
+        belongChatroomId: chatroomId,
+        deleteTime: new Date(),
+        sendTime: new Date(),
+      };
+      socket.emit('speakMessage', IMessageSendDto);
+    }
   };
 
   const onSend = useCallback((messages: IMessage[] = []) => {
@@ -170,7 +192,6 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
       GiftedChat.append(messages, previousMessages),
     );
   }, []);
-
 
   // me
   const user = {
@@ -184,7 +205,7 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
     name: 'React Native',
     avatar: require('../assets/users/emptyProfile.jpg'),
   };
-  
+
   /**
    * 메시지 가져오기 helper function
    * @param message
@@ -200,5 +221,11 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
     };
   };
 
-  return { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket, onSend };
+  return {
+    messages,
+    setMessages,
+    sendNewMessageToServer,
+    getNewMessagesFromSocket,
+    onSend,
+  };
 }

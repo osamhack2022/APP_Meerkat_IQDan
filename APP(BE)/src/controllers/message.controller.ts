@@ -2,7 +2,7 @@ import { NextFunction, Response } from 'express';
 import { Message } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import MessageService from '@/services/message.service';
-import { FindMessageDto } from '@/dtos/messages.dto';
+import { FindMessageDto, SetRecentRead } from '@/dtos/messages.dto';
 
 class MessagesController {
   public messagesService = new MessageService();
@@ -35,6 +35,22 @@ class MessagesController {
     }
     catch (error) {
       next(error);
+    }
+  }
+
+  public setRecentRead = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user.userId
+      const {chatroomId, recentMessageId} = req.body as SetRecentRead
+
+      await this.messagesService.setRecentReadMessage(userId, chatroomId, recentMessageId)
+
+      res.status(200).json({
+        message: `success`
+      })
+
+    }  catch (error) {
+      next(error)
     }
   }
 }
