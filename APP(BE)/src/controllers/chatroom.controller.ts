@@ -3,7 +3,7 @@ import { Chatroom, Friends, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
-import { CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
+import { ChatroomAndNumOfUnreadMessagesDto, CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
 import {ChatroomWithKey} from "../interfaces/chatroom.interface"
 
 
@@ -24,6 +24,24 @@ class ChatroomController {
       res.status(200).json({
         data: chatroomsData,
         message: `found all matching chatrooms`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // 내가 속해있는 채팅방 정보 + 안읽은 메시지 개수 가져오기
+  public getMyChatroomsAndNumOfUnreads = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const chatroomsData: ChatroomAndNumOfUnreadMessagesDto[] = await this.chatroomService.getMyChatroomsAndNumOfUnreads(userId);
+      res.status(200).json({
+        data: chatroomsData,
+        message: `found all matching chatrooms and unread messages number`,
       });
     } catch (error) {
       next(error);

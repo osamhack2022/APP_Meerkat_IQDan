@@ -21,12 +21,8 @@ export function globalSocketFunction(socket: Socket) {
 
     ////////////////////////// DEBUG: just for debug
     // 방에 접속한 목록 출력
-    socket.on("connectionJoinRoomDebug", msg =>{
+    socket.on("server:joinAllChatrooms", msg =>{
       console.log(msg);
-    })
-
-    socket.on("testsendmessage", (message:string) => {
-      console.log(message);
     });
     //////////////////////////
   
@@ -77,7 +73,7 @@ export function globalSocketFunction(socket: Socket) {
       const chatrooms:Chatroom[] = res.data.data;
       const chatroomIds:number[] = chatrooms.map(chatroom=>chatroom.chatroomId);
       console.log(chatroomIds);
-      socket.emit("connectionJoinRoom", chatroomIds);
+      socket.emit("client:joinAllChatrooms", chatroomIds);
     })
     .catch((err)=>{
       Alert.alert("네트워크 접속 오류입니다.")

@@ -72,9 +72,9 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       console.log('--------------- room socket ---------------');
       console.log(chatroomId + " socket connection 시작");
 
-      socket.emit("joinRoom", chatroomId);
+      socket.emit("client:joinChatroom", chatroomId);
 
-      socket.on('hearMessage', (messageDto: IMessageDto) => {
+      socket.on('server:hearMessage', (messageDto: IMessageDto) => {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
 
@@ -113,7 +113,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const otherUser = {
     _id: 2,
     name: 'React Native',
-    avatar: require('../assets/users/emptyProfile.jpg'),
   };
 
   const msgSample: IMessage[] = [
