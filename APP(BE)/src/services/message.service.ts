@@ -141,8 +141,8 @@ class MessageService {
     const usersOnChatrooms = await prisma.usersOnChatrooms.findUnique({
       where: {
         chatroomId_userId: {
-          chatroomId: userId,
-          userId: chatroomId,
+          userId: userId,
+          chatroomId: chatroomId,
         },
       }
     })
