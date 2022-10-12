@@ -13,6 +13,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
 
+// json stringify helper function (escape 문자 제거)
+function replacer(key: any, value: string) {
+  return value.replace(/[^\w\s]/gi, '');
+}
+
 /**
  * Message 라이프 사이클
  * 동번호는 동시 진행.
@@ -45,6 +50,11 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
 
         console.log("cached", cachedMessages)
         console.log("new", newMessages)
+
+        // for (let i = 0; i < 100; i++) {
+        //   await AsyncStorage.removeItem("message" + i)
+        //   await AsyncStorage.removeItem("chatroom" + i + "pointers")
+        // }
 
         // setMessages([...cachedMessages, ...newMessages])
         // await saveNewMessagesToLocal(newMessages)
@@ -117,11 +127,13 @@ export default function useMessage(chatroomId: number, userId: number, socket: S
         // 로컬에 저장된 메시지가 없다면 빈 리스트 리턴.
         return [];
     }
-    const newIMessages: IMessage[] = await Promise.all(JSON.parse(messagePointers).map((pointer: number) => {
+    const newIMessages: string[] = await Promise.all(JSON.parse(messagePointers).map((pointer: number) => {
         return AsyncStorage.getItem('message' + pointer) // pointer is alias for messageId or _id.
     }))
 
-    return newIMessages
+    return newIMessages.map((message) => {
+      return JSON.parse(message) as IMessage
+    })
   };
 
 
