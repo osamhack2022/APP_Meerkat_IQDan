@@ -47,7 +47,7 @@ class MessageService {
     });
 
     // 내가 보낸 메세지도 최근에 내가 읽은 것으로 표기해주어야함.
-    await this.setRecentReadMessage(message.senderId, message.belongChatroomId, message.messageId)
+    // await this.setRecentReadMessage(message.senderId, message.belongChatroomId, message.messageId) TODO: 이거 나중에 필요 없어지면 지우기.
     
     return message.messageId;
   }

@@ -3,14 +3,18 @@ import { Chatroom, Friends, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
-import { ChatroomAndNumOfUnreadMessagesDto, CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
-import {ChatroomWithKey} from "../interfaces/chatroom.interface"
-
+import {
+  ChatroomAndNumOfUnreadMessagesDto,
+  CreateChatroomDto,
+  InviteChatroomDto,
+  PutChatroomKeyDto,
+  UpdateChatroomDto,
+} from '@/dtos/chatroom.dto';
+import { ChatroomWithKey } from '../interfaces/chatroom.interface';
 
 class ChatroomController {
   public friendsService = new FriendsService();
   public chatroomService = new ChatroomService();
-
 
   // 내가 속해있는 채팅방 정보 모두 가져오기
   public getMyChatrooms = async (
@@ -38,7 +42,8 @@ class ChatroomController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const chatroomsData: ChatroomAndNumOfUnreadMessagesDto[] = await this.chatroomService.getMyChatroomsAndNumOfUnreads(userId);
+      const chatroomsData: ChatroomAndNumOfUnreadMessagesDto[] =
+        await this.chatroomService.getMyChatroomsAndNumOfUnreads(userId);
       res.status(200).json({
         data: chatroomsData,
         message: `found all matching chatrooms and unread messages number`,
@@ -57,7 +62,10 @@ class ChatroomController {
     try {
       const userId = req.user.userId;
       const chatroomId = Number(req.params.id);
-      const chatroomData: ChatroomWithKey = await this.chatroomService.getChatroom(userId, chatroomId);
+      const chatroomData: ChatroomWithKey = await this.chatroomService.getChatroom(
+        userId,
+        chatroomId,
+      );
       res.status(200).json({
         data: chatroomData,
         message: `found the matching chatroom`,
@@ -67,27 +75,25 @@ class ChatroomController {
     }
   };
 
-  
   // 특정 채팅방에 속한 모든 유저정보 불러오기
-  public getAllUsersInChat = async(
+  public getAllUsersInChat = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
-  ): Promise<void> => { 
+  ): Promise<void> => {
     try {
-      const userId = req.user.userId
+      const userId = req.user.userId;
       const chatroomId = Number(req.params.id);
-      const usersInChat = await this.chatroomService.getAllUsersInChat(userId, chatroomId)
-      
+      const usersInChat = await this.chatroomService.getAllUsersInChat(userId, chatroomId);
+
       res.status(200).json({
         data: usersInChat,
-        message: `success`
-      })
-
+        message: `success`,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
-  }
+  };
 
   // 해당 유저 모든 친구 불러오기
   public getAllFriends = async (
@@ -124,7 +130,7 @@ class ChatroomController {
           targetUserIds[0],
           name,
           msgExpTime,
-          removeAfterRead
+          removeAfterRead,
         );
 
         res.status(200).json({ data: chatroomInfo, message: `success` });
@@ -135,12 +141,11 @@ class ChatroomController {
           name,
           msgExpTime,
           commanderUserIds,
-          removeAfterRead
+          removeAfterRead,
         );
 
         res.status(200).json({ data: chatroomInfo, message: `success` });
       }
-      
     } catch (error) {
       next(error);
     }
@@ -182,7 +187,6 @@ class ChatroomController {
     }
   };
 
-
   // 채팅방 정보 변경
   public updateChat = async (
     req: RequestWithUser,
@@ -207,8 +211,7 @@ class ChatroomController {
     }
   };
 
-
-  // 프런트에서 생성한 채팅방 키 업로드
+  // 다른 유저들을 채팅방에 초대할 때 프런트에서 생성한 채팅방 키 업로드
   public putChatroomKey = async (
     req: RequestWithUser,
     res: Response,
@@ -217,7 +220,7 @@ class ChatroomController {
     try {
       const userId = req.user.userId;
       const { forChatroomId, forUserId, encryptedKey } = req.body as PutChatroomKeyDto;
-      
+
       await this.chatroomService.putChatroomKey(forUserId, forChatroomId, encryptedKey);
 
       res.status(200).json({
@@ -228,6 +231,27 @@ class ChatroomController {
     }
   };
 
+  // 채팅방 키 가져오기
+  public getChatroomKey = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const chatroomId = Number(req.params.id);
+      const encryptedKey = await this.chatroomService.getChatroomKey(userId, chatroomId);
+
+      res.status(200).json({
+        data: {
+          encryptedKey: encryptedKey,
+        },
+        message: `success`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ChatroomController;

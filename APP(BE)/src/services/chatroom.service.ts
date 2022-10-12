@@ -398,20 +398,14 @@ class ChatroomService {
   }
 
   /**
-   * 유저에게 대칭기 발송.
+   * 개인이 남들을 방에 초대할 때 만든 암호화된 키들을 db에 저장.
    */
   public async putChatroomKey(
     userId: number,
     chatroomId: number,
     encrypedKey: string,
   ): Promise<void> {
-    const chatroom = await prisma.chatroom.findUnique({
-      where: { chatroomId: chatroomId },
-    });
-
-    console.log(chatroomId);
-
-    let res = await prisma.chatroomKey.create({
+    await prisma.chatroomKey.create({
       data: {
         forUserId: userId,
         forChatroomId: chatroomId,
@@ -421,6 +415,26 @@ class ChatroomService {
 
     return;
   }
+
+
+  /**
+   * 특정 채팅방의 나의 암호화된 키를 가져오기.
+   */
+  public async getChatroomKey(
+    userId: number,
+    chatroomId: number
+  ): Promise<string> {
+    const res = await prisma.chatroomKey.findUnique({
+      where: {
+        forUserId_forChatroomId: {
+          forUserId: userId,
+          forChatroomId: chatroomId
+        }
+      }
+    })
+    return res.encryptedKey
+  }
+  
 }
 
 export default ChatroomService;
