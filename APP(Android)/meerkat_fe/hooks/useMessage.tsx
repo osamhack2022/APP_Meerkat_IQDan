@@ -183,7 +183,7 @@ export default function useMessage(
         deleteTime: new Date(),
         sendTime: new Date(),
       };
-      socket.emit('speakMessage', IMessageSendDto);
+      socket.emit('client:speakMessage', IMessageSendDto);
     }
   };
 
