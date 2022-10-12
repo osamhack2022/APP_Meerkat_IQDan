@@ -29,3 +29,11 @@ export class IMessageDto {
   @IsBoolean()
   public isSender:boolean;
 }
+
+export class SetRecentRead {
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public recentMessageId: number;
+}
