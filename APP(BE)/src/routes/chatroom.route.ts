@@ -73,6 +73,12 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.putChatroomKey
     )
+    // 암호화된 챗룸키 가져오기
+    this.router.get(
+      `${this.path}/:id(\\d+)`,
+      authMiddleware,
+      this.chatroomController.getChatroomKey
+    );
   }
 }
 
