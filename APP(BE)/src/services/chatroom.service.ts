@@ -56,9 +56,9 @@ class ChatroomService {
     const result: any = await prisma.$queryRaw<Object[]>`
     select *, cu.numUnreadMessages from 
       (
-        select p.chatroomId, count(*) as numUnreadMessages
+        select p.chatroomId, count(*)-1 as numUnreadMessages
         from UsersOnChatrooms p join Message m on p.chatroomId = m.belongChatroomId
-        where p.userId = ${userId} and m.messageId > p.recentReadMessageId
+        where p.userId = ${userId} and m.messageId >= p.recentReadMessageId
         group by p.chatroomId
       ) cu
     join Chatroom on cu.chatroomId = Chatroom.chatroomId`
