@@ -39,8 +39,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const [templateVisible, setTemplateVisible] = useState(false); // 메시징 템플릿
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
-  
-  
+
 
   // 메시지 가져오기
   const { messages, sendNewMessageToServer, getNewMessagesFromSocket, onSend} = useMessage(chatroomId, userId, socket)
@@ -114,22 +113,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     _id: 2,
     name: 'React Native',
   };
-
-  const msgSample: IMessage[] = [
-    {
-      _id: 1,
-      text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
-      createdAt: new Date(),
-      user: otherUser,
-    },
-    {
-      _id: 2,
-      text: 'This is a quick reply. Do you love Gifted Chat? (checkbox)',
-      createdAt: new Date(),
-      user: otherUser,
-    },
-  ];
-
   
   return (
     <>
@@ -148,7 +131,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         <View style={styles.chat}>
           <GiftedChat
             messages={messages}
-            onSend={(messages: any) => onSend(messages)} // TODO: ??
+            onSend={(messages: any) => onSend(messages)}
             renderBubble={MKBubble}
             timeTextStyle={{
               left: { color: 'black' },
@@ -173,7 +156,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         superiorOnly={superiorOnly}
         onPressTemplate={() => setTemplateVisible(true)}
         onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-        // onSend={onSendFromUser}
+        // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
         onSend ={() => {}}
       />
       <ChatroomTemplatePanel

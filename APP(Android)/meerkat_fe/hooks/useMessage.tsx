@@ -13,11 +13,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
 
-// json stringify helper function (escape 문자 제거)
-function replacer(key: any, value: string) {
-  return value.replace(/[^\w\s]/gi, '');
-}
-
 /**
  * Message 라이프 사이클
  * 동번호는 동시 진행.
@@ -47,16 +42,6 @@ export default function useMessage(
     async function init() {
       const cachedMessages = await fetchMessagesFromLocal();
       const newMessages = await fetchNewMessagesFromServer();
-
-      // console.log('cached', cachedMessages);
-      // console.log('new', newMessages);
-
-      // 데이터 게워내기
-      // for (let i = 0; i < 100; i++) {
-        // await AsyncStorage.removeItem("message" + i) 
-        // await AsyncStorage.removeItem("chatroom" + i + "pointers")
-      // }
-
       setMessages([...cachedMessages, ...newMessages])
       await saveNewMessagesToLocal(newMessages)
     }
@@ -112,30 +97,45 @@ export default function useMessage(
    * - 여긴 비밀방일 때만 양방향 비밀번호로 암호화.
    */
   const saveNewMessagesToLocal = async (newMessages: IMessage[]) => {
-    await Promise.all(
-      newMessages.map(message => {
-        return AsyncStorage.setItem(
-          'message' + message._id.toString(),
-          JSON.stringify(message),
-        );
-      }),
-    );
-    const storageKey = 'chatroom' + chatroomId + 'pointers';
-    const newMsgList = newMessages.map(message => message._id);
-    const msgList = await AsyncStorage.getItem(storageKey);
-    // 로컬에 msg 정보가 없다면, 생성.
-    if (msgList === null) {
-      return await AsyncStorage.setItem(storageKey, JSON.stringify(newMsgList));
+
+    // 어디 까지 읽었는지 업데이트. TODO: 이 부분 테스팅.
+    try {
+      await api.post('/messages/setRecentRead', {
+        chatroomId: chatroomId,
+        recentMessageId: newMessages[newMessages.length - 1]._id,
+      });
+    } catch(e) {
+      return Alert.alert('서버와의 연결에 실패했습니다.')
     }
-    // 로컬에 msg 정보가 있다면, append.
-    await AsyncStorage.setItem(
-      storageKey,
-      JSON.stringify([...JSON.parse(msgList), ...newMsgList]), // 예전 메시지와 새 메시지 pointer들 합치기.
-    );
-  };
+
+    try {
+      await Promise.all(
+        newMessages.map(message => {
+          return AsyncStorage.setItem(
+            'message' + message._id.toString(),
+            JSON.stringify(message),
+            );
+          }),
+          );
+          const storageKey = 'chatroom' + chatroomId + 'pointers';
+          const newMsgList = newMessages.map(message => message._id);
+          const msgList = await AsyncStorage.getItem(storageKey);
+          // 로컬에 msg 정보가 없다면, 생성.
+          if (msgList === null) {
+            return await AsyncStorage.setItem(storageKey, JSON.stringify(newMsgList));
+          }
+          // 로컬에 msg 정보가 있다면, append.
+          await AsyncStorage.setItem(
+            storageKey,
+            JSON.stringify([...JSON.parse(msgList), ...newMsgList]), // 예전 메시지와 새 메시지 pointer들 합치기.
+            );
+      } catch(e) {
+        return Alert.alert('새로온 메세지를 로컬에 저장하지 못했습니다.')
+      }
+   };
 
   /**
-   * 로컬에서 메시지 가져오기.
+   * 로컬에서 메세지 가져오기.
    * 처음에만 로컬에서 가져오고, 그 다음부터는 로컬에는 저장만함.
    * - 여긴 일반 E2EE 적용 안해도 되는 곳임.
    * - 여긴 비밀방일 때만 양방향 비밀번호로 복호화
@@ -171,7 +171,7 @@ export default function useMessage(
   };
 
   /**
-   * 내가 보낸 메시지 서버에 보내기.
+   * 내가 보낸 메세지 서버에 보내기.
    * - 채팅방 들어올 때 로컬에 복호화한 ChatroomKey로 text 암호화하고 보내기.
    */
   const sendNewMessageToServer = (text: string) => {
