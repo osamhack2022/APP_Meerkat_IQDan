@@ -9,41 +9,59 @@ import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
 import Header from '../../components/FriendList/Header';
+import { SocketContext } from "../../common/Context";
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
+    const { socket } = useContext(SocketContext);
     const {navigation} = props;
     const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
-    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads")
+    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
+    
+    
+    // 서버에서 메시지를 보냈을 때, unread count++
+    useEffect(()=>{
+        socket.on("server:notificateMessage", (content:string) => {
+          console.log("content: "+content);
+          reFetch();
+        });
+    }, []);
 
     useEffect(() => {    
         if (rerender) {
-            reFetch()
+            reFetch();
         }   
-    }, [rerender])
+    }, [rerender]);
 
     const handleAddChatroom = () => {
-        navigation.push("AddChatroom")
+        navigation.push("AddChatroom");
     }
 
-    const roomsComponent=()=>{
-        if (isLoading) {return <ChatroomLoading />}
-        else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
-        return rooms.map((room) => {
-            return (
-                <ChatroomBox
-                    key={room.chatroomId}
-                    chatroomId={room.chatroomId}
-                    name={room.name}
-                    type={room.type}
-                    createDate={room.createDate}
-                    updateDate={room.updateDate}
-                    msgExpTime={room.msgExpTime}
-                    unreadCount={room.numUnreadMessages}
-                    navigation={navigation}
-                />
-            );
-        });
+    const roomsComponent = () => {
+      if (isLoading) {
+        return <ChatroomLoading />;
+      } else if (rooms === null || rooms.length === 0) {
+        return (
+          <View style={styles.titleMsgContainer}>
+            <Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text>
+          </View>
+        );
+      }
+      return rooms.map(room => {
+        return (
+          <ChatroomBox
+            key={room.chatroomId}
+            chatroomId={room.chatroomId}
+            name={room.name}
+            type={room.type}
+            createDate={room.createDate}
+            updateDate={room.updateDate}
+            msgExpTime={room.msgExpTime}
+            unreadCount={room.numUnreadMessages}
+            navigation={navigation}
+          />
+        );
+      });
     };
 
     return (

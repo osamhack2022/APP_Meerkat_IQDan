@@ -11,7 +11,7 @@ import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel'
 // types
 import { ChatroomWithKey, Chatroom, IMessageDto, IMessageSendDto, RootStackScreenProps, User } from '../common/types';
 // context
-import { LoginContext, SocketContext } from '../common/Context';
+import { LoginContext } from '../common/Context';
 // thirds
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import api from '../common/api';
