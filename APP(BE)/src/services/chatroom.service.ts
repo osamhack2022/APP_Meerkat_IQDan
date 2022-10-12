@@ -4,10 +4,11 @@ import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
 import prisma from '../db';
 import { ChatroomWithKey } from '../interfaces/chatroom.interface';
+import { ChatroomAndNumOfUnreadMessagesDto } from '@/dtos/chatroom.dto';
 
 class ChatroomService {
   /**
-   * 내가 해당한 모든 채팅방 가져오기
+   * 내가 속해있는 모든 채팅방 가져오기
    * @param userId
    * @returns 내가 들어있는 모든 채팅방 정보
    */
@@ -26,6 +27,48 @@ class ChatroomService {
     });
 
     return chatrooms;
+  }
+
+
+  /**
+   * 유저가 그 방의 멤버인지 확인합니다.
+   * @param chatroomId 
+   * @param userId 
+   */
+  public async checkUserIsInChatroom (chatroomId: number, userId: number) {
+    const members = await prisma.usersOnChatrooms.findMany({
+      where: {
+        chatroomId: chatroomId,
+      },
+    });
+    const i = members.findIndex(e => e.userId === userId);
+    if (i === -1) {
+      throw new HttpException(403, 'You are not a member of this chat room.');
+    }
+  }
+
+  /**
+   * 내가 속한 모든 채팅방 + 안읽은 메시지 개수
+   * @param userId
+   * @returns 내가 들어있는 모든 채팅방 정보 + 안읽은 메시지 개수
+   */
+   public async getMyChatroomsAndNumOfUnreads(userId: number): Promise<ChatroomAndNumOfUnreadMessagesDto[]> {
+    const result: any = await prisma.$queryRaw<Object[]>`
+    select *, cu.numUnreadMessages from 
+      (
+        select p.chatroomId, count(*) as numUnreadMessages
+        from UsersOnChatrooms p join Message m on p.chatroomId = m.belongChatroomId
+        where p.userId = ${userId} and m.messageId > p.recentReadMessageId
+        group by p.chatroomId
+      ) cu
+    join Chatroom on cu.chatroomId = Chatroom.chatroomId`
+
+    const parseBigIntResult: ChatroomAndNumOfUnreadMessagesDto[] = result.map((value)=>{
+      value.numUnreadMessages = Number(value.numUnreadMessages.toString());
+      return value;
+    });
+
+    return parseBigIntResult;
   }
 
 

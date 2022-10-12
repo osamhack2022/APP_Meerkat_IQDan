@@ -14,7 +14,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const {navigation} = props;
     const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
-    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
+    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads")
 
     useEffect(() => {    
         if (rerender) {
@@ -39,6 +39,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
                     createDate={room.createDate}
                     updateDate={room.updateDate}
                     msgExpTime={room.msgExpTime}
+                    unreadCount={room.numUnreadMessages}
                     navigation={navigation}
                 />
             );

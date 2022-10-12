@@ -7,6 +7,15 @@ export class FindMessageDto{
   @IsNumber()
   public userId: number;
 }
+
+export class UsersOnChatroomsKeyDto{
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public userId: number;
+}
+
 export class IMessageDto {
   @IsNumber()
   public _id : number;

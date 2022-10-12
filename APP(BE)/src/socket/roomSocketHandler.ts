@@ -5,14 +5,14 @@ import { Namespace, Socket } from "socket.io"
 // room socket event handler
 export default (io: Namespace, socket: Socket, messageService: MessageService) =>{
     // room 클릭 시 해당 room에 추가
-    socket.on("joinRoom", (roomId: number) =>{
+    socket.on("client:joinChatroom", (roomId: number) =>{
         // TODO  console log는 디버깅용, 추후 완성되면 삭제
         console.log("room room " + roomId + "에 사용자 " + socket.handshake.auth.userId + "접속");
         //
         socket.join(roomId.toString());
     });
 
-    socket.on("speakMessage", (iMessageDto: IMessageDto) =>{
+    socket.on("client:speakMessage", (iMessageDto: IMessageDto) =>{
         console.log(iMessageDto);
         // TODO : console log는 디버깅용, 추후 완성되면 삭제
         console.log("room " + iMessageDto.belongChatroomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + iMessageDto.text + "를 보냄."); 
@@ -23,7 +23,7 @@ export default (io: Namespace, socket: Socket, messageService: MessageService) =
         messageService.storeMessageAndGetId(iMessageDto)
         .then((messageId) => {
             iMessageDto._id = messageId;
-            io.in(iMessageDto.belongChatroomId.toString()).emit("hearMessage", iMessageDto);
+            io.in(iMessageDto.belongChatroomId.toString()).emit("server:hearMessage", iMessageDto);
         }).catch(Error => {
             // error가 발생해도 터트리지 않고 로깅만 한 후 계속 진행
             console.log(Error);

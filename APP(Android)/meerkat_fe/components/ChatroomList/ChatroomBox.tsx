@@ -3,7 +3,7 @@ import { Chatroom } from "../../common/types";
 const dotsImage = require("../../assets/icons/dots_vertical.png");
 
 export default function ChatroomBox(props: any) { // TODO: Chatroom + navigation으로 수정
-  const { chatroomId, name, type, createDate, updateDate, msgExpTime, navigation } = props;
+  const { chatroomId, name, type, createDate, updateDate, msgExpTime, unreadCount, navigation } = props;
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.push("Chat", {chatroomId: chatroomId})} >
@@ -13,7 +13,7 @@ export default function ChatroomBox(props: any) { // TODO: Chatroom + navigation
         </View>
         <View style={styles.lowerContainer}>
             <Text style={styles.time}>마지막 대화 1시간 전</Text>
-            <Text style={styles.count}>10</Text>
+            <Text style={styles.count}>{unreadCount}</Text>
         </View>
     </TouchableOpacity>
   );
