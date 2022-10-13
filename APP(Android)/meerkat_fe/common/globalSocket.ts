@@ -7,13 +7,18 @@ import api from "./api";
 
 
 // set all of global socket events in this function
-export function globalSocketFunction(socket: Socket) {
+export const globalSocketFunction = (socket: Socket) => {
+  socket.connect();
     socket.on('connect', () => {
       // TODO : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('--------------- global socket ---------------');
       
       // 재접속 시 DB에서 속해있는 모든 방의 정보를 가져온 후, 그 방에 전부 접속해야 함.
       connectBelongRooms(socket);
+
+      socket.on("server:joinedChatroom", (log:string)=>{
+        console.log(log);
+      })
     });
   
     socket.on("disconnect", () => {

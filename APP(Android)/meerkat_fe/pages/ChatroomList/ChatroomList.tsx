@@ -17,15 +17,15 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
     const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
-    
-    
+  
     // 서버에서 메시지를 보냈을 때, unread count++
-    useEffect(()=>{
-        socket.on("server:notificateMessage", (content:string) => {
-          console.log("content: "+content);
-          reFetch();
-        });
-    }, []);
+    // socket이 바뀌면 event attach함.
+    useEffect(()=> {
+      socket.on("server:notificateMessage", (content:string) => {
+        console.log("content: "+content);
+        reFetch();
+      });
+    }, [socket]);
 
     useEffect(() => {    
         if (rerender) {
