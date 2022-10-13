@@ -25,7 +25,6 @@ class SocketIO{
         chatio.on("connection", (socket:Socket)=>{
             // TODO : debug용 console log
             console.log("chat namespace new user!!");
-            console.log(socket.handshake.auth);
 
             // token validator middleware. if unauthorized, then disconnect.
             socketMiddleware(chatio, socket);
