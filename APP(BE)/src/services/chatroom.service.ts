@@ -73,23 +73,6 @@ class ChatroomService {
 
 
   /**
-   * 유저가 그 방의 멤버인지 확인합니다.
-   * @param chatroomId 
-   * @param userId 
-   */
-  public async checkUserIsInChatroom (chatroomId: number, userId: number) {
-    const members = await prisma.usersOnChatrooms.findMany({
-      where: {
-        chatroomId: chatroomId,
-      },
-    });
-    const i = members.findIndex(e => e.userId === userId);
-    if (i === -1) {
-      throw new HttpException(403, 'You are not a member of this chat room.');
-    }
-  }
-
-  /**
    * 특정 채팅방 정보 불러오기
    * @param userId
    * @param chatroomId

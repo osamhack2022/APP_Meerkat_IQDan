@@ -102,6 +102,9 @@ class MessageService {
     return;
   }
 
+  /**
+   * @deprecated setRecentReadMessage로 사용.
+   */
   public async updateRecentReadMessage(usersOnChatroomsKeyDto: UsersOnChatroomsKeyDto): Promise<number>{
     // checking part
     await this.checkUserExists(usersOnChatroomsKeyDto.userId);
