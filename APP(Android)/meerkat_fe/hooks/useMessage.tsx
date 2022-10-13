@@ -280,8 +280,29 @@ export default function useMessage(
     if (chatroomKey !== null) {
       return encryptAES(text, chatroomKey)
     }
-
-    throw new Error('메세지를 암호화할 양방향 키가 없습니다.')
+    // throw new Error('메세지를 암호화할 양방향 키가 없습니다.')
+    // 로컬에 저장된 채팅룸키가 없다면 가져와야함.
+    try {
+      console.log('asdf')
+      const res = await api.get('/chatroom/getChatroomKey/' + chatroomId);
+      console.log('1')
+      const encryptedAESKey: string = res.data.data.encryptedKey; // aes키 가져오기
+      console.log('1')
+      const personalRSAKey = await AsyncStorage.getItem('PrivateKey'); // 개인 키 가져오기
+      console.log('1')
+      if (personalRSAKey === null) {
+        throw new Error('개인키가 존재하지 않습니다.');
+      }
+      console.log('2')
+      const decryptedAESKey = decryptAES(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
+      console.log('3')
+      await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
+      console.log('4')
+      const encryptedText = encryptAES(text, decryptedAESKey);
+      return  encryptedText
+    } catch (err) {
+      throw new Error('메세지 암호화에 실패했습니다.');
+    }
   };
 
   return {
