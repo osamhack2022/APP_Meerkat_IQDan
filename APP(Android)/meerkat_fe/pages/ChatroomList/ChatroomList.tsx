@@ -21,9 +21,12 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     // 서버에서 메시지를 보냈을 때, unread count++
     // socket이 바뀌면 event attach함.
     useEffect(()=> {
+      console.log("try to init socket");
+      console.log(socket);
+      console.log(socket.connected);
       socket.on("server:notificateMessage", (content:string) => {
         console.log("content: "+content);
-        reFetch();
+        //reFetch();
       });
     }, [socket]);
 
