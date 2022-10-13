@@ -167,8 +167,8 @@ export default function useMessage(
   const getNewMessagesFromSocket = async (message: IMessage[]) => {
     const decryptedMessage = await decryptMessages(message);
     try {
-      saveNewMessagesToLocal(decryptedMessage); // 새 메세지 오는 순간 로컬로 저장.
       onSend(decryptedMessage); //  새 메세지 오는 순간 append.
+      saveNewMessagesToLocal(decryptedMessage); // 새 메세지 오는 순간 로컬로 저장.
     } catch (err: any) {
       if (err.message !== undefined) {
         Alert.alert(err.message);
