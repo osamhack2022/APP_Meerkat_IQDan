@@ -24,6 +24,7 @@ export default (io: Namespace, socket: Socket, messageService: MessageService) =
         .then((messageId) => {
             iMessageDto._id = messageId;
             io.in(iMessageDto.belongChatroomId.toString()).emit("server:hearMessage", iMessageDto);
+            io.in(iMessageDto.belongChatroomId.toString()).emit("server:notificateMessage", iMessageDto.text);
         }).catch(Error => {
             // error가 발생해도 터트리지 않고 로깅만 한 후 계속 진행
             console.log(Error);
