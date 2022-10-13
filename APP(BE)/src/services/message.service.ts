@@ -70,8 +70,6 @@ class MessageService {
       and m.belongChatroomId = ${findMessagDto.chatroomId}
     order by m.messageId asc;`;
 
-    if(isEmpty(unreadChats) || unreadChats.length == 0) return [];
-
     return unreadChats;
   }
 
