@@ -113,6 +113,14 @@ export default function SettingsLoading() {
 
           </View>
         </reactNativePaper.TouchableRipple>
+
+        <reactNativePaper.TouchableRipple onPress={()=>{}}>
+            <View style={styles.menuItem}>
+              <AntDesign name="key" size={24} color="#6A4035" />
+              <Text style={styles.menuItemText}>보안키 생성</Text>
+            </View>
+          </reactNativePaper.TouchableRipple>
+
         <reactNativePaper.TouchableRipple onPress={()=>{}}>
           <View style={styles.menuItem}>
 
