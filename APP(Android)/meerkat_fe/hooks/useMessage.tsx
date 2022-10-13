@@ -43,6 +43,7 @@ export default function useMessage(
     async function init() {
       try {
         const cachedMessages = await fetchMessagesFromLocal();
+        // console.log(cachedMessages)
         const newMessages = await fetchNewMessagesFromServer();
         setMessages([...cachedMessages, ...newMessages]);
         await saveNewMessagesToLocal(newMessages);
@@ -71,7 +72,7 @@ export default function useMessage(
         return messageDto2IMessage(message);
       });
     } catch (err) {
-      throw new Error('서버에서 메시지를 불러오지 못했습니다.');
+      throw new Error('서버에서 메세지를 불러오지 못했습니다.');
     }
 
     if (unreads.length === 0) return [];
@@ -94,10 +95,12 @@ export default function useMessage(
     // 어디 까지 읽었는지 업데이트. TODO: 이 부분 테스팅.
     // 이 부분은 서버에서 설정해주는 것 보다 여기서 설정해주는 것이 더 깔끔함.
     try {
-      await api.post('/messages/setRecentRead', {
-        chatroomId: chatroomId,
-        recentMessageId: newMessages[newMessages.length - 1]._id,
-      });
+      if (newMessages.length > 0 ) {
+        await api.post('/messages/setRecentRead', {
+          chatroomId: chatroomId,
+          recentMessageId: newMessages[newMessages.length - 1]._id,
+        });
+      }
     } catch (e) {
       throw new Error('서버와의 연결에 실패했습니다.');
     }

@@ -32,11 +32,13 @@ class MessagesController {
       });
 
       // 최근까지 읽은 메세지 업데이트
-      await this.messagesService.setRecentReadMessage(
-        req.user.userId,
-        Number(req.params.id),
-        unreadMessage[unreadMessage.length - 1].messageId, // 맨 마지막 message의 id
-      );
+      if (unreadMessage.length > 0) {
+        await this.messagesService.setRecentReadMessage(
+          req.user.userId,
+          Number(req.params.id),
+          unreadMessage[unreadMessage.length - 1].messageId, // 맨 마지막 message의 id
+        );
+      }
 
       res.status(200).json({
         data: result,
