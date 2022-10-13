@@ -54,14 +54,18 @@ class ChatroomService {
    */
    public async getMyChatroomsAndNumOfUnreads(userId: number): Promise<ChatroomAndNumOfUnreadMessagesDto[]> {
     const result: any = await prisma.$queryRaw<Object[]>`
-    select *, cu.numUnreadMessages from 
-      (
-        select p.chatroomId, count(*)-1 as numUnreadMessages
-        from UsersOnChatrooms p join Message m on p.chatroomId = m.belongChatroomId
-        where p.userId = ${userId} and m.messageId >= p.recentReadMessageId
-        group by p.chatroomId
-      ) cu
-    join Chatroom on cu.chatroomId = Chatroom.chatroomId`
+    select *, r.numUnreadMessages
+    from(
+      select chatroomId, NVL(count(r.messageId), 0) as numUnreadMessages
+      from (
+        select *
+        from UsersOnChatrooms p left join Message m
+        on p.chatroomId = m.belongChatroomId
+        where p.userId = ${userId}
+      ) r
+      where NVL(r.messageId, -1) >= r.recentReadMessageId
+      group by r.chatroomId
+    ) r join Chatroom c on r.chatroomId = c.chatroomId`;
 
     const parseBigIntResult: ChatroomAndNumOfUnreadMessagesDto[] = result.map((value)=>{
       value.numUnreadMessages = Number(value.numUnreadMessages.toString());
