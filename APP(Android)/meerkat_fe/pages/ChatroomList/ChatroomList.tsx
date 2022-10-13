@@ -10,6 +10,9 @@ import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 import { Chatroom, MainTabScreenProps } from "../../common/types";
 import Header from '../../components/FriendList/Header';
 import { SocketContext } from "../../common/Context";
+// thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from '@expo/vector-icons'; 
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const { socket } = useContext(SocketContext);
@@ -17,16 +20,13 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<Chatroom[] | null>(null);
     const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
+    const [keyExists, setKeyExists] = useState(false)
   
     // 서버에서 메시지를 보냈을 때, unread count++
     // socket이 바뀌면 event attach함.
     useEffect(()=> {
-      console.log("try to init socket");
-      console.log(socket);
-      console.log(socket.connected);
       socket.on("server:notificateMessage", (content:string) => {
-        console.log("content: "+content);
-        //reFetch();
+        reFetch();
       });
     }, [socket]);
 
@@ -36,35 +36,40 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         }   
     }, [rerender]);
 
+    useEffect(() => {
+        async function init() {
+            const privKey = await AsyncStorage.getItem('PrivateKey')
+            console.log(privKey)
+            if (privKey !== null) {
+                setKeyExists(true)
+            }
+        }
+        init()
+    }, [])
+
     const handleAddChatroom = () => {
         navigation.push("AddChatroom");
     }
 
-    const roomsComponent = () => {
-      if (isLoading) {
-        return <ChatroomLoading />;
-      } else if (rooms === null || rooms.length === 0) {
-        return (
-          <View style={styles.titleMsgContainer}>
-            <Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text>
-          </View>
-        );
-      }
-      return rooms.map(room => {
-        return (
-          <ChatroomBox
-            key={room.chatroomId}
-            chatroomId={room.chatroomId}
-            name={room.name}
-            type={room.type}
-            createDate={room.createDate}
-            updateDate={room.updateDate}
-            msgExpTime={room.msgExpTime}
-            unreadCount={room.numUnreadMessages}
-            navigation={navigation}
-          />
-        );
-      });
+    const roomsComponent=()=> {
+        if (isLoading) {return <ChatroomLoading />}
+        else if (!keyExists) {return <View style={styles.warning}><AntDesign style={{marginBottom: 20}}name="exclamationcircle" size={24} color="lightgrey" /><Text style={{color: "grey"}}>설정에서 암호키를 생성해주세요.</Text></View>}
+        else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
+        return rooms.map((room) => {
+            return (
+                <ChatroomBox
+                    key={room.chatroomId}
+                    chatroomId={room.chatroomId}
+                    name={room.name}
+                    type={room.type}
+                    createDate={room.createDate}
+                    updateDate={room.updateDate}
+                    msgExpTime={room.msgExpTime}
+                    unreadCount={room.numUnreadMessages}
+                    navigation={navigation}
+                />
+            );
+        });
     };
 
     return (
@@ -113,5 +118,9 @@ const styles = StyleSheet.create({
         color:"#979797",
         lineHeight: 45,
         marginTop:50
+    },
+    warning: {
+        marginTop: 40,
+        alignItems: "center"
     }
 });
