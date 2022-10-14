@@ -33,7 +33,6 @@ export const decryptRSA = (msg: string, privateKey: string) => {
 /////////
 
 export const generateAESKey = () => {
-  //TODO: Math.random이 보안적으로 취약할듯?
   const key = genRanHex(16); 
   return key;
 }
@@ -45,5 +44,23 @@ export const encryptAES = (msg: string, key: string) => {
 
 export const decryptAES = (encrypted: string, key: string) => {
   const decrypted = CryptoES.AES.decrypt({ciphertext: CryptoES.enc.Base64.parse(encrypted)}, CryptoES.enc.Hex.parse(key), {iv: iv});
+  return decrypted.toString(CryptoES.enc.Utf8);
+}
+
+/////////
+// MKE // 
+/////////
+
+const nonce = "nCpsVq4RdOuq8ANi"
+
+export const encryptMKE = (msg: string, key: string) => {
+  let hash = CryptoES.MD5(key + nonce);
+  const encrypted = CryptoES.AES.encrypt(msg, hash, {iv: iv});
+  return CryptoES.enc.Base64.stringify(encrypted.ciphertext);
+}
+
+export const decryptMKE = (encrypted: string, key: string) => {
+  let hash = CryptoES.MD5(key + nonce);
+  const decrypted = CryptoES.AES.decrypt({ciphertext: CryptoES.enc.Base64.parse(encrypted)}, hash, {iv: iv});
   return decrypted.toString(CryptoES.enc.Utf8);
 }

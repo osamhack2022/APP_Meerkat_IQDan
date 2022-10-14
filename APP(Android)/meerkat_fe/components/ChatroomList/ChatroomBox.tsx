@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,6 +9,8 @@ import {
   Touchable,
 } from 'react-native';
 import { Chatroom } from '../../common/types';
+import { MaterialIcons } from "@expo/vector-icons"; 
+
 const dotsImage = require('../../assets/icons/dots_vertical.png');
 
 export default function ChatroomBox(props: any) {
@@ -20,7 +24,17 @@ export default function ChatroomBox(props: any) {
     msgExpTime,
     unreadCount,
     navigation,
+    onPress2ndPwSetting
   } = props;
+
+  const [encrypted, setEncrpyted] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      let e = await AsyncStorage.getItem("2ndPassword-" + chatroomId);
+      if (e) setEncrpyted(true);
+    })();
+  })
 
   // socket context에 있는 socket 받아와서
   // chatroomId에 해당하는 room으로 join
@@ -34,7 +48,14 @@ export default function ChatroomBox(props: any) {
     >
       <View style={styles.upperContainer}>
         <Text style={styles.title}>{name}</Text>
-        <Image style={styles.dots} source={dotsImage} />
+        {
+          encrypted ?
+            <MaterialIcons size={28} color="white" name="lock" />
+            :
+            <TouchableOpacity onPress={onPress2ndPwSetting}>
+              <MaterialIcons size={28} color="white" name="lock-open" />
+            </TouchableOpacity>
+        }
       </View>
       <View style={styles.lowerContainer}>
         <Text style={styles.time}>마지막 대화 1시간 전</Text>

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
     "debug": "cross-env NODE_ENV=production nodemon", 
-    "dev": "cross-env NODE_ENV=production nodemon",
+    "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
     "heroku-postbuild": "npm install",
     "build:tsc": "tsc && tsc-alias",
