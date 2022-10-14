@@ -43,7 +43,6 @@ export default function useMessage(
     async function init() {
       try {
         const cachedMessages = await fetchMessagesFromLocal();
-        // console.log(cachedMessages)
         const newMessages = await fetchNewMessagesFromServer();
         setMessages([...cachedMessages, ...newMessages]);
         await saveNewMessagesToLocal(newMessages);
@@ -96,7 +95,7 @@ export default function useMessage(
     // 이 부분은 서버에서 설정해주는 것 보다 여기서 설정해주는 것이 더 깔끔함.
     try {
       if (newMessages.length > 0 ) {
-        await api.post('/messages/setRecentRead', {
+        api.post('/messages/setRecentRead', {
           chatroomId: chatroomId,
           recentMessageId: newMessages[newMessages.length - 1]._id,
         });
@@ -283,7 +282,6 @@ export default function useMessage(
     }
   };
 
-
   /**
    * 로컬에 방의 암호키가 없으면 서버에서 가져오기.
    */
@@ -295,7 +293,11 @@ export default function useMessage(
       if (personalRSAKey === null) {
         throw new Error('개인키가 존재하지 않습니다.');
       }
-      const decryptedAESKey = decryptAES(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
+
+      const decryptedAESKey = decryptRSA(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
+      if (decryptedAESKey === false) {
+        throw new Error('방 암호키 복호화에 실패했습니다.')
+      }
       await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
       return decryptedAESKey
     } catch(e) {
