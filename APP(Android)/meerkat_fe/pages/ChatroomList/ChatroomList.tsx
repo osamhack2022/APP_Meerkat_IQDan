@@ -9,9 +9,12 @@ import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
 import { Chatroom, MainTabScreenProps } from "../../common/types";
 import Header from '../../components/FriendList/Header';
+import { SocketContext } from "../../common/Context";
+// thirds
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from '@expo/vector-icons'; 
 
 import Dialog from "react-native-dialog";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}) => {
     let [pw, setPw] = useState("")
@@ -49,23 +52,66 @@ const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}
 }
 
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
+    const { socket } = useContext(SocketContext);
     const {navigation} = props;
     const {rerender} = props.route.params;
-    const [rooms, setRooms] = useState<Chatroom[]>([]);
-    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/my")
+    const [rooms, setRooms] = useState<Chatroom[] | null>(null);
+    const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
+    const [keyExists, setKeyExists] = useState(false)
+  
+    // 서버에서 메시지를 보냈을 때, unread count++
+    // socket이 바뀌면 event attach함.
+    useEffect(()=> {
+      socket.on("server:notificateMessage", (content:string) => {
+        reFetch();
+      });
+    }, [socket]);
 
     const [promptVisible, setPromptVisible] = useState(false);
     const [promptRoomId, setPromptRoomId] = useState(-1);
 
     useEffect(() => {    
         if (rerender) {
-            reFetch()
+            reFetch();
         }   
-    }, [rerender])
+    }, [rerender]);
+
+    useEffect(() => {
+        async function init() {
+            const privKey = await AsyncStorage.getItem('PrivateKey')
+            console.log(privKey)
+            if (privKey !== null) {
+                setKeyExists(true)
+            }
+        }
+        init()
+    }, [])
 
     const handleAddChatroom = () => {
-        navigation.push("AddChatroom")
+        navigation.push("AddChatroom");
     }
+
+    const roomsComponent=()=> {
+        if (isLoading) {return <ChatroomLoading />}
+        else if (!keyExists) {return <View style={styles.warning}><AntDesign style={{marginBottom: 20}}name="exclamationcircle" size={24} color="lightgrey" /><Text style={{color: "grey"}}>설정에서 암호키를 생성해주세요.</Text></View>}
+        else if (rooms===null || rooms.length===0) {return <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View>}
+        return rooms.map((room) => {
+            return (
+                <ChatroomBox
+                    key={room.chatroomId}
+                    chatroomId={room.chatroomId}
+                    name={room.name}
+                    type={room.type}
+                    createDate={room.createDate}
+                    updateDate={room.updateDate}
+                    msgExpTime={room.msgExpTime}
+                    unreadCount={room.numUnreadMessages}
+                    navigation={navigation}
+                    onPress2ndPwSetting={() => {setPromptVisible(true); setPromptRoomId(room.chatroomId)}}
+                />
+            );
+        });
+    };
 
     return (
         <>
@@ -75,23 +121,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
             
             <Searchbar />
             <ScrollView>
-                { isLoading ?? <ChatroomLoading /> } 
-                { (rooms == null || rooms.length === 0) ?? <View style={styles.titleMsgContainer}><Text style={styles.titleMsg}>채팅방이 존재하지 않습니다.</Text></View> }
-                {
-                    rooms ? rooms.map((room) => 
-                        <ChatroomBox
-                            key={room.chatroomId}
-                            chatroomId={room.chatroomId}
-                            name={room.name}
-                            type={room.type}
-                            createDate={room.createDate}
-                            updateDate={room.updateDate}
-                            msgExpTime={room.msgExpTime}
-                            navigation={navigation}
-                            onPress2ndPwSetting={() => { setPromptVisible(true); setPromptRoomId(room.chatroomId); }}
-                        />
-                    ) : null
-                }
+            {roomsComponent()}
             </ScrollView>
             <View style={{height: 200}}>
             </View>
@@ -130,5 +160,9 @@ const styles = StyleSheet.create({
         color:"#979797",
         lineHeight: 45,
         marginTop:50
+    },
+    warning: {
+        marginTop: 40,
+        alignItems: "center"
     }
 });

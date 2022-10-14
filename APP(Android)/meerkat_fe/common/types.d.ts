@@ -15,6 +15,7 @@ export type Chatroom = {
      */
     msgExpTime: number
     removeAfterRead: boolean
+    numUnreadMessages: number
   }
 
 export type ChatroomWithKey = Chatroom & {

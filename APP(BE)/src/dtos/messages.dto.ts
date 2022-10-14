@@ -7,6 +7,15 @@ export class FindMessageDto{
   @IsNumber()
   public userId: number;
 }
+
+export class UsersOnChatroomsKeyDto{
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public userId: number;
+}
+
 export class IMessageDto {
   @IsNumber()
   public _id : number;
@@ -28,4 +37,12 @@ export class IMessageDto {
 
   @IsBoolean()
   public isSender:boolean;
+}
+
+export class SetRecentRead {
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public recentMessageId: number;
 }

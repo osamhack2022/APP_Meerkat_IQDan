@@ -1,4 +1,5 @@
-import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString, isArray, IsArray, IsNumber, IsBoolean } from 'class-validator';
+import { ChatroomType } from '@prisma/client';
+import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString, isArray, IsArray, IsNumber, IsBoolean, IsEnum } from 'class-validator';
 
 export class CreateChatroomDto {
     @IsString()
@@ -50,8 +51,33 @@ export class PutChatroomKeyDto {
     public encryptedKey: string;
 }
 
-
 export class GetChatroomUsersInfoDto {
     @IsNumber()
     public chatroomId: number;
+}
+
+export class ChatroomAndNumOfUnreadMessagesDto{
+    @IsNumber()
+    public chatroomId: number;
+
+    @IsString()
+    public name: string;
+
+    @IsEnum(ChatroomType)
+    public type: ChatroomType
+
+    @IsDate()
+    public createDate: Date;
+
+    @IsDate()
+    public updateDate: Date;
+
+    @IsNumber()
+    public msgExpTime: number;
+
+    @IsBoolean()
+    public removeAfterRead: boolean;
+
+    @IsNumber()
+    public numUnreadMessages: number;
 }

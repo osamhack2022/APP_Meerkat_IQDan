@@ -22,6 +22,12 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.getMyChatrooms
       )
+    // 해당 유저의 모든 채팅방 정보 + 안읽은 메시지 개수 가져오기
+    this.router.get(
+      `${this.path}/myUnreads`,
+      authMiddleware,
+      this.chatroomController.getMyChatroomsAndNumOfUnreads
+      )
     // 한 개의 채팅방 정보 가져오기
     this.router.get(
       `${this.path}/:id(\\d+)`,
@@ -67,6 +73,12 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.putChatroomKey
     )
+    // 암호화된 챗룸키 가져오기
+    this.router.get(
+      `${this.path}/getChatroomKey/:id(\\d+)`,
+      authMiddleware,
+      this.chatroomController.getChatroomKey
+    );
   }
 }
 

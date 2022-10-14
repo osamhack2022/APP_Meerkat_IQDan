@@ -4,10 +4,11 @@ import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
 import prisma from '../db';
 import { ChatroomWithKey } from '../interfaces/chatroom.interface';
+import { ChatroomAndNumOfUnreadMessagesDto } from '@/dtos/chatroom.dto';
 
 class ChatroomService {
   /**
-   * 내가 해당한 모든 채팅방 가져오기
+   * 내가 속해있는 모든 채팅방 가져오기
    * @param userId
    * @returns 내가 들어있는 모든 채팅방 정보
    */
@@ -45,6 +46,35 @@ class ChatroomService {
       throw new HttpException(403, 'You are not a member of this chat room.');
     }
   }
+
+  /**
+   * 내가 속한 모든 채팅방 + 안읽은 메시지 개수
+   * @param userId
+   * @returns 내가 들어있는 모든 채팅방 정보 + 안읽은 메시지 개수
+   */
+   public async getMyChatroomsAndNumOfUnreads(userId: number): Promise<ChatroomAndNumOfUnreadMessagesDto[]> {
+    const result: any = await prisma.$queryRaw<Object[]>`
+    select r.chatroomId, name, type, createDate, updateDate, msgExpTime, removeAfterRead, case when r.cnt>0 then r.cnt else 0 end as numUnreadMessages
+    from(
+      select chatroomId, NVL(count(r.messageId), 1)-1 as cnt
+      from (
+        select *
+        from UsersOnChatrooms p left join Message m
+        on p.chatroomId = m.belongChatroomId
+        where p.userId = ${userId}
+      ) r
+      where NVL(r.messageId, -1) >= r.recentReadMessageId
+      group by r.chatroomId
+    ) r join Chatroom c on r.chatroomId = c.chatroomId`;
+
+    const parseBigIntResult: ChatroomAndNumOfUnreadMessagesDto[] = result.map((value)=>{
+      value.numUnreadMessages = Number(value.numUnreadMessages.toString());
+      return value;
+    });
+
+    return parseBigIntResult;
+  }
+
 
   /**
    * 특정 채팅방 정보 불러오기
@@ -355,20 +385,14 @@ class ChatroomService {
   }
 
   /**
-   * 유저에게 대칭기 발송.
+   * 개인이 남들을 방에 초대할 때 만든 암호화된 키들을 db에 저장.
    */
   public async putChatroomKey(
     userId: number,
     chatroomId: number,
     encrypedKey: string,
   ): Promise<void> {
-    const chatroom = await prisma.chatroom.findUnique({
-      where: { chatroomId: chatroomId },
-    });
-
-    console.log(chatroomId);
-
-    let res = await prisma.chatroomKey.create({
+    await prisma.chatroomKey.create({
       data: {
         forUserId: userId,
         forChatroomId: chatroomId,
@@ -378,6 +402,26 @@ class ChatroomService {
 
     return;
   }
+
+
+  /**
+   * 특정 채팅방의 나의 암호화된 키를 가져오기.
+   */
+  public async getChatroomKey(
+    userId: number,
+    chatroomId: number
+  ): Promise<string> {
+    const res = await prisma.chatroomKey.findUnique({
+      where: {
+        forUserId_forChatroomId: {
+          forUserId: userId,
+          forChatroomId: chatroomId
+        }
+      }
+    })
+    return res.encryptedKey
+  }
+  
 }
 
 export default ChatroomService;
