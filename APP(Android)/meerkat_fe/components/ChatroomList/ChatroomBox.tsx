@@ -1,22 +1,41 @@
+import { useEffect, useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, View, Text, Image, TouchableOpacity, Touchable } from "react-native";
 import { Chatroom } from "../../common/types";
+import { MaterialIcons } from "@expo/vector-icons";
+
 const dotsImage = require("../../assets/icons/dots_vertical.png");
 
 export default function ChatroomBox(props: any) { // TODO: Chatroom + navigation으로 수정
-  const { chatroomId, name, type, createDate, updateDate, msgExpTime, navigation } = props;
+    const { chatroomId, name, type, createDate, updateDate, msgExpTime, navigation, onPress2ndPwSetting } = props;
+    const [encrypted, setEncrpyted] = useState(false);
 
-  return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.push("Chat", {chatroomId: chatroomId})} >
-        <View style={styles.upperContainer}>
-            <Text style={styles.title}>{name}</Text>
-            <Image style={styles.dots} source={dotsImage}/>
-        </View>
-        <View style={styles.lowerContainer}>
-            <Text style={styles.time}>마지막 대화 1시간 전</Text>
-            <Text style={styles.count}>10</Text>
-        </View>
-    </TouchableOpacity>
-  );
+    useEffect(() => {
+        (async () => {
+            let e = await AsyncStorage.getItem("2ndPassword-" + chatroomId);
+            if (e) setEncrpyted(true);
+        })();
+    })
+
+    return (
+        <TouchableOpacity style={[styles.container, encrypted ? styles.encryptedContainer : null]} onPress={() => navigation.push("Chat", { chatroomId: chatroomId })} >
+            <View style={styles.upperContainer}>
+                <Text style={styles.title}>{name}</Text>
+                {
+                    encrypted ? 
+                        <MaterialIcons size={28} color="white" name="lock"/>
+                    :
+                        <TouchableOpacity onPress={onPress2ndPwSetting}>
+                            <MaterialIcons size={28} color="white" name="lock-open"/>
+                        </TouchableOpacity>
+                }
+            </View>
+            <View style={styles.lowerContainer}>
+                <Text style={styles.time}>마지막 대화 1시간 전</Text>
+                <Text style={[styles.count, encrypted ? styles.encryptedCount : null]}>10</Text>
+            </View>
+        </TouchableOpacity>
+    );
 }
 // #6A4035
 const styles = StyleSheet.create({
@@ -27,7 +46,10 @@ const styles = StyleSheet.create({
         height: 130,
         backgroundColor: "#E5B47F",
         borderRadius: 20,
-        justifyContent:"space-between"
+        justifyContent: "space-between"
+    },
+    encryptedContainer: {
+        backgroundColor: "#6A4035",
     },
     upperContainer: {
         // backgroundColor: "black",
@@ -57,7 +79,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontFamily: "noto-med",
         fontSize: 10,
-    }, 
+    },
     count: {
         fontFamily: "noto-med",
         color: "white",
@@ -68,4 +90,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         borderRadius: 10,
     },
+    encryptedCount: {
+        backgroundColor: "#E5B47F",
+    }
 })
