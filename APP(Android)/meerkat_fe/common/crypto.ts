@@ -47,18 +47,37 @@ export const decryptAES = (encrypted: string, key: string) => {
   return decrypted.toString(CryptoES.enc.Utf8);
 }
 
+const nonce = "nCpsVq4RdOuq8ANi"
+
+// hash
+
+export const hashMD5 = (s: string) => {
+  return CryptoES.MD5(s+nonce).toString();
+}
+
 /////////
 // MKE // 
 /////////
 
-const nonce = "nCpsVq4RdOuq8ANi"
 
+/**
+ * @deprecated 
+ * @param msg 
+ * @param key 
+ * @returns
+ */
 export const encryptMKE = (msg: string, key: string) => {
   let hash = CryptoES.MD5(key + nonce);
   const encrypted = CryptoES.AES.encrypt(msg, hash, {iv: iv});
   return CryptoES.enc.Base64.stringify(encrypted.ciphertext);
 }
 
+/**
+ * @deprecated 
+ * @param msg 
+ * @param key 
+ * @returns
+ */
 export const decryptMKE = (encrypted: string, key: string) => {
   let hash = CryptoES.MD5(key + nonce);
   const decrypted = CryptoES.AES.decrypt({ciphertext: CryptoES.enc.Base64.parse(encrypted)}, hash, {iv: iv});

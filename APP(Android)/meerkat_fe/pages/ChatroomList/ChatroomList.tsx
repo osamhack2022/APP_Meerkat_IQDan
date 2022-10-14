@@ -7,7 +7,7 @@ import ChatroomBox from "../../components/ChatroomList/ChatroomBox";
 import ChatroomLoading from "../../components/ChatroomList/ChatroomLoading";
 import useDoubleFetchAndSave from "../../hooks/useDoubleFetchAndSave";
 // types
-import { Chatroom, MainTabScreenProps } from "../../common/types";
+import { ChatroomUnread, MainTabScreenProps } from "../../common/types";
 import Header from '../../components/FriendList/Header';
 import { SocketContext } from "../../common/Context";
 // thirds
@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from '@expo/vector-icons'; 
 
 import Dialog from "react-native-dialog";
+import { encryptAES, encryptMKE, hashMD5 } from "../../common/crypto";
 
 const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}) => {
     let [pw, setPw] = useState("")
@@ -22,11 +23,9 @@ const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}
 
     const apply2ndPassword = async () => {
         if (pw == "") return;
-
-        //TODO: 암호화 하기
-        //
-
-        await AsyncStorage.setItem("2ndPassword-" + props.roomId.toString(), "Yes");
+        let hash = hashMD5(pw);
+        console.log(hash);
+        await AsyncStorage.setItem("2ndPassword-" + props.roomId.toString(), hash);
         props.onClose();    
     }
 
@@ -55,7 +54,7 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const { socket } = useContext(SocketContext);
     const {navigation} = props;
     const {rerender} = props.route.params;
-    const [rooms, setRooms] = useState<Chatroom[] | null>(null);
+    const [rooms, setRooms] = useState<ChatroomUnread[] | null>(null);
     const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
     const [keyExists, setKeyExists] = useState(false)
   

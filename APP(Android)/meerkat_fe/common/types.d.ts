@@ -16,7 +16,18 @@ export type Chatroom = {
     msgExpTime: number
     removeAfterRead: boolean
     numUnreadMessages: number
-  }
+}
+
+export type ChatroomUnread = {
+    chatroomId: number;
+    name: string;
+    type: 'MULTI' | 'SINGLE'
+    createDate: string // 백엔드에는 Date
+    updateDate: string // 백엔드에는 Date
+    msgExpTime: number;
+    removeAfterRead: boolean;
+    numUnreadMessages: number;
+}
 
 export type ChatroomWithKey = Chatroom & {
     encryptedKey: string

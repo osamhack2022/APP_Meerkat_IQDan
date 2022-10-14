@@ -95,7 +95,7 @@ export default function useMessage(
     // 이 부분은 서버에서 설정해주는 것 보다 여기서 설정해주는 것이 더 깔끔함.
     try {
       if (newMessages.length > 0 ) {
-        api.post('/messages/setRecentRead', {
+        await api.post('/messages/setRecentRead', {
           chatroomId: chatroomId,
           recentMessageId: newMessages[newMessages.length - 1]._id,
         });
