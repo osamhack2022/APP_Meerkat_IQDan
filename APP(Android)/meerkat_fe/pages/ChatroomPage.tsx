@@ -1,6 +1,6 @@
 // core
 import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 //import ChatroomSide from '../components/Chatroom/ChatroomSide';
@@ -107,6 +107,17 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       socket.disconnect();
     }
   }, [socket, IMessageUsersInfo]);
+
+  // backhandler (뒤로가기 버튼) action 지정
+  useEffect(()=>{
+    const backAction = () => {navigation.navigate("Main", {screen:"ChatroomList", params: {rerender: true}}); return true};
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress", backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
   
   if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
