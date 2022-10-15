@@ -46,3 +46,19 @@ export class SetRecentRead {
   @IsNumber()
   public recentMessageId: number;
 }
+
+export class GetUnreadsDto {
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public messageId: number;
+}
+
+export class GetReadsDto {
+  @IsNumber()
+  public chatroomId: number;
+
+  @IsNumber()
+  public messageId: number;
+}

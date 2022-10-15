@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Touchable } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
+import { isEmpty } from "../../common/isEmpty";
 
 const BackButton = (props: {onPress: () => void}) => {
   return (
@@ -29,7 +30,7 @@ const Menu = (props: {onPress : () => void}) => {
 
 interface ChatroomHeaderProps {
   onPressBack: () => void,
-  onPressSideMenu: () => void,
+  onPressSideMenu?: () => void,
   name: string
 }
 
@@ -38,7 +39,7 @@ const ChatroomHeader = (props: ChatroomHeaderProps) => {
     <View style={[styles.header]}>
       <BackButton onPress={props.onPressBack}/>
       <Title name={props.name}/>
-      <Menu onPress={props.onPressSideMenu}/>
+      {isEmpty(props.onPressSideMenu) ? <></> : <Menu onPress={props.onPressSideMenu!}/>}
     </View>
   )
 }

@@ -1,8 +1,8 @@
 import { HttpException } from '@exceptions/HttpException';
 import prisma from '../db';
 import { isEmpty } from 'class-validator';
-import { Message, UsersOnChatrooms } from '@prisma/client';
-import { FindMessageDto, IMessageDto, UsersOnChatroomsKeyDto } from '@/dtos/messages.dto';
+import { Message, User, UsersOnChatrooms } from '@prisma/client';
+import { FindMessageDto, GetReadsDto, GetUnreadsDto, IMessageDto, UsersOnChatroomsKeyDto } from '@/dtos/messages.dto';
 import ChatroomService from './chatroom.service';
 
 class MessageService {
@@ -150,6 +150,56 @@ class MessageService {
       }
     })
     if (isEmpty(usersOnChatrooms)) throw new HttpException(403, 'You are not a member of this chat room.');
+  }
+
+  /**
+   * throw error when message does not exists
+   */
+  private async checkMessageExists(messageId: number){
+    const message = await prisma.message.findUnique({ where: { messageId: messageId } });
+    if (isEmpty(message)) throw new HttpException(404, 'Message does not exist.');
+  }
+
+  /**
+   * get unread people of given message
+   */
+  public async getUnreadUsers(getUnreadDto: GetUnreadsDto): Promise<User[]> {
+    // checking part
+    await this.checkChatroomExists(getUnreadDto.chatroomId);
+    await this.checkMessageExists(getUnreadDto.messageId);
+
+    // get unread people of given message
+    const unreadUsers: User[] = await prisma.$queryRaw<User[]>`
+    select * from
+      (
+        select * from UsersOnChatrooms p
+        where p.chatroomId = ${getUnreadDto.chatroomId}
+        and recentReadMessageId < ${getUnreadDto.messageId}
+      ) r
+    join User u
+    on r.userId = u.userId;`;
+    return unreadUsers;
+  }
+
+    /**
+   * get unread people of given message
+   */
+  public async getReadUsers(getReadDto: GetReadsDto): Promise<User[]> {
+    // checking part
+    await this.checkChatroomExists(getReadDto.chatroomId);
+    await this.checkMessageExists(getReadDto.messageId);
+
+    // get unread people of given message
+    const readUsers: User[] = await prisma.$queryRaw<User[]>`
+    select * from
+      (
+        select * from UsersOnChatrooms p
+        where p.chatroomId = ${getReadDto.chatroomId}
+        and recentReadMessageId >= ${getReadDto.messageId}
+      ) r
+    join User u
+    on r.userId = u.userId;`;
+    return readUsers;
   }
 }
 
