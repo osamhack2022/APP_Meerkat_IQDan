@@ -107,19 +107,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     return()=>{
       socket.disconnect();
     }
-  }, [socket]);
-
-  // me
-  const user = {
-    _id: userId,
-    name: 'Developer',
-  };
-  
-  // other user
-  const otherUser = {
-    _id: 2,
-    name: 'React Native',
-  };
+  }, [socket, IMessageUsersInfo]);
   
   if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
