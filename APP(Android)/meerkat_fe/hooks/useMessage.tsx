@@ -42,6 +42,7 @@ export default function useMessage(
    * 첫 메시지 때 모든 새로운 메시지를 asyncstorage에 저장.
    */
   useEffect(() => {
+    if(IMessageUsersInfo.size === 0) return; // loading되지 않았다면 기다림
     async function init() {
       try {
         const cachedMessages = await fetchMessagesFromLocal();
@@ -57,7 +58,7 @@ export default function useMessage(
       }
     }
     init();
-  }, [chatroomId]);
+  }, [chatroomId, IMessageUsersInfo]);
 
   /**
    * 새로온 메시지 가져오기.
@@ -69,7 +70,7 @@ export default function useMessage(
     try {
       const res = await api.get('/messages/unread/' + chatroomId);
       let result: IMessageDto[] = res.data.data;
-      unreads = result.map(message => {
+      unreads = result.map((message:IMessageDto) => {
         return messageDto2IMessage(message);
       });
     } catch (err) {
@@ -209,13 +210,13 @@ export default function useMessage(
   /**
    * 메시지 가져오기 helper function
    */
-  const messageDto2IMessage = (message: any): IMessage => {
-    if(isEmpty(IMessageUsersInfo.get(message.userId))) new Error("서버에 문제가 발생했습니다.");
+  const messageDto2IMessage = (message: IMessageDto): IMessage => {
+    if(isEmpty(IMessageUsersInfo.get(message.senderId))) new Error("서버에 문제가 발생했습니다.");
     return {
       _id: message._id,
       text: message.text,
       createdAt: message.sendTime,
-      user: IMessageUsersInfo.get(message.userId)!
+      user: IMessageUsersInfo.get(message.senderId)!
     };
   };
 
@@ -283,8 +284,8 @@ export default function useMessage(
         throw new Error('개인키가 존재하지 않습니다.');
       }
       const decryptedAESKey = decryptAES(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
-      await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
-      return decryptedAESKey
+      await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);      
+      return decryptedAESKey;
     } catch(e) {
       throw new Error('서버에서 방 암호키를 가져오는 것을 실패하였습니다.')
     }
