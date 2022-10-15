@@ -85,7 +85,6 @@ export default function Main() {
         />
         <Tab.Screen
           name="ChatroomList"
-          initialParams={{rerender: false}}
           component={ChatroomList}
           options={{
             headerShown: false,

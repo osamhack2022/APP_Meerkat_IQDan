@@ -64,7 +64,6 @@ export default function AddChatroom(
 
     try {
       let me = (await api.get("/users/me")).data.data;
-      console.log(me);
       
       let res = await api.post('/chatroom/create', {
         name: name,

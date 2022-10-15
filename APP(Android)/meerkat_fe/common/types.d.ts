@@ -107,7 +107,7 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-    ChatroomList: {rerender: boolean};
+    ChatroomList: undefined;
     Friends: undefined;
     Settings: undefined;
 }

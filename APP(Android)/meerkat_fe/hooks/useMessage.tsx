@@ -266,7 +266,7 @@ export default function useMessage(
     try {
       const roomKey = await initAESKey()
       const encryptedText = encryptAES(text, roomKey);
-      return  encryptedText
+      return encryptedText
     } catch (err) {
       throw new Error('메세지 암호화에 실패했습니다.');
     }

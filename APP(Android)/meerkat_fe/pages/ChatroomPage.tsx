@@ -1,6 +1,6 @@
 // core
 import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler, Text } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 //import ChatroomSide from '../components/Chatroom/ChatroomSide';
@@ -111,7 +111,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 
   // backhandler (뒤로가기 버튼) action 지정
   useEffect(()=>{
-    const backAction = () => {navigation.navigate("Main", {screen:"ChatroomList", params: {rerender: true}}); return true};
+    const backAction = () => {navigation.navigate("Main", {screen:"ChatroomList"}); return true};
 
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress", backAction
@@ -126,7 +126,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}  
       <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
-        onPressBack={() => navigation.navigate("Main", {screen:"ChatroomList", params: {rerender: true}})}
+        onPressBack={() => navigation.navigate("Main", {screen:"ChatroomList"})}
         onPressSideMenu={() => setIsOpenSideMenu(true)}
         name={chatroomInfo?.name || ''}
       />
