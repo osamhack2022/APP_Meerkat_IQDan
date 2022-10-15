@@ -13,9 +13,11 @@ import { SocketContext } from "../../common/Context";
 // thirds
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from '@expo/vector-icons'; 
-
 import Dialog from "react-native-dialog";
-import { encryptAES, encryptMKE, hashMD5 } from "../../common/crypto";
+import { hashMD5 } from "../../common/crypto";
+import { useIsFocused } from '@react-navigation/native'
+
+
 
 const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}) => {
     let [pw, setPw] = useState("")
@@ -24,7 +26,6 @@ const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}
     const apply2ndPassword = async () => {
         if (pw == "") return;
         let hash = hashMD5(pw);
-        console.log(hash);
         await AsyncStorage.setItem("2ndPassword-" + props.roomId.toString(), hash);
         props.onClose();    
     }
@@ -53,10 +54,10 @@ const PwPrompt = (props: {visible: boolean, roomId: number, onClose: () => void}
 export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) {
     const { socket } = useContext(SocketContext);
     const {navigation} = props;
-    const {rerender} = props.route.params;
     const [rooms, setRooms] = useState<ChatroomUnread[] | null>(null);
     const {isLoading, reFetch} = useDoubleFetchAndSave(rooms, setRooms, "/chatroom/myUnreads");
     const [keyExists, setKeyExists] = useState(false)
+    const isFocused = useIsFocused()
   
     // 서버에서 메시지를 보냈을 때, unread count++
     // socket이 바뀌면 event attach함.
@@ -70,15 +71,12 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
     const [promptRoomId, setPromptRoomId] = useState(-1);
 
     useEffect(() => {    
-        if (rerender) {
-            reFetch();
-        }   
-    }, [rerender]);
+        reFetch();
+    }, [isFocused]);
 
     useEffect(() => {
         async function init() {
             const privKey = await AsyncStorage.getItem('PrivateKey')
-            console.log(privKey)
             if (privKey !== null) {
                 setKeyExists(true)
             }
