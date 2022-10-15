@@ -20,7 +20,7 @@ import {
 // context
 import { LoginContext } from '../common/Context';
 // thirds
-import { Bubble, BubbleProps, GiftedChat, IMessage, Time, User as IMessageUser } from 'react-native-gifted-chat';
+import { Bubble, BubbleProps, Day, GiftedChat, IMessage, Time, User as IMessageUser } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
@@ -30,6 +30,7 @@ import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -187,6 +188,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   };
 
   const mybubble = (props: any) => {
+    const {currentMessage} = props;
     return (
       <View>
       <Bubble
@@ -210,9 +212,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
        
 
       />
-      <Text >{props.currentMessage.createdAt}</Text>
-      {showReaderViewer(props)}
-      </View>
+      <Text>{moment(currentMessage.createdAt).format("LT")}</Text>
+      </View> //?////////////////////////////// TODO TODO TODO : 해야함.
     )
   };
 
@@ -244,7 +245,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             }}
             renderCustomView={showReaderViewer}
             isCustomViewBottom={true}
-            renderTime={()=>{return (<></>)}}
+            //renderTime={()=>{return (<></>)}}
             user={{_id:userId}}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
