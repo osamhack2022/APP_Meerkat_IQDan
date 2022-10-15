@@ -104,6 +104,7 @@ export type RootStackParamList = {
     AddChatroom: undefined;
     Test: undefined;
     AddFriend: undefined;
+    UnreadPeoples: {chatroomId: number, messageId: number};
 };
 
 export type TabParamList = {

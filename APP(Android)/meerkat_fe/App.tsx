@@ -17,8 +17,10 @@ import MyProfile from "./pages/SettingsPages/MyProfile";
 import ChangePw from "./pages/SettingsPages/ChangePw";
 import AddChatroom from "./pages/ChatroomList/AddChatroom";
 import AddFriend from "./pages/AddFriend";
+import UnreadPeoples from "./pages/UnreadPeoples";
 import { useSocketIO } from "./hooks/useSocketIO";
 import { globalSocketFunction } from "./common/globalSocket";
+
 
 // nav
 const Stack = createStackNavigator<RootStackParamList>();
@@ -71,9 +73,7 @@ export default function App() {
             isNotLoggedIn: isNotLoggedIn,
           }}
         >
-          <SocketContext.Provider
-            value={{ socket: socket }}
-          >
+          <SocketContext.Provider value={{ socket: socket }}>
             <Stack.Navigator initialRouteName="Auth">
               <Stack.Screen
                 name="Auth"
@@ -108,6 +108,11 @@ export default function App() {
               <Stack.Screen
                 name="AddFriend"
                 component={AddFriend}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="UnreadPeoples"
+                component={UnreadPeoples}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>

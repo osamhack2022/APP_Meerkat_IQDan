@@ -1,18 +1,9 @@
 // core
-import React, { useState, useCallback, useEffect, useContext } from 'react';
-import {
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Alert,
-  Platform,
-  SafeAreaView,
-  BackHandler,
-  Text,
-} from 'react-native';
+import React, { useState, useCallback, useEffect, useContext, ReactNode } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler, Pressable } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
-//import ChatroomSide from '../components/Chatroom/ChatroomSide';
+import ChatroomSide from '../components/Chatroom/ChatroomSide';
 import MKBubble from '../components/Chatroom/CustomChatComp/Bubble';
 import ChatroomAccessoryBar from '../components/Chatroom/ChatroomAccessoryBar';
 import ChatroomTextInput from '../components/Chatroom/ChatroomTextInput';
@@ -29,11 +20,7 @@ import {
 // context
 import { LoginContext } from '../common/Context';
 // thirds
-import {
-  GiftedChat,
-  IMessage,
-  User as IMessageUser,
-} from 'react-native-gifted-chat';
+import { Bubble, BubbleProps, GiftedChat, IMessage, Time, User as IMessageUser } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
@@ -41,6 +28,8 @@ import { useSocketIO } from '../hooks/useSocketIO';
 import useMessage from '../hooks/useMessage';
 import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+// icons
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -82,6 +71,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     Map<number, IMessageUser>
   >(new Map<number, IMessageUser>());
   useEffect(() => {
+    // map에 정보 넣기
     IMessageUsersInfo.clear();
     const newUsersInfoMap: Map<number, IMessageUser> = new Map<
       number,
@@ -179,11 +169,58 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     f();
   }, [superiorOnly, messages]);
 
-  if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
+  // 안 읽은 사람 목록 확인 가능한 icon
+  const showReaderViewer = (props:any)=>{
+    const {currentMessage} = props; // currentMessage type === IMessage. has _id, createdAt, text, user
+    return (
+      <>
+        <View style = {styles.showReaderViewer}>
+          <Pressable onPress={() => navigation.navigate("UnreadPeoples", {chatroomId: chatroomId, messageId: currentMessage._id})}>
+            {currentMessage.user._id === userId ? <MaterialCommunityIcons name="eye-check-outline" size={18} color="white" />
+            :<MaterialCommunityIcons name="eye-check-outline" size={18} color="black" />}
+            
+          </Pressable>
+        </View>
+      </>
+
+    )
+  };
+
+  const mybubble = (props: any) => {
+    return (
+      <View>
+      <Bubble
+        {...props}
+        textStyle={{
+          left: {
+            color: "#000"
+          },
+          right: {
+            color: "#FFF",
+          },
+        }}
+        wrapperStyle={{
+          left: {
+            backgroundColor: "#E5B47F"
+          },
+          right: {
+            backgroundColor: "#6A4035",
+          }
+        }}
+       
+
+      />
+      <Text >{props.currentMessage.createdAt}</Text>
+      {showReaderViewer(props)}
+      </View>
+    )
+  };
+
+  if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
     <>
-      {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}
-      <SafeAreaView style={{ flex: 0 }} />
+      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />  
+      <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
         onPressBack={() =>
           navigation.navigate('Main', { screen: 'ChatroomList' })
@@ -200,12 +237,15 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           <GiftedChat
             messages={filteredMessages}
             onSend={(messages: any) => onSend(messages)}
-            renderBubble={MKBubble}
+            renderBubble={mybubble}
             timeTextStyle={{
               left: { color: 'black' },
               right: { color: 'white' },
             }}
-            user={{ _id: userId }}
+            renderCustomView={showReaderViewer}
+            isCustomViewBottom={true}
+            renderTime={()=>{return (<></>)}}
+            user={{_id:userId}}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
             renderInputToolbar={() => null}
@@ -261,4 +301,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  showReaderViewer:{
+    display:"flex",
+    flexDirection:"row-reverse",
+    marginLeft: 9
+  }
 });

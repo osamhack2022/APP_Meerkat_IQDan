@@ -4,7 +4,7 @@
  * @returns true if value is null or undefined.
  */
 export function isEmpty(value: any): boolean{
-  if(value === null || value === undefined) return true;
+  if(value === undefined || value === null) return true;
   else return false;
 }
 
