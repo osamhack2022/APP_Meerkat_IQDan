@@ -1,7 +1,7 @@
 import AsyncStorage, { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons'
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 
 interface TemplateItem {
@@ -37,23 +37,23 @@ const TemplateItem = (props: TemplateItemProps) => {
         onChangeText={setName}
         onBlur={() => props.updateItem(item.id, name, content)}
       />
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8 }}>
         <TouchableOpacity onPress={() => {}}>
-          <MaterialIcons size={40} name='save' />
+         <Ionicons name="md-save-outline" size={32} color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.removeItem(item.id)}>
-          <MaterialIcons size={40} name='remove' />
+          <MaterialIcons size={32} name='remove' color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setEditVisible(!editVisible)}>
-          <MaterialIcons size={40} name='edit' />
+          <MaterialCommunityIcons size={32} name='pencil-outline' color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={props.onApply}>
-          <MaterialIcons size={40} name='check' />
+          <MaterialIcons size={32} name='check' color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
       </View>
       {editVisible && <TextInput
         ref={contentInputRef}
-        style={{ backgroundColor: "#EEE", padding: 8, borderRadius: 8 }}
+        style={{ backgroundColor: "#6A4035", padding: 8, borderRadius: 8 ,color: "white"}}
         value={content}
         multiline
         onPressIn={() => props.scrollTo(contentInputRef?.current)}
@@ -70,13 +70,20 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 12,
     marginTop: 12,
-    backgroundColor: "#AAAAAA88"
+    backgroundColor: "#E5B47F"
   },
   itemName: {
-    backgroundColor: "#EEE",
+    backgroundColor: "#E5B47F",
     borderRadius: 4,
-    fontSize: 32,
+    fontSize: 28,
+    color: "#6A4035",
+    fontFamily: "noto-bold",
+    lineHeight: 50,
+    borderBottomWidth:  2,
+    borderBottomColor: "white"
   }
 })
+// #E5B47F #6A4035
+
 
 export default TemplateItem;
