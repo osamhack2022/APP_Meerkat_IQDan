@@ -421,6 +421,134 @@ class ChatroomService {
     })
     return res.encryptedKey
   }
+
+  /**
+   * 방 최상급자 id 가져오기.
+   */
+     public async getCommander(
+      chatroomId: number
+    ): Promise<number> {
+      const res = await prisma.chatroom.findMany({
+        where: {
+          chatroomId: chatroomId
+        },
+        select: {
+          users: true
+        }
+      })
+
+      const userIds = res[0].users.map((user) => {
+        return user.userId
+      })
+
+      const ranks = await Promise.all(userIds.map((id)=> {
+        return prisma.user.findUnique({
+          where: {
+            userId: id
+          },
+          select: {
+            userId: true,
+            militaryRank: true
+          }
+        })
+      }))
+
+      let max_rank_id = ranks[0].userId
+      let max_rank_idx = 0
+      for (let i=1; i<ranks.length;i++) {
+        // 1 if first param is larger.
+        const irank = ranks[i].militaryRank
+        const maxrank = ranks[max_rank_idx].militaryRank
+        if (this.rankCompare(irank, maxrank) == 1) {
+          max_rank_idx = i
+          max_rank_id = ranks[i].userId
+        }
+      }
+  
+      return max_rank_id
+    }
+
+
+    /**
+     * 군 계급 비교 함수. r1이 더크면 1, 같을시 0 작을시 -1.
+     * @param r1 
+     * @param r2 
+     */
+    public rankCompare(r1: string, r2: string) {
+      if (r1 === r2) return 0
+      const r1_lvl = this.getLevel(r1)
+      const r2_lvl = this.getLevel(r2)
+      if (r1_lvl > r2_lvl) {
+        return 1
+      }
+      return -1
+    }
+
+    /**
+     * 군 계급을 레벨로 치환. 비교용임.
+     * @param s 
+     */
+    public getLevel(s: string) {
+      switch (s) {
+        case "이등병": {
+          return 1
+        }
+        case "일병": {
+          return 2
+        }
+        case "상병": {
+          return 3
+        }
+        case "병장": {
+          return 4
+        }
+        case "하사": {
+          return 5
+        }
+        case "중사": {
+          return 6
+        }
+        case "상사": {
+          return 7
+        }
+        case "소위": {
+          return 8
+        }
+        case "중위": {
+          return 9
+        }
+        case "대위": {
+          return 10
+        }
+        case "준위": {
+          return 11
+        }
+        case "소령": {
+          return 12
+        }
+        case "중령": {
+          return 13
+        }
+        case "대령": {
+          return 14
+        }
+        case "준장": {
+          return 15
+        }
+        case "소장": {
+          return 16
+        }
+        case "중장": {
+          return 17
+        }
+        case "대장": {
+          return 18
+        }
+        default: {
+          return 0
+        }
+      }
+    }
   
 }
 

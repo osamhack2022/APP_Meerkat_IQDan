@@ -1,6 +1,6 @@
 # baseURL
 @baseURL = http://localhost:8081
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsIm5hbWUiOiLtmY3quLjrj5kiLCJzZXJ2aWNlTnVtYmVyIjoiMjItNzY3NiIsImlhdCI6MTY2NTg0OTUwNSwiZXhwIjoxNjY1ODY3NTA1fQ.yT4P-MH_BNaafaEElVdAD8ZTwOKxtwDLDvU9dcWEIKI
 ###
 # Find All Users
 GET {{ baseURL }}/users
@@ -26,14 +26,18 @@ Content-Type: application/json
 
 ###
 # Modify User By Id
-PUT {{ baseURL }}/users/1
+POST {{ baseURL }}/auth/login
 Content-Type: application/json
 
 {
-    "email": "123",
-	"password": "p123"
+    "uid": "123",
+	"password": "123"
 }
 
 ###
 # Delete User By Id
 DELETE {{ baseURL }}/users/1
+
+###
+GET {{ baseURL }}/chatroom/commander/13
+Authorization: Bearer {{ token }}

@@ -44,16 +44,17 @@ const PwPrompt = (props: {
     setPw('');
   }, [props.visible]);
 
-  return (
-    <Dialog.Container visible={props.visible}>
-      <Dialog.Title>2차 비밀번호 설정</Dialog.Title>
-      <Dialog.Description>방을 2차 비밀번호로 암호화하여</Dialog.Description>
-      <Dialog.Description>보안을 강화합니다.</Dialog.Description>
-      <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
-      <Dialog.Button onPress={props.onClose} label="취소" />
-      <Dialog.Button onPress={apply2ndPassword} label="확인" />
-    </Dialog.Container>
-  );
+  return <View></View>
+//   return (
+//     <Dialog.Container visible={props.visible}>
+//       <Dialog.Title>2차 비밀번호 설정</Dialog.Title>
+//       <Dialog.Description>방을 2차 비밀번호로 암호화하여</Dialog.Description>
+//       <Dialog.Description>보안을 강화합니다.</Dialog.Description>
+//       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
+//       <Dialog.Button onPress={props.onClose} label="취소" />
+//       <Dialog.Button onPress={apply2ndPassword} label="확인" />
+//     </Dialog.Container>
+//   );
 };
 
 export default function ChatroomList(
