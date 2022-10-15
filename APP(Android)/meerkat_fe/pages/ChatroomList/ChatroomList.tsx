@@ -119,8 +119,8 @@ export default function ChatroomList(props: MainTabScreenProps<"ChatroomList">) 
         <View style={styles.container}>
             
             <Searchbar />
-            <ScrollView>
-            {roomsComponent()}
+            <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+                    {roomsComponent()}
             </ScrollView>
             <View style={{height: 200}}>
             </View>
@@ -138,6 +138,9 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    scroll:{
+        marginBottom: 161,
     },
     title: {
         fontSize: 25,

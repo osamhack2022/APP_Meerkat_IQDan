@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage, User as IMessageUser } from 'react-native-gifted-chat';
 import { useEffect, useState, useCallback } from 'react';
 import api from '../common/api';
 import {
@@ -8,11 +8,12 @@ import {
   IMessageDto,
   IMessageSendDto,
   RootStackScreenProps,
-  User,
+  User
 } from '../common/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
 import { decryptAES, decryptRSA, encryptAES } from '../common/crypto';
+import { isEmpty } from '../common/isEmpty';
 
 /**
  * Message 라이프 사이클
@@ -32,6 +33,7 @@ import { decryptAES, decryptRSA, encryptAES } from '../common/crypto';
 export default function useMessage(
   chatroomId: number,
   userId: number,
+  IMessageUsersInfo: Map<number, IMessageUser>,
   socket: Socket,
 ) {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -204,29 +206,16 @@ export default function useMessage(
     );
   }, []);
 
-  // me
-  const user = {
-    _id: userId,
-    name: 'Developer',
-  };
-
-  // other user
-  const otherUser = {
-    _id: 2,
-    name: 'React Native',
-    avatar: require('../assets/users/emptyProfile.jpg'),
-  };
-
   /**
    * 메시지 가져오기 helper function
    */
   const messageDto2IMessage = (message: any): IMessage => {
+    if(isEmpty(IMessageUsersInfo.get(message.userId))) new Error("서버에 문제가 발생했습니다.");
     return {
       _id: message._id,
       text: message.text,
       createdAt: message.sendTime,
-      user: message.isSender ? user : otherUser,
-      // TODO : sender가 아닌 경우 해당 user로 fetch해야 함.
+      user: IMessageUsersInfo.get(message.userId)!
     };
   };
 
@@ -293,11 +282,7 @@ export default function useMessage(
       if (personalRSAKey === null) {
         throw new Error('개인키가 존재하지 않습니다.');
       }
-
-      const decryptedAESKey = decryptRSA(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
-      if (decryptedAESKey === false) {
-        throw new Error('방 암호키 복호화에 실패했습니다.')
-      }
+      const decryptedAESKey = decryptAES(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
       await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
       return decryptedAESKey
     } catch(e) {
