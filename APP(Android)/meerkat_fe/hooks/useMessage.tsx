@@ -275,7 +275,7 @@ export default function useMessage(
   /**
    * 로컬에 방의 암호키가 없으면 서버에서 가져오기.
    */
-  const initAESKey = async () => {
+   const initAESKey = async () => {
     try {
       const res = await api.get('/chatroom/getChatroomKey/' + chatroomId);
       const encryptedAESKey: string = res.data.data.encryptedKey; // aes키 가져오기
@@ -283,9 +283,13 @@ export default function useMessage(
       if (personalRSAKey === null) {
         throw new Error('개인키가 존재하지 않습니다.');
       }
-      const decryptedAESKey = decryptAES(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
-      await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);      
-      return decryptedAESKey;
+
+      const decryptedAESKey = decryptRSA(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
+      if (decryptedAESKey === false) {
+        throw new Error('방 암호키 복호화에 실패했습니다.')
+      }
+      await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
+      return decryptedAESKey
     } catch(e) {
       throw new Error('서버에서 방 암호키를 가져오는 것을 실패하였습니다.')
     }
