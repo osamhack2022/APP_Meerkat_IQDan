@@ -40,6 +40,7 @@ import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
 import useMessage from '../hooks/useMessage';
 import { isEmpty } from '../common/isEmpty';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -223,7 +224,21 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         superiorOnly={superiorOnly}
         onPressTemplate={() => setTemplateVisible(true)}
         onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-        onPressPin={() => setSuperiorOnly(prev => !prev)}
+        onPressPin={() => {
+          setSuperiorOnly(prev => {
+            if (!prev) {
+              // if superior only
+              showMessage({
+                message: '최상급자의 메세지만 표시됩니다.',
+                type: 'info',
+                backgroundColor: "#6A4035",
+                color: "white",
+                position: 'bottom',
+              });
+            }
+            return !prev;
+          });
+        }}
         // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
         onSend={() => {}}
       />
@@ -233,6 +248,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         setMsgInput={setMsgInput}
       />
       <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
+      <FlashMessage position="top" />
     </>
   );
 }
