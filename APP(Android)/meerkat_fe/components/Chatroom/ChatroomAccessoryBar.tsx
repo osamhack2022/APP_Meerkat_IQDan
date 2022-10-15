@@ -32,6 +32,7 @@ interface ChatroomAccessoryBarProps {
   onSend: (messages: IMessage[]) => void;
   onPressSuperiorSwitch: () => void;
   onPressTemplate: () => void;
+  onPressPin: () => void;
   superiorOnly: boolean;
 }
 
@@ -55,9 +56,9 @@ const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
         onPress={props.onPressSuperiorSwitch}
       >
         {props.superiorOnly ? (
-          <AntDesign name="pushpin" size={24} color="black" />
+          <AntDesign onPress={()=> props.onPressPin()} name="pushpin" size={24} color="black" />
           ) : (
-          <AntDesign name="pushpino" size={24} color="black" />
+          <AntDesign onPress={() => props.onPressPin()} name="pushpino" size={24} color="black" />
         )}
       </TouchableOpacity>
     </View>

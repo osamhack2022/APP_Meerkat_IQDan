@@ -252,6 +252,30 @@ class ChatroomController {
       next(error);
     }
   };
+
+  // 방 최상급자 id 가져오기
+  public getCommander = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const chatroomId = Number(req.params.id);
+      const commId = await this.chatroomService.getCommander(chatroomId);
+
+      res.status(200).json({
+        data: {
+          userId: commId,
+        },
+        message: `success`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
 }
 
 export default ChatroomController;

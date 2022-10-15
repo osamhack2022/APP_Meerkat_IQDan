@@ -79,6 +79,12 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.getChatroomKey
     );
+    // 방 최상급자 id 가져오기
+    this.router.get(
+      `${this.path}/commander/:id(\\d+)`,
+      authMiddleware,
+      this.chatroomController.getCommander
+    );
   }
 }
 
