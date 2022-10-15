@@ -1,7 +1,7 @@
 import AsyncStorage, { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons'
+import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView, Platform } from "react-native";
+import { MaterialIcons, Ionicons, AntDesign } from '@expo/vector-icons'
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import TemplateItem from "./ChatroomTemplateItem";
 
@@ -72,16 +72,16 @@ const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
 
   return (
     <SafeAreaView style={{ flex: 1, position: "absolute", width: "100%", height: "100%", backgroundColor: "#FFF" }}>
-      <KeyboardAvoidingView behavior="padding">
-        <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-end", paddingRight: 24}}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300}>
+        <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-end", paddingRight: 24, marginTop: 50, alignItems:"center"}}>
           <Pressable onPress={() => addItem()}>
-            <MaterialIcons size={48} name="add" />
+            <Ionicons size={33} name="ios-add" />
           </Pressable>
           <Pressable onPress={() => props.setVisible(false)}>
-            <MaterialIcons size={48} name="close" />
+            <Ionicons size={36} name="md-close-outline" />
           </Pressable>
         </View>
-        <ScrollView ref={scrollRef} style={{height: "100%", backgroundColor: "#EEE"}}>
+        <ScrollView ref={scrollRef} style={{height: "100%", backgroundColor: "white"}}>
           <View style={{ alignItems: "center", height: "100%", marginHorizontal: 24, paddingBottom: "10%" }}>
             <View style={styles.itemList}>
               {
