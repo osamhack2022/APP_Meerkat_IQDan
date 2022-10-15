@@ -13,12 +13,13 @@ import { ChatroomWithKey, Chatroom, IMessageDto, IMessageSendDto, RootStackScree
 // context
 import { LoginContext } from '../common/Context';
 // thirds
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage, User as IMessageUser } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
 import useMessage from '../hooks/useMessage';
+import { isEmpty } from '../common/isEmpty';
 
 
 
@@ -40,10 +41,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
 
-
-  // 메시지 가져오기
-  const { messages, sendNewMessageToServer, getNewMessagesFromSocket, onSend} = useMessage(chatroomId, userId, socket)
-  
   // 채팅방 정보 가져오기
   const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(null);
   const {isLoading: isChatroomInfoLoading} = useDoubleFetchAndSave<ChatroomWithKey | null>(
@@ -57,16 +54,24 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const {isLoading: isUserInfoLoading} = useDoubleFetchAndSave<User[] | null>(
     usersInfo, setUsersInfo, '/chatroom/getAllUsersInfo/' + chatroomId
   )
+  // 유저 정보가 받아와 졌을 때 실행
+  const [IMessageUsersInfo, setIMessageUsersInfo] = useState<Map<number, IMessageUser>>(new Map<number, IMessageUser>());
+  useEffect(() => {
+    IMessageUsersInfo.clear();
+    const newUsersInfoMap: Map<number, IMessageUser> = new Map<number, IMessageUser>;
+    usersInfo.forEach((elem: User) => {
+      newUsersInfoMap.set(elem.userId, {_id:elem.userId, name:elem.name});
+    });
+    setIMessageUsersInfo(newUsersInfoMap);
+  }, [isUserInfoLoading]);
 
-  const [initialLoad, setInitialLoad] = useState(true)
+  // 메시지 가져오기
+  const { messages, sendNewMessageToServer, getNewMessagesFromSocket, onSend} = useMessage(chatroomId, userId, IMessageUsersInfo, socket)
 
   // TODO: 나중에 여기 socket 부분 분리.
   // TODO : 방 나갈 때 event 만들고 서버에서 받기.
   useEffect(() => {
-    if (initialLoad) {
-      return setInitialLoad(false)
-    }
-
+    if (IMessageUsersInfo.size === 0) return;
     socket.on('connect', () =>{
       console.log('--------------- room socket ---------------');
       console.log(chatroomId + " socket connection 시작");
@@ -77,12 +82,13 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
 
+        if(isEmpty(IMessageUsersInfo.get(messageDto.senderId))) new Error("서버에 문제가 발생했습니다.");
         getNewMessagesFromSocket([
           {
             _id: messageDto._id,
             text: messageDto.text,
-            user: messageDto.senderId === userId ? user : otherUser,// TODO : 다른 유저일 때 처리
-            createdAt: messageDto.sendTime
+            createdAt: messageDto.sendTime,
+            user: IMessageUsersInfo.get(messageDto.senderId)!,
           },
         ]);
       });
@@ -100,20 +106,9 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     return()=>{
       socket.disconnect();
     }
-  }, [socket]);
-
-  // me
-  const user = {
-    _id: userId,
-    name: 'Developer',
-  };
+  }, [socket, IMessageUsersInfo]);
   
-  // other user
-  const otherUser = {
-    _id: 2,
-    name: 'React Native',
-  };
-  
+  if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
     <>
       {/* <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} /> */}  
@@ -137,7 +132,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
               left: { color: 'black' },
               right: { color: 'white' },
             }}
-            user={{ _id: userId }}
+            user={{_id:userId}}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
             renderInputToolbar={() => null}
