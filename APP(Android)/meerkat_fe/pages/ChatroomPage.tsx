@@ -81,6 +81,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       socket.on('server:hearMessage', (messageDto: IMessageDto) => {
         console.log(chatroomId + "message 수신: ");
         console.log(messageDto);
+        console.log(IMessageUsersInfo.get(messageDto.senderId));
 
         if(isEmpty(IMessageUsersInfo.get(messageDto.senderId))) new Error("서버에 문제가 발생했습니다.");
         getNewMessagesFromSocket([
@@ -106,18 +107,19 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     return()=>{
       socket.disconnect();
     }
-  }, [socket, IMessageUsersInfo]);
+  }, [socket]);
 
-  // backhandler (뒤로가기 버튼) action 지정
-  useEffect(()=>{
-    const backAction = () => {navigation.navigate("Main", {screen:"ChatroomList", params: {rerender: true}}); return true};
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress", backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
+  // me
+  const user = {
+    _id: userId,
+    name: 'Developer',
+  };
+  
+  // other user
+  const otherUser = {
+    _id: 2,
+    name: 'React Native',
+  };
   
   if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
