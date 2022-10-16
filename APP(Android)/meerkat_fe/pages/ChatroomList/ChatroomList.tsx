@@ -94,7 +94,7 @@ export default function ChatroomList(
       }
     }
     init();
-  }, []);
+  }, [isFocused]);
 
   const handleAddChatroom = () => {
     navigation.push('AddChatroom');

@@ -185,6 +185,7 @@ export default function useMessage(
    */
   const sendNewMessageToServer = async (text: string) => {
     const encryptedText = await encryptText(text) // 메세지 텍스트 암호화.
+    if (encryptedText === undefined) return 
     // TODO : disconneted일 때 예외처리 해야 할 듯.
     if (socket.connected) {
       const messages: IMessageSendDto = {
@@ -268,7 +269,7 @@ export default function useMessage(
       const encryptedText = encryptAES(text, roomKey);
       return encryptedText
     } catch (err) {
-      throw new Error('메세지 암호화에 실패했습니다.');
+      Alert.alert('메세지 암호화에 실패했습니다.')
     }
   };
 
