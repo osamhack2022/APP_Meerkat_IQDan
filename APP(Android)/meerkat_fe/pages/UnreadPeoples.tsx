@@ -14,6 +14,7 @@ import FriendBox from '../components/FriendList/FriendBox';
 import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { ScrollView } from 'react-native-gesture-handler';
+import { getImage } from '../common/getImage';
 
 type UnreadsPeopleProps = StackScreenProps<RootStackParamList, 'UnreadPeoples'>;
 
@@ -23,8 +24,8 @@ export default function UnreadPeoples(props: UnreadsPeopleProps) {
   const { chatroomId, messageId } = props.route.params;
 
   // data
-  const [unreads, setUnreads] = useState<User[] | null>(null);
-  const [reads, setReads] = useState<User[] | null>(null);
+  const [unreads, setUnreads] = useState<User[]>([]);
+  const [reads, setReads] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false); // error occur then true
 
@@ -102,12 +103,12 @@ export default function UnreadPeoples(props: UnreadsPeopleProps) {
     return (
         <ScrollView>
           <CategoryBox categoryName={'읽지 않은 전우들'} />
-          {unreads!.map((user: User) => {
-            return <FriendBox name={user.name} />;
+          {unreads.map((user: User) => {
+            return <FriendBox key={user.userId} name={user.name} image={user.image}/>;
           })}
           <CategoryBox categoryName={'읽은 전우들'} />
-          {reads!.map((user: User) => {
-            return <FriendBox name={user.name} />;
+          {reads.map((user: User) => {
+            return <FriendBox key={user.userId} name={user.name} image={user.image}/>;
           })}
         </ScrollView>
     );
