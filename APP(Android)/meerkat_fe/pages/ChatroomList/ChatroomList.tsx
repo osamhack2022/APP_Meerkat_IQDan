@@ -170,7 +170,7 @@ export default function ChatroomList(
         </View>
       );
     }
-    return rooms.map(room => {
+    return rooms.filter((room) => room.name.includes(searchText)).map(room => {
       return (
         <ChatroomBox
           key={room.chatroomId}
@@ -195,6 +195,8 @@ export default function ChatroomList(
     });
   };
 
+  const [searchText, setSearchText] = useState("");
+
   return (
     <>
       <Header categoryName="대화방" onPressAddFriend={handleAddChatroom} />
@@ -216,7 +218,10 @@ export default function ChatroomList(
         }} 
       />
       <View style={styles.container}>
-        <Searchbar />
+        <Searchbar 
+          searchText={searchText} 
+          setTextChange={setSearchText}
+        />
         <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
           {roomsComponent()}
         </ScrollView>

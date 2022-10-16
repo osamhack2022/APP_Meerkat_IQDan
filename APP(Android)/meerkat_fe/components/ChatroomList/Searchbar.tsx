@@ -1,13 +1,25 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TextInput } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { MaterialIcons } from "@expo/vector-icons";
+
 const searchImg = require("../../assets/icons/search.png");
-export default function Searchbar() {
+
+export default function Searchbar(props: {searchText: string, setTextChange: (s: string) => void}) {
   return (
     <View style={styles.container}>
       <Image
         style={styles.icon}
         source={searchImg}
       />
-      <Text style={styles.text}>대화방을 검색하십시오</Text>
+      <TextInput
+        value={props.searchText}
+        onChangeText={props.setTextChange} 
+        style={{ paddingLeft: 8, flexGrow: 1 }} 
+        placeholder="대화방을 검색하십시오" 
+      />
+      <TouchableOpacity onPress={() => props.setTextChange("")}>
+        <MaterialIcons size={20} color="#AAA" name='cancel'/> 
+      </TouchableOpacity>
     </View>
   );
 }
