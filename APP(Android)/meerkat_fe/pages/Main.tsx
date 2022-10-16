@@ -1,4 +1,4 @@
-import { View, Text, Alert, ActivityIndicator } from "react-native";
+import { View, Text, Alert, ActivityIndicator, DeviceEventEmitter } from 'react-native';
 // comps
 import Friend from './FriendList';
 import ChatroomList from './ChatroomList/ChatroomList';
@@ -10,61 +10,76 @@ import { TabParamList } from '../common/types';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import api from '../common/api';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { sleep } from "../common/etc";
-import { generateRSAKeys } from "../common/crypto";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { sleep } from '../common/etc';
+import { generateRSAKeys } from '../common/crypto';
 
 const LoadingComponent = () => {
   return (
-    <View style={{position: "absolute", height: "100%", width: "100%", backgroundColor: "rgba(50, 50, 50, 0.6)", zIndex: 100, justifyContent: "center", alignItems: "center"}}>
+    <View
+      style={{
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        backgroundColor: 'rgba(80, 80, 80, 0.8)',
+        zIndex: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <ActivityIndicator size="large" />
-      <View style={{width: "80%", alignItems: "center"}}>
-        <Text style={{color: "white", fontSize: 24}}>보안키가 없어서 보안키를</Text>
-        <Text style={{color: "white", fontSize: 24}}>생성중이니 잠시만 기다려주세요.</Text>
+      <View style={{ width: '80%', alignItems: 'center' }}>
+        <Text style={{ color: 'white', fontSize: 24, fontFamily:"noto-med"}}>
+          보안키를 생성중입니다.
+        </Text>
       </View>
-
     </View>
-  )
-}
+  );
+};
 
 export default function Main() {
   const Tab = createBottomTabNavigator<TabParamList>();
   const [loading, setLoading] = useState(false);
-  
+
   const checkPublicKey = async () => {
     try {
-      let me = (await api.get("/users/me")).data.data;
-      let key = (await api.get("/users/publicKey/" + me.userId)).data.data.key;
-      
+      let me = (await api.get('/users/me')).data.data;
+      let key = (await api.get('/users/publicKey/' + me.userId)).data.data.key;
+
       if (!key) {
-        setLoading(true);        
+        setLoading(true);
         await sleep(0.1);
 
         let keys = generateRSAKeys();
-        let res = await api.post("/users/publicKey", {
-          publicKey: keys.getPublicKey()
-        })
+        let res = await api.post('/users/publicKey', {
+          publicKey: keys.getPublicKey(),
+        });
 
-        await AsyncStorage.setItem("PublicKey", keys.getPublicKey());
-        await AsyncStorage.setItem("PrivateKey", keys.getPrivateKey());
+        await AsyncStorage.setItem('PublicKey', keys.getPublicKey());
+        await AsyncStorage.setItem('PrivateKey', keys.getPrivateKey());
       }
-    }
-    catch(e) {
-      Alert.alert("보안키 생성 실패", "서버에 공개키를 업로드 하지 못했습니다.")
-    }
-    finally {
+    } catch (e) {
+      Alert.alert(
+        '보안키 생성 실패',
+        '서버에 공개키를 업로드 하지 못했습니다.',
+      );
+    } finally {
       setLoading(false);
     }
-  }
-  
+  };
+
   useEffect(() => {
     checkPublicKey();
   }, []);
-  
-  
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener("loading_started", () => setLoading(true));
+    DeviceEventEmitter.addListener("loading_ended", () => setLoading(false));
+  })
+
   return (
-    <View style={{width: "100%", height: "100%"}}>
-      { loading && <LoadingComponent/> }
+    <View style={{ width: '100%', height: '100%' }}>
+      {loading && <LoadingComponent />}
       <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
         <Tab.Screen
           name="Friends"

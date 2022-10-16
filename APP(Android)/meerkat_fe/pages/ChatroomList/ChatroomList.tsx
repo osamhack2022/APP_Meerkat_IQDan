@@ -6,7 +6,7 @@ import {
   Text,
   View,
   ScrollView,
-  TextInput,
+  TextInput
 } from 'react-native';
 // comps
 import Searchbar from '../../components/ChatroomList/Searchbar';
@@ -19,10 +19,11 @@ import Header from '../../components/FriendList/Header';
 import { SocketContext } from '../../common/Context';
 // thirds
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import Dialog from 'react-native-dialog';
 import { hashMD5 } from '../../common/crypto';
 import { useIsFocused } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const PwPrompt = (props: {
   visible: boolean;
@@ -87,14 +88,15 @@ export default function ChatroomList(
   }, [isFocused]);
 
   useEffect(() => {
-    async function init() {
-      const privKey = await AsyncStorage.getItem('PrivateKey');
-      if (privKey !== null) {
-        setKeyExists(true);
-      }
-    }
-    init();
+    checkPrevKey();
   }, [isFocused]);
+
+  const checkPrevKey = async () => {
+    const privKey = await AsyncStorage.getItem('PrivateKey');
+    if (privKey !== null) {
+      setKeyExists(true);
+    }
+  }
 
   const handleAddChatroom = () => {
     navigation.push('AddChatroom');
@@ -105,15 +107,16 @@ export default function ChatroomList(
       return <ChatroomLoading />;
     } else if (!keyExists) {
       return (
-        <View style={styles.warning}>
-          <AntDesign
+        <TouchableOpacity style={styles.warning} onPress={checkPrevKey}>
+          {/* <AntDesign
             style={{ marginBottom: 20 }}
             name="exclamationcircle"
             size={24}
             color="lightgrey"
-          />
+          /> */}
+          <Ionicons style={{ marginBottom: 20 }}name="reload" size={30} color="black" />
           <Text style={{ color: 'grey' }}>설정에서 암호키를 생성해주세요.</Text>
-        </View>
+        </TouchableOpacity>
       );
     } else if (rooms === null || rooms.length === 0) {
       return (
