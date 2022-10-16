@@ -89,7 +89,7 @@ export default function Register(props: { setCurrPage: Function }) {
     };
 
     const handleForgotPw = () => {
-        setCurrPage("forgotPw");
+        Alert.alert("지원되지 않는 기능입니다.")
     };
 
     const isEnlistmentDateValid = () => {

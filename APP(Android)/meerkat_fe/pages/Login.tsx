@@ -8,6 +8,7 @@ import {
     Image,
     Button,
     Pressable,
+    Alert,
 } from "react-native";
 // thirds
 import axios from "axios";
@@ -50,7 +51,7 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
     };
 
     const handleForgotPw = () => {
-        setCurrPage("changePw")
+        Alert.alert("지원되지 않는 기능입니다.")
     };
 
     return (
