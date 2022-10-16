@@ -25,7 +25,7 @@ import { hashMD5 } from '../../common/crypto';
 import { useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const PwPrompt = (props: {
+const PasswordSettingPrompt = (props: {
   visible: boolean;
   roomId: number;
   onClose: () => void;
@@ -43,19 +43,62 @@ const PwPrompt = (props: {
   useEffect(() => {
     if (!props.visible) return;
     setPw('');
+    setTimeout(() => { ref.current?.focus(); }, 100);
   }, [props.visible]);
 
-  return <View></View>
-//   return (
-//     <Dialog.Container visible={props.visible}>
-//       <Dialog.Title>2차 비밀번호 설정</Dialog.Title>
-//       <Dialog.Description>방을 2차 비밀번호로 암호화하여</Dialog.Description>
-//       <Dialog.Description>보안을 강화합니다.</Dialog.Description>
-//       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
-//       <Dialog.Button onPress={props.onClose} label="취소" />
-//       <Dialog.Button onPress={apply2ndPassword} label="확인" />
-//     </Dialog.Container>
-//   );
+   return (
+     <Dialog.Container visible={props.visible}>
+       <Dialog.Title>2차 비밀번호 설정</Dialog.Title>
+       <Dialog.Description>방을 2차 비밀번호로 암호화하여</Dialog.Description>
+       <Dialog.Description>보안을 강화합니다.</Dialog.Description>
+       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
+       <Dialog.Button onPress={props.onClose} label="취소" />
+       <Dialog.Button onPress={apply2ndPassword} label="확인" />
+     </Dialog.Container>
+   );
+};
+
+const OpenChatPrompt = (props: {
+  visible: boolean;
+  roomId: number;
+  onClose: () => void;
+  onVerify: () => void;
+}) => {
+  let [pw, setPw] = useState('');
+  let ref = useRef<TextInput>(null);
+
+  const confirm = async () => {
+    if (pw == '') return;
+    let hash = hashMD5(pw);
+    let roomKey = '2ndPassword-' + props.roomId.toString();
+    let roomHash = await AsyncStorage.getItem(roomKey);
+    
+    if (hash !== roomHash) {
+      console.log(roomKey, hash, roomHash);
+      Alert.alert("비밀번호가 틀렸습니다.")
+      props.onClose();
+      return;
+    }
+    
+    props.onVerify();
+    props.onClose();
+  };
+
+  useEffect(() => {
+    if (!props.visible) return;
+    setPw('');
+    setTimeout(() => { ref.current?.focus(); }, 100);
+  }, [props.visible]);
+
+   return (
+     <Dialog.Container visible={props.visible}>
+       <Dialog.Title>보안방</Dialog.Title>
+       <Dialog.Description>2차 비밀번호를 입력해야 볼 수 있습니다.</Dialog.Description>
+       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
+       <Dialog.Button onPress={props.onClose} label="취소" />
+       <Dialog.Button onPress={confirm} label="확인" />
+     </Dialog.Container>
+   );
 };
 
 export default function ChatroomList(
@@ -80,8 +123,10 @@ export default function ChatroomList(
     });
   }, [socket]);
 
-  const [promptVisible, setPromptVisible] = useState(false);
-  const [promptRoomId, setPromptRoomId] = useState(-1);
+  const [settingPromptVisible, setSettingPromptVisible] = useState(false);
+  const [settingPromptRoomId, setSettingPromptRoomId] = useState(-1);
+  const [openPromptVisible, setOpenPromptVisible] = useState(false);
+  const [openPromptRoomId, setOpenPromptRoomId] = useState(-1);
 
   useEffect(() => {
     reFetch();
@@ -138,8 +183,12 @@ export default function ChatroomList(
           unreadCount={room.numUnreadMessages}
           navigation={navigation}
           onPress2ndPwSetting={() => {
-            setPromptVisible(true);
-            setPromptRoomId(room.chatroomId);
+            setSettingPromptVisible(true);
+            setSettingPromptRoomId(room.chatroomId);
+          }}
+          onPress={() => {
+            setOpenPromptVisible(true);
+            setOpenPromptRoomId(room.chatroomId);
           }}
         />
       );
@@ -149,12 +198,22 @@ export default function ChatroomList(
   return (
     <>
       <Header categoryName="대화방" onPressAddFriend={handleAddChatroom} />
-      <PwPrompt
-        visible={promptVisible}
-        roomId={promptRoomId}
+      <PasswordSettingPrompt
+        visible={settingPromptVisible}
+        roomId={settingPromptRoomId}
         onClose={() => {
-          setPromptVisible(false);
+          setSettingPromptVisible(false);
         }}
+      />
+      <OpenChatPrompt
+        visible={openPromptVisible}
+        roomId={openPromptRoomId}
+        onClose={() => {
+          setOpenPromptVisible(false);
+        }}
+        onVerify={() => {
+          navigation.push('Chat', { chatroomId: openPromptRoomId});
+        }} 
       />
       <View style={styles.container}>
         <Searchbar />

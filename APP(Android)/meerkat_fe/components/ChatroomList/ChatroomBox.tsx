@@ -13,6 +13,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const dotsImage = require('../../assets/icons/dots_vertical.png');
 
+
+
 export default function ChatroomBox(props: any) {
   // TODO: Chatroom + navigation으로 수정
   const {
@@ -24,7 +26,8 @@ export default function ChatroomBox(props: any) {
     msgExpTime,
     unreadCount,
     navigation,
-    onPress2ndPwSetting
+    onPress2ndPwSetting,
+    onPress
   } = props;
 
   const [encrypted, setEncrpyted] = useState(false);
@@ -41,10 +44,8 @@ export default function ChatroomBox(props: any) {
 
   return (
     <TouchableOpacity
-      style={styles.container}
-      onPress={() => {
-        navigation.push('Chat', { chatroomId: chatroomId });
-      }}
+      style={[styles.container, encrypted ? styles.invertedContainer : {}]}
+      onPress={onPress}
     >
       <View style={styles.upperContainer}>
         <Text style={styles.title}>{name}</Text>
@@ -59,7 +60,7 @@ export default function ChatroomBox(props: any) {
       </View>
       <View style={styles.lowerContainer}>
         <Text style={styles.time}>마지막 대화 1시간 전</Text>
-        <Text style={styles.count}>{unreadCount}</Text>
+        <Text style={[styles.count, encrypted ? styles.invertedCount: {}]}>{unreadCount}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -74,6 +75,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5B47F',
     borderRadius: 20,
     justifyContent: 'space-between',
+  },
+  invertedContainer: {
+    backgroundColor: '#6A4035',
   },
   upperContainer: {
     // backgroundColor: "black",
@@ -113,5 +117,8 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 15,
     borderRadius: 10,
+  },
+  invertedCount: {
+    backgroundColor: '#E5B47F',
   },
 });
