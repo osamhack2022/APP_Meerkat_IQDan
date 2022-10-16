@@ -168,11 +168,12 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
 
   return (
     <View style={{backgroundColor: "white", width: "100%", height: "100%"}}>
+      
       <UserProfilePanel 
         user={currentProfileUser}
         setUser={setCurrentProfileUser}
         onClose={() => setCurrentProfileUser(null)}
-        gotoChat={() => navigation.push("Chat")}
+        gotoChat={() => {}}
         onDeleteFriend={() => {setCurrentProfileUser(null); fetchFriends()}}
       />
       <View style={styles.mainContainer}>
