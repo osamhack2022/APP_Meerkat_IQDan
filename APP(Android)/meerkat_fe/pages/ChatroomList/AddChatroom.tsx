@@ -29,6 +29,7 @@ export default function AddChatroom(
   const [expTimeOption, setExpTimeOption] = useState<
     '한달' | '하루' | '한시간' | '일분' | '십초'
   >('하루');
+  const [removeType, setRemoveType] = useState<"서버" | "지구상">("서버")
   const [closeFlag, setCloseFlag] = useState(true);
 
   useEffect(() => {
@@ -55,6 +56,11 @@ export default function AddChatroom(
     setCloseFlag(!closeFlag);
   };
 
+  const getRemoveType = () => {
+    if (removeType === "서버") return "FROMSERVER"
+    return "FROMEARTH"
+  }
+
   const handleSubmit = async () => {
     disableSubmit()
     if (name === '') {
@@ -62,22 +68,27 @@ export default function AddChatroom(
       return Alert.alert('초대방 이름을 정해주세요.');
     }
 
+    let createdChatroomId: number = 0
+    console.log('asdfsadfsadf')
     try {
       let me = (await api.get("/users/me")).data.data;
-      
       let res = await api.post('/chatroom/create', {
         name: name,
         msgExpTime: msgExpTime,
         removeAfterRead: readOption === '하고',
+        removeType: getRemoveType(),
         commanderUserIds: [],
         targetUserIds: selectedFriends
       })
+      console.log(res.data.data)
+      createdChatroomId = res.data.data.chatroomId
 
       if (res.data.data.alreadyExists) {
         enableSubmit()
         return Alert.alert('이미 존재하는 1대1 채팅방입니다.')
       }
       
+
       let chatroomId = res.data.data.chatroomId;
       // 대칭키 생성
       let roomkey = generateAESKey();
@@ -100,7 +111,7 @@ export default function AddChatroom(
       for (let i=0; i<targetUsers.length; i++) {
         let id = targetUsers[i];
         putChatroomKeyTasks.push(
-          api.post("chatroom/chatroomKey", {
+          api.post("/chatroom/chatroomKey", {
             forUserId: id,
             forChatroomId: chatroomId,
             encryptedKey: encryptedKeys[i]
@@ -113,7 +124,10 @@ export default function AddChatroom(
     }
     catch (e) {
       enableSubmit()
-      Alert.alert('채팅방 개설에 실패했습니다.')
+      Alert.alert('채팅방 개설에 실패했습니다. 다른 유저가 키 발행을 완료했는지 확인하세요.')
+      if (createdChatroomId !== 0) {
+        api.get("/chatroom/removeChat/" + createdChatroomId) // 채팅방 삭제.
+      }
     }
   };
 
@@ -164,8 +178,17 @@ export default function AddChatroom(
           />
         </View>
         <View style={styles.subTitleContainer}>
-          <Text style={styles.subTitle2}>
-            이후 메시지가 서버에서 삭제됩니다.
+          <Text style={[styles.subTitle2,{marginRight: 10}]}>
+            이후 메시지가
+          </Text>
+          <Select
+            allValues={['서버', '지구상']}
+            currValue={removeType}
+            setCurrValue={setRemoveType}
+            closeFlag={closeFlag}
+          />
+          <Text style={[styles.subTitle2, {marginLeft: -15}]}>
+            에서 삭제됩니다.
           </Text>
         </View>
         <View style={styles.subTitleContainer}>

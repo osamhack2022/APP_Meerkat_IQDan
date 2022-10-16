@@ -1,4 +1,4 @@
-import { ChatroomType } from '@prisma/client';
+import { ChatRemoveType, ChatroomType } from '@prisma/client';
 import { IsDataURI, IsDate, IsDecimal, IsEmail, IsOptional, IsString, isArray, IsArray, IsNumber, IsBoolean, IsEnum } from 'class-validator';
 
 export class CreateChatroomDto {
@@ -16,6 +16,9 @@ export class CreateChatroomDto {
 
     @IsBoolean()
     public removeAfterRead: boolean;
+
+    @IsString()
+    public removeType: ChatRemoveType
 }
 
 export class InviteChatroomDto {

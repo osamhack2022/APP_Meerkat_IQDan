@@ -37,6 +37,7 @@ export default function useMessage(
   socket: Socket,
 ) {
   const [messages, setMessages] = useState<IMessage[]>([]);
+  
   /**
    * 첫 메시지 가져오는 effect
    * 첫 메시지 때 모든 새로운 메시지를 asyncstorage에 저장.

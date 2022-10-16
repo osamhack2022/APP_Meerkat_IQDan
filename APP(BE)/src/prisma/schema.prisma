@@ -57,6 +57,11 @@ enum ChatroomType{
   MULTI
 }
 
+enum ChatRemoveType {
+  FROMSERVER
+  FROMEARTH
+}
+
 model Chatroom{
   chatroomId      Int          @id @default(autoincrement())
   name            String?
@@ -65,6 +70,7 @@ model Chatroom{
   updateDate      DateTime?       @updatedAt
   msgExpTime      Int             @default(2592000) /// 30 days till expiration
   removeAfterRead Boolean         @default(true)
+  removeType      ChatRemoveType  @default(FROMSERVER)
 
   users           UsersOnChatrooms[]
   notices         Notice[]

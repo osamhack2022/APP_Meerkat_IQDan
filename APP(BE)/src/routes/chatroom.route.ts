@@ -85,6 +85,13 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.getCommander
     );
+    // 채팅방 삭제
+    this.router.get(
+      `${this.path}/removeChat/:id(\\d+)`,
+      authMiddleware,
+      this.chatroomController.removeChat
+    )
+    
   }
 }
 

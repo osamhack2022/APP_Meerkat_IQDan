@@ -57,6 +57,8 @@ import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import moment from 'moment';
+import useRemoveMessage from '../hooks/useRemoveMessage';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -114,9 +116,12 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     setIMessageUsersInfo(newUsersInfoMap);
   }, [isUserInfoLoading]);
 
+  // 메세지 삭제 카운트 (UI 용)
+  const [removeCountdown, setRemoveCountdown] = useState(-1)
   // 메시지 가져오기
-  const { messages, sendNewMessageToServer, getNewMessagesFromSocket, onSend } =
+  const { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket, onSend } =
     useMessage(chatroomId, userId, IMessageUsersInfo, socket);
+  useRemoveMessage(messages, setMessages, chatroomInfo, removeCountdown, setRemoveCountdown)
   const [filteredMessages, setFilteredMessages] = useState<IMessage[]>([]);
 
   // TODO: 나중에 여기 socket 부분 분리.

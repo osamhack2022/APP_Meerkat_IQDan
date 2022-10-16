@@ -15,6 +15,7 @@ export type Chatroom = {
      */
     msgExpTime: number
     removeAfterRead: boolean
+    removeType: "FROMSERVER" | "FROMEARTH"
     numUnreadMessages: number
 }
 

@@ -121,7 +121,7 @@ class ChatroomController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { name, targetUserIds, msgExpTime, commanderUserIds, removeAfterRead } =
+      const { name, targetUserIds, msgExpTime, commanderUserIds, removeAfterRead, removeType } =
         req.body as CreateChatroomDto;
 
       if (targetUserIds.length === 1) {
@@ -131,6 +131,7 @@ class ChatroomController {
           name,
           msgExpTime,
           removeAfterRead,
+          removeType
         );
 
         res.status(200).json({ data: chatroomInfo, message: `success` });
@@ -142,6 +143,7 @@ class ChatroomController {
           msgExpTime,
           commanderUserIds,
           removeAfterRead,
+          removeType
         );
 
         res.status(200).json({ data: chatroomInfo, message: `success` });
@@ -276,6 +278,27 @@ class ChatroomController {
   };
 
 
+
+  // 채팅방 삭제
+    public removeChat = async (
+      req: RequestWithUser,
+      res: Response,
+      next: NextFunction,
+    ): Promise<void> => {
+      try {
+        const userId = req.user.userId;
+        const chatroomId = Number(req.params.id);
+        await this.chatroomService.removeChat(userId, chatroomId);
+  
+        res.status(200).json({
+          message: `success`,
+        });
+      } catch (error) {
+        next(error);
+      }
+    };
+
 }
 
 export default ChatroomController;
+
