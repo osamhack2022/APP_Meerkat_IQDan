@@ -1,6 +1,6 @@
 // core
 import { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Alert, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Alert, Image, DeviceEventEmitter } from "react-native";
 import {
   MaterialCommunityIcons,
   Feather,
@@ -144,7 +144,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
 
 
   const generateKeys = async () => {
-    setGenearting(true);
+    DeviceEventEmitter.emit("loading_started");
     setTimeout(async () => {
       let keys = generateRSAKeys();
 
@@ -163,7 +163,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
         Alert.alert("보안키 생성 실패", "서버에 공개키를 업로드 하지 못했습니다.")
       }
       finally {
-        setGenearting(false);
+        DeviceEventEmitter.emit("loading_ended");
       }
     }, 1000)
   }
@@ -172,7 +172,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
   return (
     <>
-      {generating && <View style={{position: "absolute", height: "200%", width: "100%", backgroundColor: "rgba(50, 50, 50, 0.6)", zIndex: 100}}></View>}
+      {/* {generating && <View style={{position: "absolute", height: "200%", width: "100%", backgroundColor: "rgba(50, 50, 50, 0.6)", zIndex: 100}}></View>} */}
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <reactNativePaper.Text style={styles.title}>설정</reactNativePaper.Text>
