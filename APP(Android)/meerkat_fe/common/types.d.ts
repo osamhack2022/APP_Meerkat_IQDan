@@ -99,6 +99,7 @@ export interface IMessageSendDto{
 export enum QuickReplyType{
     STATISTICS = 'statistics', // 통계
     REPORT = 'report', // 보고
+    CHECK = 'check', // 확인
 }
 
 /**

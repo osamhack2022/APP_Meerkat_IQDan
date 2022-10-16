@@ -3,9 +3,10 @@ import prisma from '../db';
 import { isEmpty } from 'class-validator';
 import { Message, User, UsersOnChatrooms } from '@prisma/client';
 import { FindMessageDto, GetReadsDto, GetUnreadsDto, IMessageDto, UsersOnChatroomsKeyDto } from '@/dtos/messages.dto';
-import ChatroomService from './chatroom.service';
+import ValidateSerivce from './validate.service';
 
 class MessageService {
+  private validateService = new ValidateSerivce();
   /**
    * iMessageDto 있는 chatRoom이 없거나, user가 없거나, user가 chatroom에 없는 경우 throw error
    * @param iMessageDto : 저장할 메시지
@@ -59,9 +60,9 @@ class MessageService {
    */
   public async getUnreadChats(findMessagDto: FindMessageDto): Promise<Message[]> {
     // checking part
-    await this.checkUserExists(findMessagDto.userId);
-    await this.checkChatroomExists(findMessagDto.chatroomId);
-    await this.checkUserInChatroom(findMessagDto.userId, findMessagDto.chatroomId);
+    await this.validateService.checkUserExists(findMessagDto.userId);
+    await this.validateService.checkChatroomExists(findMessagDto.chatroomId);
+    await this.validateService.checkUserInChatroom(findMessagDto.userId, findMessagDto.chatroomId);
 
     // get unread chats FIXME 
     const unreadChats: Message[] = await prisma.$queryRaw<Message[]>`
@@ -108,9 +109,9 @@ class MessageService {
    */
   public async updateRecentReadMessage(usersOnChatroomsKeyDto: UsersOnChatroomsKeyDto): Promise<number>{
     // checking part
-    await this.checkUserExists(usersOnChatroomsKeyDto.userId);
-    await this.checkChatroomExists(usersOnChatroomsKeyDto.chatroomId);
-    await this.checkUserInChatroom(usersOnChatroomsKeyDto.userId, usersOnChatroomsKeyDto.chatroomId);
+    await this.validateService.checkUserExists(usersOnChatroomsKeyDto.userId);
+    await this.validateService.checkChatroomExists(usersOnChatroomsKeyDto.chatroomId);
+    await this.validateService.checkUserInChatroom(usersOnChatroomsKeyDto.userId, usersOnChatroomsKeyDto.chatroomId);
 
     // update recent read message id FIXME
     const usersOnChatrooms: UsersOnChatrooms = await prisma.$queryRaw<UsersOnChatrooms>`
@@ -119,55 +120,15 @@ class MessageService {
     return usersOnChatrooms.recentReadMessageId;
   }
   
-  /**
-   * throw error when user does not exist.
-   * @throws HttpException 404 "User does not exist."
-   */
-  private async checkUserExists(userId: number) {
-    const user = await prisma.user.findUnique({ where: { userId: userId } });
-    if (isEmpty(user)) throw new HttpException(400, 'User does not exist');
-  }
-
-  /**
-  * throw error when chatroom does not exist.
-  * @throws HttpException 404 "Chatroom does not exist."
-  */
-  private async checkChatroomExists(chatroomId: number) {
-    const chatroom = await prisma.chatroom.findUnique({ where: { chatroomId: chatroomId } });
-    if (isEmpty(chatroom)) throw new HttpException(404, 'Chatroom does not exist.');
-  }
-
-  /**
-   * throw error when user does not exist in chatroom
-   * @throws HttpExcpeion 400 "You are not a member of this chat room."
-   */
-  private async checkUserInChatroom(userId: number, chatroomId: number) {
-    const usersOnChatrooms = await prisma.usersOnChatrooms.findUnique({
-      where: {
-        chatroomId_userId: {
-          userId: userId,
-          chatroomId: chatroomId,
-        },
-      }
-    })
-    if (isEmpty(usersOnChatrooms)) throw new HttpException(403, 'You are not a member of this chat room.');
-  }
-
-  /**
-   * throw error when message does not exists
-   */
-  private async checkMessageExists(messageId: number){
-    const message = await prisma.message.findUnique({ where: { messageId: messageId } });
-    if (isEmpty(message)) throw new HttpException(404, 'Message does not exist.');
-  }
+  
 
   /**
    * get unread people of given message
    */
   public async getUnreadUsers(getUnreadDto: GetUnreadsDto): Promise<User[]> {
     // checking part
-    await this.checkChatroomExists(getUnreadDto.chatroomId);
-    await this.checkMessageExists(getUnreadDto.messageId);
+    await this.validateService.checkChatroomExists(getUnreadDto.chatroomId);
+    await this.validateService.checkMessageExists(getUnreadDto.messageId);
 
     // get unread people of given message
     const unreadUsers: User[] = await prisma.$queryRaw<User[]>`
@@ -187,8 +148,8 @@ class MessageService {
    */
   public async getReadUsers(getReadDto: GetReadsDto): Promise<User[]> {
     // checking part
-    await this.checkChatroomExists(getReadDto.chatroomId);
-    await this.checkMessageExists(getReadDto.messageId);
+    await this.validateService.checkChatroomExists(getReadDto.chatroomId);
+    await this.validateService.checkMessageExists(getReadDto.messageId);
 
     // get unread people of given message
     const readUsers: User[] = await prisma.$queryRaw<User[]>`
