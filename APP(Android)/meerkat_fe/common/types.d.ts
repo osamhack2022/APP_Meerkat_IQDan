@@ -62,8 +62,8 @@ export interface LoginStatus{
 
 export interface UserProfile{
     name: string,
-    image?: string | null | undefined,
-    statusMessage?: string | null | undefined
+    image: string | null
+    statusMessage?: string | null
     dday?: number
 }
 

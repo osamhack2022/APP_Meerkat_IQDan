@@ -1,15 +1,13 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import { getImage } from "../../common/getImage";
 import { UserProfile } from "../../common/types.d";
-import getProfileSource from "./getProfileSource";
 
 export default function MyBox(props: UserProfile) {
   const { name, image, statusMessage } = props; // profile image must be delivered as prop
 
-  const ProfileImageSource = getProfileSource(image);
-
   return (
     <View style={styles.container}>
-        <Image style={styles.profileImage} source={ProfileImageSource}/>
+        <Image style={styles.profileImage} source={getImage(image)}/>
         <View style={styles.nameContainer}>
             <Text style={styles.nameText}>
                 {name}

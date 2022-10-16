@@ -17,11 +17,11 @@ import { MainTabScreenProps, User } from "../common/types";
 import { LoginContext } from "../common/Context";
 import api from "../common/api";
 
-import getProfileSource from "../components/FriendList/getProfileSource";
 import SettingsLoading from '../pages/SettingsLoading';
 import { useIsFocused } from "@react-navigation/native";
 
 import { generateRSAKeys } from "../common/crypto";
+import { getImage } from "../common/getImage";
 
 const FriendListKey = "FriendList";
 
@@ -164,7 +164,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     }, 1000)
   }
   
- if (pageState == "loading") {return <SettingsLoading />}
+ if (pageState == "loading" || user === null) {return <SettingsLoading />}
     else if (pageState == "error") {return <View><Text>Error!!!!</Text></View>}
   return (
     <>
@@ -176,7 +176,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: 'row', alignItems:"center" }}>
             <Image style={styles.profileImage}
-              source={getProfileSource(user?.image)}
+              source={getImage(user.image)}
             />
             <View style={{ marginLeft: 20 }}>
               <reactNativePaper.Title style={[styles.nameTitle,]}>{user?.name}</reactNativePaper.Title>

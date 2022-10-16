@@ -31,6 +31,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather, AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { getImage } from '../common/getImage';
 
 type AddFriendScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList, 'AddFriend'>,
@@ -45,8 +46,6 @@ export default function AddFriend(props: AddFriendScreenProps) {
   const [user, setUser] = useState<User | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [added, setAdded] = useState(false);
-
-  const ProfileImageSource = require('../assets/users/emptyProfile.jpg');
 
   const addAsFriend = () => {
     api
@@ -145,7 +144,7 @@ export default function AddFriend(props: AddFriendScreenProps) {
                 paddingVertical: 24,
               }}
             >
-              <Image style={styles.profileImage} source={ProfileImageSource} />
+              <Image style={styles.profileImage} source={getImage(user.image)} />
               <Text
                 style={{ fontSize: 24, paddingTop: 12 }}
               >{`${user.militaryRank} ${user.name}`}</Text>
