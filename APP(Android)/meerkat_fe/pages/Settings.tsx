@@ -134,6 +134,10 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
   const handleLogout = async () => {
     await AsyncStorage.setItem("userToken", "");
     await AsyncStorage.setItem("userTokenExpiration", "");
+    const allKeys = await AsyncStorage.getAllKeys()
+    await Promise.all(allKeys.map((key) => {
+      return AsyncStorage.removeItem(key)
+    }))
     checkIfLoggedIn();
     navigation.navigate("Auth")
   };

@@ -1,6 +1,22 @@
 // core
-import React, { useState, useCallback, useEffect, useContext, ReactNode } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler, Pressable } from 'react-native';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+  ReactNode,
+} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Alert,
+  Platform,
+  SafeAreaView,
+  BackHandler,
+  Pressable,
+} from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import ChatroomSide from '../components/Chatroom/ChatroomSide';
@@ -20,7 +36,15 @@ import {
 // context
 import { LoginContext } from '../common/Context';
 // thirds
-import { Bubble, BubbleProps, Day, GiftedChat, IMessage, Time, User as IMessageUser } from 'react-native-gifted-chat';
+import {
+  Bubble,
+  BubbleProps,
+  Day,
+  GiftedChat,
+  IMessage,
+  Time,
+  User as IMessageUser,
+} from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
@@ -79,7 +103,11 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       IMessageUser
     >();
     usersInfo.forEach((elem: User) => {
-      newUsersInfoMap.set(elem.userId, { _id: elem.userId, name: elem.name, avatar: elem.image });
+      newUsersInfoMap.set(elem.userId, {
+        _id: elem.userId,
+        name: elem.name,
+        avatar: elem.image === null ? undefined : elem.image,
+      });
     });
     setIMessageUsersInfo(newUsersInfoMap);
   }, [isUserInfoLoading]);
@@ -216,7 +244,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   //             backgroundColor: "#6A4035",
   //           }
   //         }}
-        
 
   //       />
   //       <>
@@ -233,7 +260,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   //     </View>
   //   )
   // };
-  
 
   // REFACTOR
   // TODO : refactor
@@ -241,60 +267,57 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     const { currentMessage, timeFormat } = props;
     return currentMessage.user._id === userId ? (
       <View style={styles.timeContainer}>
-          <View style={styles.myEyeIconWrapper}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate('UnreadPeoples', {
-                  chatroomId: chatroomId,
-                  messageId: currentMessage._id,
-                })
-              }
-            >
-              <MaterialCommunityIcons
-                name="eye-check"
-                size={16}
-                color="white"
-              />
-            </Pressable>
-          </View>
-          <Time
-            currentMessage={currentMessage}
-            timeFormat={timeFormat}
-            timeTextStyle={{ left: styles.whiteText }}
-          />
+        <View style={styles.myEyeIconWrapper}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('UnreadPeoples', {
+                chatroomId: chatroomId,
+                messageId: currentMessage._id,
+              })
+            }
+          >
+            <MaterialCommunityIcons name="eye-check" size={16} color="white" />
+          </Pressable>
+        </View>
+        <Time
+          currentMessage={currentMessage}
+          timeFormat={timeFormat}
+          timeTextStyle={{ left: styles.whiteText }}
+        />
       </View>
     ) : (
       <View style={styles.timeContainer}>
-          <Time
-            currentMessage={currentMessage}
-            timeFormat={timeFormat}
-            timeTextStyle={{ left: styles.blackText }}
-          />
-          <View style={styles.othersEyeIconWrapper}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate('UnreadPeoples', {
-                  chatroomId: chatroomId,
-                  messageId: currentMessage._id,
-                })
-              }
-            >
-              <MaterialCommunityIcons
-                name="eye-check"
-                size={16}
-                color="black"
-              />
-            </Pressable>
-          </View>
+        <Time
+          currentMessage={currentMessage}
+          timeFormat={timeFormat}
+          timeTextStyle={{ left: styles.blackText }}
+        />
+        <View style={styles.othersEyeIconWrapper}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('UnreadPeoples', {
+                chatroomId: chatroomId,
+                messageId: currentMessage._id,
+              })
+            }
+          >
+            <MaterialCommunityIcons name="eye-check" size={16} color="black" />
+          </Pressable>
+        </View>
       </View>
     );
   };
 
-  if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
+  if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
   return (
     <>
-      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} usersInfo={usersInfo} chatroomInfo={chatroomInfo}/>
-      <SafeAreaView style={{ flex:0 }} />
+      <ChatroomSide
+        isOpen={isOpenSideMenu}
+        setIsOpen={setIsOpenSideMenu}
+        usersInfo={usersInfo}
+        chatroomInfo={chatroomInfo}
+      />
+      <SafeAreaView style={{ flex: 0 }} />
       <ChatroomHeader
         onPressBack={() =>
           navigation.navigate('Main', { screen: 'ChatroomList' })
@@ -314,7 +337,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             renderBubble={MKBubble}
             isCustomViewBottom={true}
             renderTime={ChatTime}
-            user={{_id:userId}}
+            user={{ _id: userId }}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
             renderInputToolbar={() => null}
@@ -340,8 +363,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
               showMessage({
                 message: '최상급자의 메세지만 표시됩니다.',
                 type: 'info',
-                backgroundColor: "#6A4035",
-                color: "white",
+                backgroundColor: '#6A4035',
+                color: 'white',
                 position: 'bottom',
               });
             }
@@ -395,29 +418,29 @@ const styles = StyleSheet.create({
   //   flexDirection:"row",
   //   marginLeft: 9,
   // },
-  
+
   // message time box css
-  timeContainer:{
+  timeContainer: {
     width: 90,
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"center",
-    alignContent:"center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
-  myEyeIconWrapper:{
-    height:16,
-    width:16,
+  myEyeIconWrapper: {
+    height: 16,
+    width: 16,
     marginLeft: 10,
   },
-  othersEyeIconWrapper:{
-    height:16,
-    width:16,
-    marginRight: 10
+  othersEyeIconWrapper: {
+    height: 16,
+    width: 16,
+    marginRight: 10,
   },
-  whiteText:{
-    color:"white",
+  whiteText: {
+    color: 'white',
   },
-  blackText:{
-    color:"black",
-  }
+  blackText: {
+    color: 'black',
+  },
 });
