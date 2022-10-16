@@ -27,7 +27,8 @@ export default function ChatroomBox(props: any) {
     unreadCount,
     navigation,
     onPress2ndPwSetting,
-    onPress
+    onPressUnlock,
+    onPressLock
   } = props;
 
   const [encrypted, setEncrpyted] = useState(false);
@@ -45,7 +46,7 @@ export default function ChatroomBox(props: any) {
   return (
     <TouchableOpacity
       style={[styles.container, encrypted ? styles.invertedContainer : {}]}
-      onPress={onPress}
+      onPress={() => encrypted ? onPressLock() : onPressUnlock()}
     >
       <View style={styles.upperContainer}>
         <Text style={styles.title}>{name}</Text>
