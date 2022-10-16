@@ -11,6 +11,7 @@ import {
 import api from '../../common/api';
 import { User } from '../../common/types';
 import { Ionicons } from '@expo/vector-icons';
+import { getImage } from '../../common/getImage';
 
 type SelectedFriendsProp = {
   selectedFriends: number[];
@@ -61,8 +62,7 @@ export default function SelectFriends(props: SelectedFriendsProp) {
             >
               <Image
                 style={styles.profileImage}
-                // TODO: 각자의 이미지로 변경.
-                source={require('../../assets/users/emptyProfile.jpg')}
+                source={getImage(friend.image)}
               />
               <Text style={styles.friendText}>
                 {friend.militaryRank} {friend.name}

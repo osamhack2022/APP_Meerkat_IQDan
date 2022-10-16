@@ -1,8 +1,8 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
 import { isEmpty, isEmptyString } from "../../common/isEmpty";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import { getImage } from "../../common/getImage";
 
 interface FriendBoxProps extends UserProfile {
   onPress?: () => void
@@ -12,7 +12,6 @@ export default function FriendBox(props: FriendBoxProps) {
   const { name, image, statusMessage } = props; // profile image must be delivered as prop
 
   const dday: number = props.dday as number;
-  const ProfileImageSource = getProfileSource(image);
   const ddayStr = `D${dday > 0 ? '-' : '+'}${Math.abs(dday)}`
 
   return (
@@ -21,7 +20,7 @@ export default function FriendBox(props: FriendBoxProps) {
       onPress={props.onPress}
     >
       <View style={styles.container}>
-        <Image style={styles.profileImage} source={ProfileImageSource} />
+        <Image style={styles.profileImage} source={getImage(image)} />
         <View style={styles.nameContainer}>
           <View style={styles.nameLayout}>
             <Text style={styles.nameText}>{name}</Text>

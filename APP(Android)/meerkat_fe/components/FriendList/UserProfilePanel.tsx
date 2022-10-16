@@ -20,8 +20,8 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import { User, UserProfile } from '../../common/types';
-import getProfileSource from './getProfileSource';
 import api from '../../common/api';
+import { getImage } from '../../common/getImage';
 
 interface UserProfilePanelProps {
   user: User | null;
@@ -60,8 +60,6 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
   useEffect(() => {}, []);
 
   if (user == null) return null;
-
-  const ProfileImageSource = getProfileSource(user.image);
 
   const deleteUser = () => {
     Alert.alert('유저 삭제', '이 유저를 삭제하시겠습니까?', [
@@ -117,7 +115,7 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
               paddingVertical: 24,
             }}
           >
-            <Image style={styles.profileImage} source={ProfileImageSource} />
+            <Image style={styles.profileImage} source={getImage(user.image)} />
             <Text
               style={{ fontSize: 24, paddingTop: 12 }}
             >{`${user.militaryRank} ${user.name}`}</Text>

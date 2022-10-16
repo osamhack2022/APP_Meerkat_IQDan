@@ -1,6 +1,7 @@
 import {isEmpty} from "../../common/isEmpty";
 
 /**
+ * @deprecated now replaced with common/getImage
  * @param image must be delivered as 'require('image path')'
  * @returns empty profile if 'image' is null or undefined, else image.
  */

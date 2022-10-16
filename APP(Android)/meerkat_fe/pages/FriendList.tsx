@@ -47,7 +47,7 @@ const EventFriendList = (props: {users: User[]}) => {
     >
       {
         props.users.map((user) => 
-          <EventFriendBox key={user.uid} name={`${user.militaryRank} ${user.name}`}/>
+          <EventFriendBox key={user.uid} name={`${user.militaryRank} ${user.name}`} image={user.image}/>
         )
       }
     </ScrollView>
@@ -166,6 +166,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
       (480 <= diff && diff <= 500);
   }) || [];
 
+  if (user === null) return <></>
   return (
     <View style={{backgroundColor: "white", width: "100%", height: "100%"}}>
       
@@ -179,7 +180,7 @@ export default function FriendList(props: MainTabScreenProps<'Friends'>) {
       <View style={styles.mainContainer}>
         <Header categoryName="전우 목록" onPressAddFriend={() => navigation.push("AddFriend")} />
         <ScrollView>
-          <MyBox name={`${user?.militaryRank} ${user?.name}`} statusMessage={user?.affiliatedUnit} />
+          <MyBox name={`${user.militaryRank} ${user.name}`} statusMessage={user.affiliatedUnit} image={user.image} />
 
           <CategoryBox
             categoryName={'곧 전역인 전우들'}

@@ -19,8 +19,6 @@ import { MainTabScreenProps, AnimatedValue, User } from "../common/types";
 import { LoginContext } from "../common/Context";
 import api from "../common/api";
 
-
-import getProfileSource from "../components/FriendList/getProfileSource";
 import { useIsFocused } from "@react-navigation/native";
 
 const FriendListKey = "FriendList";

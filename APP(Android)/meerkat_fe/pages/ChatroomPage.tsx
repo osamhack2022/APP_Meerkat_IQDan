@@ -79,7 +79,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       IMessageUser
     >();
     usersInfo.forEach((elem: User) => {
-      newUsersInfoMap.set(elem.userId, { _id: elem.userId, name: elem.name });
+      newUsersInfoMap.set(elem.userId, { _id: elem.userId, name: elem.name, avatar: elem.image });
     });
     setIMessageUsersInfo(newUsersInfoMap);
   }, [isUserInfoLoading]);

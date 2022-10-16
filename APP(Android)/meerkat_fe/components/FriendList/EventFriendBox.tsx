@@ -1,14 +1,13 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import getProfileSource from "./getProfileSource";
 import { UserEvent, UserProfile } from "../../common/types.d";
+import { getImage } from "../../common/getImage";
 
 export default function EventFriendBox(props: UserProfile) {
   const { name, image } = props; // profile image must be delivered as prop
-  const ProfileImageSource = getProfileSource(image);
 
   return (
     <View style={styles.container}>
-      <Image style={styles.profileImage} source={ProfileImageSource} />
+      <Image style={styles.profileImage} source={getImage(image)} />
       <Text style={styles.nameText}>{name}</Text>
     </View>
   );
