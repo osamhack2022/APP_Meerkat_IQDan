@@ -1,4 +1,4 @@
-import { IsBoolean, IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class FindMessageDto{
   @IsNumber()
@@ -36,7 +36,7 @@ export class IMessageDto {
   public belongChatroomId: number;
 
   @IsBoolean()
-  public isSender:boolean;
+  public hasQuickReplies: boolean;
 }
 
 export class SetRecentRead {

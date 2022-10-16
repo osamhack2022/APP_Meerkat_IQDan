@@ -27,7 +27,6 @@ class MessagesController {
           deleteTime: message.deleteTime,
           senderId: message.senderId,
           belongChatroomId: message.belongChatroomId,
-          isSender: req.user.userId === message.senderId,
         };
       });
 

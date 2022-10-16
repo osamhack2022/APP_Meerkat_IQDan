@@ -78,7 +78,8 @@ export interface IMessageDto{
     deleteTime: Date;
     senderId: number;
     belongChatroomId: number;
-    isSender:boolean;
+
+    hasQuickReplies: boolean;
 }
 
 export interface IMessageSendDto{
@@ -89,6 +90,8 @@ export interface IMessageSendDto{
     deleteTime: Date;
     sendTime: Date;
     // TODO : 사진 들어갈수도. type을 추가해서 처리하면 될듯.
+
+    hasQuickReplies: boolean;
 }
 
 /**

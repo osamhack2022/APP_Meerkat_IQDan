@@ -15,7 +15,7 @@ export default (io: Namespace, socket: Socket, messageService: MessageService) =
     socket.on("client:speakMessage", (iMessageDto: IMessageDto) =>{
         console.log(iMessageDto);
         // TODO : console log는 디버깅용, 추후 완성되면 삭제
-        console.log("room " + iMessageDto.belongChatroomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + iMessageDto.text + "를 보냄."); 
+        console.log("room " + iMessageDto.belongChatroomId + "에 사용자 " + socket.handshake.auth.userId + "가 메시지 " + iMessageDto.text + "를 보냄, 이상무 사용여부: ", iMessageDto.hasQuickReplies); 
         //////////////
 
         const userId = socket.handshake.auth.userId
