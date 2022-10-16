@@ -55,7 +55,6 @@ import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
-import moment from 'moment';
 import useRemoveMessage from '../hooks/useRemoveMessage';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
