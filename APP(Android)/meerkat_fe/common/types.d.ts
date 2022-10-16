@@ -94,6 +94,12 @@ export interface IMessageSendDto{
     hasQuickReplies: boolean;
 }
 
+// quick replies
+export enum QuickReplyType{
+    STATISTICS = 'statistics', // 통계
+    REPORT = 'report', // 보고
+}
+
 /**
  * react-navigation related types
  */

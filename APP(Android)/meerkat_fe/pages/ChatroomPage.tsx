@@ -32,6 +32,7 @@ import {
   IMessageSendDto,
   RootStackScreenProps,
   User,
+  QuickReplyType,
 } from '../common/types';
 // context
 import { LoginContext } from '../common/Context';
@@ -200,69 +201,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     f();
   }, [superiorOnly, messages]);
 
-  // const mybubble = (props: any) => {
-  //   const {currentMessage} = props; // currentMessage type === IMessage. has _id, createdAt, text, user
-
-  //   const footer = ()=>{
-  //     return (
-  //       <>
-  //         <Text style={styles.timeText}>
-  //           {moment(currentMessage.createdAt).format('LT')}
-  //         </Text>
-  //         <Pressable
-  //           onPress={() =>
-  //             navigation.navigate('UnreadPeoples', {
-  //               chatroomId: chatroomId,
-  //               messageId: currentMessage._id,
-  //             })
-  //           }
-  //         >
-  //           <MaterialCommunityIcons
-  //             name="eye-check"
-  //             size={16}
-  //             color="black"
-  //           />
-  //         </Pressable>
-  //       </>
-  //     );
-  //   }
-  //   return (
-  //     <View>
-  //       <Bubble
-  //         {...props}
-  //         textStyle={{
-  //           left: {
-  //             color: "#000"
-  //           },
-  //           right: {
-  //             color: "#FFF",
-  //           },
-  //         }}
-  //         wrapperStyle={{
-  //           left: {
-  //             backgroundColor: "#E5B47F"
-  //           },
-  //           right: {
-  //             backgroundColor: "#6A4035",
-  //           }
-  //         }}
-
-  //       />
-  //       <>
-  //       {currentMessage.user._id === userId ?
-  //         <View style={styles.myMessageFooterContainer}>
-  //           {footer()}
-  //         </View>
-  //         :
-  //         <View style={styles.othersMessageFooterContainer}>
-  //           {footer()}
-  //         </View>
-  //       }
-  //       </>
-  //     </View>
-  //   )
-  // };
-
   // REFACTOR
   // TODO : refactor
   const ChatTime = (props: any) => {
@@ -412,7 +350,7 @@ const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
 const getAllClearStatisticsQuickReplyTemplate = ()=>{
   const statisticsReply: Reply = {
     title: "통계 확인",
-    value: "statistics"
+    value: QuickReplyType.STATISTICS
   }
   return statisticsReply;
 }
@@ -421,7 +359,7 @@ const getAllClearStatisticsQuickReplyTemplate = ()=>{
 const getAllClearReportQuickReplyTemplate = ()=>{
   const reportReply: Reply = {
     title: "보고",
-    value: "report"
+    value: QuickReplyType.REPORT
   }
   return reportReply;
 }
@@ -448,20 +386,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  // messageContainer:{
-  //   display:"flex",
-  //   flexDirection:"row"
-  // },
-  // myMessageFooterContainer:{
-  //   display:"flex",
-  //   flexDirection:"row-reverse",
-  //   marginLeft: 9,
-  // },
-  // othersMessageFooterContainer:{
-  //   display:"flex",
-  //   flexDirection:"row",
-  //   marginLeft: 9,
-  // },
 
   // message time box css
   timeContainer: {
