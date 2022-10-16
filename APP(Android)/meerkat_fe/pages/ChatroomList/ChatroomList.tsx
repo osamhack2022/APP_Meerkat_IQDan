@@ -186,9 +186,12 @@ export default function ChatroomList(
             setSettingPromptVisible(true);
             setSettingPromptRoomId(room.chatroomId);
           }}
-          onPress={() => {
+          onPressLock={() => {
             setOpenPromptVisible(true);
             setOpenPromptRoomId(room.chatroomId);
+          }}
+          onPressUnlock={() => {
+            navigation.push('Chat', { chatroomId: openPromptRoomId});
           }}
         />
       );
