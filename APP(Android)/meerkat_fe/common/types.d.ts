@@ -47,7 +47,7 @@ export interface User{
     enlistmentDate: DateTime,
     affiliatedUnit: string,
     militaryRank: string,
-    image: string
+    image: string | null
 }
 
 export enum UserEvent{

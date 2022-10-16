@@ -293,7 +293,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
     <>
-      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />  
+      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} usersInfo={usersInfo} chatroomInfo={chatroomInfo}/>
       <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
         onPressBack={() =>

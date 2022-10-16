@@ -144,6 +144,8 @@ class ChatroomService {
             userId: true,
             name: true,
             image: true,
+            militaryRank: true,
+            affiliatedUnit: true,
           },
         }),
       ),
