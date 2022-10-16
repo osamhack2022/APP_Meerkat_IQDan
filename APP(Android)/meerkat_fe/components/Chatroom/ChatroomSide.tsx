@@ -1,15 +1,26 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { View, StyleSheet, Text, Pressable, ScrollView, Animated } from "react-native";
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  ScrollView,
+  Animated,
+  ProgressViewIOSComponent,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import DrawerUser from "./DrawerComp/DrawerUser";
+import { ChatroomWithKey, User } from '../../common/types';
+import DrawerUser from './DrawerComp/DrawerUser';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const DURATION = 300;
 
 interface ChatroomSideProps {
-  isOpen: boolean,
-  setIsOpen: (open: boolean) => void
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  usersInfo: User[];
+  chatroomInfo: ChatroomWithKey | null
 }
 
 const ChatroomSide = (props: ChatroomSideProps) => {
@@ -18,72 +29,138 @@ const ChatroomSide = (props: ChatroomSideProps) => {
 
   useEffect(() => {
     if (props.isOpen) {
-      Animated.timing(opacityAnimValue, { useNativeDriver:true, toValue:0.5, duration: DURATION }).start()
-      Animated.timing(posAnimValue, { useNativeDriver:false, toValue:1, duration: DURATION }).start()
+      Animated.timing(opacityAnimValue, {
+        useNativeDriver: true,
+        toValue: 0.5,
+        duration: DURATION,
+      }).start();
+      Animated.timing(posAnimValue, {
+        useNativeDriver: false,
+        toValue: 1,
+        duration: DURATION,
+      }).start();
     }
   }, [props.isOpen]);
 
   const close = () => {
-    Animated.timing(opacityAnimValue, { useNativeDriver:true, toValue:0, duration: DURATION }).start()
-    Animated.timing(posAnimValue, { useNativeDriver:false, toValue:0, duration: DURATION }).start(() => {
+    Animated.timing(opacityAnimValue, {
+      useNativeDriver: true,
+      toValue: 0,
+      duration: DURATION,
+    }).start();
+    Animated.timing(posAnimValue, {
+      useNativeDriver: false,
+      toValue: 0,
+      duration: DURATION,
+    }).start(() => {
       props.setIsOpen(false);
-    })
+    });
+  };
+
+  const generateText = () => {
+    if (props.chatroomInfo === null) return "chatroomInfo not loaded"
+    let res = "" 
+    // 읽기 옵션
+    if (props.chatroomInfo.removeAfterRead) {
+      res += "모두 다 읽은 후 "
+    } else {
+      res += "아무도 안 읽어도 "
+    }
+    // 초 옵션
+    const exp = props.chatroomInfo.msgExpTime 
+    if (exp === 10) {
+      res += "10초 뒤 삭제"
+    } else if (exp === 3600){
+      res += "한 시간 뒤 삭제"
+    } else if (exp === 3600*24) {
+      res += "하루 뒤 삭제"
+    } else if (exp === 3600*24*30) {
+      res += "한 달 뒤 삭제"
+    } else {
+      res += exp.toString() + "초 뒤 삭제"
+    }
+
+    return res
   }
 
   if (!props.isOpen) return null;
 
+  if (props.chatroomInfo === null) return <></>
   return (
     <View style={styles.drawer}>
-      <AnimatedPressable onPress={close} style={[styles.outside, {opacity: opacityAnimValue}]}>
-      </AnimatedPressable>
-      <AnimatedSafeAreaView style={[styles.inside, {right:  posAnimValue.interpolate({ inputRange: [0, 1], outputRange: ["-65%", "0%"] }) }]}>
+      <AnimatedPressable
+        onPress={close}
+        style={[styles.outside, { opacity: opacityAnimValue }]}
+      ></AnimatedPressable>
+      <AnimatedSafeAreaView
+        style={[
+          styles.inside,
+          {
+            right: posAnimValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['-65%', '0%'],
+            }),
+          },
+        ]}
+      >
         <View>
-          <Text>대화상대</Text>
+          <Text style={styles.title}>채팅방 설정</Text>
+          <Text style={{marginLeft: 10, fontFamily: "noto-med"}}>방제: {props.chatroomInfo.name}</Text>
+          <Text style={{marginLeft: 10, fontFamily: "noto-med"}}>삭제: {generateText()}</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>대화상대</Text>
         </View>
         <ScrollView>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
-          <DrawerUser name={"1중대장"}/>
+          {props.usersInfo.map(userInfo => {
+            return (
+              <DrawerUser
+                key={userInfo.userId}
+                name={userInfo.militaryRank + ' ' + userInfo.name}
+                affiliation={userInfo.affiliatedUnit}
+                img={userInfo.image}
+              />
+            );
+          })}
         </ScrollView>
       </AnimatedSafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
+  title: {
+    marginLeft: 10,
+    fontFamily: 'noto-bold',
+    fontSize: 15,
+    lineHeight: 50,
+    marginBottom: -15,
+    marginTop: 0,
+  },
   outside: {
-    backgroundColor: "black",
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    opacity: 0.5
+    backgroundColor: 'black',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    opacity: 0.5,
   },
   inside: {
-    backgroundColor: "pink",
-    position: "absolute",
-    width: "65%",
-    height: "100%",
+    backgroundColor: 'white',
+    position: 'absolute',
+    width: '65%',
+    height: '100%',
     top: 0,
     bottom: 0,
   },
   drawer: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     position: 'absolute',
     top: 0,
     bottom: 0,
     right: 0,
     zIndex: 2,
   },
-})
+});
 
 export default ChatroomSide;
