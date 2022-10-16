@@ -82,10 +82,10 @@ model ChatroomCommanders{
 }
 
 model Notice{
-  noticeId        Int          @id @default(autoincrement())
+  noticeId        Int                 @id @default(autoincrement())
   title           String            
   content         String
-  startDate       DateTime        @default(now())
+  startDate       DateTime            @default(now())
   endDate         DateTime?
   category        String?
 
@@ -94,10 +94,11 @@ model Notice{
 }
 
 model Message{
-  messageId           Int          @id @default(autoincrement())
+  messageId           Int             @id @default(autoincrement())
   content             String
   sendTime            DateTime        @default(now())
   deleteTime          DateTime        /// 메시지 삭제될 시간
+  hasQuickReply       Boolean         @default(false)
 
   sender              User            @relation(fields: [senderId], references: [userId])
   senderId            Int
@@ -107,10 +108,10 @@ model Message{
 }
 
 model PublicKey{
-  user              User          @relation(fields: [userId], references: [userId])
-  userId            Int            @id
+  user              User              @relation(fields: [userId], references: [userId])
+  userId            Int               @id
 
-  publicKey         String           @db.VarChar(2000)
+  publicKey         String            @db.VarChar(2000)
 
 }
 

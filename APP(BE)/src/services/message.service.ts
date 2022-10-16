@@ -43,6 +43,7 @@ class MessageService {
         deleteTime: iMessageDto.deleteTime,
         senderId: iMessageDto.senderId,
         belongChatroomId: iMessageDto.belongChatroomId,
+        hasQuickReply: iMessageDto.hasQuickReplies
       },
     });
 
