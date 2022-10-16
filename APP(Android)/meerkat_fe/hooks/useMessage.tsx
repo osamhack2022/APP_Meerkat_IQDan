@@ -182,8 +182,11 @@ export default function useMessage(
 
   /**
    * 내가 보낸 메세지 서버에 보내기.
+   * @param text : 보낼 내용
+   * @param hasQuickReplies : 이상무 기능을 사용했는지 여부.
    */
-  const sendNewMessageToServer = async (text: string) => {
+  const sendNewMessageToServer = async (text: string, hasQuickReplies: boolean = false) => {
+    if(hasQuickReplies) text = "[이상무 보고]\n" + text;
     const encryptedText = await encryptText(text) // 메세지 텍스트 암호화.
     if (encryptedText === undefined) return 
     // TODO : disconneted일 때 예외처리 해야 할 듯.
@@ -193,6 +196,7 @@ export default function useMessage(
         belongChatroomId: chatroomId,
         deleteTime: new Date(),
         sendTime: new Date(),
+        hasQuickReplies: hasQuickReplies
       };
 
       socket.emit('client:speakMessage', messages);

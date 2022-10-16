@@ -42,6 +42,8 @@ import {
   Day,
   GiftedChat,
   IMessage,
+  QuickReplies,
+  Reply,
   Time,
   User as IMessageUser,
 } from 'react-native-gifted-chat';
@@ -53,8 +55,7 @@ import useMessage from '../hooks/useMessage';
 import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import moment from 'moment';
+import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -140,6 +141,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             text: messageDto.text,
             createdAt: messageDto.sendTime,
             user: IMessageUsersInfo.get(messageDto.senderId)!,
+            quickReplies: messageDto.hasQuickReplies ? getAllClearQuickReply(userId, messageDto.senderId) : undefined
           },
         ]);
       });
@@ -344,6 +346,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             maxComposerHeight={0}
             minInputToolbarHeight={0}
             inverted={false}
+            onQuickReply={onQuickReply}
           />
           <ChatroomTextInput
             msgInput={msgInput}
@@ -371,6 +374,10 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             return !prev;
           });
         }}
+        onPressAllClear={()=> {
+          sendNewMessageToServer(msgInput, true);
+          setMsgInput('')
+        }}
         // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
         onSend={() => {}}
       />
@@ -385,16 +392,53 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   );
 }
 
-const leftTime = (props: any) => {
-  const { currentMessage, timeFormat } = props;
-  return (
-    <Time
-      currentMessage={currentMessage}
-      timeFormat={timeFormat}
-      timeTextStyle={{ left: styles.whiteText }}
-    />
-  );
-};
+////////////// quick reply //////////////
+// FIXME 추후에 다른 quick reply가 생긴다면, DB에 quick reply 자체를 집어넣어야 할 것.
+// get quick replies case by userid and senderid
+const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
+  const quickReplies: QuickReplies = {
+    type: 'radio',
+    keepIt: true,
+    values: [
+      (currentUserId === senderId)
+      ? getAllClearStatisticsQuickReplyTemplate()
+      : getAllClearReportQuickReplyTemplate()
+    ]
+  }
+  return quickReplies;
+}
+
+// get 이상무 통계 quick reply template
+const getAllClearStatisticsQuickReplyTemplate = ()=>{
+  const statisticsReply: Reply = {
+    title: "통계 확인",
+    value: "statistics"
+  }
+  return statisticsReply;
+}
+
+// get 이상무 보고 quick reply template
+const getAllClearReportQuickReplyTemplate = ()=>{
+  const reportReply: Reply = {
+    title: "보고",
+    value: "report"
+  }
+  return reportReply;
+}
+
+// TODO : implement quick reply onClick event case by quick reply value
+const onQuickReply = (quickReply:Reply[])=> {
+
+  console.log(quickReply)
+  console.log("on quick reply");
+  console.log(quickReply[0].messageId);
+  if(quickReply[0].value === "allClear"){
+    console.log("all clear!");
+  }
+  if(quickReply[0].value === "problem"){
+    console.log("problem!");
+  }
+}
 
 const styles = StyleSheet.create({
   chat: {
