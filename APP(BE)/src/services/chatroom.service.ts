@@ -1,4 +1,4 @@
-import { Chatroom, User } from '@prisma/client';
+import { ChatRemoveType, Chatroom, User } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { equals } from 'class-validator';
@@ -168,6 +168,7 @@ class ChatroomService {
     name: string,
     msgExpTime: number,
     removeAfterRead: boolean,
+    removeType: ChatRemoveType
   ): Promise<{ alreadyExists: boolean; chatroomId: number }> {
     // 이미 존재하는 1to1 채팅방이면 기존 채팅방 id를 돌려보내줍니다.
     let chatroomIdObjs: { chatroomId: number }[] = await prisma.$queryRaw`Select A.chatroomId
@@ -191,6 +192,7 @@ class ChatroomService {
         type: 'SINGLE',
         msgExpTime: msgExpTime,
         removeAfterRead: removeAfterRead,
+        removeType: removeType
       },
     });
 
@@ -227,6 +229,7 @@ class ChatroomService {
     msgExpTime: number,
     commanderUserIds: number[],
     removeAfterRead: boolean,
+    removeType: ChatRemoveType
   ): Promise<{ chatroomId: number; alreadyExists: boolean }> {
     // 누가 참여하는가와 상관 없이 새로운 채팅방을 만듭니다.
     let newChatroom: Chatroom = await prisma.chatroom.create({
@@ -235,6 +238,7 @@ class ChatroomService {
         type: 'MULTI',
         msgExpTime: msgExpTime,
         removeAfterRead: removeAfterRead,
+        removeType: removeType
       },
     });
 
@@ -550,6 +554,55 @@ class ChatroomService {
           return 0
         }
       }
+    }
+
+    // 채팅방 삭제
+    public async removeChat(
+      userId: number,
+      chatroomId: number
+    ) {
+      const record = await prisma.usersOnChatrooms.findUnique({
+        where: {
+          chatroomId_userId: {
+            chatroomId: chatroomId,
+            userId: userId,
+          },
+        },
+      });
+  
+      if (record === null) {
+        throw new HttpException(400, 'You are not in this chat.');
+      }
+
+      // 유저 모두 삭제
+      await prisma.usersOnChatrooms.deleteMany({
+        where: {
+          chatroomId: chatroomId
+        }
+      })
+
+      // 키 모두 삭제
+      await prisma.chatroomKey.deleteMany({
+        where: {
+          forChatroomId: chatroomId
+        }
+      })
+    
+      // 메세지 모두 삭제
+      await prisma.message.deleteMany({
+        where: {
+          belongChatroomId: chatroomId          
+        }
+      })
+
+      // 채팅방 삭제
+      await prisma.chatroom.delete({
+        where: {
+          chatroomId: chatroomId
+        }
+      })
+
+      return;
     }
   
 }
