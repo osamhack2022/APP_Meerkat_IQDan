@@ -1,22 +1,6 @@
 // core
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useContext,
-  ReactNode,
-} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Alert,
-  Platform,
-  SafeAreaView,
-  BackHandler,
-  Pressable,
-} from 'react-native';
+import React, { useState, useCallback, useEffect, useContext, ReactNode } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Alert, Platform, SafeAreaView, BackHandler, Pressable } from 'react-native';
 // comps
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import ChatroomSide from '../components/Chatroom/ChatroomSide';
@@ -36,15 +20,7 @@ import {
 // context
 import { LoginContext } from '../common/Context';
 // thirds
-import {
-  Bubble,
-  BubbleProps,
-  Day,
-  GiftedChat,
-  IMessage,
-  Time,
-  User as IMessageUser,
-} from 'react-native-gifted-chat';
+import { Bubble, BubbleProps, Day, GiftedChat, IMessage, Time, User as IMessageUser } from 'react-native-gifted-chat';
 import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
@@ -194,44 +170,131 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     f();
   }, [superiorOnly, messages]);
 
-  // 안 읽은 사람 목록 확인 가능한 icon
-  const ShowReaderViewer = (props: any) => {
-    const { currentMessage } = props; // currentMessage type === IMessage. has _id, createdAt, text, user
-    return (
-      <>
-        <View style={styles.showReaderViewer}>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('UnreadPeoples', {
-                chatroomId: chatroomId,
-                messageId: currentMessage._id,
-              })
-            }
-          >
-            {currentMessage.user._id === userId ? (
+  // const mybubble = (props: any) => {
+  //   const {currentMessage} = props; // currentMessage type === IMessage. has _id, createdAt, text, user
+
+  //   const footer = ()=>{
+  //     return (
+  //       <>
+  //         <Text style={styles.timeText}>
+  //           {moment(currentMessage.createdAt).format('LT')}
+  //         </Text>
+  //         <Pressable
+  //           onPress={() =>
+  //             navigation.navigate('UnreadPeoples', {
+  //               chatroomId: chatroomId,
+  //               messageId: currentMessage._id,
+  //             })
+  //           }
+  //         >
+  //           <MaterialCommunityIcons
+  //             name="eye-check"
+  //             size={16}
+  //             color="black"
+  //           />
+  //         </Pressable>
+  //       </>
+  //     );
+  //   }
+  //   return (
+  //     <View>
+  //       <Bubble
+  //         {...props}
+  //         textStyle={{
+  //           left: {
+  //             color: "#000"
+  //           },
+  //           right: {
+  //             color: "#FFF",
+  //           },
+  //         }}
+  //         wrapperStyle={{
+  //           left: {
+  //             backgroundColor: "#E5B47F"
+  //           },
+  //           right: {
+  //             backgroundColor: "#6A4035",
+  //           }
+  //         }}
+        
+
+  //       />
+  //       <>
+  //       {currentMessage.user._id === userId ?
+  //         <View style={styles.myMessageFooterContainer}>
+  //           {footer()}
+  //         </View>
+  //         :
+  //         <View style={styles.othersMessageFooterContainer}>
+  //           {footer()}
+  //         </View>
+  //       }
+  //       </>
+  //     </View>
+  //   )
+  // };
+  
+
+  // REFACTOR
+  // TODO : refactor
+  const ChatTime = (props: any) => {
+    const { currentMessage, timeFormat } = props;
+    return currentMessage.user._id === userId ? (
+      <View style={styles.timeContainer}>
+          <View style={styles.myEyeIconWrapper}>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('UnreadPeoples', {
+                  chatroomId: chatroomId,
+                  messageId: currentMessage._id,
+                })
+              }
+            >
               <MaterialCommunityIcons
-                name="eye-check-outline"
-                size={18}
+                name="eye-check"
+                size={16}
                 color="white"
               />
-            ) : (
+            </Pressable>
+          </View>
+          <Time
+            currentMessage={currentMessage}
+            timeFormat={timeFormat}
+            timeTextStyle={{ left: styles.whiteText }}
+          />
+      </View>
+    ) : (
+      <View style={styles.timeContainer}>
+          <Time
+            currentMessage={currentMessage}
+            timeFormat={timeFormat}
+            timeTextStyle={{ left: styles.blackText }}
+          />
+          <View style={styles.othersEyeIconWrapper}>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('UnreadPeoples', {
+                  chatroomId: chatroomId,
+                  messageId: currentMessage._id,
+                })
+              }
+            >
               <MaterialCommunityIcons
-                name="eye-check-outline"
-                size={18}
+                name="eye-check"
+                size={16}
                 color="black"
               />
-            )}
-          </Pressable>
-        </View>
-      </>
+            </Pressable>
+          </View>
+      </View>
     );
   };
 
-  if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
+  if(isUserInfoLoading || IMessageUsersInfo.size === 0) return (<></>);
   return (
     <>
-      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />
-      <SafeAreaView style={{ flex: 0 }} />
+      <ChatroomSide isOpen={isOpenSideMenu} setIsOpen={setIsOpenSideMenu} />  
+      <SafeAreaView style={{ flex:0 }} />
       <ChatroomHeader
         onPressBack={() =>
           navigation.navigate('Main', { screen: 'ChatroomList' })
@@ -248,15 +311,10 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           <GiftedChat
             messages={filteredMessages}
             onSend={(messages: any) => onSend(messages)}
-            renderBubble={MyBubble}
-            timeTextStyle={{
-              left: { color: 'black' },
-              right: { color: 'white' },
-            }}
-            renderCustomView={ShowReaderViewer}
+            renderBubble={MKBubble}
             isCustomViewBottom={true}
-            //renderTime={()=>{return (<></>)}}
-            user={{ _id: userId }}
+            renderTime={ChatTime}
+            user={{_id:userId}}
             wrapInSafeArea={false}
             isKeyboardInternallyHandled={false}
             renderInputToolbar={() => null}
@@ -282,8 +340,8 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
               showMessage({
                 message: '최상급자의 메세지만 표시됩니다.',
                 type: 'info',
-                backgroundColor: '#6A4035',
-                color: 'white',
+                backgroundColor: "#6A4035",
+                color: "white",
                 position: 'bottom',
               });
             }
@@ -304,31 +362,14 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   );
 }
 
-const MyBubble = (props: any) => {
-  const { currentMessage } = props;
+const leftTime = (props: any) => {
+  const { currentMessage, timeFormat } = props;
   return (
-    <View>
-      <Bubble
-        {...props}
-        textStyle={{
-          left: {
-            color: '#000',
-          },
-          right: {
-            color: '#FFF',
-          },
-        }}
-        wrapperStyle={{
-          left: {
-            backgroundColor: '#E5B47F',
-          },
-          right: {
-            backgroundColor: '#6A4035',
-          },
-        }}
-      />
-      <Text>{moment(currentMessage.createdAt).format('LT')}</Text>
-    </View> //?////////////////////////////// TODO TODO TODO : 해야함.
+    <Time
+      currentMessage={currentMessage}
+      timeFormat={timeFormat}
+      timeTextStyle={{ left: styles.whiteText }}
+    />
   );
 };
 
@@ -340,9 +381,43 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  showReaderViewer: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    marginLeft: 9,
+  // messageContainer:{
+  //   display:"flex",
+  //   flexDirection:"row"
+  // },
+  // myMessageFooterContainer:{
+  //   display:"flex",
+  //   flexDirection:"row-reverse",
+  //   marginLeft: 9,
+  // },
+  // othersMessageFooterContainer:{
+  //   display:"flex",
+  //   flexDirection:"row",
+  //   marginLeft: 9,
+  // },
+  
+  // message time box css
+  timeContainer:{
+    width: 90,
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"center",
+    alignContent:"center",
   },
+  myEyeIconWrapper:{
+    height:16,
+    width:16,
+    marginLeft: 10,
+  },
+  othersEyeIconWrapper:{
+    height:16,
+    width:16,
+    marginRight: 10
+  },
+  whiteText:{
+    color:"white",
+  },
+  blackText:{
+    color:"black",
+  }
 });
