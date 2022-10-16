@@ -28,6 +28,7 @@ model User {
   commanders      ChatroomCommanders[]
   publicKeys      PublicKey[]
   chatroomKeys    ChatroomKey[]
+  allClearResponses AllClearResponse[]
 }
 
 model Friends {
@@ -111,6 +112,36 @@ model Message{
 
   belongChatroom      Chatroom        @relation(fields: [belongChatroomId], references: [chatroomId])          
   belongChatroomId    Int
+
+  allClear            AllClear?
+}
+
+model AllClear{
+  allClearId          Int             @id @default(autoincrement())
+
+  message             Message         @relation(fields: [messageId], references: [messageId])
+  messageId           Int             @unique
+
+  allClearResponses   AllClearResponse[]
+}
+
+enum AllClearResponseType{
+  CLEAR
+  PROBLEM
+}
+
+model AllClearResponse{
+  allClearResponseId  Int           @id @default(autoincrement())
+  type                AllClearResponseType
+  content             String
+
+  allClear            AllClear      @relation(fields: [allClearId], references: [allClearId])
+  allClearId          Int
+
+  user                User          @relation(fields: [userId], references: [userId])
+  userId              Int
+
+  @@unique([userId, allClearId])
 }
 
 model PublicKey{

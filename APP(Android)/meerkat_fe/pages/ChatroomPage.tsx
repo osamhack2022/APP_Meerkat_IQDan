@@ -27,9 +27,7 @@ import ChatroomTemplatePanel from '../components/Chatroom/ChatroomTemplatePanel'
 // types
 import {
   ChatroomWithKey,
-  Chatroom,
   IMessageDto,
-  IMessageSendDto,
   RootStackScreenProps,
   User,
   QuickReplyType,
@@ -342,11 +340,11 @@ const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
   const quickReplies: QuickReplies = {
     type: 'radio',
     keepIt: true,
-    values: [
+    values: 
       (currentUserId === senderId)
       ? getAllClearStatisticsQuickReplyTemplate()
       : getAllClearReportQuickReplyTemplate()
-    ]
+    
   }
   return quickReplies;
 }
@@ -357,7 +355,7 @@ const getAllClearStatisticsQuickReplyTemplate = ()=>{
     title: "통계 확인",
     value: QuickReplyType.STATISTICS
   }
-  return statisticsReply;
+  return [statisticsReply];
 }
 
 // get 이상무 보고 quick reply template
@@ -365,8 +363,12 @@ const getAllClearReportQuickReplyTemplate = ()=>{
   const reportReply: Reply = {
     title: "보고",
     value: QuickReplyType.REPORT
+  };
+  const checkReply: Reply = {
+    title: "보고내용 확인",
+    value: QuickReplyType.CHECK
   }
-  return reportReply;
+  return [reportReply, checkReply];
 }
 
 // TODO : implement quick reply onClick event case by quick reply value
