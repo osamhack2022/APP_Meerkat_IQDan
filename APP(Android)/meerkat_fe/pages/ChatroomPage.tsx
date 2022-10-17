@@ -250,6 +250,19 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     );
   };
 
+  // TODO : implement quick reply onClick event case by quick reply value
+  const onQuickReply = (quickReply:Reply[])=> {
+    console.log(quickReply)
+    console.log("on quick reply");
+    console.log(quickReply[0].messageId);
+    if(quickReply[0].value === "allClear"){
+      console.log("all clear!");
+    }
+    if(quickReply[0].value === "problem"){
+      console.log("problem!");
+    }
+  }
+
   if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
   return (
     <>
@@ -315,7 +328,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           });
         }}
         onPressAllClear={()=> {
-          sendNewMessageToServer(msgInput, true);
+          sendNewMessageToServer("[이상무 보고]\n" + msgInput, true);
           setMsgInput('')
         }}
         // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
@@ -368,20 +381,6 @@ const getAllClearReportQuickReplyTemplate = ()=>{
     value: QuickReplyType.CHECK
   }
   return [reportReply, checkReply];
-}
-
-// TODO : implement quick reply onClick event case by quick reply value
-const onQuickReply = (quickReply:Reply[])=> {
-
-  console.log(quickReply)
-  console.log("on quick reply");
-  console.log(quickReply[0].messageId);
-  if(quickReply[0].value === "allClear"){
-    console.log("all clear!");
-  }
-  if(quickReply[0].value === "problem"){
-    console.log("problem!");
-  }
 }
 
 const styles = StyleSheet.create({
