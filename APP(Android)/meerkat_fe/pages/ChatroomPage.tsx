@@ -31,7 +31,7 @@ import {
   RootStackScreenProps,
   User,
   QuickReplyType,
-} from '../common/types';
+} from '../common/types.d';
 // context
 import { LoginContext } from '../common/Context';
 // thirds
