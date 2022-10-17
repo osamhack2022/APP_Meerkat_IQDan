@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import api from '../../common/api';
-import { User } from '../../common/types';
+import { User } from '../../common/types.d';
 import { Ionicons } from '@expo/vector-icons';
 import { getImage } from '../../common/getImage';
 
