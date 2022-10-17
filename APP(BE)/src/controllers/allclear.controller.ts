@@ -33,7 +33,7 @@ class AllClearController {
             const allClearResponses = await this.allClearSerivce.findAllClearResponsesByMessageId(userId, FindAllClearDto.messageId);
             res.status(200).json({
                 data: allClearResponses,
-                message: `get all clear reponses`
+                message: `get whole all clear reponses`
             });
         } catch (error) {
             next(error);
@@ -51,7 +51,7 @@ class AllClearController {
             const allClearResponse = await this.allClearSerivce.findAllClearResponse(userId, FindAllClearDto.messageId);
             res.status(200).json({
                 data: allClearResponse,
-                message: `get all clear reponses`
+                message: `get all clear reponse`
             });
         } catch (error) {
             next(error);

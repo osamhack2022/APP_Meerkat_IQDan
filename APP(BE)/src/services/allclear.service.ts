@@ -2,6 +2,7 @@ import { AllClear, AllClearResponse, AllClearResponseType, Message } from "@pris
 import ValidateSerivce from "./validate.service";
 import prisma from "../db"
 import { isEmpty } from "class-validator";
+import { HttpException } from "@/exceptions/HttpException";
 
 export default class AllClearSerivce{
     private validateSerivce = new ValidateSerivce();
@@ -15,6 +16,12 @@ export default class AllClearSerivce{
         await this.validateSerivce.checkUserExists(userId);
         await this.validateSerivce.checkChatroomExists(message.belongChatroomId);
         await this.validateSerivce.checkUserInChatroom(userId, message.belongChatroomId);
+        const allClear = await prisma.allClear.findUnique({
+            where: { messageId: messageId },
+            include: { message: true }
+        });
+        if(isEmpty(allClear)) throw new HttpException(404, 'All clear does not exist.');
+        if(allClear.message.senderId !== userId) throw new HttpException(403, 'You are not permitted to access this resource');
 
         // get all allclear response join user
         const allClearResponses = await prisma.allClearResponse.findMany({
@@ -24,7 +31,7 @@ export default class AllClearSerivce{
                 },
             },
             include:{
-                user: true
+                user: true,
             }
         });
         return allClearResponses.map((element)=>{
