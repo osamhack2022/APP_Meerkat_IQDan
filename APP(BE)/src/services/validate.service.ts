@@ -50,9 +50,21 @@ export default class ValidateSerivce{
     return message;
   }
 
+  /**
+   * throw error when allclear does not exists
+   */
   public async checkAllClearExists(messageId: number): Promise<AllClear>{
     const allClear = await prisma.allClear.findUnique({ where: { messageId: messageId } });
     if(isEmpty(allClear)) throw new HttpException(404, 'All clear does not exist.');
+    return allClear;
+  }
+
+  /**
+   * throw error when allclear exists
+   */
+   public async checkAllClearAlreadyExists(messageId: number): Promise<AllClear>{
+    const allClear = await prisma.allClear.findUnique({ where: { messageId: messageId } });
+    if(!isEmpty(allClear)) throw new HttpException(409, 'All clear already exist.');
     return allClear;
   }
 }

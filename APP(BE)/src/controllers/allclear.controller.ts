@@ -10,9 +10,9 @@ class AllClearController {
     public createAllClear = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
         try {
             const createAllClearDto: CreateAllClearDto = req.body;
-            createAllClearDto.userId = req.user.userId;
+            const userId = req.user.userId;
 
-            await this.allClearSerivce.createAllClear(createAllClearDto.userId, createAllClearDto.messageId);
+            await this.allClearSerivce.createAllClear(userId, createAllClearDto.messageId);
             res.status(201).json({
                 message: `success`
             });
@@ -26,14 +26,14 @@ class AllClearController {
     public getAllClearResponses = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
         try {
             const FindAllClearDto: FindAllClearDto = {
-                userId: req.user.userId,
                 messageId: Number(req.params.id)
             };
+            const userId = req.user.userId;
 
-            const allClearResponses = await this.allClearSerivce.findAllClearResponsesByMessageId(FindAllClearDto.userId, FindAllClearDto.messageId);
+            const allClearResponses = await this.allClearSerivce.findAllClearResponsesByMessageId(userId, FindAllClearDto.messageId);
             res.status(200).json({
                 data: allClearResponses,
-                message: `get all clear reponses`
+                message: `get whole all clear reponses`
             });
         } catch (error) {
             next(error);
@@ -44,14 +44,14 @@ class AllClearController {
     public getAllClearResponse = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
         try {
             const FindAllClearDto: FindAllClearDto = {
-                userId: req.user.userId,
                 messageId: Number(req.params.id)
             };
+            const userId = req.user.userId;
 
-            const allClearResponse = await this.allClearSerivce.findAllClearResponse(FindAllClearDto.userId, FindAllClearDto.messageId);
+            const allClearResponse = await this.allClearSerivce.findAllClearResponse(userId, FindAllClearDto.messageId);
             res.status(200).json({
                 data: allClearResponse,
-                message: `get all clear reponses`
+                message: `get all clear reponse`
             });
         } catch (error) {
             next(error);
@@ -62,9 +62,9 @@ class AllClearController {
     public upsertAllClearResponse = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
         try {
             const createAllClearResponseDto: CreateAllClearResponseDto = req.body;
-            createAllClearResponseDto.userId = req.user.userId;
+            const userId = req.user.userId;
 
-            await this.allClearSerivce.createAllClearResponse(createAllClearResponseDto.userId, createAllClearResponseDto.messageId, createAllClearResponseDto.allClearResponseType, createAllClearResponseDto.content);
+            await this.allClearSerivce.createAllClearResponse(userId, createAllClearResponseDto.messageId, createAllClearResponseDto.allClearResponseType, createAllClearResponseDto.content);
             res.status(200).json({
                 message: `success`
             });
