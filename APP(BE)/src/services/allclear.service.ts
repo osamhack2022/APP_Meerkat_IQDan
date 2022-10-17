@@ -16,14 +16,21 @@ export default class AllClearSerivce{
         await this.validateSerivce.checkChatroomExists(message.belongChatroomId);
         await this.validateSerivce.checkUserInChatroom(userId, message.belongChatroomId);
 
-        // get all allclear responses
-        return await prisma.allClearResponse.findMany({
+        // get all allclear response join user
+        const allClearResponses = await prisma.allClearResponse.findMany({
             where:{
                 allClear:{
                     messageId: messageId
-                }
+                },
+            },
+            include:{
+                user: true
             }
         });
+        return allClearResponses.map((element)=>{
+            delete element.user.password;
+            return element;
+        })
     }
     
     /**
@@ -35,6 +42,7 @@ export default class AllClearSerivce{
         await this.validateSerivce.checkUserExists(userId);
         await this.validateSerivce.checkChatroomExists(message.belongChatroomId);
         await this.validateSerivce.checkUserInChatroom(userId, message.belongChatroomId);
+        await this.validateSerivce.checkAllClearAlreadyExists(message.messageId);
 
         return await prisma.allClear.create({
             data:{
@@ -44,7 +52,7 @@ export default class AllClearSerivce{
     }
 
     /**
-     * @returns 입력에 해당하는 AllClearResponse를 리턴.
+     * @returns 입력에 해당하는 AllClearResponse 하나를 리턴.
      */
     public async findAllClearResponse(userId: number, messageId: number): Promise<AllClearResponse>{
         // validation part
