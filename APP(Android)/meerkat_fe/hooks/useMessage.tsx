@@ -187,7 +187,6 @@ export default function useMessage(
    * @param hasQuickReplies : 이상무 기능을 사용했는지 여부.
    */
   const sendNewMessageToServer = async (text: string, hasQuickReplies: boolean = false) => {
-    if(hasQuickReplies) text = "[이상무 보고]\n" + text;
     const encryptedText = await encryptText(text) // 메세지 텍스트 암호화.
     if (encryptedText === undefined) return 
     // TODO : disconneted일 때 예외처리 해야 할 듯.

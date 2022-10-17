@@ -102,6 +102,12 @@ export enum QuickReplyType{
     CHECK = 'check', // 확인
 }
 
+// 보고 시 사용할 type
+export enum AllClearResponseType{
+    CLEAR = "CLEAR", // 이상 무
+    PROBLEM = "PROBLEM", // 특이사항 있음
+}
+
 /**
  * react-navigation related types
  */
@@ -116,6 +122,9 @@ export type RootStackParamList = {
     Test: undefined;
     AddFriend: undefined;
     UnreadPeoples: {chatroomId: number, messageId: number};
+    AllClearStatistics: {messageId: number};
+    MyAllClearReport: {messageId: number};
+    ReportAllClear: {messageId: number};
 };
 
 export type TabParamList = {

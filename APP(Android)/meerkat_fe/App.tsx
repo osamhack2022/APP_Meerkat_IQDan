@@ -20,6 +20,9 @@ import AddFriend from "./pages/AddFriend";
 import UnreadPeoples from "./pages/UnreadPeoples";
 import { useSocketIO } from "./hooks/useSocketIO";
 import { globalSocketFunction } from "./common/globalSocket";
+import AllClearStatistics from "./pages/AllClearStatistics";
+import MyAllClearReport from "./pages/MyAllClearReport";
+import ReportAllClear from "./pages/ReportAllClear";
 
 
 // nav
@@ -115,6 +118,22 @@ export default function App() {
                 component={UnreadPeoples}
                 options={{ headerShown: false }}
               />
+              <Stack.Screen
+                name="AllClearStatistics"
+                component={AllClearStatistics}
+                options={{ headerShown: false }}
+              />              
+              <Stack.Screen
+                name="MyAllClearReport"
+                component={MyAllClearReport}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ReportAllClear"
+                component={ReportAllClear}
+                options={{ headerShown: false }}
+              />
+              
             </Stack.Navigator>
           </SocketContext.Provider>
         </LoginContext.Provider>
