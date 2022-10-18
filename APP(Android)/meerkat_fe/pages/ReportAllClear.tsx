@@ -5,6 +5,8 @@ import {
   BackHandler,
   View,
   Text,
+  Button,
+  Alert,
   StyleSheet,
   Pressable,
   TextInput,
@@ -34,6 +36,9 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   const { navigation } = props;
   const { messageId, chatroomId } = props.route.params;
 
+  // state
+  const [isSubmitActive, setIsSubmitActive] = useState(true);
+
   // data
   const [allClearType, setAllClearType] = useState<AllClearResponseType>(
     AllClearResponseType.CLEAR,
@@ -61,23 +66,41 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     setCloseFlag(!closeFlag);
   };
 
-  const readData = () => {
-    return (
-      <>
-        <Pressable onPress={() => handleClose(closeFlag)}>
-          <Select
-            allValues={[
-              AllClearResponseType.CLEAR,
-              AllClearResponseType.PROBLEM,
-            ]}
-            currValue={AllClearResponseType.CLEAR}
-            setCurrValue={setAllClearType}
-            closeFlag={false}
-          />
-          <TextInput onChangeText={setContent} value={content} />
-        </Pressable>
-      </>
-    );
+  const enableSubmit = () => {
+    setIsSubmitActive(true);
+  };
+
+  const disableSubmit = () => {
+    setIsSubmitActive(false);
+  };
+
+  const submitAllClear = () => {
+    disableSubmit();
+    if (content === '') {
+      enableSubmit();
+      return Alert.alert('내용을 입력해 주세요.');
+    }
+
+    console.log(messageId);
+    console.log(allClearType);
+    console.log(content);
+
+    api
+      .put(`/allclear/response/create`, {
+        messageId: messageId,
+        allClearResponseType: allClearType,
+        content: content,
+      })
+      .then(() => {
+        Alert.alert("보고가 완료되었습니다.");
+        navigation.navigate('Chat', { chatroomId: chatroomId });
+        
+      })
+      .catch((e) => {
+        console.log(e.response);
+        enableSubmit();
+        return Alert.alert('서버와의 통신이 원활하지 않습니다.');
+      });
   };
 
   return (
@@ -88,7 +111,27 @@ export default function ReportAllClear(props: ReportAllClearProps) {
         }
         name={''}
       />
-      {readData()}
+
+      <View style={styles.empty}>
+        <Pressable onPress={() => handleClose(closeFlag)}>
+          <Select
+            allValues={[
+              AllClearResponseType.CLEAR,
+              AllClearResponseType.PROBLEM,
+            ]}
+            currValue={AllClearResponseType.CLEAR}
+            setCurrValue={setAllClearType}
+            closeFlag={false}
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setContent}
+            value={content}
+          />
+        </Pressable>
+      </View>
+      <View style={{ alignItems: 'center' }}></View>
+      <Button onPress={submitAllClear} title="제출하기" color="#6A4035" />
     </>
   );
 }
@@ -102,5 +145,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  input: {
+    backgroundColor: 'gray',
+    height: '70%',
+    width: 300,
   },
 });

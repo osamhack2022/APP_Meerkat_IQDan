@@ -16,7 +16,7 @@ type MyAllClearReportProps = StackScreenProps<
 >;
 
 // 나의 응답
-const categoryName = "나의 응답";
+const categoryName = "나의 보고";
 
 export default function MyAllClearReport(props: MyAllClearReportProps) {
   // params
@@ -99,8 +99,8 @@ export default function MyAllClearReport(props: MyAllClearReportProps) {
     return (
       <>
         <CategoryBox categoryName={categoryName} />
-        <Text>{myAllClearReport.content}</Text>
         <Text>{myAllClearReport.type}</Text>
+        <Text>{myAllClearReport.content}</Text>
       </>
     );
   };

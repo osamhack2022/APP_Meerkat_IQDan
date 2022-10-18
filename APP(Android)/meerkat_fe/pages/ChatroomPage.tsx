@@ -366,17 +366,18 @@ const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
     values: 
       // (currentUserId === senderId)
       // ? getAllClearStatisticsQuickReplyTemplate()
-      // : getAllClearReportQuickReplyTemplate()
-      (currentUserId === senderId)
-      ? getAllClearReportQuickReplyTemplate()
-      : getAllClearStatisticsQuickReplyTemplate()
+      // : getAllClearReportQuickReplyTemplate()\
+
+[getAllClearStatisticsQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[1]]
+// FIXME : 테스팅용. 추후에 위의 주석 친 것으로 바꾸기.
+
     
   }
   return quickReplies;
 }
 
 // get 이상무 통계 quick reply template
-const getAllClearStatisticsQuickReplyTemplate = ()=>{
+const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply>=>{
   const statisticsReply: Reply = {
     title: "통계 확인",
     value: QuickReplyType.STATISTICS
@@ -385,7 +386,7 @@ const getAllClearStatisticsQuickReplyTemplate = ()=>{
 }
 
 // get 이상무 보고 quick reply template
-const getAllClearReportQuickReplyTemplate = ()=>{
+const getAllClearReportQuickReplyTemplate = (): Array<Reply>=>{
   const reportReply: Reply = {
     title: "보고",
     value: QuickReplyType.REPORT

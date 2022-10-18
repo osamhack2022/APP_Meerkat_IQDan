@@ -53,7 +53,6 @@ export default function AllClearResponse(props: FetchState) {
         <CategoryBox categoryName={categoryName} />
         <ScrollView>
           {list.map((elem: AllClear) => {
-            const user = elem.user;
             return (
               <AllClearBox
                 allClearId={elem.allClearId}
