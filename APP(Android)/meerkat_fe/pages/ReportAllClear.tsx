@@ -1,13 +1,26 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler, View, Text, StyleSheet } from 'react-native';
+import {
+  Animated,
+  BackHandler,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TextInput,
+} from 'react-native';
 import { isEmpty } from '../common/isEmpty';
-import { AllClear, RootStackParamList } from '../common/types';
+import {
+  AllClear,
+  AllClearResponseType,
+  RootStackParamList,
+} from '../common/types.d';
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { generateJSX } from '../common/generateJSX';
 import api from '../common/api';
+import Select from './ChatroomList/Select';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -22,7 +35,11 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   const { messageId, chatroomId } = props.route.params;
 
   // data
-
+  const [allClearType, setAllClearType] = useState<AllClearResponseType>(
+    AllClearResponseType.CLEAR,
+  );
+  const [content, setContent] = useState('');
+  const [closeFlag, setCloseFlag] = useState(true);
 
   // hardware back press action
   useEffect(() => {
@@ -40,10 +57,25 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   }, []);
 
   // 입력받기
+  const handleClose = (closeFlag: boolean) => {
+    setCloseFlag(!closeFlag);
+  };
+
   const readData = () => {
     return (
       <>
-        
+        <Pressable onPress={() => handleClose(closeFlag)}>
+          <Select
+            allValues={[
+              AllClearResponseType.CLEAR,
+              AllClearResponseType.PROBLEM,
+            ]}
+            currValue={AllClearResponseType.CLEAR}
+            setCurrValue={setAllClearType}
+            closeFlag={false}
+          />
+          <TextInput onChangeText={setContent} value={content} />
+        </Pressable>
       </>
     );
   };

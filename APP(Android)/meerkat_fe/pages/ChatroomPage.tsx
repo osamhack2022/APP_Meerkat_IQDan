@@ -205,6 +205,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 
   // REFACTOR
   // TODO : refactor
+  // 시계 + 읽은 사람 목록
   const ChatTime = (props: any) => {
     const { currentMessage, timeFormat } = props;
     return currentMessage.user._id === userId ? (
@@ -363,9 +364,12 @@ const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
     type: 'radio',
     keepIt: true,
     values: 
+      // (currentUserId === senderId)
+      // ? getAllClearStatisticsQuickReplyTemplate()
+      // : getAllClearReportQuickReplyTemplate()
       (currentUserId === senderId)
-      ? getAllClearStatisticsQuickReplyTemplate()
-      : getAllClearReportQuickReplyTemplate()
+      ? getAllClearReportQuickReplyTemplate()
+      : getAllClearStatisticsQuickReplyTemplate()
     
   }
   return quickReplies;
