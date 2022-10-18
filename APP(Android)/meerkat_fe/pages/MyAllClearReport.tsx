@@ -10,7 +10,7 @@ import { generateJSX } from '../common/generateJSX';
 import api from '../common/api';
 import CategoryBox from '../components/FriendList/CategoryBox';
 
-type MyAllClearReport = StackScreenProps<
+type MyAllClearReportProps = StackScreenProps<
   RootStackParamList,
   'MyAllClearReport'
 >;
@@ -18,15 +18,31 @@ type MyAllClearReport = StackScreenProps<
 // 나의 응답
 const categoryName = "나의 응답";
 
-export default function UnreadPeoples(props: MyAllClearReport) {
+export default function MyAllClearReport(props: MyAllClearReportProps) {
   // params
   const { navigation } = props;
   const { messageId, chatroomId } = props.route.params;
-
+  
   // data
   const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false); // error occur then true
+
+  const glitterAnim = useRef(new Animated.Value(0.4)).current;
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const result = await api.get(`/allclear/response/${messageId}`);
+        setMyAllClearReport(result.data.data);
+      } catch {
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getData();
+  }, []);
 
   // hardware back press action
   useEffect(() => {
@@ -43,20 +59,6 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     return () => backHandler.remove();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const result = await api.post(`/allclear/response/${messageId}`);
-        setMyAllClearReport(result.data.data);
-      } catch {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getData();
-  }, []);
-
   const readData = () => {
     if (isEmpty(chatroomId) || isEmpty(messageId)) {
       // parameter not exists
@@ -68,7 +70,6 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     }
     if (isLoading) {
       // loading
-      const glitterAnim = useRef(new Animated.Value(0.4)).current;
       return (
         <>
           <CategoryBoxLoading animatedValue={glitterAnim} />

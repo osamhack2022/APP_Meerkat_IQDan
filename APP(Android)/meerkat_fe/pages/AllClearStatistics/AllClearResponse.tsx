@@ -10,6 +10,9 @@ import AllClearBox from '../../components/AllClear/AllClearBox';
 export default function AllClearResponse(props: FetchState) {
   // params
   const { list, isLoading, isFault, isError, categoryName } = props;
+  
+  // loading
+  const glitterAnim = useRef(new Animated.Value(0.4)).current;
 
   const readData = () => {
     if (isFault) {
@@ -20,8 +23,6 @@ export default function AllClearResponse(props: FetchState) {
       );
     }
     if (isLoading) {
-      // loading
-      const glitterAnim = useRef(new Animated.Value(0.4)).current;
       return (
         <>
           <CategoryBoxLoading animatedValue={glitterAnim} />
