@@ -1,9 +1,10 @@
 import { IMessageDto } from "@/dtos/messages.dto";
+import AllClearSerivce from "@/services/allclear.service";
 import MessageService from "@/services/message.service";
 import { Namespace, Socket } from "socket.io"
 
 // room socket event handler
-export default (io: Namespace, socket: Socket, messageService: MessageService) =>{
+export default (io: Namespace, socket: Socket, messageService: MessageService, allClearService: AllClearSerivce) =>{
     // room 클릭 시 해당 room에 추가
     socket.on("client:joinChatroom", (roomId: number) =>{
         // TODO  console log는 디버깅용, 추후 완성되면 삭제
@@ -23,6 +24,7 @@ export default (io: Namespace, socket: Socket, messageService: MessageService) =
         messageService.storeMessageAndGetId(iMessageDto)
         .then((messageId) => {
             iMessageDto._id = messageId;
+            allClearService.createAllClear(userId, messageId);
             io.in(iMessageDto.belongChatroomId.toString()).emit("server:hearMessage", iMessageDto);
             io.in(iMessageDto.belongChatroomId.toString()).emit("server:notificateMessage", iMessageDto.text);
         }).catch(Error => {

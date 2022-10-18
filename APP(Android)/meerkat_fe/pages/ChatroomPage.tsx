@@ -251,15 +251,25 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   };
 
   // TODO : implement quick reply onClick event case by quick reply value
-  const onQuickReply = (quickReply:Reply[])=> {
-    console.log(quickReply)
-    console.log("on quick reply");
-    console.log(quickReply[0].messageId);
-    if(quickReply[0].value === "allClear"){
-      console.log("all clear!");
+  const onQuickReply = (quickReplies:Reply[])=> {
+    const quickReply = quickReplies[0];
+    if(quickReply.value === QuickReplyType.REPORT){
+      navigation.navigate('ReportAllClear', {
+        chatroomId: chatroomId,
+        messageId: quickReply.messageId,
+      });
     }
-    if(quickReply[0].value === "problem"){
-      console.log("problem!");
+    else if(quickReply.value === QuickReplyType.CHECK){
+      navigation.navigate('MyAllClearReport', {
+        chatroomId: chatroomId,
+        messageId: quickReply.messageId,
+      });
+    }
+    else if(quickReply.value === QuickReplyType.STATISTICS){
+      navigation.navigate('AllClearStatisticsTab', {
+        chatroomId: chatroomId,
+        messageId: quickReply.messageId,
+      });
     }
   }
 

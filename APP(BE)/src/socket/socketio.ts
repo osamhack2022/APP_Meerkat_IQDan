@@ -6,10 +6,12 @@ import globalSocketHandler from "./globalSocketHandler";
 import defaultSocketHandler from "./defaultSocketHandler";
 import roomSocketHandler from "./roomSocketHandler";
 import socketMiddleware from "./socketMiddleware";
+import AllClearSerivce from "@/services/allclear.service";
 
 class SocketIO{
     private ioServer: Server;
-    private messageService: MessageSerivce = new MessageSerivce();
+    private messageService = new MessageSerivce();
+    private allClearService = new AllClearSerivce();
 
     constructor(server: http.Server | https.Server){
         this.ioServer = new Server(server, {
@@ -35,7 +37,7 @@ class SocketIO{
             // global socket
             globalSocketHandler(chatio, socket);
             // room socket
-            roomSocketHandler(chatio, socket, this.messageService);
+            roomSocketHandler(chatio, socket, this.messageService, this.allClearService);
         });
 
 

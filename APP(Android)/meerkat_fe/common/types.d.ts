@@ -95,17 +95,26 @@ export interface IMessageSendDto{
     hasQuickReplies: boolean;
 }
 
+// 이상무 
 // quick replies
 export enum QuickReplyType{
     STATISTICS = 'statistics', // 통계
-    REPORT = 'report', // 보고
-    CHECK = 'check', // 확인
+    REPORT = 'report', // 보고하기 
+    CHECK = 'check', // 보고 내용 확인
 }
 
 // 보고 시 사용할 type
 export enum AllClearResponseType{
     CLEAR = "CLEAR", // 이상 무
     PROBLEM = "PROBLEM", // 특이사항 있음
+}
+
+// 이상무 보고 내용
+export interface AllClear{
+    allClearId: number,
+    type: AllClearResponseType,
+    content: string,
+    user: User
 }
 
 /**
@@ -122,9 +131,9 @@ export type RootStackParamList = {
     Test: undefined;
     AddFriend: undefined;
     UnreadPeoples: {chatroomId: number, messageId: number};
-    AllClearStatistics: {messageId: number};
-    MyAllClearReport: {messageId: number};
-    ReportAllClear: {messageId: number};
+    MyAllClearReport: {messageId: number, chatroomId: number};
+    ReportAllClear: {messageId: number, chatroomId: number};
+    AllClearStatisticsTab: {messageId: number, chatroomId: number};
 };
 
 export type TabParamList = {
@@ -141,3 +150,17 @@ export type MainTabScreenProps<T extends keyof TabParamList> =
         BottomTabScreenProps<TabParamList, T>,
         RootStackScreenProps<keyof RootStackParamList>,
     >;
+
+export type FetchState = {
+    isLoading: boolean,
+    isFault: boolean,
+    isError: boolean,
+    list: Array,
+    categoryName: string
+}
+
+export type AllClearTabParamList = {
+    AllClears: Array<AllClearReport>;
+    Unreads: Array<User>;
+    Problems: Array<AllClearReport>;
+}
