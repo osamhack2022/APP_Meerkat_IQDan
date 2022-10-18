@@ -15,7 +15,7 @@ type MyAllClearReportProps = StackScreenProps<
   'MyAllClearReport'
 >;
 
-// 나의 응답
+// 나의 보고
 const categoryName = "나의 보고";
 
 export default function MyAllClearReport(props: MyAllClearReportProps) {
