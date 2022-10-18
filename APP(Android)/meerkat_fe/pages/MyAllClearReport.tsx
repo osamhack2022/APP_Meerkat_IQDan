@@ -8,6 +8,7 @@ import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { generateJSX } from '../common/generateJSX';
 import api from '../common/api';
+import CategoryBox from '../components/FriendList/CategoryBox';
 
 type MyAllClearReport = StackScreenProps<
   RootStackParamList,
@@ -15,6 +16,7 @@ type MyAllClearReport = StackScreenProps<
 >;
 
 // 나의 응답
+const categoryName = "나의 응답";
 
 export default function UnreadPeoples(props: MyAllClearReport) {
   // params
@@ -22,9 +24,7 @@ export default function UnreadPeoples(props: MyAllClearReport) {
   const { messageId, chatroomId } = props.route.params;
 
   // data
-  const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(
-    null,
-  );
+  const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false); // error occur then true
 
@@ -47,7 +47,7 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     const getData = async () => {
       try {
         const result = await api.post(`/allclear/response/${messageId}`);
-        setMyAllClearReport(result.data);
+        setMyAllClearReport(result.data.data);
       } catch {
         setError(true);
       } finally {
@@ -57,7 +57,7 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     getData();
   }, []);
 
-  const readList = () => {
+  const readData = () => {
     if (isEmpty(chatroomId) || isEmpty(messageId)) {
       // parameter not exists
       return (
@@ -87,13 +87,17 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     if (myAllClearReport === null) {
       return (
         <>
-          <Text>no content</Text>
+          <CategoryBox categoryName={categoryName} />
+          <View style={styles.empty}>
+            <Text>제출한 보고가 없습니다.</Text>
+          </View>
         </>
       );
     }
 
     return (
       <>
+        <CategoryBox categoryName={categoryName} />
         <Text>{myAllClearReport.content}</Text>
         <Text>{myAllClearReport.type}</Text>
       </>
@@ -108,7 +112,7 @@ export default function UnreadPeoples(props: MyAllClearReport) {
         }
         name={''}
       />
-      {readList()}
+      {readData()}
     </>
   );
 }

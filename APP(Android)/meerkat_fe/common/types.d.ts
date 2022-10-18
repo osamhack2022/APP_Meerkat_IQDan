@@ -151,6 +151,7 @@ export type MainTabScreenProps<T extends keyof TabParamList> =
         RootStackScreenProps<keyof RootStackParamList>,
     >;
 
+// 이상무
 export type FetchState = {
     isLoading: boolean,
     isFault: boolean,

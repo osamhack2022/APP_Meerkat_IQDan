@@ -72,7 +72,7 @@ export default function UnreadPeoples(props: UnreadsPeopleProps) {
     getData();
   }, []);
 
-  const readList = () => {
+  const readData = () => {
     if (isEmpty(chatroomId) || isEmpty(messageId)) { // parameter not exists
       return (
         <View style={styles.empty}>
@@ -118,7 +118,7 @@ return (
       }
       name={''}
     />
-    {readList()}
+    {readData()}
   </>
 );
 }

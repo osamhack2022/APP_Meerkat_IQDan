@@ -9,24 +9,20 @@ import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { generateJSX } from '../common/generateJSX';
 import api from '../common/api';
 
-type MyAllClearReport = StackScreenProps<
+type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
-  'MyAllClearReport'
+  'ReportAllClear'
 >;
 
 // 나의 응답
 
-export default function UnreadPeoples(props: MyAllClearReport) {
+export default function ReportAllClear(props: ReportAllClearProps) {
   // params
   const { navigation } = props;
   const { messageId, chatroomId } = props.route.params;
 
   // data
-  const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(
-    null,
-  );
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false); // error occur then true
+
 
   // hardware back press action
   useEffect(() => {
@@ -43,59 +39,11 @@ export default function UnreadPeoples(props: MyAllClearReport) {
     return () => backHandler.remove();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const result = await api.post(`/allclear/response/${messageId}`);
-        setMyAllClearReport(result.data);
-      } catch {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getData();
-  }, []);
-
-  const readList = () => {
-    if (isEmpty(chatroomId) || isEmpty(messageId)) {
-      // parameter not exists
-      return (
-        <View style={styles.empty}>
-          <Text>잘못된 요청입니다.</Text>
-        </View>
-      );
-    }
-    if (isLoading) {
-      // loading
-      const glitterAnim = useRef(new Animated.Value(0.4)).current;
-      return (
-        <>
-          <CategoryBoxLoading animatedValue={glitterAnim} />
-          {generateJSX(15, <FriendBoxLoading animatedValue={glitterAnim} />)}
-        </>
-      );
-    }
-    if (error) {
-      // error while fetching data
-      return (
-        <View style={styles.empty}>
-          <Text>네트워크 오류입니다.</Text>
-        </View>
-      );
-    }
-    if (myAllClearReport === null) {
-      return (
-        <>
-          <Text>no content</Text>
-        </>
-      );
-    }
-
+  // 입력받기
+  const readData = () => {
     return (
       <>
-        <Text>{myAllClearReport.content}</Text>
-        <Text>{myAllClearReport.type}</Text>
+        
       </>
     );
   };
@@ -108,7 +56,7 @@ export default function UnreadPeoples(props: MyAllClearReport) {
         }
         name={''}
       />
-      {readList()}
+      {readData()}
     </>
   );
 }
