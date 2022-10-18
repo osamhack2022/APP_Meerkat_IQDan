@@ -9,7 +9,7 @@ export default function AllClearBox(props: AllClear) {
     <>
       <FriendBox key={user.userId} name={user.name} image={user.image} />
       <View style={styles.textBox}>
-        <Text>{props.content}</Text>
+        <Text style={styles.text}>{props.content}</Text>
       </View>
     </>
   );
@@ -18,5 +18,10 @@ export default function AllClearBox(props: AllClear) {
 const styles = StyleSheet.create({
   textBox: {
     marginLeft: 18,
+    marginTop: 10,
+    marginBottom: 10
   },
+  text:{
+    fontSize: 18
+  }
 });
