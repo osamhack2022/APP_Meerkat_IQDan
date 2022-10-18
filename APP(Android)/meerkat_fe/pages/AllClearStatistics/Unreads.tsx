@@ -12,7 +12,7 @@ export default function AllClears(props: FetchState) {
   // params
   const { list, isLoading, isFault, isError, categoryName } = props;
 
-  const readList = () => {
+  const readData = () => {
     if (isFault) {
       return (
         <View style={styles.empty}>
@@ -66,7 +66,7 @@ export default function AllClears(props: FetchState) {
     );
   };
 
-  return <>{readList()}</>;
+  return <>{readData()}</>;
 }
 
 const styles = StyleSheet.create({
