@@ -15,6 +15,7 @@ import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getImage } from '../common/getImage';
+import { generateJSX } from '../common/generateJSX';
 
 type UnreadsPeopleProps = StackScreenProps<RootStackParamList, 'UnreadPeoples'>;
 
@@ -31,11 +32,6 @@ export default function UnreadPeoples(props: UnreadsPeopleProps) {
 
   // loading
   const glitterAnim = useRef(new Animated.Value(0.4)).current;
-  const generateJSX = (n: number, jsx: React.ReactElement) => {
-    return Array.from({ length: n }, (_, index) => {
-      return React.cloneElement(jsx, { key: index });
-    });
-  };
 
   // hardware back press action
   useEffect(() => {
