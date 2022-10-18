@@ -1,10 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Animated,
   BackHandler,
   View,
-  Text,
   Button,
   Alert,
   StyleSheet,
@@ -29,8 +27,7 @@ type ReportAllClearProps = StackScreenProps<
   'ReportAllClear'
 >;
 
-// 나의 응답
-
+// 이상무 보고
 export default function ReportAllClear(props: ReportAllClearProps) {
   // params
   const { navigation } = props;
@@ -61,7 +58,6 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     return () => backHandler.remove();
   }, []);
 
-  // 입력받기
   const handleClose = (closeFlag: boolean) => {
     setCloseFlag(!closeFlag);
   };
@@ -74,16 +70,13 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     setIsSubmitActive(false);
   };
 
+  // 제출
   const submitAllClear = () => {
     disableSubmit();
     if (content === '') {
       enableSubmit();
       return Alert.alert('내용을 입력해 주세요.');
     }
-
-    console.log(messageId);
-    console.log(allClearType);
-    console.log(content);
 
     api
       .put(`/allclear/response/create`, {
