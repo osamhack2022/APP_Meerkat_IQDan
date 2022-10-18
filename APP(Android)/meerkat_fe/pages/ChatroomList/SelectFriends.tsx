@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   View,
@@ -7,11 +7,15 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Animated,
 } from 'react-native';
 import api from '../../common/api';
 import { User } from '../../common/types.d';
 import { Ionicons } from '@expo/vector-icons';
 import { getImage } from '../../common/getImage';
+import AddChatroomFriendBoxLoading from '../../components/Chatroom/AddChatroomFriendBoxLoading';
+import FriendBoxLoading from '../../components/FriendList/FriendBoxLoading';
+import { generateJSX } from '../../common/generateJSX';
 
 type SelectedFriendsProp = {
   selectedFriends: number[];
@@ -21,6 +25,8 @@ type SelectedFriendsProp = {
 export default function SelectFriends(props: SelectedFriendsProp) {
   const { selectedFriends, setSelectedFriends } = props;
   const [friends, setFriends] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const glitterAnim = useRef(new Animated.Value(0.4)).current;
 
   useEffect(() => {
     api
@@ -30,6 +36,9 @@ export default function SelectFriends(props: SelectedFriendsProp) {
       })
       .catch(err => {
         Alert.alert('오류가 발생했습니다.');
+      })
+      .finally(()=>{
+        setIsLoading(false);
       });
   }, []);
 
@@ -49,40 +58,48 @@ export default function SelectFriends(props: SelectedFriendsProp) {
     }
   };
 
+  if(isLoading){
+    return(
+    <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}> 
+      {generateJSX(15, <AddChatroomFriendBoxLoading animatedValue={glitterAnim} />)}
+    </ScrollView>
+    );
+  }
+
   return (
     <View style={{elevation: -1, zIndex: -1}}>
       {/* TODO: height 고정값이면 다른 폰에서 안보일 수 있음.*/}
       <ScrollView style={{ height: 500 }}> 
         {friends.map(friend => {
           return (
-            <TouchableOpacity
-              key={friend.userId}
-              style={styles.friendSelect}
-              onPress={() => handleClick(friend.userId)}
-            >
-              <Image
-                style={styles.profileImage}
-                source={getImage(friend.image)}
-              />
-              <Text style={styles.friendText}>
-                {friend.militaryRank} {friend.name}
-              </Text>
-              {isIdSelected(friend.userId) ? (
-                <Ionicons
-                  style={styles.radio}
-                  name="radio-button-on"
-                  size={24}
-                  color="#6A4035"
+              <TouchableOpacity
+                key={friend.userId}
+                style={styles.friendSelect}
+                onPress={() => handleClick(friend.userId)}
+              >
+                <Image
+                  style={styles.profileImage}
+                  source={getImage(friend.image)}
                 />
-              ) : (
-                <Ionicons
-                  style={styles.radio}
-                  name="radio-button-off"
-                  size={24}
-                  color="#6A4035"
-                />
-              )}
-            </TouchableOpacity>
+                <Text style={styles.friendText}>
+                  {friend.militaryRank} {friend.name}
+                </Text>
+                {isIdSelected(friend.userId) ? (
+                  <Ionicons
+                    style={styles.radio}
+                    name="radio-button-on"
+                    size={24}
+                    color="#6A4035"
+                  />
+                ) : (
+                  <Ionicons
+                    style={styles.radio}
+                    name="radio-button-off"
+                    size={24}
+                    color="#6A4035"
+                  />
+                )}
+              </TouchableOpacity>
           );
         })}
       </ScrollView>
