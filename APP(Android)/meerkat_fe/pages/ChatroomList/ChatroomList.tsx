@@ -170,7 +170,10 @@ export default function ChatroomList(
         </View>
       );
     }
-    return rooms.filter((room) => room.name.includes(searchText)).map(room => {
+    
+    let sortedRooms = rooms.slice();
+    sortedRooms.sort((a, b) => (new Date(b.updateDate)).getTime() - (new Date(a.updateDate)).getTime());
+    return sortedRooms.filter((room) => room.name.includes(searchText)).map(room => {
       return (
         <ChatroomBox
           key={room.chatroomId}
@@ -191,7 +194,7 @@ export default function ChatroomList(
             setOpenPromptRoomId(room.chatroomId);
           }}
           onPressUnlock={() => {
-            navigation.push('Chat', { chatroomId: openPromptRoomId});
+            navigation.push('Chat', { chatroomId: room.chatroomId});
           }}
         />
       );
