@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import { Chatroom } from '../../common/types';
 import { MaterialIcons } from "@expo/vector-icons"; 
+import moment from 'moment'; 
 
-const dotsImage = require('../../assets/icons/dots_vertical.png');
-
-
+import 'moment/locale/ko'  // without this line it didn't work
+moment.locale('ko')
 
 export default function ChatroomBox(props: any) {
   // TODO: Chatroom + navigation으로 수정
@@ -60,7 +60,7 @@ export default function ChatroomBox(props: any) {
         }
       </View>
       <View style={styles.lowerContainer}>
-        <Text style={styles.time}>마지막 대화 1시간 전</Text>
+        <Text style={styles.time}>{moment(updateDate).fromNow()}</Text>
         <Text style={[styles.count, encrypted ? styles.invertedCount: {}]}>{unreadCount}</Text>
       </View>
     </TouchableOpacity>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 20,
     paddingRight: 10,
-    height: 130,
+    height: 100,
     backgroundColor: '#E5B47F',
     borderRadius: 20,
     justifyContent: 'space-between',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'noto-bold',
     fontSize: 20,
-    width: 130,
+    width: 250,
     lineHeight: 30,
   },
   dots: {
