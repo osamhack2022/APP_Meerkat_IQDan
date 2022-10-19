@@ -74,7 +74,6 @@ model Chatroom{
   removeType      ChatRemoveType  @default(FROMSERVER)
 
   users           UsersOnChatrooms[]
-  notices         Notice[]
   messages        Message[]
   commanders      ChatroomCommanders[]
   chatroomKeys    ChatroomKey[]
@@ -86,18 +85,6 @@ model ChatroomCommanders{
   chatroomId      Int        
   user            User        @relation(fields: [userId], references: [userId])
   userId          Int         
-}
-
-model Notice{
-  noticeId        Int                 @id @default(autoincrement())
-  title           String            
-  content         String
-  startDate       DateTime            @default(now())
-  endDate         DateTime?
-  category        String?
-
-  belongChatroom      Chatroom        @relation(fields: [belongChatroomId], references: [chatroomId])          
-  belongChatroomId    Int
 }
 
 model Message{
