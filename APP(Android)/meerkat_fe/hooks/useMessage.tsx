@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { GiftedChat, IMessage, User as IMessageUser } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage, User as IMessageUser, QuickReplies, Reply, } from 'react-native-gifted-chat';
 import { useEffect, useState, useCallback } from 'react';
 import api from '../common/api';
 import {
@@ -8,8 +8,9 @@ import {
   IMessageDto,
   IMessageSendDto,
   RootStackScreenProps,
-  User
-} from '../common/types';
+  User,
+  QuickReplyType
+} from '../common/types.d';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
 import { decryptAES, decryptRSA, encryptAES } from '../common/crypto';
@@ -221,7 +222,8 @@ export default function useMessage(
       _id: message._id,
       text: message.text,
       createdAt: message.sendTime,
-      user: IMessageUsersInfo.get(message.senderId)!
+      user: IMessageUsersInfo.get(message.senderId)!,
+      quickReplies: message.hasQuickReplies ? getAllClearQuickReply(userId, message.senderId) : undefined
     };
   };
 
@@ -307,4 +309,46 @@ export default function useMessage(
     getNewMessagesFromSocket,
     onSend,
   };
+}
+
+////////////// quick reply //////////////
+// FIXME 추후에 다른 quick reply가 생긴다면, DB에 quick reply 자체를 집어넣어야 할 것.
+// get quick replies case by userid and senderid
+export const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
+  const quickReplies: QuickReplies = {
+    type: 'radio',
+    keepIt: true,
+    values: 
+      // (currentUserId === senderId)
+      // ? getAllClearStatisticsQuickReplyTemplate()
+      // : getAllClearReportQuickReplyTemplate()\
+
+[getAllClearStatisticsQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[1]]
+// FIXME : 테스팅용. 추후에 위의 주석 친 것으로 바꾸기.
+
+    
+  }
+  return quickReplies;
+}
+
+// get 이상무 통계 quick reply template
+export const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply>=>{
+  const statisticsReply: Reply = {
+    title: "통계 확인",
+    value: QuickReplyType.STATISTICS
+  }
+  return [statisticsReply];
+}
+
+// get 이상무 보고 quick reply template
+export const getAllClearReportQuickReplyTemplate = (): Array<Reply>=>{
+  const reportReply: Reply = {
+    title: "보고",
+    value: QuickReplyType.REPORT
+  };
+  const checkReply: Reply = {
+    title: "보고내용 확인",
+    value: QuickReplyType.CHECK
+  }
+  return [reportReply, checkReply];
 }

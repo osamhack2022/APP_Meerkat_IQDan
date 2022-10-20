@@ -41,7 +41,6 @@ import {
   Day,
   GiftedChat,
   IMessage,
-  QuickReplies,
   Reply,
   Time,
   User as IMessageUser,
@@ -50,7 +49,7 @@ import api from '../common/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDoubleFetchAndSave from '../hooks/useDoubleFetchAndSave';
 import { useSocketIO } from '../hooks/useSocketIO';
-import useMessage from '../hooks/useMessage';
+import useMessage, { getAllClearQuickReply } from '../hooks/useMessage';
 import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
@@ -354,48 +353,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       <FlashMessage position="top" />
     </>
   );
-}
-
-////////////// quick reply //////////////
-// FIXME 추후에 다른 quick reply가 생긴다면, DB에 quick reply 자체를 집어넣어야 할 것.
-// get quick replies case by userid and senderid
-const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
-  const quickReplies: QuickReplies = {
-    type: 'radio',
-    keepIt: true,
-    values: 
-      // (currentUserId === senderId)
-      // ? getAllClearStatisticsQuickReplyTemplate()
-      // : getAllClearReportQuickReplyTemplate()\
-
-[getAllClearStatisticsQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[1]]
-// FIXME : 테스팅용. 추후에 위의 주석 친 것으로 바꾸기.
-
-    
-  }
-  return quickReplies;
-}
-
-// get 이상무 통계 quick reply template
-const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply>=>{
-  const statisticsReply: Reply = {
-    title: "통계 확인",
-    value: QuickReplyType.STATISTICS
-  }
-  return [statisticsReply];
-}
-
-// get 이상무 보고 quick reply template
-const getAllClearReportQuickReplyTemplate = (): Array<Reply>=>{
-  const reportReply: Reply = {
-    title: "보고",
-    value: QuickReplyType.REPORT
-  };
-  const checkReply: Reply = {
-    title: "보고내용 확인",
-    value: QuickReplyType.CHECK
-  }
-  return [reportReply, checkReply];
 }
 
 const styles = StyleSheet.create({
