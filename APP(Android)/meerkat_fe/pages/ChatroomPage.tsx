@@ -55,6 +55,7 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 // icons
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import useRemoveMessage from '../hooks/useRemoveMessage';
+import RemovalCountdown from '../components/RemovalCountdown';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -113,11 +114,11 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   }, [isUserInfoLoading]);
 
   // 메세지 삭제 카운트 (UI 용)
-  const [removeCountdown, setRemoveCountdown] = useState(-1)
+  const [removeCountdown, setRemoveCountdown] = useState<number | null>(null)
   // 메시지 가져오기
   const { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket, onSend } =
     useMessage(chatroomId, userId, IMessageUsersInfo, socket);
-  useRemoveMessage(messages, setMessages, chatroomInfo, removeCountdown, setRemoveCountdown)
+  useRemoveMessage(messages, setMessages, chatroomInfo, setRemoveCountdown) // 메세지 자동 삭제.
   const [filteredMessages, setFilteredMessages] = useState<IMessage[]>([]);
 
   // TODO: 나중에 여기 socket 부분 분리.
@@ -290,6 +291,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         onPressSideMenu={() => setIsOpenSideMenu(true)}
         name={chatroomInfo?.name || ''}
       />
+      <RemovalCountdown  countdown={removeCountdown} setCountdown={setRemoveCountdown}/>
       <KeyboardAvoidingView
         behavior="padding"
         style={{ flex: 1 }}

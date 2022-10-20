@@ -115,6 +115,14 @@ export default function ChatroomList(
   const [keyExists, setKeyExists] = useState(false);
   const isFocused = useIsFocused();
 
+  // 잠금 prompt
+  const [settingPromptVisible, setSettingPromptVisible] = useState(false);
+  const [settingPromptRoomId, setSettingPromptRoomId] = useState(-1);
+  const [openPromptVisible, setOpenPromptVisible] = useState(false);
+  const [openPromptRoomId, setOpenPromptRoomId] = useState(-1);
+  // 방 검색
+  const [searchText, setSearchText] = useState("");
+
   // 서버에서 메시지를 보냈을 때, unread count++
   // socket이 바뀌면 event attach함.
   useEffect(() => {
@@ -122,11 +130,6 @@ export default function ChatroomList(
       reFetch();
     });
   }, [socket]);
-
-  const [settingPromptVisible, setSettingPromptVisible] = useState(false);
-  const [settingPromptRoomId, setSettingPromptRoomId] = useState(-1);
-  const [openPromptVisible, setOpenPromptVisible] = useState(false);
-  const [openPromptRoomId, setOpenPromptRoomId] = useState(-1);
 
   useEffect(() => {
     reFetch();
@@ -153,13 +156,7 @@ export default function ChatroomList(
     } else if (!keyExists) {
       return (
         <TouchableOpacity style={styles.warning} onPress={checkPrevKey}>
-          {/* <AntDesign
-            style={{ marginBottom: 20 }}
-            name="exclamationcircle"
-            size={24}
-            color="lightgrey"
-          /> */}
-          <Ionicons style={{ marginBottom: 20 }}name="reload" size={30} color="black" />
+          <Ionicons style={{ marginBottom: 20 }} name="reload" size={30} color="black" />
           <Text style={{ color: 'grey' }}>설정에서 암호키를 생성해주세요.</Text>
         </TouchableOpacity>
       );
@@ -200,8 +197,6 @@ export default function ChatroomList(
       );
     });
   };
-
-  const [searchText, setSearchText] = useState("");
 
   return (
     <>
