@@ -313,6 +313,32 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             inverted={false}
             onQuickReply={onQuickReply}
           />
+          <ChatroomAccessoryBar
+            superiorOnly={superiorOnly}
+            onPressTemplate={() => setTemplateVisible(true)}
+            onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
+            onPressPin={() => {
+              setSuperiorOnly(prev => {
+                if (!prev) {
+                  // if superior only
+                  showMessage({
+                    message: '최상급자의 메세지만 표시됩니다.',
+                    type: 'info',
+                    backgroundColor: '#6A4035',
+                    color: 'white',
+                    position: 'bottom',
+                  });
+                }
+                return !prev;
+              });
+            }}
+            onPressAllClear={() => {
+              sendNewMessageToServer('[이상무 보고]\n' + msgInput, true);
+              setMsgInput('');
+            }}
+            // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
+            onSend={() => {}}
+          />
           <ChatroomTextInput
             msgInput={msgInput}
             setMsgInput={setMsgInput}
@@ -320,32 +346,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           />
         </View>
       </KeyboardAvoidingView>
-      <ChatroomAccessoryBar
-        superiorOnly={superiorOnly}
-        onPressTemplate={() => setTemplateVisible(true)}
-        onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-        onPressPin={() => {
-          setSuperiorOnly(prev => {
-            if (!prev) {
-              // if superior only
-              showMessage({
-                message: '최상급자의 메세지만 표시됩니다.',
-                type: 'info',
-                backgroundColor: '#6A4035',
-                color: 'white',
-                position: 'bottom',
-              });
-            }
-            return !prev;
-          });
-        }}
-        onPressAllClear={()=> {
-          sendNewMessageToServer("[이상무 보고]\n" + msgInput, true);
-          setMsgInput('')
-        }}
-        // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
-        onSend={() => {}}
-      />
+
       <ChatroomTemplatePanel
         visible={templateVisible}
         setVisible={setTemplateVisible}

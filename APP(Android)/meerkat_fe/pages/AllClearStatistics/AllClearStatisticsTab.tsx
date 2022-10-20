@@ -1,5 +1,5 @@
 // core
-import { View, BackHandler } from 'react-native';
+import { View, BackHandler, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 // comps
 import AllClearResponse from './AllClearResponse';
@@ -102,14 +102,14 @@ export default function AllClearStatisticsTab(
 
   return (
     <>
-      <View style={{ width: '100%', height: '100%' }}>
+      <View style={{ width: '100%', height: '100%'}}>
         <ChatroomHeader
           onPressBack={() =>
             navigation.navigate('Chat', { chatroomId: chatroomId })
           }
           name={''}
         />
-        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
+        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50, backgroundColor: 'white', borderRadius: 20, width: "100%"} }} >
           <Tab.Screen
             name="AllClears"
             children={() => (
@@ -123,7 +123,6 @@ export default function AllClearStatisticsTab(
               />
             )}
             options={{
-
               tabBarIcon: ({ focused }) => (
                 <FontAwesome5
                   name="user-check"
@@ -186,7 +185,13 @@ export default function AllClearStatisticsTab(
             }}
           />
         </Tab.Navigator>
-      </View>
+        </View>
     </>
   );
 }
+const styles = StyleSheet.create({
+
+  tab: {
+    backgroundColor: 'black',
+  },
+});
