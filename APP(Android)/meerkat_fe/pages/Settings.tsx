@@ -135,10 +135,10 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
     await AsyncStorage.setItem("userToken", "");
     await AsyncStorage.setItem("userTokenExpiration", "");
     // FIXME : 로그아웃 시 없애기
-    const allKeys = await AsyncStorage.getAllKeys()
-    await Promise.all(allKeys.map((key) => {
-      return AsyncStorage.removeItem(key)
-    }))
+    // const allKeys = await AsyncStorage.getAllKeys()
+    // await Promise.all(allKeys.map((key) => {
+    //   return AsyncStorage.removeItem(key)
+    // }))
     checkIfLoggedIn();
     navigation.navigate("Auth")
   };

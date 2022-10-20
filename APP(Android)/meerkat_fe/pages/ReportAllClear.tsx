@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import {
   BackHandler,
   View,
-  Button,
   Alert,
   StyleSheet,
   Pressable,
@@ -13,7 +12,6 @@ import {
 import { AllClearResponseType, RootStackParamList } from '../common/types.d';
 import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import api from '../common/api';
-import Select from './ChatroomList/Select';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -207,9 +205,6 @@ const styles = StyleSheet.create({
   unselectedTextColor: {
     color: '#6A4035',
   },
-  selectBoxText: {
-    textAlign: 'center',
-  },
   textInputContainer:{
     backgroundColor: '#FFF9D2',
     height:"80%",
@@ -238,15 +233,3 @@ const styles = StyleSheet.create({
     fontSize:16
   }
 });
-
-const AllClearResponseType2Index = (responseType: AllClearResponseType) => {
-  if (responseType === AllClearResponseType.CLEAR) return 0;
-  else if (responseType === AllClearResponseType.PROBLEM) return 1;
-  else return 0;
-};
-
-const index2AllClearResponseType = (index: number) => {
-  if (index === 0) return AllClearResponseType.CLEAR;
-  else if (index === 1) return AllClearResponseType.PROBLEM;
-  else return AllClearResponseType.CLEAR;
-};
