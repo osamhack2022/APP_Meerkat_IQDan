@@ -158,7 +158,10 @@ export default function useMessage(
       }),
     );
 
-    return newIMessages.map(message => {
+    // null인 메세지 모두 거르기.
+    const nullFiltered = newIMessages.filter((m) => m !== null)  
+
+    return nullFiltered.map(message => {
       return JSON.parse(message) as IMessage;
     });
   };

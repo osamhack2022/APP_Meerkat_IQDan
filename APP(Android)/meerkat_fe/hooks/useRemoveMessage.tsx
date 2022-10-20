@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IMessage } from 'react-native-gifted-chat';
 import { ChatroomWithKey } from '../common/types';
 
@@ -7,70 +7,96 @@ export default function useRemoveMessage(
   messages: IMessage[],
   setMessages: Function,
   chatroomInfo: ChatroomWithKey | null,
-  removeCountdown: number,
   setRemoveCountdown: Function,
 ) {
+  const [timeoutOn, setTimeoutOn] = useState(false) 
 
   useEffect(() => {
+    if (timeoutOn) return;
+    console.log('inside useeffect', messages)
     if (messages.length === 0) return;
     if (chatroomInfo === null) return;
-    console.log(chatroomInfo.removeType)
     if (chatroomInfo.removeType === 'FROMEARTH') {
+      setTimeoutOn(true)
       initiateTimer();
     }
+    // return setMessages([])
   }, [messages, chatroomInfo]);
-
+  console.log('outside', messages.length)
   /**
    * sets settimeout for removing next messages.
    */
-  const initiateTimer = () => {
-    console.log("아아", messages)
-    // setTimeout(() => {
-        // if(chatroomInfo === null) return;
-    // }, )
+  const initiateTimer = async () => {
+    console.log('INITIATE TIMERRRRRRRRRRRRRRRRR')
+    removeOldMessages()
   };
-
-
 
   /**
    * remove old messages from UI AND AsyncStorage
-   * @param messages 
+   * @param messages
    */
-  const removeOldMessages = (messages: IMessage[]) => {
-    const garbage: number[] = []
-
-    // filter out old messages
-    const cleaned = messages.filter((message) => {
-        const createdDate = new Date(message.createdAt)
-        // this function is never called if chatroomInfo is null
-        createdDate.setSeconds(createdDate.getSeconds() + chatroomInfo!.msgExpTime) // add expiry
-        if (new Date() > createdDate) {
-            garbage.push(Number(message._id))
-            return false
-        }
-        return true
-    })
-
+  const removeOldMessages = async () => {
+    const garbage: number[] = [];
+    
     // remove from ui
-    setMessages(cleaned);
-    setNewPointers(cleaned)
+    setMessages((prev: IMessage[]) => {
+      const res = prev.filter((message) => {
+        const createdDate = new Date(message.createdAt);
+        if (new Date().getTime() > createdDate.getTime() + chatroomInfo!.msgExpTime*1000) {
+          console.log('remove!')
+          garbage.push(Number(message._id));
+          return false;
+        }
+        return true;
+      })
+
+      reloadRemoval(res)
+      return res
+    });
+    console.log('GARBAGE:', garbage)
+
     // remove from async storage
-    garbage.map((g) => {
-        AsyncStorage.removeItem('message' + g);
-    })
+    // await setNewPointers(cleaned);
+    await Promise.all(garbage.map(g => {
+      return AsyncStorage.removeItem('message' + g);
+    }))
+  };
+
+  const reloadRemoval = async (messages: IMessage[]) => {
+    if (messages.length === 0) {
+      setTimeoutOn(false)
+      setRemoveCountdown(null)
+      return;
+    }
+    const crDate = new Date(messages[0].createdAt);
+    let secDiff = (crDate.getTime() + chatroomInfo!.msgExpTime*1000) - new Date().getTime(); 
+    setRemoveCountdown(secDiff);
+    // 메세지 없으면 끝내기.
+    setTimeout(() => {
+      if (messages.length === 0) {
+        setTimeoutOn(false)
+        setRemoveCountdown(null)
+      } else {
+        removeOldMessages()
+      }
+    }, secDiff);
   };
 
   /**
    * save filtered messages' pointers
+   * @deprecated don't remove pointers. keep the pointers alone. instead, filter null tombstoned messages when read (in useMessgae)
    * @param messages
    */
   const setNewPointers = async (messages: IMessage[]) => {
-    const newMessagePointers = messages.map((message) => {
-        return message._id
-    })
+    const newMessagePointers = messages.map(message => {
+      return message._id;
+    });
     // this function is never called if chatroomInfo is null
-    await AsyncStorage.setItem('message' + chatroomInfo!.chatroomId + "pointers", JSON.stringify(newMessagePointers))
-  }
+    await AsyncStorage.setItem(
+      'message' + chatroomInfo!.chatroomId + 'pointers',
+      JSON.stringify(newMessagePointers),
+    );
+  };
 
   return {};
 }
