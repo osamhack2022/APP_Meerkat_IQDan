@@ -27,6 +27,7 @@ class MessagesController {
           deleteTime: message.deleteTime,
           senderId: message.senderId,
           belongChatroomId: message.belongChatroomId,
+          hasQuickReplies: message.hasQuickReply
         };
       });
 
