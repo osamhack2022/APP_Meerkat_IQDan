@@ -10,6 +10,7 @@ export type Chatroom = {
     type: 'SINGLE' | 'MULTI'
     createDate: Date
     updateDate: Date | null
+    lastMessageDate: Date
     /**
      * 30 days till expiration
      */
@@ -25,6 +26,7 @@ export type ChatroomUnread = {
     type: 'MULTI' | 'SINGLE'
     createDate: string // 백엔드에는 Date
     updateDate: string // 백엔드에는 Date
+    lastMessageDate: string
     msgExpTime: number;
     removeAfterRead: boolean;
     numUnreadMessages: number;

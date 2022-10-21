@@ -75,6 +75,9 @@ export class ChatroomAndNumOfUnreadMessagesDto{
     @IsDate()
     public updateDate: Date;
 
+    @IsDate()
+    public lastMessageDate: Date;
+
     @IsNumber()
     public msgExpTime: number;
 

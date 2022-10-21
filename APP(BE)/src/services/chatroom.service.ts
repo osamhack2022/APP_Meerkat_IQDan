@@ -54,7 +54,7 @@ class ChatroomService {
    */
    public async getMyChatroomsAndNumOfUnreads(userId: number): Promise<ChatroomAndNumOfUnreadMessagesDto[]> {
     const result: any = await prisma.$queryRaw<Object[]>`
-    select r.chatroomId, name, type, createDate, updateDate, msgExpTime, removeAfterRead, case when r.cnt>0 then r.cnt else 0 end as numUnreadMessages
+    select r.chatroomId, name, type, createDate, updateDate, lastMessageDate, msgExpTime, removeAfterRead, case when r.cnt>0 then r.cnt else 0 end as numUnreadMessages
     from(
       select chatroomId, NVL(count(r.messageId), 1)-1 as cnt
       from (

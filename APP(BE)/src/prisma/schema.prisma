@@ -69,6 +69,7 @@ model Chatroom{
   type            ChatroomType    @default(SINGLE)
   createDate      DateTime        @default(now())
   updateDate      DateTime?       @updatedAt
+  lastMessageDate DateTime        @default(now())
   msgExpTime      Int             @default(2592000) /// 30 days till expiration
   removeAfterRead Boolean         @default(true)
   removeType      ChatRemoveType  @default(FROMSERVER)
