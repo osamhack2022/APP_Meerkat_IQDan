@@ -9,9 +9,10 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-import { AllClearResponseType, RootStackParamList } from '../common/types.d';
+import { AllClear, AllClearResponseType, RootStackParamList } from '../common/types.d';
 import api from '../common/api';
 import AngleBracketHeader from '../components/AngleBracketHeader';
+import { isEmpty, isEmptyString } from '../common/isEmpty';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -29,13 +30,37 @@ export default function ReportAllClear(props: ReportAllClearProps) {
 
   // data
   const [allClearType, setAllClearType] = useState(AllClearResponseType.CLEAR);
-  const [content, setContent] = useState('');
+  const [problemContent, setProblemContent] = useState('');
+  const [allClearContent, setAllClearContent] = useState('');
   const [closeFlag, setCloseFlag] = useState(true);
 
+    // fetch
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false); // error occur then true
+    const [alreadyExists, setAlreadyExists] = useState(false); // already submit on past
+
   useEffect(() => {
-    if (allClearType === AllClearResponseType.CLEAR)
-      setContent('이상 없습니다.');
-    else if (allClearType === AllClearResponseType.PROBLEM) setContent('');
+    const getData = async () => {
+      try {
+        const result = await api.get(`/allclear/response/${messageId}`);
+        const myAllClearReport: AllClear = result.data.data;
+        if(!isEmpty(myAllClearReport)){
+          setAlreadyExists(true);
+          setAllClearType(myAllClearReport.type);
+          getSetCurrentContent(myAllClearReport.type)(myAllClearReport.content);
+        }
+      } catch {
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (allClearType === AllClearResponseType.CLEAR && isEmptyString(allClearContent))
+      setAllClearContent('이상 없습니다.');
   }, [allClearType]);
 
   // hardware back press action
@@ -72,7 +97,7 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   // 제출
   const submitAllClear = () => {
     disableSubmit();
-    if (content === '') {
+    if (getCurrentContent(allClearType) === '') {
       enableSubmit();
       return Alert.alert('내용을 입력해 주세요.');
     }
@@ -81,7 +106,7 @@ export default function ReportAllClear(props: ReportAllClearProps) {
       .put(`/allclear/response/create`, {
         messageId: messageId,
         allClearResponseType: allClearType,
-        content: content,
+        content: getCurrentContent(allClearType),
       })
       .then(() => {
         Alert.alert('보고가 완료되었습니다.');
@@ -93,6 +118,26 @@ export default function ReportAllClear(props: ReportAllClearProps) {
         return Alert.alert('서버와의 통신이 원활하지 않습니다.');
       });
   };
+
+  const getCurrentContent = (allClearType: AllClearResponseType): string=>{
+    if(allClearType === AllClearResponseType.CLEAR){
+      return allClearContent;
+    }
+    if(allClearType === AllClearResponseType.PROBLEM){
+      return problemContent;
+    }
+    else return "";
+  }
+
+  const getSetCurrentContent = (allClearType: AllClearResponseType) =>{
+    if(allClearType === AllClearResponseType.CLEAR){
+      return setAllClearContent;
+    }
+    if(allClearType === AllClearResponseType.PROBLEM){
+      return setProblemContent;
+    }
+    return ()=>{};
+  }
 
   return (
     <>
@@ -151,18 +196,18 @@ export default function ReportAllClear(props: ReportAllClearProps) {
             <View style={styles.textInputContainer}>
               <TextInput
                 style={styles.textInput}
-                onChangeText={setContent}
-                value={content}
+                onChangeText={getSetCurrentContent(allClearType)}
+                value={getCurrentContent(allClearType)}
                 placeholder="특이사항 입력 (200자)"
                 multiline={true}
               />
               <View style={styles.textCountContainer}>
-                <Text style={styles.textCount}>{content.length}/200</Text>
+                <Text style={styles.textCount}>{getCurrentContent(allClearType).length}/200</Text>
               </View>
               
             </View>
             <Pressable style={styles.submitButton} onPress={submitAllClear}>
-              <Text style={styles.submitButtonText}>제출하기</Text>
+              <Text style={styles.submitButtonText}>{alreadyExists ? "수정하기" : "제출하기"}</Text>
             </Pressable>
           </Pressable>
         </View>
@@ -170,6 +215,8 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     </>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   empty: {

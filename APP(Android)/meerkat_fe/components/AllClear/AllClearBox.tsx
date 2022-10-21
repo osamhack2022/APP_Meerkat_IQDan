@@ -12,7 +12,6 @@ export default function AllClearBox(props: AllClear) {
           <View style={styles.personContainer}>
             <Image style={styles.profileImage} source={getImage(user.image)} />
             <View style={styles.nameLayout}>
-              <Text style={styles.nameText}>{user.affiliatedUnit} </Text>
               <Text style={styles.nameText}>{user.militaryRank} </Text>
               <Text style={styles.nameText}>{user.name}</Text>
             </View>

@@ -21,7 +21,6 @@ import UnreadPeoples from "./pages/UnreadPeoples";
 import { useSocketIO } from "./hooks/useSocketIO";
 import { globalSocketFunction } from "./common/globalSocket";
 import AllClearStatisticsTab from "./pages/AllClearStatistics/AllClearStatisticsTab";
-import MyAllClearReport from "./pages/MyAllClearReport";
 import ReportAllClear from "./pages/ReportAllClear";
 
 
@@ -121,11 +120,6 @@ export default function App() {
               <Stack.Screen
                 name="AllClearStatisticsTab"
                 component={AllClearStatisticsTab}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MyAllClearReport"
-                component={MyAllClearReport}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

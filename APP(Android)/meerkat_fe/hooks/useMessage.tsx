@@ -346,12 +346,8 @@ export const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply>=>{
 // get 이상무 보고 quick reply template
 export const getAllClearReportQuickReplyTemplate = (): Array<Reply>=>{
   const reportReply: Reply = {
-    title: "보고",
+    title: "보고하기",
     value: QuickReplyType.REPORT
   };
-  const checkReply: Reply = {
-    title: "보고내용 확인",
-    value: QuickReplyType.CHECK
-  }
-  return [reportReply, checkReply];
+  return [reportReply];
 }
