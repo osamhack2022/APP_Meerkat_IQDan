@@ -232,8 +232,9 @@ const styles = StyleSheet.create({
   },
   textInput: {
     margin: 10,
-    fontSize: 16,
+    fontSize: 20,
     color: '#6A4035',
+    lineHeight: 30
   },
   submitButton: {
     height: 59,
