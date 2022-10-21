@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scroll: {
-    marginBottom: 161,
+    marginBottom: 150,
   },
   title: {
     fontSize: 25,
