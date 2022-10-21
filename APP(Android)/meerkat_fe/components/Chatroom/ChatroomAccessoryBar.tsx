@@ -1,10 +1,12 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Switch } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { IMessage } from 'react-native-gifted-chat';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import {
+  MaterialCommunityIcons,
+  AntDesign,
+  MaterialIcons,
+} from '@expo/vector-icons';
 
 const pickImageAsync = async (onSend: (messages: IMessage[]) => void) => {
   if (await ImagePicker.requestMediaLibraryPermissionsAsync()) {
@@ -34,7 +36,9 @@ interface ChatroomAccessoryBarProps {
   onPressTemplate: () => void;
   onPressPin: () => void;
   onPressAllClear: () => void;
+  onPressHourglass: () => void;
   superiorOnly: boolean;
+  showCd: boolean;
 }
 
 const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
@@ -57,17 +61,38 @@ const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
         onPress={props.onPressSuperiorSwitch}
       >
         {props.superiorOnly ? (
-          <AntDesign onPress={()=> props.onPressPin()} name="pushpin" size={24} color="black" />
-          ) : (
-          <AntDesign onPress={() => props.onPressPin()} name="pushpino" size={24} color="black" />
+          <AntDesign
+            onPress={() => props.onPressPin()}
+            name="pushpin"
+            size={24}
+            color="black"
+          />
+        ) : (
+          <AntDesign
+            onPress={() => props.onPressPin()}
+            name="pushpino"
+            size={24}
+            color="black"
+          />
         )}
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.item}
-        onPress={()=>props.onPressAllClear()}
+        onPress={() => props.onPressAllClear()}
       >
         <AntDesign name="notification" size={24} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => props.onPressHourglass()}
+      >
+        {props.showCd ? (
+          <MaterialIcons name="hourglass-full" size={24} color="black" />
+        ) : (
+          <MaterialIcons name="hourglass-empty" size={24} color="black" />
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -88,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
     padding: 6,
     borderRadius: 4,
-    marginLeft: 10
+    marginLeft: 10,
   },
 });
 

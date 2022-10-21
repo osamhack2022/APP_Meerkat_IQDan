@@ -72,6 +72,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const [templateVisible, setTemplateVisible] = useState(false); // 메시징 템플릿
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
+  const [showCd, setShowCd] = useState(false);
 
   // 채팅방 정보 가져오기
   const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(
@@ -113,11 +114,16 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   }, [isUserInfoLoading]);
 
   // 메세지 삭제 카운트 (UI 용)
-  const [removeCountdown, setRemoveCountdown] = useState<number | null>(null)
+  const [removeCountdown, setRemoveCountdown] = useState<number | null>(null);
   // 메시지 가져오기
-  const { messages, setMessages, sendNewMessageToServer, getNewMessagesFromSocket, onSend } =
-    useMessage(chatroomId, userId, IMessageUsersInfo, socket);
-  useRemoveMessage(messages, setMessages, chatroomInfo, setRemoveCountdown) // 메세지 자동 삭제.
+  const {
+    messages,
+    setMessages,
+    sendNewMessageToServer,
+    getNewMessagesFromSocket,
+    onSend,
+  } = useMessage(chatroomId, userId, IMessageUsersInfo, socket);
+  useRemoveMessage(messages, setMessages, chatroomInfo, setRemoveCountdown); // 메세지 자동 삭제.
   const [filteredMessages, setFilteredMessages] = useState<IMessage[]>([]);
 
   // TODO: 나중에 여기 socket 부분 분리.
@@ -143,7 +149,9 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             text: messageDto.text,
             createdAt: messageDto.sendTime,
             user: IMessageUsersInfo.get(messageDto.senderId)!,
-            quickReplies: messageDto.hasQuickReplies ? getAllClearQuickReply(userId, messageDto.senderId) : undefined
+            quickReplies: messageDto.hasQuickReplies
+              ? getAllClearQuickReply(userId, messageDto.senderId)
+              : undefined,
           },
         ]);
       });
@@ -251,21 +259,20 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   };
 
   // TODO : implement quick reply onClick event case by quick reply value
-  const onQuickReply = (quickReplies:Reply[])=> {
+  const onQuickReply = (quickReplies: Reply[]) => {
     const quickReply = quickReplies[0];
-    if(quickReply.value === QuickReplyType.REPORT){
+    if (quickReply.value === QuickReplyType.REPORT) {
       navigation.navigate('ReportAllClear', {
         chatroomId: chatroomId,
         messageId: quickReply.messageId,
       });
-    }
-    else if(quickReply.value === QuickReplyType.STATISTICS){
+    } else if (quickReply.value === QuickReplyType.STATISTICS) {
       navigation.navigate('AllClearStatisticsTab', {
         chatroomId: chatroomId,
         messageId: quickReply.messageId,
       });
     }
-  }
+  };
 
   if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
   return (
@@ -284,7 +291,13 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         onPressSideMenu={() => setIsOpenSideMenu(true)}
         name={chatroomInfo?.name || ''}
       />
-      <RemovalCountdown  countdown={removeCountdown} setCountdown={setRemoveCountdown}/>
+      <RemovalCountdown
+        countdown={removeCountdown}
+        setCountdown={setRemoveCountdown}
+        showCd={showCd}
+        chatroomInfo={chatroomInfo}
+        setShowCd={setShowCd}
+      />
       <KeyboardAvoidingView
         behavior="padding"
         style={{ flex: 1 }}
@@ -314,8 +327,9 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           />
           <ChatroomAccessoryBar
             superiorOnly={superiorOnly}
+            showCd={showCd}
             onPressTemplate={() => setTemplateVisible(true)}
-            onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
+            onPressSuperiorSwitch={() => setSuperiorOnly(prev => !prev)}
             onPressPin={() => {
               setSuperiorOnly(prev => {
                 if (!prev) {
@@ -335,6 +349,9 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
               sendNewMessageToServer('[이상무 보고]\n' + msgInput, true);
               setMsgInput('');
             }}
+            onPressHourglass={() => {
+              setShowCd(prev => !prev);
+            }}
             // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
             onSend={() => {}}
           />
@@ -352,7 +369,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   );
 }
 
-const renderQuickReplies = (props:QuickRepliesProps<IMessage>)=>{
+const renderQuickReplies = (props: QuickRepliesProps<IMessage>) => {
   return (
     <QuickReplies
       color="#E5B47F"
@@ -360,7 +377,7 @@ const renderQuickReplies = (props:QuickRepliesProps<IMessage>)=>{
       {...props}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   chat: {
@@ -396,9 +413,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   // quick reply
-  quickReply:{
-    backgroundColor:"#6A4035",
-    borderWidth:0,
-    height:15
-  }
+  quickReply: {
+    backgroundColor: '#6A4035',
+    borderWidth: 0,
+    height: 15,
+  },
 });

@@ -1,5 +1,11 @@
 import { Alert } from 'react-native';
-import { GiftedChat, IMessage, User as IMessageUser, QuickReplies, Reply, } from 'react-native-gifted-chat';
+import {
+  GiftedChat,
+  IMessage,
+  User as IMessageUser,
+  QuickReplies,
+  Reply,
+} from 'react-native-gifted-chat';
 import { useEffect, useState, useCallback } from 'react';
 import api from '../common/api';
 import {
@@ -9,7 +15,7 @@ import {
   IMessageSendDto,
   RootStackScreenProps,
   User,
-  QuickReplyType
+  QuickReplyType,
 } from '../common/types.d';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
@@ -38,13 +44,13 @@ export default function useMessage(
   socket: Socket,
 ) {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  
+
   /**
    * 첫 메시지 가져오는 effect
    * 첫 메시지 때 모든 새로운 메시지를 asyncstorage에 저장.
    */
   useEffect(() => {
-    if(IMessageUsersInfo.size === 0) return; // loading되지 않았다면 기다림
+    if (IMessageUsersInfo.size === 0) return; // loading되지 않았다면 기다림
     async function init() {
       try {
         const cachedMessages = await fetchMessagesFromLocal();
@@ -72,7 +78,7 @@ export default function useMessage(
     try {
       const res = await api.get('/messages/unread/' + chatroomId);
       let result: IMessageDto[] = res.data.data;
-      unreads = result.map((message:IMessageDto) => {
+      unreads = result.map((message: IMessageDto) => {
         return messageDto2IMessage(message);
       });
     } catch (err) {
@@ -99,7 +105,7 @@ export default function useMessage(
     // 어디 까지 읽었는지 업데이트. TODO: 이 부분 테스팅.
     // 이 부분은 서버에서 설정해주는 것 보다 여기서 설정해주는 것이 더 깔끔함.
     try {
-      if (newMessages.length > 0 ) {
+      if (newMessages.length > 0) {
         await api.post('/messages/setRecentRead', {
           chatroomId: chatroomId,
           recentMessageId: newMessages[newMessages.length - 1]._id,
@@ -159,11 +165,18 @@ export default function useMessage(
     );
 
     // null인 메세지 모두 거르기.
-    const nullFiltered = newIMessages.filter((m) => m !== null)  
-
-    return nullFiltered.map(message => {
+    const nullFiltered = newIMessages.filter(m => m !== null);
+    const res = nullFiltered.map(message => {
       return JSON.parse(message) as IMessage;
     });
+    
+    // null 메세지 거른 것 포인터 다시 저장하기.
+    await AsyncStorage.setItem(
+      'chatroom' + chatroomId + 'pointers',
+      JSON.stringify(res.map(msg => msg._id)),
+    );
+
+    return res;
   };
 
   /**
@@ -190,9 +203,12 @@ export default function useMessage(
    * @param text : 보낼 내용
    * @param hasQuickReplies : 이상무 기능을 사용했는지 여부.
    */
-  const sendNewMessageToServer = async (text: string, hasQuickReplies: boolean = false) => {
-    const encryptedText = await encryptText(text) // 메세지 텍스트 암호화.
-    if (encryptedText === undefined) return 
+  const sendNewMessageToServer = async (
+    text: string,
+    hasQuickReplies: boolean = false,
+  ) => {
+    const encryptedText = await encryptText(text); // 메세지 텍스트 암호화.
+    if (encryptedText === undefined) return;
     // TODO : disconneted일 때 예외처리 해야 할 듯.
     if (socket.connected) {
       const messages: IMessageSendDto = {
@@ -200,7 +216,7 @@ export default function useMessage(
         belongChatroomId: chatroomId,
         deleteTime: new Date(),
         sendTime: new Date(),
-        hasQuickReplies: hasQuickReplies
+        hasQuickReplies: hasQuickReplies,
       };
 
       socket.emit('client:speakMessage', messages);
@@ -220,13 +236,16 @@ export default function useMessage(
    * 메시지 가져오기 helper function
    */
   const messageDto2IMessage = (message: IMessageDto): IMessage => {
-    if(isEmpty(IMessageUsersInfo.get(message.senderId))) new Error("서버에 문제가 발생했습니다.");
+    if (isEmpty(IMessageUsersInfo.get(message.senderId)))
+      new Error('서버에 문제가 발생했습니다.');
     return {
       _id: message._id,
       text: message.text,
       createdAt: message.sendTime,
       user: IMessageUsersInfo.get(message.senderId)!,
-      quickReplies: message.hasQuickReplies ? getAllClearQuickReply(userId, message.senderId) : undefined
+      quickReplies: message.hasQuickReplies
+        ? getAllClearQuickReply(userId, message.senderId)
+        : undefined,
     };
   };
 
@@ -252,7 +271,7 @@ export default function useMessage(
     }
     // 로컬에 저장된 채팅룸키가 없다면 가져와야함.
     try {
-      const roomKey = await initAESKey()
+      const roomKey = await initAESKey();
       return messages.map(message => {
         const decryptedText = decryptAES(message.text, roomKey);
         return { ...message, text: decryptedText };
@@ -269,23 +288,23 @@ export default function useMessage(
   const encryptText = async (text: string) => {
     const chatroomKey = await AsyncStorage.getItem('chatroomKey' + chatroomId);
     if (chatroomKey !== null) {
-      return encryptAES(text, chatroomKey)
+      return encryptAES(text, chatroomKey);
     }
     // throw new Error('메세지를 암호화할 양방향 키가 없습니다.')
     // 로컬에 저장된 채팅룸키가 없다면 가져와야함.
     try {
-      const roomKey = await initAESKey()
+      const roomKey = await initAESKey();
       const encryptedText = encryptAES(text, roomKey);
-      return encryptedText
+      return encryptedText;
     } catch (err) {
-      Alert.alert('메세지 암호화에 실패했습니다.')
+      Alert.alert('메세지 암호화에 실패했습니다.');
     }
   };
 
   /**
    * 로컬에 방의 암호키가 없으면 서버에서 가져오기.
    */
-   const initAESKey = async () => {
+  const initAESKey = async () => {
     try {
       const res = await api.get('/chatroom/getChatroomKey/' + chatroomId);
       const encryptedAESKey: string = res.data.data.encryptedKey; // aes키 가져오기
@@ -296,14 +315,14 @@ export default function useMessage(
 
       const decryptedAESKey = decryptRSA(encryptedAESKey, personalRSAKey); // 개인키로 aes 키 복호화
       if (decryptedAESKey === false) {
-        throw new Error('방 암호키 복호화에 실패했습니다.')
+        throw new Error('방 암호키 복호화에 실패했습니다.');
       }
       await AsyncStorage.setItem('chatroomKey' + chatroomId, decryptedAESKey);
-      return decryptedAESKey
-    } catch(e) {
-      throw new Error('서버에서 방 암호키를 가져오는 것을 실패하였습니다.')
+      return decryptedAESKey;
+    } catch (e) {
+      throw new Error('서버에서 방 암호키를 가져오는 것을 실패하였습니다.');
     }
-  }
+  };
 
   return {
     messages,
@@ -317,29 +336,34 @@ export default function useMessage(
 ////////////// quick reply //////////////
 // FIXME 추후에 다른 quick reply가 생긴다면, DB에 quick reply 자체를 집어넣어야 할 것.
 // get quick replies case by userid and senderid
-export const getAllClearQuickReply = (currentUserId: number, senderId: number)=>{
+export const getAllClearQuickReply = (
+  currentUserId: number,
+  senderId: number,
+) => {
   const quickReplies: QuickReplies = {
     type: 'radio',
     keepIt: true,
     values:
+
       currentUserId === senderId
         ? getAllClearStatisticsQuickReplyTemplate()
         : getAllClearReportQuickReplyTemplate(),
+
   };
   return quickReplies;
-}
+};
 
 // get 이상무 통계 quick reply template
-export const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply>=>{
+export const getAllClearStatisticsQuickReplyTemplate = (): Array<Reply> => {
   const statisticsReply: Reply = {
-    title: "통계 확인",
-    value: QuickReplyType.STATISTICS
-  }
+    title: '통계 확인',
+    value: QuickReplyType.STATISTICS,
+  };
   return [statisticsReply];
-}
+};
 
 // get 이상무 보고 quick reply template
-export const getAllClearReportQuickReplyTemplate = (): Array<Reply>=>{
+export const getAllClearReportQuickReplyTemplate = (): Array<Reply> => {
   const reportReply: Reply = {
     title: "보고하기",
     value: QuickReplyType.REPORT
