@@ -39,21 +39,21 @@ const TemplateItem = (props: TemplateItemProps) => {
       />
       <View style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8, paddingBottom: 6 }}>
         <TouchableOpacity onPress={() => {}}>
-         <Ionicons name="md-save-outline" size={32} color='#6A4035' style={{marginRight: 10}} />
+         <Ionicons name="md-save-outline" size={32} color='#FFF9D2' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.removeItem(item.id)}>
-          <FontAwesome name="trash-o" size={32} color="#6A4035" style={{marginRight: 10}}/>
+          <FontAwesome name="trash-o" size={32} color="#FFF9D2" style={{marginRight: 10}}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setEditVisible(!editVisible)}>
-          <MaterialCommunityIcons size={32} name='pencil-outline' color='#6A4035' style={{marginRight: 10}} />
+          <MaterialCommunityIcons size={32} name='pencil-outline' color='#FFF9D2' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={props.onApply}>
-          <MaterialIcons size={32} name='check' color='#6A4035' style={{marginRight: 10}} />
+          <MaterialIcons size={32} name='check' color='#FFF9D2' style={{marginRight: 10}} />
         </TouchableOpacity>
       </View>
       {editVisible && <TextInput
         ref={contentInputRef}
-        style={{ backgroundColor: "#6A4035", padding: 8, borderRadius: 8 ,color: "white", marginTop: 3, marginBottom: 8}}
+        style={{ backgroundColor: "#FFF9D2", padding: 8, borderRadius: 8, color: "#6A4035", marginTop: 3, marginBottom: 8}}
         value={content}
         multiline
         onPressIn={() => props.scrollTo(contentInputRef?.current)}
@@ -71,20 +71,20 @@ const styles = StyleSheet.create({
     paddingLeft:12,
     paddingRight:12,
     marginTop: 12,
-    backgroundColor: "#E5B47F"
+    backgroundColor: "#6A4035"
   },
   itemName: {
     borderRadius: 4,
     fontSize: 20,
-    color: "#6A4035",
+    color: "#FFF9D2",
     fontFamily: "noto-bold",
     lineHeight: 30,
     borderBottomWidth:  2,
-    borderBottomColor: "white",
+    borderBottomColor: "#FFF9D2",
     height: 50
   }
 })
-// #E5B47F #6A4035
+// #E5B47F #6A4035 #FFF9D2
 
 
 export default TemplateItem;
