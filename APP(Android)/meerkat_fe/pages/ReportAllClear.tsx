@@ -10,8 +10,8 @@ import {
   Text,
 } from 'react-native';
 import { AllClearResponseType, RootStackParamList } from '../common/types.d';
-import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
 import api from '../common/api';
+import AngleBracketHeader from '../components/AngleBracketHeader';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -96,11 +96,11 @@ export default function ReportAllClear(props: ReportAllClearProps) {
 
   return (
     <>
-      <ChatroomHeader
-        onPressBack={() =>
-          navigation.navigate('Chat', { chatroomId: chatroomId })
-        }
-        name={''}
+      <AngleBracketHeader
+      categoryName={"보고하기"}
+      onPressBack={() =>
+        navigation.navigate('Chat', { chatroomId: chatroomId })
+      }
       />
 
       <View style={styles.empty}>

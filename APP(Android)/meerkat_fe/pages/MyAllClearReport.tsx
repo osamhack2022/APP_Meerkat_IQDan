@@ -1,14 +1,25 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler, View, Text, StyleSheet } from 'react-native';
+import {
+  Animated,
+  BackHandler,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import { isEmpty } from '../common/isEmpty';
-import { AllClear, RootStackParamList } from '../common/types';
-import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
+import {
+  AllClear,
+  AllClearResponseType,
+  RootStackParamList,
+} from '../common/types.d';
 import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
 import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
 import { generateJSX } from '../common/generateJSX';
 import api from '../common/api';
 import CategoryBox from '../components/FriendList/CategoryBox';
+import AngleBracketHeader from '../components/AngleBracketHeader';
 
 type MyAllClearReportProps = StackScreenProps<
   RootStackParamList,
@@ -16,15 +27,17 @@ type MyAllClearReportProps = StackScreenProps<
 >;
 
 // 나의 보고
-const categoryName = "나의 보고";
+const categoryName = '나의 보고';
 
 export default function MyAllClearReport(props: MyAllClearReportProps) {
   // params
   const { navigation } = props;
   const { messageId, chatroomId } = props.route.params;
-  
+
   // data
-  const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(null);
+  const [myAllClearReport, setMyAllClearReport] = useState<AllClear | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false); // error occur then true
 
@@ -68,15 +81,6 @@ export default function MyAllClearReport(props: MyAllClearReportProps) {
         </View>
       );
     }
-    if (isLoading) {
-      // loading
-      return (
-        <>
-          <CategoryBoxLoading animatedValue={glitterAnim} />
-          {generateJSX(15, <FriendBoxLoading animatedValue={glitterAnim} />)}
-        </>
-      );
-    }
     if (error) {
       // error while fetching data
       return (
@@ -97,21 +101,79 @@ export default function MyAllClearReport(props: MyAllClearReportProps) {
     }
 
     return (
-      <>
-        <CategoryBox categoryName={categoryName} />
-        <Text>{myAllClearReport.type}</Text>
-        <Text>{myAllClearReport.content}</Text>
-      </>
+      <View style={styles.empty}>
+        <View style={styles.container}>
+          <View style={styles.selectBoxContainer}>
+            <View
+              style={[
+                styles.selectBox,
+                myAllClearReport.type === AllClearResponseType.CLEAR
+                  ? styles.selectedBackgroundColor
+                  : styles.unselectedBackgroundColor,
+              ]}
+            >
+              <Text
+                style={[
+                  { fontSize: 16 },
+                  myAllClearReport.type === AllClearResponseType.CLEAR
+                    ? styles.selectedTextColor
+                    : styles.unselectedTextColor,
+                ]}
+              >
+                이상 무
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.selectBox,
+                myAllClearReport.type === AllClearResponseType.PROBLEM
+                  ? styles.selectedBackgroundColor
+                  : styles.unselectedBackgroundColor,
+              ]}
+            >
+              <Text
+                style={[
+                  { fontSize: 16 },
+                  myAllClearReport.type === AllClearResponseType.PROBLEM
+                    ? styles.selectedTextColor
+                    : styles.unselectedTextColor,
+                ]}
+              >
+                특이사항
+              </Text>
+            </View>
+          </View>
+
+          {isLoading ? (
+            <View style={styles.textInputContainer}>
+              <CategoryBoxLoading animatedValue={glitterAnim} />
+            </View>
+          ) : (
+            <View style={styles.textInputContainer}>
+              <Text style={styles.textInput}>{myAllClearReport.content}</Text>
+            </View>
+          )}
+
+          <Pressable
+            style={styles.submitButton}
+            onPress={() => {
+              navigation.navigate('Chat', { chatroomId: chatroomId });
+            }}
+          >
+            <Text style={styles.submitButtonText}>확인</Text>
+          </Pressable>
+        </View>
+      </View>
     );
   };
 
   return (
     <>
-      <ChatroomHeader
+      <AngleBracketHeader
+        categoryName={'나의 보고'}
         onPressBack={() =>
           navigation.navigate('Chat', { chatroomId: chatroomId })
         }
-        name={''}
       />
       {readData()}
     </>
@@ -127,5 +189,62 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  container: {
+    height: '50%',
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  selectBoxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  selectBox: {
+    height: 46,
+    width: '49.5%',
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedBackgroundColor: {
+    backgroundColor: '#6A4035',
+  },
+  selectedTextColor: {
+    color: '#FFFFFF',
+  },
+  unselectedBackgroundColor: {
+    backgroundColor: '#E5B47F',
+  },
+  unselectedTextColor: {
+    color: '#6A4035',
+  },
+  textInputContainer: {
+    backgroundColor: '#FFF9D2',
+    height: '80%',
+    borderColor: '#6A4035',
+    flexShrink: 1,
+    marginTop: 17,
+    marginBottom: 17,
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  textInput: {
+    margin: 10,
+    fontSize: 16,
+    color: '#6A4035',
+  },
+  submitButton: {
+    height: 59,
+    width: '100%',
+    backgroundColor: '#6A4035',
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
