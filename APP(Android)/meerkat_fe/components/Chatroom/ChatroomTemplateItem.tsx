@@ -1,7 +1,7 @@
 import AsyncStorage, { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView } from "react-native";
-import { MaterialIcons, Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons'
+import { MaterialIcons, Ionicons, MaterialCommunityIcons, Feather, FontAwesome } from '@expo/vector-icons'
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 
 interface TemplateItem {
@@ -42,7 +42,7 @@ const TemplateItem = (props: TemplateItemProps) => {
          <Ionicons name="md-save-outline" size={32} color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.removeItem(item.id)}>
-          <MaterialIcons size={32} name='remove' color='#6A4035' style={{marginRight: 10}} />
+          <FontAwesome name="trash-o" size={32} color="#6A4035" style={{marginRight: 10}}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setEditVisible(!editVisible)}>
           <MaterialCommunityIcons size={32} name='pencil-outline' color='#6A4035' style={{marginRight: 10}} />
