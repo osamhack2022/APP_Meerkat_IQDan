@@ -93,7 +93,7 @@ export default function AddFriend(props: AddFriendScreenProps) {
     <View style={{ width: '100%', height: '100%' }}>
       <AngleBracketHeader
         onPressBack={() => navigation.goBack()}
-        categoryName={'전우 추가'}
+        categoryName={''}
       />
       <SafeAreaView style={styles.mainContainer}>
         <View style={styles.textInputContainer}>
