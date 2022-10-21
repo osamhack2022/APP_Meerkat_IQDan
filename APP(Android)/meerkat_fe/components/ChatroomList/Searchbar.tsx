@@ -16,9 +16,10 @@ export default function Searchbar(props: {searchText: string, setTextChange: (s:
         onChangeText={props.setTextChange} 
         style={{ paddingLeft: 8, flexGrow: 1 }} 
         placeholder="대화방을 검색하십시오" 
+        placeholderTextColor="#D3B1A8"
       />
       <TouchableOpacity onPress={() => props.setTextChange("")}>
-        <MaterialIcons size={20} color="#AAA" name='cancel'/> 
+        <MaterialIcons size={20} color="#D3B1A8" name='cancel' /> 
       </TouchableOpacity>
     </View>
   );

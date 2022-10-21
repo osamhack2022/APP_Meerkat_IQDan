@@ -78,14 +78,6 @@ const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
   return (
     <SafeAreaView style={{ flex: 1, position: "absolute", width: "100%", height: "100%", backgroundColor: "#FFF" }}>
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300}>
-        {/* <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-end", paddingRight: 24, marginTop: 50, alignItems: "center"}}>
-          <TouchableOpacity style={{marginRight: 5}} onPress={() => addItem()}>
-            <MaterialIcons name="playlist-add" size={30} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.setVisible(false)}>
-            <Ionicons size={30} name="close" />
-          </TouchableOpacity>
-        </View> */}
         <AngleBracketHeader onPressBack={()=>props.setVisible(false)} categoryName={"충성 템플릿"}/>
         <ScrollView ref={scrollRef} style={{height: "100%", backgroundColor: "white"}}>
           <View style={{ alignItems: "center", height: "100%", marginHorizontal: 24, paddingBottom: 100 }}>

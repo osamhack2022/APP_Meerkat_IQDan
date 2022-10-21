@@ -340,6 +340,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor:'#E5B47F',
+      // backgroundColor:'#6A4035',
       fontFamily: "noto-bold",
       borderRadius: 20,
       margin:2
@@ -347,6 +348,7 @@ const styles = StyleSheet.create({
     infoBoxText:{
       fontFamily: "noto-bold",
       color: 'white',
+      // color: "#6A4035"
     },
     menuWrapper: {
         borderBottomColor: '#dddddd',
