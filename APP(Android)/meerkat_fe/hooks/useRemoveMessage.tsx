@@ -13,21 +13,19 @@ export default function useRemoveMessage(
 
   useEffect(() => {
     if (timeoutOn) return;
-    console.log('inside useeffect', messages)
+    // console.log('inside useeffect', messages)
     if (messages.length === 0) return;
     if (chatroomInfo === null) return;
     if (chatroomInfo.removeType === 'FROMEARTH') {
       setTimeoutOn(true)
       initiateTimer();
     }
-    // return setMessages([])
   }, [messages, chatroomInfo]);
-  console.log('outside', messages.length)
+  
   /**
    * sets settimeout for removing next messages.
    */
   const initiateTimer = async () => {
-    console.log('INITIATE TIMERRRRRRRRRRRRRRRRR')
     removeOldMessages()
   };
 
@@ -36,7 +34,6 @@ export default function useRemoveMessage(
    * @param messages
    */
   const removeOldMessages = async () => {
-    const garbage: number[] = [];
     
     // remove from ui
     setMessages((prev: IMessage[]) => {
@@ -44,7 +41,7 @@ export default function useRemoveMessage(
         const createdDate = new Date(message.createdAt);
         if (new Date().getTime() > createdDate.getTime() + chatroomInfo!.msgExpTime*1000) {
           console.log('remove!')
-          garbage.push(Number(message._id));
+          AsyncStorage.removeItem('message' + message._id);
           return false;
         }
         return true;
@@ -53,13 +50,6 @@ export default function useRemoveMessage(
       reloadRemoval(res)
       return res
     });
-    console.log('GARBAGE:', garbage)
-
-    // remove from async storage
-    // await setNewPointers(cleaned);
-    await Promise.all(garbage.map(g => {
-      return AsyncStorage.removeItem('message' + g);
-    }))
   };
 
   const reloadRemoval = async (messages: IMessage[]) => {
@@ -84,7 +74,7 @@ export default function useRemoveMessage(
 
   /**
    * save filtered messages' pointers
-   * @deprecated don't remove pointers. keep the pointers alone. instead, filter null tombstoned messages when read (in useMessgae)
+   * @deprecated this is moved to useMessage
    * @param messages
    */
   const setNewPointers = async (messages: IMessage[]) => {
