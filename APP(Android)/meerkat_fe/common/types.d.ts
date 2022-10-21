@@ -53,6 +53,15 @@ export interface User{
     image: string | null
 }
 
+export interface UserSummary{
+    uid: string,
+    name: string,
+    serviceNumber: string,
+    affiliatedUnit: string,
+    militaryRank: string,
+    image: string | null
+}
+
 export enum UserEvent{
     NONE,
     RESERVE,

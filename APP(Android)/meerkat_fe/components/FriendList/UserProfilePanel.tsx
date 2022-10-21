@@ -9,8 +9,6 @@ import {
   Text,
   Pressable,
   View,
-  KeyboardAvoidingView,
-  SafeAreaView,
   Alert,
 } from 'react-native';
 import { Feather, AntDesign, MaterialIcons } from '@expo/vector-icons';

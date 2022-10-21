@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   DeviceEventEmitter,
   Touchable,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // type
@@ -31,7 +32,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather, AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { getImage } from '../common/getImage';
+
+import AngleBracketHeader from '../components/AngleBracketHeader';
+import FriendDetailBox from '../components/FriendList/FriendDetailBox';
 
 type AddFriendScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList, 'AddFriend'>,
@@ -86,30 +89,34 @@ export default function AddFriend(props: AddFriendScreenProps) {
 
   return (
     <View style={{ width: '100%', height: '100%' }}>
-      <SafeAreaView>
-        <AntDesign
-          style={{ left: 20, position: 'absolute', top: 50 }}
-          name="arrowleft"
-          size={30}
-          color="black"
-          onPress={() => navigation.goBack()}
-        />
-
-        <View style={{ alignItems: 'center', paddingTop: 36 }}>
-          <Text style={styles.text}>이름</Text>
+      <AngleBracketHeader
+        onPressBack={() => navigation.goBack()}
+        categoryName={'전우 추가'}
+      />
+      <SafeAreaView style={styles.mainContainer}>
+        <View style={styles.textInputContainer}>
+          <View style={styles.textHeaderContainer}>
+            <Text style={styles.textHeader}>전우 찾기</Text>
+            <Text style={styles.textSubHeader}>
+              이름과 군번으로 전우를 추가할 수 있습니다.
+            </Text>
+          </View>
           <TextInput
             onChangeText={setName}
             value={name}
-            style={styles.textBox}
+            placeholder="이름"
+            style={styles.textInputBox}
           />
-          <Text style={styles.text}>군번</Text>
           <TextInput
             onChangeText={setSn}
             value={sn}
-            style={styles.textBox}
+            style={styles.textInputBox}
+            placeholder="군번"
             keyboardType="numbers-and-punctuation"
           />
-          <Button onPress={search} color="#6A4035" title="찾기" />
+          <TouchableOpacity style={styles.searchBox} onPress={search}>
+            <Text style={styles.searchBoxText}>찾기</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ height: 36 }} />
         {notFound && (
@@ -123,60 +130,21 @@ export default function AddFriend(props: AddFriendScreenProps) {
             유저를 찾을 수 없습니다.
           </Text>
         )}
-        {added && (
-          <Text
-            style={{
-              fontSize: 24,
-              alignSelf: 'center',
-              fontFamily: 'noto-med',
-            }}
-          >
-            해당 유저를 전우로 추가하였습니다.
-          </Text>
-        )}
         {user && (
           <View>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: 24,
-              }}
-            >
-              <Image style={styles.profileImage} source={getImage(user.image)} />
-              <Text
-                style={{ fontSize: 24, paddingTop: 12 }}
-              >{`${user.militaryRank} ${user.name}`}</Text>
-            </View>
-            <View style={styles.userInfoSection}>
-              <View style={styles.row}>
-                <Feather name="home" color="#black" size={20} />
-                <Text style={{ color: 'black', marginLeft: 20 }}>소속부대</Text>
-                <Text style={{ color: '#777777', marginLeft: 20 }}>
-                  {user.affiliatedUnit}
-                </Text>
-              </View>
-              <View style={styles.row}>
-                <MaterialIcons
-                  name="confirmation-number"
-                  color="#black"
-                  size={20}
-                />
-                <Text style={{ color: 'black', marginLeft: 20 }}>군번</Text>
-                <Text style={{ color: '#777777', marginLeft: 20 }}>
-                  {user.serviceNumber}
-                </Text>
-              </View>
-              <View style={styles.row}>
-                <TouchableOpacity onPress={addAsFriend}>
-                  <MaterialIcons
-                    size={40}
-                    name="person-add"
-                    style={{ marginTop: 22 }}
-                  />
-                </TouchableOpacity>
-              </View>
+            <View style={styles.friendDetailContainer}>
+              <FriendDetailBox
+                uid={user.uid}
+                name={user.name}
+                serviceNumber={user.serviceNumber}
+                affiliatedUnit={user.affiliatedUnit}
+                militaryRank={user.militaryRank}
+                image={user.image}
+              />
+              {/* <TouchableOpacity style={styles.addBox} onPress={addAsFriend}> */}
+              <TouchableOpacity style={styles.addBox} onPress={()=>{addAsFriend; Alert.alert('해당 유저를 전우로 추가하였습니다.');}}>
+                <Text style={styles.searchBoxText}>추가</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )}
@@ -188,34 +156,74 @@ export default function AddFriend(props: AddFriendScreenProps) {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: 'white',
+    flexDirection:"column",
+    justifyContent:"flex-start"
   },
-  eventContainer: {
-    marginLeft: 17,
-    height: 75,
-  },
-  textBox: {
-    lineHeight: 20,
-    width: 250,
-    borderBottomWidth: 1,
-    borderColor: 'black',
-    marginBottom: 20,
-    fontFamily: 'noto-med',
-  },
-  text: {
-    lineHeight: 40,
-    fontFamily: 'noto-bold',
-  },
-  profileImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 24,
-  },
-  row: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  userInfoSection: {
-    justifyContent: 'center',
+  textInputContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    height: 300,
+  },
+  textHeaderContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  textHeader: {
+    fontFamily: 'noto-bold',
+    fontSize: 25,
+    lineHeight: 40,
+  },
+  textSubHeader: {
+    fontFamily: 'noto-reg',
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  textInputBox: {
+    lineHeight: 20,
+    height: 50,
+    width: '70%',
+    borderWidth: 1,
+    paddingLeft: 12,
+    borderColor: '#6A4035',
+    backgroundColor: '#FFF9D2',
+    color: '#6A4035',
+    borderRadius: 10,
+    fontFamily: 'noto-med',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchBox: {
+    borderRadius: 10,
+    width: '50%',
+    height: 50,
+    backgroundColor: '#6A4035',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchBoxText: {
+    fontFamily: 'noto-reg',
+    fontSize: 15,
+    lineHeight: 20,
+    color: 'white',
+  },
+  friendDetailContainer: {
+    width: '80%',
+    backgroundColor: '#FFF9D2',
+    alignSelf: 'center',
+    paddingTop: 25,
+    paddingBottom: 25,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  addBox: {
+    marginTop: 30,
+    borderRadius: 10,
+    width: '80%',
+    height: 50,
+    backgroundColor: '#6A4035',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
