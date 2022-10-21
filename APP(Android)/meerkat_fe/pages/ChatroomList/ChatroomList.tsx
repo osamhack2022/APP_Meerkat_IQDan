@@ -169,7 +169,7 @@ export default function ChatroomList(
     }
     
     let sortedRooms = rooms.slice();
-    sortedRooms.sort((a, b) => (new Date(b.updateDate)).getTime() - (new Date(a.updateDate)).getTime());
+    sortedRooms.sort((a, b) => (new Date(b.lastMessageDate)).getTime() - (new Date(a.lastMessageDate)).getTime());
     return sortedRooms.filter((room) => room.name.includes(searchText)).map(room => {
       return (
         <ChatroomBox
