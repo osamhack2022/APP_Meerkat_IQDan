@@ -61,7 +61,7 @@ export default function ChatroomBox(props: any) {
       </View>
       <View style={styles.lowerContainer}>
         <Text style={[styles.time, encrypted ? {color: "#FFF9D2"} : {}]}>{moment(updateDate).fromNow()}</Text>
-        <Text style={[styles.count, encrypted ? styles.invertedCount: {}]}>{unreadCount}</Text>
+        <Text style={[styles.count, encrypted ? styles.invertedCount: {}, unreadCount === 0 ? {opacity: 0.5} : {}]}>{unreadCount}</Text>
       </View>
     </TouchableOpacity>
   );

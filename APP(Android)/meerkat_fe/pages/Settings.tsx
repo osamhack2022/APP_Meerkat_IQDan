@@ -185,7 +185,7 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             />
             <View style={{ marginLeft: 20 }}>
               <reactNativePaper.Title style={[styles.nameTitle,]}>{user?.name}</reactNativePaper.Title>
-              <reactNativePaper.Caption style={styles.caption}>{user?.militaryRank}</reactNativePaper.Caption>
+              <reactNativePaper.Caption style={[styles.caption, {color: '#6A4035'}]}>{user?.militaryRank}</reactNativePaper.Caption>
             </View>
           </View>
         </View>
@@ -311,7 +311,8 @@ const styles = StyleSheet.create({
       lineHeight: 16,
       fontWeight: '500',
       fontFamily: "noto-bold",
-      color: '#6A4035',
+      // color: '#6A4035',
+      color: "#FFF9D2"
     },
     captionForStatus: {
       marginTop:10,
@@ -339,16 +340,17 @@ const styles = StyleSheet.create({
       width: '50%',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor:'#E5B47F',
-      // backgroundColor:'#6A4035',
+      // backgroundColor:'#E5B47F',
+      backgroundColor:'#6A4035',
       fontFamily: "noto-bold",
       borderRadius: 20,
       margin:2
     },
     infoBoxText:{
       fontFamily: "noto-bold",
-      color: 'white',
+      // color: 'white',
       // color: "#6A4035"
+      color: "#FFF9D2"
     },
     menuWrapper: {
         borderBottomColor: '#dddddd',
