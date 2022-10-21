@@ -8,7 +8,7 @@ import ForgotPw from "./ForgotPw";
 import { LoginContext } from "../common/Context";
 import { RootStackScreenProps } from "../common/types";
 // assets
-const logo = require("../assets/logos/meerkat_black.png");
+const logo = require("../assets/loginTitle.png");
 
 export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     logoContainer: {
-        height: 60,
+        height: 200,
     },
 
     logo: {
-        width: 40,
-        height: 40,
+        width: 150,
+        height: 200,
     },
 });

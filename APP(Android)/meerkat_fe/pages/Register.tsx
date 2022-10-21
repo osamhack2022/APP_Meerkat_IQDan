@@ -8,6 +8,7 @@ import {
     Pressable,
     Alert,
 } from "react-native";
+import * as reactNativePaper from 'react-native-paper';
 import { useEffect, useState } from "react";
 // thirds
 import axios from "axios";
@@ -159,7 +160,9 @@ export default function Register(props: { setCurrPage: Function }) {
                     style={styles.textBox}
                 />
             </View>
-            <Button onPress={handleRegister} title="가입하기" color="#6A4035" />
+            <Pressable style={styles.button} onPress={handleRegister}>
+                <Text style={styles.textButton}>회원가입</Text>
+            </Pressable>
             <View style={styles.pressableContainer}>
                 <Text style={styles.subText}>또는 </Text>
                 <Pressable onPress={handleLogin}>
@@ -175,6 +178,19 @@ export default function Register(props: { setCurrPage: Function }) {
 }
 
 const styles = StyleSheet.create({
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 120,
+        borderRadius: 15,
+        backgroundColor: '#6A4035',
+    },
+    textButton: {
+        color:'white',
+        lineHeight: 40,
+        fontFamily: "noto-bold",
+    },
     innerContainer: {
         marginBottom: 10,
     },
@@ -182,6 +198,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginTop: 10,
+        marginBottom:30
     },
     text: {
         fontSize: 12,

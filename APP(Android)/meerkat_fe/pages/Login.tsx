@@ -72,12 +72,10 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
                     secureTextEntry={true}
                 />
             </View>
-            <Button
-                onPress={handleLogin}
-                title="로그인"
-                color="#6A4035"
-                accessibilityLabel="Learn more about this purple button"
-            />
+
+            <Pressable style={styles.button} onPress={handleLogin}>
+                <Text style={styles.textButton}>로그인</Text>
+            </Pressable>
             <View style={styles.pressableContainer}>
                 <Text style={styles.subText}>또는 </Text>
                 <Pressable onPress={handleRegister}>
@@ -93,6 +91,16 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
 }
 
 const styles = StyleSheet.create({
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 120,
+        borderRadius: 15,
+        elevation: 0,
+        backgroundColor: '#6A4035',
+    },
+
     innerContainer: {
         marginBottom: 20,
     },
@@ -100,6 +108,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginTop: 20
+    },
+    textButton: {
+        color:'white',
+        lineHeight: 40,
+        fontFamily: "noto-bold",
     },
     text: {
         lineHeight: 40,
