@@ -321,16 +321,11 @@ export const getAllClearQuickReply = (currentUserId: number, senderId: number)=>
   const quickReplies: QuickReplies = {
     type: 'radio',
     keepIt: true,
-    values: 
-      // (currentUserId === senderId)
-      // ? getAllClearStatisticsQuickReplyTemplate()
-      // : getAllClearReportQuickReplyTemplate()\
-
-[getAllClearStatisticsQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[0], getAllClearReportQuickReplyTemplate()[1]]
-// FIXME : 테스팅용. 추후에 위의 주석 친 것으로 바꾸기.
-
-    
-  }
+    values:
+      currentUserId === senderId
+        ? getAllClearStatisticsQuickReplyTemplate()
+        : getAllClearReportQuickReplyTemplate(),
+  };
   return quickReplies;
 }
 
