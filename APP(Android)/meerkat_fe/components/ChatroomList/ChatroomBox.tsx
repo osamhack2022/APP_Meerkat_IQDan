@@ -69,13 +69,14 @@ export default function ChatroomBox(props: any) {
 // #6A4035
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 5,
     paddingLeft: 20,
     paddingRight: 10,
     height: 100,
     backgroundColor: '#E5B47F',
     borderRadius: 20,
     justifyContent: 'space-between',
+    marginBottom:5
   },
   invertedContainer: {
     backgroundColor: '#6A4035',
