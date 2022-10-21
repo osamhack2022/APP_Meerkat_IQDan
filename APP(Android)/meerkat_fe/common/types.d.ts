@@ -131,7 +131,6 @@ export type RootStackParamList = {
     Test: undefined;
     AddFriend: undefined;
     UnreadPeoples: {chatroomId: number, messageId: number};
-    MyAllClearReport: {messageId: number, chatroomId: number};
     ReportAllClear: {messageId: number, chatroomId: number};
     AllClearStatisticsTab: {messageId: number, chatroomId: number};
 };

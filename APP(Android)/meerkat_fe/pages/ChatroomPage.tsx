@@ -259,12 +259,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         messageId: quickReply.messageId,
       });
     }
-    else if(quickReply.value === QuickReplyType.CHECK){
-      navigation.navigate('MyAllClearReport', {
-        chatroomId: chatroomId,
-        messageId: quickReply.messageId,
-      });
-    }
     else if(quickReply.value === QuickReplyType.STATISTICS){
       navigation.navigate('AllClearStatisticsTab', {
         chatroomId: chatroomId,

@@ -55,6 +55,7 @@ export default function AllClearResponse(props: FetchState) {
           {list.map((elem: AllClear) => {
             return (
               <AllClearBox
+                key={elem.allClearId}
                 allClearId={elem.allClearId}
                 type={elem.type}
                 content={elem.content}
