@@ -36,9 +36,6 @@ import {
 import { LoginContext } from '../common/Context';
 // thirds
 import {
-  Bubble,
-  BubbleProps,
-  Day,
   GiftedChat,
   IMessage,
   QuickRepliesProps,

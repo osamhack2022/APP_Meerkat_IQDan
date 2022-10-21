@@ -31,7 +31,7 @@ export default function CategoryBox(props: Category) {
   const { categoryName, event } = props;
 
   return (
-    <View style={styles.container}> 
+    <View> 
         <View style={styles.horizontalLine}/>
         <View style={styles.categoryContainer}>
             <Text style={styles.categoryText}>
@@ -44,9 +44,6 @@ export default function CategoryBox(props: Category) {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        marginBottom:10
-    },
     categoryContainer:{
         height: 42,
         overflow: "hidden",
