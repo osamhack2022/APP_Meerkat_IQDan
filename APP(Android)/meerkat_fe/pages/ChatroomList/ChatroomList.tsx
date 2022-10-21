@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scroll: {
+    marginTop:5,
     marginBottom: 150,
   },
   title: {
