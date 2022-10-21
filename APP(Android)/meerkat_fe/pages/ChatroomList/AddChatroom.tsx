@@ -162,23 +162,25 @@ export default function AddChatroom(
             value={name}
           />
         </View>
-        <View style={styles.subTitleContainer}>
+        <View style={[styles.subTitleContainer]}>
           <Text style={styles.subTitle2}>모두가 확인</Text>
           <Select
             allValues={['하고', '안해도']}
             currValue={readOption}
             setCurrValue={setReadOption}
             closeFlag={closeFlag}
+            zIndex={200}
           />
           <Select
             allValues={['한달', '하루', '한시간', '일분', '십초']}
             currValue={expTimeOption}
             setCurrValue={setExpTimeOption}
             closeFlag={closeFlag}
+            zIndex={200}
           />
         </View>
-        <View style={styles.subTitleContainer}>
-          <Text style={[styles.subTitle2,{marginRight: 10}]}>
+        <View style={[styles.subTitleContainer]}>
+          <Text style={[styles.subTitle2, {marginRight: 10}]}>
             이후 메시지가
           </Text>
           <Select
@@ -186,6 +188,7 @@ export default function AddChatroom(
             currValue={removeType}
             setCurrValue={setRemoveType}
             closeFlag={closeFlag}
+            zIndex={199}
           />
           <Text style={[styles.subTitle2, {marginLeft: -15}]}>
             에서 삭제됩니다.
