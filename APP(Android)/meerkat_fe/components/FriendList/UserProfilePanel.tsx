@@ -20,6 +20,7 @@ import {
 import { User, UserProfile } from '../../common/types';
 import api from '../../common/api';
 import { getImage } from '../../common/getImage';
+import FriendDetailBox from './FriendDetailBox';
 
 interface UserProfilePanelProps {
   user: User | null;
@@ -80,9 +81,9 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
         width: '100%',
         zIndex: 100,
         bottom: 0,
-        backgroundColor: "#E5B47F",
+        backgroundColor: '#FFF9D2',
         // borderTopWidth: 2,
-        borderTopColor: "#6A4035",
+        borderTopColor: '#6A4035',
       }}
     >
       <View
@@ -90,69 +91,41 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           height: '100%',
+          width:"100%",
+          paddingBottom: 25,
         }}
       >
         <View
           style={{
             flexDirection: 'row',
-            width: '100%',
             justifyContent: 'flex-end',
             paddingRight: 12,
           }}
         >
           <Pressable onPress={props.onClose}>
-            <MaterialIcons size={38} name="close" color="#6A4035" style={{padding: 5}} />
+            <MaterialIcons
+              size={30}
+              name="close"
+              color="#6A4035"
+              style={{ padding: 5 }}
+            />
           </Pressable>
         </View>
-        <View>
-          <View
-            style={{
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 24,
-            }}
-          >
-            <Image style={styles.profileImage} source={getImage(user.image)} />
-            <Text
-              style={{ fontSize: 24, paddingTop: 12 }}
-            >{`${user.militaryRank} ${user.name}`}</Text>
-          </View>
-          <View style={styles.userInfoSection}>
-            <View style={styles.row}>
-              <Feather name="home" color="#black" size={20} />
-              <Text style={{ color: 'black', marginLeft: 20 }}>소속부대</Text>
-              <Text style={{ color: '#777777', marginLeft: 20 }}>
-                {user.affiliatedUnit}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <MaterialIcons
-                name="confirmation-number"
-                color="#black"
-                size={20}
-              />
-              <Text style={{ color: 'black', marginLeft: 20 }}>군번</Text>
-              <Text style={{ color: '#777777', marginLeft: 20 }}>
-                {user.serviceNumber}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-              paddingVertical: 24,
-            }}
-          >
-            {/* <TouchableOpacity onPress={() => { props.setUser(null); props.gotoChat(); }}> */}
-            {/* <MaterialIcons size={48} name='chat' /> */}
-            {/* </TouchableOpacity> */}
-            <TouchableOpacity onPress={deleteUser}>
-              <MaterialIcons size={40} name="person-remove" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.friendDetailBoxContainer}>
+          <FriendDetailBox
+            uid={user.uid}
+            name={user.name}
+            serviceNumber={user.serviceNumber}
+            affiliatedUnit={user.affiliatedUnit}
+            militaryRank={user.militaryRank}
+            image={user.image}
+          />
+        </View>
+
+        <View style={styles.removeBoxContainer}>
+          <TouchableOpacity style={styles.removeBox} onPress={deleteUser}>
+            <Text style={styles.removeBoxText}>추가</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -166,19 +139,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
-  profileImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 24,
-  },
-  row: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
   userInfoSection: {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  friendDetailBoxContainer:{
+    paddingTop:25,
+  },
+  removeBoxContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  removeBox: {
+    marginTop: 30,
+    borderRadius: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    width:350,
+    height: 50,
+    backgroundColor: '#6A4035',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  removeBoxText: {
+    fontFamily: 'noto-reg',
+    fontSize: 15,
+    lineHeight: 20,
+    color: 'white',
+  },
 });
 
 export default UserProfilePanel;
+
+{
+  /* <TouchableOpacity onPress={deleteUser}>
+              <MaterialIcons size={40} name="person-remove" />
+            </TouchableOpacity> */
+}
