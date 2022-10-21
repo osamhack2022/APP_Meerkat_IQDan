@@ -115,7 +115,7 @@ export default function AllClearStatisticsTab(
         <Tab.Navigator
           screenOptions={{
             tabBarStyle: {
-              height: 50,
+              height: 55,
               backgroundColor: 'white',              
             },
             tabBarIndicatorStyle: { backgroundColor: focusedColor },
