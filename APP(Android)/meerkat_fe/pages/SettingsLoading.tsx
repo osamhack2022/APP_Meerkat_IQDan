@@ -63,7 +63,7 @@ export default function SettingsLoading() {
         <View style={styles.userInfo}>
           <Feather name="home" color="#6A4035" size={20} />
           <Text
-            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold' }}
+            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold', width: 80 }}
           >
             소속부대
           </Text>
@@ -72,15 +72,14 @@ export default function SettingsLoading() {
           </View>
         </View>
         <View style={styles.userInfo}>
-          {/* <MaterialIcons name="confirmation-number" color="#6A4035" size={20} /> */}
           <Image
-            style={{ width: 24, height: 24, tintColor: '#6A4035' }}
+            style={{ width: 20, height: 20, tintColor: '#6A4035' }}
             source={require('../assets/icons/dogtagIcon.png')}
           />
           <Text
-            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold' }}
+            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold', width: 80 }}
           >
-            군번{' '}
+            군번
           </Text>
           <View style={styles.nameText}>
             <Animated.View style={getGlitterStyle(animatedValue)} />
@@ -89,9 +88,9 @@ export default function SettingsLoading() {
         <View style={styles.userInfo}>
           <AntDesign name="idcard" size={20} color="#6A4035" />
           <Text
-            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold' }}
+            style={{ color: 'black', marginLeft: 20, fontFamily: 'noto-bold', width: 80 }}
           >
-            아이디{' '}
+            아이디
           </Text>
           <View style={styles.nameText}>
             <Animated.View style={getGlitterStyle(animatedValue)} />
