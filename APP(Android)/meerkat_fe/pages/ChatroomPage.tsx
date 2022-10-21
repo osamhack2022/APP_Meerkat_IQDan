@@ -372,7 +372,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
 const renderQuickReplies = (props: QuickRepliesProps<IMessage>) => {
   return (
     <QuickReplies
-      color="#E5B47F"
+      color="#6A4035"
       quickReplyStyle={styles.quickReply}
       {...props}
     />
@@ -414,8 +414,7 @@ const styles = StyleSheet.create({
   },
   // quick reply
   quickReply: {
-    backgroundColor: '#6A4035',
-    borderWidth: 0,
-    height: 15,
+    backgroundColor: '#FFF9D2',
+    borderWidth: 1,
   },
 });
