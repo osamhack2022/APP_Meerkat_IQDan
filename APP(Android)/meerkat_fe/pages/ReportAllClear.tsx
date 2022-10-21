@@ -12,7 +12,7 @@ import {
 import { AllClear, AllClearResponseType, RootStackParamList } from '../common/types.d';
 import api from '../common/api';
 import AngleBracketHeader from '../components/AngleBracketHeader';
-import { isEmpty } from '../common/isEmpty';
+import { isEmpty, isEmptyString } from '../common/isEmpty';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -57,6 +57,11 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    if (allClearType === AllClearResponseType.CLEAR && isEmptyString(allClearContent))
+      setAllClearContent('이상 없습니다.');
+  }, [allClearType]);
 
   // hardware back press action
   useEffect(() => {
