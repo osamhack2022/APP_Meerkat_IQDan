@@ -60,9 +60,11 @@ export default function AddFriend(props: AddFriendScreenProps) {
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
         DeviceEventEmitter.emit('fetchFriends');
+        Alert.alert('해당 유저를 전우로 추가하였습니다.');
       })
       .catch(err => {
         console.log(err);
+        Alert.alert('이미 전우인 유저입니다.');
       });
   };
 
@@ -142,7 +144,7 @@ export default function AddFriend(props: AddFriendScreenProps) {
                 image={user.image}
               />
               {/* <TouchableOpacity style={styles.addBox} onPress={addAsFriend}> */}
-              <TouchableOpacity style={styles.addBox} onPress={()=>{addAsFriend; Alert.alert('해당 유저를 전우로 추가하였습니다.');}}>
+              <TouchableOpacity style={styles.addBox} onPress={()=>{addAsFriend();}}>
                 <Text style={styles.searchBoxText}>추가</Text>
               </TouchableOpacity>
             </View>
@@ -216,6 +218,7 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     flexDirection: 'column',
     alignItems: 'center',
+    borderRadius:12
   },
   addBox: {
     marginTop: 30,
