@@ -3,24 +3,15 @@ import React, { useEffect, useState } from 'react';
 import {
   BackHandler,
   View,
-  Button,
   Alert,
   StyleSheet,
   Pressable,
   TextInput,
+  Text,
 } from 'react-native';
-import { isEmpty } from '../common/isEmpty';
-import {
-  AllClear,
-  AllClearResponseType,
-  RootStackParamList,
-} from '../common/types.d';
-import ChatroomHeader from '../components/Chatroom/ChatroomHeader';
-import CategoryBoxLoading from '../components/FriendList/CategoryBoxLoading';
-import FriendBoxLoading from '../components/FriendList/FriendBoxLoading';
-import { generateJSX } from '../common/generateJSX';
+import { AllClearResponseType, RootStackParamList } from '../common/types.d';
 import api from '../common/api';
-import Select from './ChatroomList/Select';
+import AngleBracketHeader from '../components/AngleBracketHeader';
 
 type ReportAllClearProps = StackScreenProps<
   RootStackParamList,
@@ -37,11 +28,15 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   const [isSubmitActive, setIsSubmitActive] = useState(true);
 
   // data
-  const [allClearType, setAllClearType] = useState<AllClearResponseType>(
-    AllClearResponseType.CLEAR,
-  );
+  const [allClearType, setAllClearType] = useState(AllClearResponseType.CLEAR);
   const [content, setContent] = useState('');
   const [closeFlag, setCloseFlag] = useState(true);
+
+  useEffect(() => {
+    if (allClearType === AllClearResponseType.CLEAR)
+      setContent('이상 없습니다.');
+    else if (allClearType === AllClearResponseType.PROBLEM) setContent('');
+  }, [allClearType]);
 
   // hardware back press action
   useEffect(() => {
@@ -70,6 +65,10 @@ export default function ReportAllClear(props: ReportAllClearProps) {
     setIsSubmitActive(false);
   };
 
+  const handleTypeChange = (type: AllClearResponseType) => {
+    setAllClearType(type);
+  };
+
   // 제출
   const submitAllClear = () => {
     disableSubmit();
@@ -85,11 +84,10 @@ export default function ReportAllClear(props: ReportAllClearProps) {
         content: content,
       })
       .then(() => {
-        Alert.alert("보고가 완료되었습니다.");
+        Alert.alert('보고가 완료되었습니다.');
         navigation.navigate('Chat', { chatroomId: chatroomId });
-        
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e.response);
         enableSubmit();
         return Alert.alert('서버와의 통신이 원활하지 않습니다.');
@@ -98,33 +96,71 @@ export default function ReportAllClear(props: ReportAllClearProps) {
 
   return (
     <>
-      <ChatroomHeader
-        onPressBack={() =>
-          navigation.navigate('Chat', { chatroomId: chatroomId })
-        }
-        name={''}
+      <AngleBracketHeader
+      categoryName={"보고하기"}
+      onPressBack={() =>
+        navigation.navigate('Chat', { chatroomId: chatroomId })
+      }
       />
 
       <View style={styles.empty}>
-        <Pressable onPress={() => handleClose(closeFlag)}>
-          <Select
-            allValues={[
-              AllClearResponseType.CLEAR,
-              AllClearResponseType.PROBLEM,
-            ]}
-            currValue={AllClearResponseType.CLEAR}
-            setCurrValue={setAllClearType}
-            closeFlag={false}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={setContent}
-            value={content}
-          />
-        </Pressable>
+        <View style={styles.container}>
+          <Pressable onPress={() => handleClose(closeFlag)}>
+            <View style={styles.selectBoxContainer}>
+              <Pressable
+                style={[
+                  styles.selectBox,
+                  allClearType === AllClearResponseType.CLEAR
+                    ? styles.selectedBackgroundColor
+                    : styles.unselectedBackgroundColor,
+                ]}
+                onPress={() => handleTypeChange(AllClearResponseType.CLEAR)}
+              >
+                <Text
+                  style={[{fontSize: 16},
+                    allClearType === AllClearResponseType.CLEAR
+                      ? styles.selectedTextColor
+                      : styles.unselectedTextColor
+                  ]}
+                >
+                  이상 무
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.selectBox,
+                  allClearType === AllClearResponseType.PROBLEM
+                    ? styles.selectedBackgroundColor
+                    : styles.unselectedBackgroundColor,
+                ]}
+                onPress={() => handleTypeChange(AllClearResponseType.PROBLEM)}
+              >
+                <Text
+                  style={[{fontSize: 16},
+                    allClearType === AllClearResponseType.PROBLEM
+                      ? styles.selectedTextColor
+                      : styles.unselectedTextColor
+                  ]}
+                >
+                  특이사항
+                </Text>
+              </Pressable>
+            </View>
+            <View style={styles.textInputContainer}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={setContent}
+              value={content}
+              placeholder="특이사항 입력 (200자)"
+              multiline={true}
+            />
+            </View>
+            <Pressable style={styles.submitButton} onPress={submitAllClear}>
+                  <Text style={styles.submitButtonText}>제출하기</Text>
+            </Pressable>
+          </Pressable>
+        </View>
       </View>
-      <View style={{ alignItems: 'center' }}></View>
-      <Button onPress={submitAllClear} title="제출하기" color="#6A4035" />
     </>
   );
 }
@@ -139,9 +175,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input: {
-    backgroundColor: 'gray',
-    height: '70%',
-    width: 300,
+  container: {
+    height: '50%',
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent:"space-around"
   },
+  selectBoxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  selectBox: {
+    height: 46,
+    width: '49.5%',
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedBackgroundColor: {
+    backgroundColor: '#6A4035',
+  },
+  selectedTextColor: {
+    color: '#FFFFFF',
+  },
+  unselectedBackgroundColor: {
+    backgroundColor: '#E5B47F',
+  },
+  unselectedTextColor: {
+    color: '#6A4035',
+  },
+  textInputContainer:{
+    backgroundColor: '#FFF9D2',
+    height:"80%",
+    borderColor: '#6A4035',
+    flexShrink: 1,
+    marginTop: 17,
+    marginBottom: 17,
+    borderWidth: 2,
+    borderRadius: 10
+  },
+  textInput: {
+    margin: 10,
+    fontSize:16,
+    color:"#6A4035"
+  },
+  submitButton:{
+    height:59,
+    width:"100%",
+    backgroundColor:"#6A4035",
+    borderRadius:11,
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  submitButtonText:{
+    color:"white",
+    fontSize:16
+  }
 });

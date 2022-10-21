@@ -1,6 +1,6 @@
 // core
-import { View, BackHandler } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, BackHandler, StyleSheet, Text } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
 // comps
 import AllClearResponse from './AllClearResponse';
 import Unreads from './Unreads';
@@ -21,16 +21,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 // utils
 import api from '../../common/api';
 import { isEmpty } from '../../common/isEmpty';
+import AngleBracketHeader from '../../components/AngleBracketHeader';
 
 type AllClearStatisticsTabProps = StackScreenProps<
   RootStackParamList,
   'AllClearStatisticsTab'
 >;
 
+const unfocusedColor = '#E5B47F';
+const focusedColor = '#6A4035';
+
 export default function AllClearStatisticsTab(
   props: AllClearStatisticsTabProps,
 ) {
-  
   const Tab = createMaterialTopTabNavigator<AllClearTabParamList>();
   const { navigation } = props;
   const { chatroomId, messageId } = props.route.params;
@@ -64,11 +67,10 @@ export default function AllClearStatisticsTab(
 
         const clearResponses: Array<AllClear> = [];
         const problemResponses: Array<AllClear> = [];
-        allClearsResponse.data.data.forEach((elem: AllClear)=>{
+        allClearsResponse.data.data.forEach((elem: AllClear) => {
           if (elem.type === AllClearResponseType.CLEAR) {
             clearResponses.push(elem);
-          }
-          else if(elem.type === AllClearResponseType.PROBLEM){
+          } else if (elem.type === AllClearResponseType.PROBLEM) {
             problemResponses.push(elem);
           }
         });
@@ -103,13 +105,22 @@ export default function AllClearStatisticsTab(
   return (
     <>
       <View style={{ width: '100%', height: '100%' }}>
-        <ChatroomHeader
+        <AngleBracketHeader
+          categoryName={'통계 확인'}
           onPressBack={() =>
             navigation.navigate('Chat', { chatroomId: chatroomId })
           }
-          name={''}
         />
-        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
+
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: {
+              height: 50,
+              backgroundColor: 'white',              
+            },
+            tabBarIndicatorStyle: { backgroundColor: focusedColor },
+          }}
+        >
           <Tab.Screen
             name="AllClears"
             children={() => (
@@ -123,14 +134,16 @@ export default function AllClearStatisticsTab(
               />
             )}
             options={{
-
-              tabBarIcon: ({ focused }) => (
-                <FontAwesome5
-                  name="user-check"
-                  size={20}
-                  color={focused ? '#6A4035' : '#E5B47F'}
-                />
-              ),
+              tabBarIcon: ({ focused }) =>
+                tabBarIcon(
+                  focused,
+                  <FontAwesome5
+                    name="user-check"
+                    size={20}
+                    color={focused ? focusedColor : unfocusedColor}
+                  />,
+                  clears.length,
+                ),
               tabBarLabelStyle: {
                 fontSize: 0,
               },
@@ -149,13 +162,16 @@ export default function AllClearStatisticsTab(
               />
             )}
             options={{
-              tabBarIcon: ({ focused }) => (
-                <MaterialIcons
-                  name="report-problem"
-                  size={24}
-                  color={focused ? '#6A4035' : '#E5B47F'}
-                />
-              ),
+              tabBarIcon: ({ focused }) =>
+                tabBarIcon(
+                  focused,
+                  <MaterialIcons
+                    name="report-problem"
+                    size={24}
+                    color={focused ? focusedColor : unfocusedColor}
+                  />,
+                  problems.length,
+                ),
               tabBarLabelStyle: {
                 fontSize: 0,
               },
@@ -173,13 +189,16 @@ export default function AllClearStatisticsTab(
               />
             )}
             options={{
-              tabBarIcon: ({ focused }) => (
-                <Entypo
-                  name="eye-with-line"
-                  size={24}
-                  color={focused ? '#6A4035' : '#E5B47F'}
-                />
-              ),
+              tabBarIcon: ({ focused }) =>
+                tabBarIcon(
+                  focused,
+                  <Entypo
+                    name="eye-with-line"
+                    size={24}
+                    color={focused ? '#6A4035' : '#E5B47F'}
+                  />,
+                  unreads.length,
+                ),
               tabBarLabelStyle: {
                 fontSize: 0,
               },
@@ -190,3 +209,40 @@ export default function AllClearStatisticsTab(
     </>
   );
 }
+
+const tabBarIcon = (
+  focused: boolean,
+  icon: JSX.Element,
+  elementNumber: number,
+) => {
+  return (
+    <View style={styles.tabBarContainer}>
+      {icon}
+      <Text
+        style={[
+          styles.tabBarText,
+          { color: focused ? focusedColor : unfocusedColor },
+        ]}
+      >
+        {elementNumber}
+      </Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  tabContainer: {
+    flex:1,
+    backgroundColor: 'white',
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  tabBarContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabBarText: {
+    textAlign: 'center',
+  },
+});

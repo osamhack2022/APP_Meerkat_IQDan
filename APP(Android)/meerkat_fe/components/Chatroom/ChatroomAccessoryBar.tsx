@@ -44,22 +44,22 @@ const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
         style={styles.item}
         onPress={() => props.onPressTemplate()}
       >
-        <MaterialCommunityIcons name="lightning-bolt" size={24} color="black" />
+        <MaterialCommunityIcons name="lightning-bolt" size={30} color="black" />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.item}
         // onPress={() => pickImageAsync(props.onSend)} // TODO: 나중에 image 시간되면 활성화.
       >
-        <MaterialIcons size={24} color="black" name="photo" />
+        <MaterialIcons size={30} color="black" name="photo" />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.item}
         onPress={props.onPressSuperiorSwitch}
       >
         {props.superiorOnly ? (
-          <AntDesign onPress={()=> props.onPressPin()} name="pushpin" size={24} color="black" />
+          <AntDesign onPress={()=> props.onPressPin()} name="pushpin" size={30} color="black" />
           ) : (
-          <AntDesign onPress={() => props.onPressPin()} name="pushpino" size={24} color="black" />
+          <AntDesign onPress={() => props.onPressPin()} name="pushpino" size={30} color="black" />
         )}
       </TouchableOpacity>
 
@@ -67,7 +67,7 @@ const ChatroomAccessoryBar = (props: ChatroomAccessoryBarProps) => {
         style={styles.item}
         onPress={()=>props.onPressAllClear()}
       >
-        <AntDesign name="notification" size={24} color="black" />
+        <AntDesign name="notification" size={30} color="black" />
       </TouchableOpacity>
     </View>
   );

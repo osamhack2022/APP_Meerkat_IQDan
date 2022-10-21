@@ -43,7 +43,11 @@ const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
   }
 
   const addItem = () => {
-    let maxId = templates ? templates[templates.length-1].id : 0;
+    let maxId = templates
+      ? templates.length - 1
+        ? 0
+        : templates[templates.length - 1].id
+      : 0;
     let t = [...templates, {id: maxId+1, name: "", content: ""}];
     settempaltes(t);
     updateStorage(t);

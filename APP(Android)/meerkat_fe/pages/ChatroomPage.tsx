@@ -41,6 +41,7 @@ import {
   Day,
   GiftedChat,
   IMessage,
+  QuickRepliesProps,
   Reply,
   Time,
   User as IMessageUser,
@@ -56,6 +57,7 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import useRemoveMessage from '../hooks/useRemoveMessage';
 import RemovalCountdown from '../components/RemovalCountdown';
+import { QuickReplies } from 'react-native-gifted-chat/lib/QuickReplies';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
@@ -312,6 +314,33 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             minInputToolbarHeight={0}
             inverted={false}
             onQuickReply={onQuickReply}
+            renderQuickReplies={renderQuickReplies}
+          />
+          <ChatroomAccessoryBar
+            superiorOnly={superiorOnly}
+            onPressTemplate={() => setTemplateVisible(true)}
+            onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
+            onPressPin={() => {
+              setSuperiorOnly(prev => {
+                if (!prev) {
+                  // if superior only
+                  showMessage({
+                    message: '최상급자의 메세지만 표시됩니다.',
+                    type: 'info',
+                    backgroundColor: '#6A4035',
+                    color: 'white',
+                    position: 'bottom',
+                  });
+                }
+                return !prev;
+              });
+            }}
+            onPressAllClear={() => {
+              sendNewMessageToServer('[이상무 보고]\n' + msgInput, true);
+              setMsgInput('');
+            }}
+            // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
+            onSend={() => {}}
           />
           <ChatroomTextInput
             msgInput={msgInput}
@@ -320,32 +349,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
           />
         </View>
       </KeyboardAvoidingView>
-      <ChatroomAccessoryBar
-        superiorOnly={superiorOnly}
-        onPressTemplate={() => setTemplateVisible(true)}
-        onPressSuperiorSwitch={() => setSuperiorOnly(!superiorOnly)}
-        onPressPin={() => {
-          setSuperiorOnly(prev => {
-            if (!prev) {
-              // if superior only
-              showMessage({
-                message: '최상급자의 메세지만 표시됩니다.',
-                type: 'info',
-                backgroundColor: '#6A4035',
-                color: 'white',
-                position: 'bottom',
-              });
-            }
-            return !prev;
-          });
-        }}
-        onPressAllClear={()=> {
-          sendNewMessageToServer("[이상무 보고]\n" + msgInput, true);
-          setMsgInput('')
-        }}
-        // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
-        onSend={() => {}}
-      />
+
       <ChatroomTemplatePanel
         visible={templateVisible}
         setVisible={setTemplateVisible}
@@ -354,6 +358,16 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
       <FlashMessage position="top" />
     </>
+  );
+}
+
+const renderQuickReplies = (props:QuickRepliesProps<IMessage>)=>{
+  return (
+    <QuickReplies
+      color="#E5B47F"
+      quickReplyStyle={styles.quickReply}
+      {...props}
+    />
   );
 }
 
@@ -390,4 +404,10 @@ const styles = StyleSheet.create({
   blackText: {
     color: 'black',
   },
+  // quick reply
+  quickReply:{
+    backgroundColor:"#6A4035",
+    borderWidth:0,
+    height:15
+  }
 });
