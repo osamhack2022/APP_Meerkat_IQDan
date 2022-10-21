@@ -307,6 +307,11 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             onQuickReply={onQuickReply}
             renderQuickReplies={renderQuickReplies}
           />
+          <ChatroomTextInput
+            msgInput={msgInput}
+            setMsgInput={setMsgInput}
+            onSendTextMessage={text => sendNewMessageToServer(text)}
+          />
           <ChatroomAccessoryBar
             superiorOnly={superiorOnly}
             onPressTemplate={() => setTemplateVisible(true)}
@@ -332,11 +337,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
             }}
             // onSend={onSendFromUser} // TODO: 로컬에서만 보내지니까 풀어줘도될듯? 테스팅해보고 풀어주기.
             onSend={() => {}}
-          />
-          <ChatroomTextInput
-            msgInput={msgInput}
-            setMsgInput={setMsgInput}
-            onSendTextMessage={text => sendNewMessageToServer(text)}
           />
         </View>
       </KeyboardAvoidingView>
