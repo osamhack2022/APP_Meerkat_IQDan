@@ -49,18 +49,18 @@ export default function ChatroomBox(props: any) {
       onPress={() => encrypted ? onPressLock() : onPressUnlock()}
     >
       <View style={styles.upperContainer}>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={[styles.title, encrypted ? {color: "#FFF9D2"} : {}]}>{name}</Text>
         {
           encrypted ?
-            <MaterialIcons size={28} color="white" name="lock" />
+            <MaterialIcons size={28} color="#FFF9D2" name="lock" />
             :
             <TouchableOpacity onPress={onPress2ndPwSetting}>
-              <MaterialIcons size={28} color="white" name="lock-open" />
+              <MaterialIcons size={28} color="#6A4035" name="lock-open" />
             </TouchableOpacity>
         }
       </View>
       <View style={styles.lowerContainer}>
-        <Text style={styles.time}>{moment(updateDate).fromNow()}</Text>
+        <Text style={[styles.time, encrypted ? {color: "#FFF9D2"} : {}]}>{moment(updateDate).fromNow()}</Text>
         <Text style={[styles.count, encrypted ? styles.invertedCount: {}]}>{unreadCount}</Text>
       </View>
     </TouchableOpacity>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   title: {
-    color: 'white',
+    color: '#6A4035',
     fontFamily: 'noto-bold',
     fontSize: 20,
     width: 250,
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   time: {
-    color: 'white',
+    color: '#6A4035',
     fontFamily: 'noto-med',
     fontSize: 10,
   },
   count: {
     fontFamily: 'noto-med',
-    color: 'white',
+    color: '#FFF9D2',
     lineHeight: 20,
     backgroundColor: '#6A4035',
     marginRight: 8,
