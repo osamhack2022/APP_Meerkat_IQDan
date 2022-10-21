@@ -8,15 +8,11 @@ type SelectProp = {
   currValue: string;
   setCurrValue: Function;
   closeFlag: boolean;
+  zIndex: number;
 };
 
-// const sampleItems = [
-//   { label: 'Apple', value: 'apple' },
-//   { label: 'Banana', value: 'banana' },
-// ];
-
 export default function Select(props: SelectProp) {
-  const { allValues, setCurrValue, closeFlag} = props;
+  const { allValues, setCurrValue, closeFlag, zIndex} = props;
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(allValues[0]);
@@ -44,6 +40,7 @@ export default function Select(props: SelectProp) {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
+        zIndex={zIndex}
         style={{
           minHeight: 30,
           flexDirection: 'row',
