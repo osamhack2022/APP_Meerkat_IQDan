@@ -1,9 +1,10 @@
 import AsyncStorage, { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView, Platform, Touchable } from "react-native";
-import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
-import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { Alert, Modal, StyleSheet, Text, Pressable, View, KeyboardAvoidingView, SafeAreaView, Platform, TouchableOpacity } from "react-native";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TemplateItem from "./ChatroomTemplateItem";
+import AngleBracketHeader from "../AngleBracketHeader";
+import { AntDesign, Entypo } from '@expo/vector-icons';
 
 const TemplateStorageKey = "TemplateStorageKey"
 
@@ -77,17 +78,17 @@ const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
   return (
     <SafeAreaView style={{ flex: 1, position: "absolute", width: "100%", height: "100%", backgroundColor: "#FFF" }}>
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300}>
-        <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-end", paddingRight: 24, marginTop: 50, alignItems: "center"}}>
+        {/* <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-end", paddingRight: 24, marginTop: 50, alignItems: "center"}}>
           <TouchableOpacity style={{marginRight: 5}} onPress={() => addItem()}>
-            {/* <Entypo name="add-to-list" size={30} color="black" /> */}
             <MaterialIcons name="playlist-add" size={30} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => props.setVisible(false)}>
             <Ionicons size={30} name="close" />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <AngleBracketHeader onPressBack={()=>props.setVisible(false)} categoryName={"충성 템플릿"}/>
         <ScrollView ref={scrollRef} style={{height: "100%", backgroundColor: "white"}}>
-          <View style={{ alignItems: "center", height: "100%", marginHorizontal: 24, paddingBottom: "10%" }}>
+          <View style={{ alignItems: "center", height: "100%", marginHorizontal: 24, paddingBottom: 100 }}>
             <View style={styles.itemList}>
               {
                 templates.map((item) =>
@@ -101,7 +102,12 @@ const ChatroomTemplatePanel = (props: ChatroomTemplateModalProps) => {
                   />)
               }
             </View >
+            <TouchableOpacity style={styles.addButton} onPress={()=>addItem()}>
+            
+            <Entypo name="plus" size={24} color="#6A4035" />
+            </TouchableOpacity>
           </View>
+          
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -120,8 +126,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    width: "100%"
-  }
+    width: "100%",
+  },
+  addButton:{
+    height:95,
+    width:"100%",
+    backgroundColor: "#FBF5EA",
+    marginTop:12,
+    borderRadius:12,
+    justifyContent:"center",
+    alignItems:"center"
+  },
 });
 
 export default ChatroomTemplatePanel;
