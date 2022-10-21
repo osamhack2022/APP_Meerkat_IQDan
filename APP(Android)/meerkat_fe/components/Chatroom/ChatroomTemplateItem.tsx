@@ -37,7 +37,7 @@ const TemplateItem = (props: TemplateItemProps) => {
         onChangeText={setName}
         onBlur={() => props.updateItem(item.id, name, content)}
       />
-      <View style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8 }}>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8, paddingBottom: 6 }}>
         <TouchableOpacity onPress={() => {}}>
          <Ionicons name="md-save-outline" size={32} color='#6A4035' style={{marginRight: 10}} />
         </TouchableOpacity>
@@ -53,7 +53,7 @@ const TemplateItem = (props: TemplateItemProps) => {
       </View>
       {editVisible && <TextInput
         ref={contentInputRef}
-        style={{ backgroundColor: "#6A4035", padding: 8, borderRadius: 8 ,color: "white"}}
+        style={{ backgroundColor: "#6A4035", padding: 8, borderRadius: 8 ,color: "white", marginTop: 3, marginBottom: 8}}
         value={content}
         multiline
         onPressIn={() => props.scrollTo(contentInputRef?.current)}
@@ -68,19 +68,20 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 12,
     width: "100%",
-    padding: 12,
+    paddingLeft:12,
+    paddingRight:12,
     marginTop: 12,
     backgroundColor: "#E5B47F"
   },
   itemName: {
-    backgroundColor: "#E5B47F",
     borderRadius: 4,
-    fontSize: 28,
+    fontSize: 20,
     color: "#6A4035",
     fontFamily: "noto-bold",
-    lineHeight: 50,
+    lineHeight: 30,
     borderBottomWidth:  2,
-    borderBottomColor: "white"
+    borderBottomColor: "white",
+    height: 50
   }
 })
 // #E5B47F #6A4035
