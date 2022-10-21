@@ -20,7 +20,7 @@ interface ChatroomSideProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   usersInfo: User[];
-  chatroomInfo: ChatroomWithKey | null
+  chatroomInfo: ChatroomWithKey | null;
 }
 
 const ChatroomSide = (props: ChatroomSideProps) => {
@@ -58,34 +58,34 @@ const ChatroomSide = (props: ChatroomSideProps) => {
   };
 
   const generateText = () => {
-    if (props.chatroomInfo === null) return "chatroomInfo not loaded"
-    let res = "" 
+    if (props.chatroomInfo === null) return 'chatroomInfo not loaded';
+    let res = '';
     // 읽기 옵션
     if (props.chatroomInfo.removeAfterRead) {
-      res += "모두 다 읽은 후 "
+      res += '모두가 읽은 후 ';
     } else {
-      res += "아무도 안 읽어도 "
+      res += '무조건 ';
     }
     // 초 옵션
-    const exp = props.chatroomInfo.msgExpTime 
+    const exp = props.chatroomInfo.msgExpTime;
     if (exp === 10) {
-      res += "10초 뒤 삭제"
-    } else if (exp === 3600){
-      res += "한 시간 뒤 삭제"
-    } else if (exp === 3600*24) {
-      res += "하루 뒤 삭제"
-    } else if (exp === 3600*24*30) {
-      res += "한 달 뒤 삭제"
+      res += '10초 뒤 삭제';
+    } else if (exp === 3600) {
+      res += '한 시간 뒤 삭제';
+    } else if (exp === 3600 * 24) {
+      res += '하루 뒤 삭제';
+    } else if (exp === 3600 * 24 * 30) {
+      res += '한 달 뒤 삭제';
     } else {
-      res += exp.toString() + "초 뒤 삭제"
+      res += exp.toString() + '초 뒤 삭제';
     }
 
-    return res
-  }
+    return res;
+  };
 
   if (!props.isOpen) return null;
 
-  if (props.chatroomInfo === null) return <></>
+  if (props.chatroomInfo === null) return <></>;
   return (
     <View style={styles.drawer}>
       <AnimatedPressable
@@ -105,8 +105,16 @@ const ChatroomSide = (props: ChatroomSideProps) => {
       >
         <View>
           <Text style={styles.title}>채팅방 설정</Text>
-          <Text style={{marginLeft: 10, fontFamily: "noto-med"}}>방제: {props.chatroomInfo.name}</Text>
-          <Text style={{marginLeft: 10, fontFamily: "noto-med"}}>삭제: {generateText()}</Text>
+          <Text style={{ marginLeft: 20, fontFamily: 'noto-bold' }}>
+            대화방:{' '}
+            <Text style={{ fontFamily: 'noto-med' }}>
+              {props.chatroomInfo.name}
+            </Text>
+          </Text>
+          <Text style={{ marginLeft: 20, fontFamily: 'noto-bold' }}>
+            삭제:{' '}
+            <Text style={{ fontFamily: 'noto-med' }}>{generateText()}</Text>
+          </Text>
         </View>
         <View>
           <Text style={styles.title}>대화상대</Text>
@@ -132,10 +140,18 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 10,
     fontFamily: 'noto-bold',
-    fontSize: 15,
-    lineHeight: 50,
-    marginBottom: -15,
-    marginTop: 0,
+    fontSize: 13,
+    lineHeight: 15,
+    marginBottom: 0,
+    marginTop: 20,
+    marginRight: 20,
+    color: "#FFF9D2",
+    backgroundColor: "#6A4035",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    height: 35,
+    borderRadius: 20,
   },
   outside: {
     backgroundColor: 'black',

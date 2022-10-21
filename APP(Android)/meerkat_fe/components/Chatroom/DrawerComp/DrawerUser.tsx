@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   msgTxt: {
     fontWeight: '400',
-    color: '#008B8B',
+    color: 'grey',
     fontSize: 12,
     marginLeft: 15,
   },
