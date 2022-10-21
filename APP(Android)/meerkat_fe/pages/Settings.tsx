@@ -186,8 +186,6 @@ export default function Settings(props: MainTabScreenProps<"Settings">) {
             <View style={{ marginLeft: 20 }}>
               <reactNativePaper.Title style={[styles.nameTitle,]}>{user?.name}</reactNativePaper.Title>
               <reactNativePaper.Caption style={styles.caption}>{user?.militaryRank}</reactNativePaper.Caption>
-              <reactNativePaper.Caption style={styles.captionForStatus}>{'상태메시지'}</reactNativePaper.Caption>
-
             </View>
           </View>
         </View>
