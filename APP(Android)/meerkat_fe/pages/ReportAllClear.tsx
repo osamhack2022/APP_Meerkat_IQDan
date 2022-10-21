@@ -97,10 +97,10 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   return (
     <>
       <AngleBracketHeader
-      categoryName={"보고하기"}
-      onPressBack={() =>
-        navigation.navigate('Chat', { chatroomId: chatroomId })
-      }
+        categoryName={'보고하기'}
+        onPressBack={() =>
+          navigation.navigate('Chat', { chatroomId: chatroomId })
+        }
       />
 
       <View style={styles.empty}>
@@ -117,10 +117,11 @@ export default function ReportAllClear(props: ReportAllClearProps) {
                 onPress={() => handleTypeChange(AllClearResponseType.CLEAR)}
               >
                 <Text
-                  style={[{fontSize: 16},
+                  style={[
+                    { fontSize: 16 },
                     allClearType === AllClearResponseType.CLEAR
                       ? styles.selectedTextColor
-                      : styles.unselectedTextColor
+                      : styles.unselectedTextColor,
                   ]}
                 >
                   이상 무
@@ -136,10 +137,11 @@ export default function ReportAllClear(props: ReportAllClearProps) {
                 onPress={() => handleTypeChange(AllClearResponseType.PROBLEM)}
               >
                 <Text
-                  style={[{fontSize: 16},
+                  style={[
+                    { fontSize: 16 },
                     allClearType === AllClearResponseType.PROBLEM
                       ? styles.selectedTextColor
-                      : styles.unselectedTextColor
+                      : styles.unselectedTextColor,
                   ]}
                 >
                   특이사항
@@ -147,16 +149,20 @@ export default function ReportAllClear(props: ReportAllClearProps) {
               </Pressable>
             </View>
             <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={setContent}
-              value={content}
-              placeholder="특이사항 입력 (200자)"
-              multiline={true}
-            />
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setContent}
+                value={content}
+                placeholder="특이사항 입력 (200자)"
+                multiline={true}
+              />
+              <View style={styles.textCountContainer}>
+                <Text style={styles.textCount}>{content.length}/200</Text>
+              </View>
+              
             </View>
             <Pressable style={styles.submitButton} onPress={submitAllClear}>
-                  <Text style={styles.submitButtonText}>제출하기</Text>
+              <Text style={styles.submitButtonText}>제출하기</Text>
             </Pressable>
           </Pressable>
         </View>
@@ -213,10 +219,21 @@ const styles = StyleSheet.create({
     marginTop: 17,
     marginBottom: 17,
     borderWidth: 2,
-    borderRadius: 10
+    borderRadius: 10,
+    flexDirection:"column",
+    justifyContent:"space-between"
   },
   textInput: {
     margin: 10,
+    fontSize:20,
+    color:"#6A4035",
+    lineHeight: 30
+  },
+  textCountContainer:{
+    flexDirection:"row-reverse",
+    margin:10,
+  },
+  textCount:{
     fontSize:16,
     color:"#6A4035"
   },
