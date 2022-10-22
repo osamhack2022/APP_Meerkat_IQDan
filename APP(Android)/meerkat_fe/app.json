@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.seho08.meerkat_fe"
+      "package": "com.seho08.meerkat_fe",
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"
