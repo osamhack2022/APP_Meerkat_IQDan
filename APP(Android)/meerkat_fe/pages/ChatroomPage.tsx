@@ -50,6 +50,7 @@ import { useSocketIO } from '../hooks/useSocketIO';
 import useMessage, { getAllClearQuickReply } from '../hooks/useMessage';
 import { isEmpty } from '../common/isEmpty';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { useHeaderHeight } from '@react-navigation/elements'
 // icons
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import useRemoveMessage from '../hooks/useRemoveMessage';
@@ -73,6 +74,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const [superiorOnly, setSuperiorOnly] = useState(false); // 상급자 요약
   const [msgInput, setMsgInput] = useState(''); // 현재 메세지
   const [showCd, setShowCd] = useState(false);
+  const headerHeight = useHeaderHeight() // react navigation 헤더 크기 (채팅치는 곳 위로 밀림 해결)
 
   // 채팅방 정보 가져오기
   const [chatroomInfo, setChatroomInfo] = useState<ChatroomWithKey | null>(
@@ -273,7 +275,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
       });
     }
   };
-
+  
   if (isUserInfoLoading || IMessageUsersInfo.size === 0) return <></>;
   return (
     <>
@@ -299,7 +301,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         setShowCd={setShowCd}
       />
       <KeyboardAvoidingView
-        behavior="padding"
+        // behavior="padding"
         style={{ flex: 1 }}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -300} // should be 0 for ios, but Platform.select not working currnetly.
       >

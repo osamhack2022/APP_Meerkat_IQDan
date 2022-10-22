@@ -124,7 +124,7 @@ export default function AddFriend(props: AddFriendScreenProps) {
         {notFound && (
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 20,
               alignSelf: 'center',
               fontFamily: 'noto-med',
             }}

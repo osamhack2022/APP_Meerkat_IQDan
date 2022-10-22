@@ -104,16 +104,16 @@ const ChatroomSide = (props: ChatroomSideProps) => {
         ]}
       >
         <View>
-          <Text style={styles.title}>채팅방 설정</Text>
+          <Text style={styles.title}>채팅방 정보</Text>
           <Text style={{ marginLeft: 20, fontFamily: 'noto-bold' }}>
             대화방:{' '}
             <Text style={{ fontFamily: 'noto-med' }}>
               {props.chatroomInfo.name}
             </Text>
           </Text>
-          <Text style={{ marginLeft: 20, fontFamily: 'noto-bold' }}>
+          <Text style={{ marginLeft: 20, fontFamily: 'noto-bold'}}>
             삭제:{' '}
-            <Text style={{ fontFamily: 'noto-med' }}>{generateText()}</Text>
+            <Text style={{ fontFamily: 'noto-med', color: "#FF8B31"  }}>{generateText()}</Text>
           </Text>
         </View>
         <View>

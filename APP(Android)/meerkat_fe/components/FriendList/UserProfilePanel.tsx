@@ -124,7 +124,7 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
 
         <View style={styles.removeBoxContainer}>
           <TouchableOpacity style={styles.removeBox} onPress={deleteUser}>
-            <Text style={styles.removeBoxText}>추가</Text>
+            <Text style={styles.removeBoxText}>전우 목록에서 제거</Text>
           </TouchableOpacity>
         </View>
       </View>

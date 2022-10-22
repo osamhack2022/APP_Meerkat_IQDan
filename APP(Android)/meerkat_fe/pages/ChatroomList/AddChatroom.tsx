@@ -33,24 +33,22 @@ export default function AddChatroom(
   const [closeFlag, setCloseFlag] = useState(true);
 
   useEffect(() => {
+    console.log(expTimeOption === '일분')
     switch (expTimeOption) {
-      case '한달': {
-        setMsgExpTime(3600 * 24 * 30);
-      }
-      case '하루': {
-        setMsgExpTime(3600 * 24);
-      }
-      case '한시간': {
-        setMsgExpTime(3600);
-      }
-      case '일분': {
-        setMsgExpTime(60);
-      }
-      case '십초': {
-        setMsgExpTime(10);
-      }
+      case '한달': 
+        return setMsgExpTime(3600 * 24 * 30);
+      case '하루': 
+        return setMsgExpTime(3600 * 24);
+      case '한시간': 
+        return setMsgExpTime(3600);
+      case '일분': 
+        return setMsgExpTime(60);
+      case '십초':
+        return setMsgExpTime(10);
     }
   }, [expTimeOption]);
+
+  console.log(msgExpTime)
 
   const handleClose = (closeFlag: boolean) => {
     setCloseFlag(!closeFlag);
@@ -69,7 +67,6 @@ export default function AddChatroom(
     }
 
     let createdChatroomId: number = 0
-    console.log('asdfsadfsadf')
     try {
       let me = (await api.get("/users/me")).data.data;
       let res = await api.post('/chatroom/create', {
