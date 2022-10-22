@@ -1,6 +1,6 @@
 // core
 import { useState, useContext, useEffect } from "react";
-import { View, StyleSheet, Image, ScrollView} from "react-native";
+import { View, StyleSheet, Image, ScrollView, Text} from "react-native";
 // types and comps
 import Login from "./Login";
 import Register from "./Register";
@@ -9,15 +9,26 @@ import { LoginContext } from "../common/Context";
 import { RootStackScreenProps } from "../common/types";
 // assets
 const logo = require("../assets/logos/meerkat_black.png");
+import env from "../env.json"
+import api from "../common/api";
 
 export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
     const { checkIfLoggedIn, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
+    const [resp, setResp] = useState("")
 
     useEffect(() => {
         if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatroomList"})
     }, [isNotLoggedIn])
+
+    useEffect(() => {
+        api.get("https://code.seholee.com:8090").then((res) => {
+            setResp(res.status.toString())
+        }).catch((err) => {
+            setResp(err.response.status.toString())
+        })
+    }, [])
 
     const showAuthComps = () => {
         switch (currPage) {
@@ -40,6 +51,8 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
             <View style={styles.container}>
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo} />
+                    <Text>{env.dev.apiBaseUrl}</Text>
+                    <Text>{resp}</Text>
                 </View>
                 {showAuthComps()}
             </View>
