@@ -36,7 +36,7 @@
 
 :angel:**메세지 유통기한**: 군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.  [TODO: Wiki Link]
 
-### :speech_balloon: 2. 채팅 기능
+### :speech_balloon: 2. 군용 채팅 기능
 :zap: **충성템플릿**: 여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다. [TODO: Wiki Link]
 
 :star2: **명령요약**: 군에서 채팅을 할 때에 가장 중요한 것은 상급자의 명령입니다. 활성화 시 최상급자의 메시지만 보여집니다. [TODO: Wiki Link]
@@ -90,58 +90,19 @@ git clone https://github.com/osamhack2022/APP_Meerkat_IQDan.git
 ```
 
 ### Backend
+docker, docker-compose, MariaDB 설정 후 아래 커맨드들로 실행할 수 있습니다.
+자세한 사항은 [Backend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Backend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요.
 ```bash
-cd APP\(BE\)/
-npm install
-
-# docker를 이용한 MariaDB 설치
-# docker 설치
-sudo apt-get update && sudo apt-get upgrade
-sudo curl -fsSL https://get.docker.com/ | sudo sh
-sudo chmod 777 /var/run/docker.sock
-
-# docker-compose 설치
-sudo curl -L https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version 
-
-# local 개발용 MariaDB 환경 설정
-sudo chmod 755 ./EnvSetting/mariadb/conf.d/my.cnf
-docker-compose -f ./EnvSetting/docker-compose.yml --env-file ./EnvSetting/.env.development.local up -d
-
-# ENV_FILE_NAME에는 작성한 환경 설정 파일 경로를 입력합니다.
-docker-compose -f ./EnvSetting/docker-compose.yml --env-file ./EnvSetting/[ENV_FILE_NAME] up -d
-
-docker ps
-docker exec -it mariadb mysql -u root -p # Enter password: password
-
-# prisma 실행
-npm run prisma:migrate:dev # mariadb dev schema에 반영
-
-# prisma typescript type 생성
-npx prisma generate
-
-# 서버 실행
-npm run dev
+npm run prisma:migrate:dev       # schema.prisma 변경 사항 반영
+npm run dev                      # node로 dev 환경 실행
+npm run deploy:dev               # pm2로 dev 환경 실행
 ```
 
 ### Frontend
+npm install 이후 Expo Go앱으로 실행할 수 있습니다. 자세한 사항은 [Frontend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Frontend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요
 ```bash
-cd APP\(Android\)/meerkat_fe/
-npm install
-
-# sample.env.json을 env.json으로 변경 후 서버 주소를 변경 
-cp sample.env.json env.json
-nano env.json
-
-# expo 실행
-expo start --tunnel
-
-# Android SDK 필요시
-sudo apt update && sudo apt install android-sdk
-# 아래 두 줄 .bashrc에 추가 후 터미널 재시작.
-export ANDROID_HOME=/lib/android-sdk # 자신의 설치 경로 맞는지 확인할 것.
-export PATH=$PATH:$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools/
+npx expo start --tunnel # dev용 expo go 실행
+eas build --profile preview # apk 빌드
 ```
  
 ##   :baby: 팀 정보 (Team Information)
