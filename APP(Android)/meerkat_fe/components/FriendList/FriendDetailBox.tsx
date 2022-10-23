@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: 170,
   },
   labelTagContainer: {
     flexDirection: 'row',

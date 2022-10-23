@@ -123,9 +123,9 @@ const UserProfilePanel = (props: UserProfilePanelProps) => {
         </View>
 
         <View style={styles.removeBoxContainer}>
-          <TouchableOpacity style={styles.removeBox} onPress={deleteUser}>
+          <Pressable style={styles.removeBox} onPress={deleteUser}>
             <Text style={styles.removeBoxText}>전우 목록에서 제거</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 15,
     marginRight: 15,
-    width:350,
+    width:"80%",
     height: 50,
     backgroundColor: '#6A4035',
     alignItems: 'center',
