@@ -104,7 +104,7 @@ export default function AllClearStatisticsTab(
 
   return (
     <>
-      <View style={{ width: '100%', height: '100%' }}>
+      {/* <View style={{ width: '100%', height: '100%' }}>
         <AngleBracketHeader
           categoryName={'통계 확인'}
           onPressBack={() =>
@@ -205,7 +205,7 @@ export default function AllClearStatisticsTab(
             }}
           />
         </Tab.Navigator>
-      </View>
+      </View> */}
     </>
   );
 }
