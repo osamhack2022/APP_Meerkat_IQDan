@@ -105,12 +105,12 @@ export default function AllClearStatisticsTab(
   return (
     <>
       <View style={{ width: '100%', height: '100%' }}>
-        <AngleBracketHeader
+        {/* <AngleBracketHeader
           categoryName={'통계 확인'}
           onPressBack={() =>
             navigation.navigate('Chat', { chatroomId: chatroomId })
           }
-        />
+        /> */}
 
         <Tab.Navigator
           screenOptions={{
@@ -176,11 +176,12 @@ export default function AllClearStatisticsTab(
                 fontSize: 0,
               },
             }}
-          /> */}
+          />
           <Tab.Screen
             name="Unreads"
             children={() => (
               <Unreads
+                key={2}
                 isLoading={isLoading}
                 isFault={isFault}
                 isError={isError}
@@ -203,7 +204,7 @@ export default function AllClearStatisticsTab(
                 fontSize: 0,
               },
             }}
-          />
+          /> */}
         </Tab.Navigator>
       </View>
     </>
