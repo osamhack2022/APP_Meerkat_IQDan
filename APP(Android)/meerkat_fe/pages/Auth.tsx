@@ -23,10 +23,10 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     }, [isNotLoggedIn])
 
     useEffect(() => {
-        api.get("https://code.seholee.com:8090").then((res) => {
+        api.get("https://code.seholee.com:8090/123").then((res) => {
             setResp(res.status.toString())
         }).catch((err) => {
-            setResp(err.response.status.toString())
+            setResp(JSON.stringify(err))
         })
     }, [])
 
@@ -52,8 +52,8 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo} />
                     <Text>{env.dev.apiBaseUrl}</Text>
-                    <Text>{resp}</Text>
                 </View>
+                <Text>{resp}</Text>
                 {showAuthComps()}
             </View>
         </ScrollView>
