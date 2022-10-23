@@ -48,12 +48,12 @@
 ## :milky_way: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
 ### :calling: Mobile
 |Expo|Android|iOS|
-|---|---|---|
+|:---:|:---:|:---:|
 |SDK 46+|Android 5.0+|iOS 12.4+|
 
 ### :hammer: DevTools
 |Docker|Nginx|MariaDB|
-|---|---|---|
+| :--: | :--: | :--: |
 |20.0+|1.22+|10.6+|
 
 ## :bento:기술 스택 (Technology Used) 
@@ -84,6 +84,8 @@
 - [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
 ## :taco:프로젝트 사용법 (Getting Started)
+### Clone
+먼저 프로젝트를 clone해줍니다.
 ```bash
 # 프로젝트 clone
 git clone https://github.com/osamhack2022/APP_Meerkat_IQDan.git
