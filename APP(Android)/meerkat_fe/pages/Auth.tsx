@@ -29,7 +29,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
         }).catch((err) => {
             setResp(JSON.stringify(err))
         })
-        fetch('https://www.google.com/').then((res) => {
+        fetch('https://code.seholee.com:8090/').then((res) => {
             setResp2(res.status.toString())
         }).catch((err) => {
             setResp2(JSON.stringify(err))
