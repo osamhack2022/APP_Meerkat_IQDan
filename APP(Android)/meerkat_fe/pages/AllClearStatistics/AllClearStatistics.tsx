@@ -22,7 +22,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../common/api';
 import { isEmpty } from '../../common/isEmpty';
 import AngleBracketHeader from '../../components/AngleBracketHeader';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AllClearStatisticsProps = StackScreenProps<
   RootStackParamList,
