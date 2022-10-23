@@ -24,13 +24,13 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     }, [isNotLoggedIn])
 
     useEffect(() => {
-        api.get("https://code.seholee.com:8090/").then((res) => {
+        api.get("https://code.seholee.com:8090/123").then((res) => {
             setResp(res.status.toString())
         }).catch((err) => {
             setResp(JSON.stringify(err))
         })
         fetch('https://code.seholee.com:8090/').then((res) => {
-            setResp2(res.status.toString())
+            setResp2(JSON.stringify(res))
         }).catch((err) => {
             setResp2(JSON.stringify(err))
         })
