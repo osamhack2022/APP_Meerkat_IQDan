@@ -49,58 +49,58 @@ export default function AllClearStatisticsTab(
   const [unreads, setUnreads] = useState<User[]>([]);
 
   // fetch data
-  useEffect(() => {
-    if (isEmpty(chatroomId) || isEmpty(messageId)) {
-      setIsFault(true);
-      return;
-    }
+  // useEffect(() => {
+  //   if (isEmpty(chatroomId) || isEmpty(messageId)) {
+  //     setIsFault(true);
+  //     return;
+  //   }
 
-    const getData = async () => {
-      try {
-        const allClearsResponse = await api.get(
-          `/allclear/response/all/${messageId}`,
-        );
-        const unreadsResponse = await api.post('/messages/unread', {
-          chatroomId: chatroomId,
-          messageId: messageId,
-        });
+  //   const getData = async () => {
+  //     try {
+  //       const allClearsResponse = await api.get(
+  //         `/allclear/response/all/${messageId}`,
+  //       );
+  //       const unreadsResponse = await api.post('/messages/unread', {
+  //         chatroomId: chatroomId,
+  //         messageId: messageId,
+  //       });
 
-        const clearResponses: Array<AllClear> = [];
-        const problemResponses: Array<AllClear> = [];
-        allClearsResponse.data.data.forEach((elem: AllClear) => {
-          if (elem.type === AllClearResponseType.CLEAR) {
-            clearResponses.push(elem);
-          } else if (elem.type === AllClearResponseType.PROBLEM) {
-            problemResponses.push(elem);
-          }
-        });
+  //       const clearResponses: Array<AllClear> = [];
+  //       const problemResponses: Array<AllClear> = [];
+  //       allClearsResponse.data.data.forEach((elem: AllClear) => {
+  //         if (elem.type === AllClearResponseType.CLEAR) {
+  //           clearResponses.push(elem);
+  //         } else if (elem.type === AllClearResponseType.PROBLEM) {
+  //           problemResponses.push(elem);
+  //         }
+  //       });
 
-        setClears(clearResponses);
-        setProblems(problemResponses);
-        setUnreads(unreadsResponse.data.data);
-      } catch {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getData();
-  }, []);
+  //       setClears(clearResponses);
+  //       setProblems(problemResponses);
+  //       setUnreads(unreadsResponse.data.data);
+  //     } catch {
+  //       setError(true);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   getData();
+  // }, []);
 
   // hardware back press action
-  useEffect(() => {
-    const backAction = () => {
-      navigation.navigate('Chat', { chatroomId: chatroomId });
-      return true;
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     navigation.navigate('Chat', { chatroomId: chatroomId });
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
   return (
     <>
