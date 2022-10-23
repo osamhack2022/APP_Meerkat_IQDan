@@ -3,14 +3,16 @@ import { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, Image, ScrollView, Text} from "react-native";
 // types and comps
 import Login from "./Login";
-import Register from "./Register";
 import ForgotPw from "./ForgotPw";
+import Register from "./Register";
 import { LoginContext } from "../common/Context";
 import { RootStackScreenProps } from "../common/types";
 // assets
 const logo = require("../assets/logos/meerkat_black.png");
 import env from "../env.json"
 import api from "../common/api";
+
+import axios from 'axios'
 
 export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
@@ -27,20 +29,20 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     }, [isNotLoggedIn])
 
     useEffect(() => {
-        api.get("https://code.seholee.com:8090/123").then((res) => {
-            setResp(res.status.toString())
+        api.get("/").then((res) => {
+            setResp("resp1succ" + JSON.stringify(res) + "\n")
         }).catch((err) => {
-            setResp(JSON.stringify(err))
-        fetch('https://code.seholee.com:8090/').then((res) => {
-            setResp2("resp2succ" + JSON.stringify(res))
-        }).catch((err) => {
-            setResp2("resp2fail" + JSON.stringify(err))
+            setResp("res1fail" + JSON.stringify(err)+"\n")
         })
+        fetch('https://code.seholee.com:8090/').then((res) => {
+            setResp2("resp2succ" + JSON.stringify(res)+"\n")
+        }).catch((err) => {
+            setResp2("resp2fail" + JSON.stringify(err)+"\n")
         })
 
-        api.get("https://google.com").then((res) => {
-            setResp3(res.status.toString())
-        }).catch((err) => {setResp3(JSON.stringify(err))})
+        axios.get("https://google.com").then((res) => {
+            setResp3("resp3succ" + JSON.stringify(res) + "\n")
+        }).catch((err) => {setResp3("resp3fail"+JSON.stringify(err)+"\n")})
 
         fetch('https://google.com').then((res) => {
             setResp4("resp4succ" + JSON.stringify(res))
@@ -48,7 +50,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
             setResp4("resp4fail" + JSON.stringify(err))
         })
 
-        api.get("http://code.seholee.com:8081").then((res) => {
+        axios.get("http://code.seholee.com:8081").then((res) => {
             setResp5("resp5succ" + JSON.stringify(res))
         }).catch((err) => {
             setResp5("resp5fail" + JSON.stringify(err))
