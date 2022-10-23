@@ -48,8 +48,6 @@ export default function AddChatroom(
     }
   }, [expTimeOption]);
 
-  console.log(msgExpTime)
-
   const handleClose = (closeFlag: boolean) => {
     setCloseFlag(!closeFlag);
   };
