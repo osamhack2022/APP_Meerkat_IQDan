@@ -12,7 +12,7 @@ import env from '../env.json';
  */
 
 const api = axios.create({
-  baseURL: env.dev.apiBaseUrl
+  baseURL: "https://code.seholee.com:8090"
 })
 
 api.interceptors.request.use(

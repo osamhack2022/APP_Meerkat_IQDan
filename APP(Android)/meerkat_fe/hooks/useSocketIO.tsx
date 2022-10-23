@@ -27,7 +27,7 @@ export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | nu
     }
     AsyncStorage.getItem('userToken').then(userToken => {
       setSocket(
-        io(env.prod.apiBaseUrl + '/chat', {
+        io("https://code.seholee.com:8090" + '/chat', {
           path: '/socket.io',
           transports: ['websocket'],
           reconnectionAttempts: 2,

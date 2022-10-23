@@ -22,7 +22,7 @@ export default function Login(props: {setCurrPage: Function, checkIfLoggedIn: Fu
     const [errMsg, setErrMsg] = useState("")
     
     const handleLogin = () => {
-        axios.post(env.dev.apiBaseUrl + "/auth/login", {
+        axios.post("https://code.seholee.com:8090" + "/auth/login", {
             uid: id,
             password: pw
         }).then(async (res) =>{
