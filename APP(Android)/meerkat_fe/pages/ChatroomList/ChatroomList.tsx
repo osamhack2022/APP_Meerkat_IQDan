@@ -24,6 +24,7 @@ import Dialog from 'react-native-dialog';
 import { hashMD5 } from '../../common/crypto';
 import { useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connectBelongRooms } from '../../common/globalSocket';
 
 const PasswordSettingPrompt = (props: {
   visible: boolean;
@@ -126,6 +127,7 @@ export default function ChatroomList(
   // 서버에서 메시지를 보냈을 때, unread count++
   // socket이 바뀌면 event attach함.
   useEffect(() => {
+    connectBelongRooms(socket);
     socket.on('server:notificateMessage', (content: string) => {
       reFetch();
     });
