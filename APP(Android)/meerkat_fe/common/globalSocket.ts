@@ -14,7 +14,7 @@ export const globalSocketFunction = (socket: Socket) => {
       console.log('--------------- global socket ---------------');
       
       // 재접속 시 DB에서 속해있는 모든 방의 정보를 가져온 후, 그 방에 전부 접속해야 함.
-      connectBelongRooms(socket);
+      // connectBelongRooms(socket);
     });
   
     socket.on("disconnect", () => {
@@ -49,7 +49,7 @@ export const globalSocketFunction = (socket: Socket) => {
   }
   
 
-  function connectBelongRooms(socket:Socket){
+  export function connectBelongRooms(socket:Socket){
     api.get('/chatroom/my')
     .then((res) => {
       const chatrooms:Chatroom[] = res.data.data;
