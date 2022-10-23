@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     marginTop:5,
-    marginBottom: 150,
+    marginBottom: 97,
   },
   title: {
     fontSize: 25,
