@@ -143,7 +143,7 @@ export type RootStackParamList = {
     AddFriend: undefined;
     UnreadPeoples: {chatroomId: number, messageId: number};
     ReportAllClear: {messageId: number, chatroomId: number};
-    AllClearStatisticsTab: {messageId: number, chatroomId: number};
+    AllClearStatistics: {messageId: number, chatroomId: number};
 };
 
 export type TabParamList = {

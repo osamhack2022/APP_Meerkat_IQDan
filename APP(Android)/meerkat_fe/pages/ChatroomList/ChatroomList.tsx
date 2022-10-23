@@ -134,11 +134,18 @@ export default function ChatroomList(
   }, [socket]);
 
   useEffect(() => {
-    reFetch();
+    if(isFocused){
+      connectBelongRooms(socket);
+      reFetch();
+    }
+    
   }, [isFocused]);
 
   useEffect(() => {
-    checkPrevKey();
+    if(isFocused){
+      checkPrevKey();
+    }
+    
   }, [isFocused]);
 
   const checkPrevKey = async () => {

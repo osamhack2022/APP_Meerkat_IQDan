@@ -269,7 +269,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         messageId: quickReply.messageId,
       });
     } else if (quickReply.value === QuickReplyType.STATISTICS) {
-      navigation.navigate('AllClearStatisticsTab', {
+      navigation.navigate('AllClearStatistics', {
         chatroomId: chatroomId,
         messageId: quickReply.messageId,
       });
