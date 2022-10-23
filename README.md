@@ -22,41 +22,41 @@
 </p>
 
 
-## 프로젝트 소개 (Project Introduction)
+## :telescope: 프로젝트 소개 (Why Meerkat?)
 
 수많은 장병들이 편의를 위해 카카오톡과 같은 서드파티 메신저앱들을 암암리에 사용하고 있습니다. 훈련 중에는 사용하지 않아도, 훈련 이후 사후 평가나 평시 명령 하달 및 보고 시 자주 사용되고 있습니다. 이런 앱들의 문제점은 군 내부의 정보들이 이러한 민간 서버들에 암호화조차 되지 않고 남을 때가 많다는 것입니다. 만약 암호화 되지 않은 정보가 적에게 유출될 시 매우 큰 약점으로 작용할 수 있습니다.
 
 미어캣은 현재 장병들이 사용중인 채팅앱들의 대안을 마련함과 동시에 군에 특화된 채팅 기능들을 제공합니다.
 
-## 주요 기능
-### :lock: 보안 기능 
+## :bow_and_arrow: 기능설명 (Features)
+### :lock: 1. 보안 기능 
 :link: **종단간 암호화 (End-to-end Encryption)**: 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. [TODO: Wiki Link]
 
 :anchor: **2차 비밀번호**: 채팅 기록이 개인 휴대폰에 평문으로 남게되면 누군가 휴대폰을 훔쳐 내용을 보거나 스파이웨어에 의해 정보가 유출될 수 있습니다. 미어캣의 2차 비밀번호 기능을 사용하면 휴대폰에 저장되는 채팅방 내용도 암호화하여 안전하게 채팅 기록을 저장할 수 있습니다. [TODO: Wiki Link]
 
-:angel:**메세지 유통기한**: 군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.  [TODO: image]
+:angel:**메세지 유통기한**: 군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.  [TODO: Wiki Link]
 
-### :speech_balloon: 채팅 기능
-:zap: **충성템플릿**: 여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다. [TODO: image]
+### :speech_balloon: 2. 채팅 기능
+:zap: **충성템플릿**: 여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다. [TODO: Wiki Link]
 
-:star2: **명령요약**: 군에서 채팅을 할 때에 가장 중요한 것은 상급자의 명령입니다. 활성화 시 최상급자의 메시지만 보여집니다. [TODO: image]
+:star2: **명령요약**: 군에서 채팅을 할 때에 가장 중요한 것은 상급자의 명령입니다. 활성화 시 최상급자의 메시지만 보여집니다. [TODO: Wiki Link]
 
-:kick_scooter: **이상무 보고**: 분대장, 소대장, 중대장 등이 각종 보고를 빠르게 받아볼 수 있는 기능입니다. [TODO: image]
+:kick_scooter: **이상무 보고**: 분대장, 소대장, 중대장 등이 각종 보고를 빠르게 받아볼 수 있는 기능입니다. [TODO: Wiki Link]
 
-:crossed_swords: **전우 목록**: 전우들의 전역일, 근황 등을 살펴볼 수 있습니다. [TODO: image]
+:crossed_swords: **전우 목록**: 전우들의 전역일, 근황 등을 살펴볼 수 있습니다. [TODO: Wiki Link]
 
-## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
-### Mobile
+## :milky_way: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
+### :calling: Mobile
 |Expo|Android|iOS|
 |---|---|---|
 |SDK 46+|Android 5.0+|iOS 12.4+|
 
-### DevTools
+### :hammer: DevTools
 |Docker|Nginx|MariaDB|
 |---|---|---|
 |20.0+|1.22+|10.6+|
 
-## 기술 스택 (Technology Used) 
+## :bento:기술 스택 (Technology Used) 
 ![](./.images/techstack.png)
 
 ### Frontend
@@ -83,7 +83,7 @@
 - [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
 - [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
-## 프로젝트 사용법 (Getting Started)
+## :taco:프로젝트 사용법 (Getting Started)
 ```bash
 # 프로젝트 clone
 git clone https://github.com/osamhack2022/APP_Meerkat_IQDan.git
@@ -144,7 +144,7 @@ export ANDROID_HOME=/lib/android-sdk # 자신의 설치 경로 맞는지 확인�
 export PATH=$PATH:$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools/
 ```
  
-## 팀 정보 (Team Information)
+##   :baby: 팀 정보 (Team Information)
 |이름|github|e-mail|
 |---|----|----|
 |이세호|[seho0808](https://github.com/seho0808)| koolee33 [at] gmail.com|
@@ -152,7 +152,7 @@ export PATH=$PATH:$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools/
 |전형록|[exqt](https://github.com/exqt)|dashchan [at] naver.com| 
 |임동진|[djlim98](https://github.com/djlim98)|ehdwlsdudwo1 [at] gmail.com|
 
-## 저작권 및 사용권 정보 (Copyleft / End User License)
+## :kiwi_fruit:저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
 
 This project is licensed under the terms of the MIT license.
