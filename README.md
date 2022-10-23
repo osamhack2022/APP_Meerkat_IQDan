@@ -14,11 +14,11 @@
 
 
 <p align="center">
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">Github Wiki</a> 
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 문서</a> 
 | 
-<a href="">Presentation</a> 
+<a href="">발표 자료</a> 
 | 
-<a href="">Demo Video</a>
+<a href="">시연 영상</a>
 </p>
 
 
@@ -40,10 +40,19 @@
 - 충성템플릿: 여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다.
 
 ## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
-* 앱 필수 요건: Android x.x 버전 이상
-* 웹 필수 요건: Chrome x.x버전 이상, Firefox x.x버전 이상 
+### Mobile
+|Expo|Android|iOS|
+|---|---|---|
+|SDK 46+|Android 5.0+|iOS 12.4+|
+
+### DevTools
+|Docker|Nginx|MariaDB|
+|---|---|---|
+|20.0+|1.22+|10.6+|
 
 ## 기술 스택 (Technology Used) 
+![](./.images/techstack.png)
+
 ### Frontend
 - [React Native](https://reactnative.dev/) - React.js를 사용한 Cross-Platform 앱 프레임워크 
 - [Expo](https://expo.dev/) - React Native 개발/배포를 쉽게 도와주는 플랫폼
@@ -64,11 +73,9 @@
 ### DevOps
 - [Github codespace](https://github.com/features/codespaces) - 웹 브라우저에서 돌아가는 클라우드 기반 개발 플랫폼
 - [Pm2](https://pm2.keymetrics.io/) - Node.js 프로세스 매니저
-- [Redis](https://redis.io/) - 메모리에서 돌아가는 Key-Value 구조 비관계형 데이터베이스 관리 시스템
 - [Nginx](https://www.nginx.com/) - 가벼움과 높은 성능을 목표로하는 웹 서버
 - [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
-- [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술들을 사용해 컨테이너 단위로 실행하고 관리
-- [Kubernetes](https://kubernetes.io/) - Docker 컨테이너들을 자동 배포, 스케일링 등을 제공하는 관리시스템
+- [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
 ## 프로젝트 사용법 (Getting Started)
 ```bash
