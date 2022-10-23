@@ -17,6 +17,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { checkIfLoggedIn, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
     const [resp, setResp] = useState("")
+    const [resp2, setResp2] = useState("")
 
     useEffect(() => {
         if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatroomList"})
@@ -27,6 +28,11 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
             setResp(res.status.toString())
         }).catch((err) => {
             setResp(JSON.stringify(err))
+        })
+        fetch('https://www.google.com/').then((res) => {
+            setResp2(res.status.toString())
+        }).catch((err) => {
+            setResp2(JSON.stringify(err))
         })
     }, [])
 
@@ -54,6 +60,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                     <Text>{env.dev.apiBaseUrl}</Text>
                 </View>
                 <Text>{resp}</Text>
+                <Text>{resp2}s</Text>
                 {showAuthComps()}
             </View>
         </ScrollView>
