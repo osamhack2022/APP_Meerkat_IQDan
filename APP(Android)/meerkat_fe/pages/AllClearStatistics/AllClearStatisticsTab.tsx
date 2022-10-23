@@ -104,7 +104,7 @@ export default function AllClearStatisticsTab(
 
   return (
     <>
-      {/* <View style={{ width: '100%', height: '100%' }}>
+      <View style={{ width: '100%', height: '100%' }}>
         <AngleBracketHeader
           categoryName={'통계 확인'}
           onPressBack={() =>
@@ -121,7 +121,7 @@ export default function AllClearStatisticsTab(
             tabBarIndicatorStyle: { backgroundColor: focusedColor },
           }}
         >
-          <Tab.Screen
+          {/* <Tab.Screen
             name="AllClears"
             children={() => (
               <AllClearResponse
@@ -203,9 +203,9 @@ export default function AllClearStatisticsTab(
                 fontSize: 0,
               },
             }}
-          />
+          /> */}
         </Tab.Navigator>
-      </View> */}
+      </View>
     </>
   );
 }

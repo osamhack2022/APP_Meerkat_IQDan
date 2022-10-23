@@ -208,7 +208,6 @@ export default function AddChatroom(
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 35,
     paddingLeft: 15,
     paddingRight: 15,
     backgroundColor: '#fff',
