@@ -18,44 +18,10 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     const { navigation } = props;
     const { checkIfLoggedIn, isNotLoggedIn } = useContext(LoginContext);
     const [currPage, setCurrPage] = useState<string>("");
-    const [resp, setResp] = useState("")
-    const [resp2, setResp2] = useState("")
-    const [resp3, setResp3] = useState("")
-    const [resp4, setResp4] = useState("")
-    const [resp5, setResp5] = useState("")
 
     useEffect(() => {
         if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatroomList"})
     }, [isNotLoggedIn])
-
-    useEffect(() => {
-        api.get("/").then((res) => {
-            setResp("resp1succ" + JSON.stringify(res) + "\n")
-        }).catch((err) => {
-            setResp("res1fail" + JSON.stringify(err)+"\n")
-        })
-        fetch('https://code.seholee.com:8090/').then((res) => {
-            setResp2("resp2succ" + JSON.stringify(res)+"\n")
-        }).catch((err) => {
-            setResp2("resp2fail" + JSON.stringify(err)+"\n")
-        })
-
-        axios.get("https://google.com").then((res) => {
-            setResp3("resp3succ" + JSON.stringify(res) + "\n")
-        }).catch((err) => {setResp3("resp3fail"+JSON.stringify(err)+"\n")})
-
-        fetch('https://google.com').then((res) => {
-            setResp4("resp4succ" + JSON.stringify(res))
-        }).catch((err) => {
-            setResp4("resp4fail" + JSON.stringify(err))
-        })
-
-        axios.get("http://code.seholee.com:8081").then((res) => {
-            setResp5("resp5succ" + JSON.stringify(res))
-        }).catch((err) => {
-            setResp5("resp5fail" + JSON.stringify(err))
-        })
-    }, [])
 
     const showAuthComps = () => {
         switch (currPage) {
@@ -80,11 +46,6 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                     <Image source={logo} style={styles.logo} />
                     <Text>{env.dev.apiBaseUrl}</Text>
                 </View>
-                <Text>{resp}!@#</Text>
-                <Text>{resp2}!@#</Text>
-                <Text>{resp3}!@#</Text>
-                <Text>{resp4}!@#</Text>
-                <Text>{resp5}!@#</Text>
                 {showAuthComps()}
             </View>
         </ScrollView>
