@@ -121,18 +121,19 @@ export default function AllClearStatisticsTab(
             tabBarIndicatorStyle: { backgroundColor: focusedColor },
           }}
         >
-          {/* <Tab.Screen
+          <Tab.Screen
             name="AllClears"
-            children={() => (
-              <AllClearResponse
-                key={0}
-                isLoading={isLoading}
-                isFault={isFault}
-                isError={isError}
-                list={clears}
-                categoryName={'이상 무 보고 상세'}
-              />
-            )}
+            component={TempComponent}
+            // children={() => (
+            //   <AllClearResponse
+            //     key={0}
+            //     isLoading={isLoading}
+            //     isFault={isFault}
+            //     isError={isError}
+            //     list={clears}
+            //     categoryName={'이상 무 보고 상세'}
+            //   />
+            // )}
             options={{
               tabBarIcon: ({ focused }) =>
                 tabBarIcon(
@@ -151,16 +152,17 @@ export default function AllClearStatisticsTab(
           />
           <Tab.Screen
             name="Problems"
-            children={() => (
-              <AllClearResponse
-                key={1}
-                isLoading={isLoading}
-                isFault={isFault}
-                isError={isError}
-                list={problems}
-                categoryName={'특이사항 보고 상세'}
-              />
-            )}
+            component={TempComponent}
+            // children={() => (
+            //   <AllClearResponse
+            //     key={1}
+            //     isLoading={isLoading}
+            //     isFault={isFault}
+            //     isError={isError}
+            //     list={problems}
+            //     categoryName={'특이사항 보고 상세'}
+            //   />
+            // )}
             options={{
               tabBarIcon: ({ focused }) =>
                 tabBarIcon(
@@ -179,16 +181,17 @@ export default function AllClearStatisticsTab(
           />
           <Tab.Screen
             name="Unreads"
-            children={() => (
-              <Unreads
-                key={2}
-                isLoading={isLoading}
-                isFault={isFault}
-                isError={isError}
-                list={unreads}
-                categoryName={'읽지 않은 전우들'}
-              />
-            )}
+            component={TempComponent}
+            // children={() => (
+            //   <Unreads
+            //     key={2}
+            //     isLoading={isLoading}
+            //     isFault={isFault}
+            //     isError={isError}
+            //     list={unreads}
+            //     categoryName={'읽지 않은 전우들'}
+            //   />
+            // )}
             options={{
               tabBarIcon: ({ focused }) =>
                 tabBarIcon(
@@ -204,7 +207,7 @@ export default function AllClearStatisticsTab(
                 fontSize: 0,
               },
             }}
-          /> */}
+          />
         </Tab.Navigator>
       </View>
     </>
@@ -247,3 +250,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+
+const TempComponent = () => {
+
+  return <View><Text>hi</Text></View>
+}
