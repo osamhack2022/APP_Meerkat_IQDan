@@ -60,29 +60,37 @@
 ![](./.images/techstack.png)
 
 ### Frontend
+<img src="https://img.shields.io/badge/React Native-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=Expo&logoColor=white">
+
+
 - [React Native](https://reactnative.dev/) - React.js를 사용한 Cross-Platform 앱 프레임워크 
 - [Expo](https://expo.dev/) - React Native 개발/배포를 쉽게 도와주는 플랫폼
 
 ### Backend
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"><img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white"><img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=Socket.io&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=Prisma&logoColor=white">
 
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Node.js](https://nodejs.org/ko/) - 비동기 서버용 JavaScript 런타임
-- <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Express.js](https://expressjs.com/) - Node.js용 웹 애플리케이션 프레임워크
-- <img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Socket.io](https://socket.io/) - WebSocket을 통한 실시간 통신 라이브러리
-- <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[MariaDB](https://mariadb.org/) - MySQL에 기반을 둔 관계형 데이터베이스 관리 시스템
-- <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Prisma](https://www.prisma.io/) - Node.js와 Typescript를 위한 ORM (Object Relational Mapping)
+- [Node.js](https://nodejs.org/ko/) - 비동기 서버용 JavaScript 런타임
+- [Express.js](https://expressjs.com/) - Node.js용 웹 애플리케이션 프레임워크
+- [Socket.io](https://socket.io/) - WebSocket을 통한 실시간 통신 라이브러리
+- [MariaDB](https://mariadb.org/) - MySQL에 기반을 둔 관계형 데이터베이스 관리 시스템
+- [Prisma](https://www.prisma.io/) - Node.js와 Typescript를 위한 ORM (Object Relational Mapping)
 
 ### Design & Collaboration 
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Figma](https://www.figma.com/) - 인터페이스 디자인을 위한 웹 기반 협업 툴
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Zoom](https://zoom.us/) - 화상 회의 
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Github](https://github.com/) - Git협업 오픈소스 플랫폼
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Google slides](https://www.google.com/intl/ko_kr/slides/about/) - 협업 가능한 웹 기반 프레젠테이션 제작 툴
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white"><img src="https://img.shields.io/badge/Zoom-2D8CFF?style=for-the-badge&logo=Zoom&logoColor=white"><img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white"><img src="https://img.shields.io/badge/Google Slides-FFBB00?style=for-the-badge&logo=googleDrive&logoColor=white">
+
+- [Figma](https://www.figma.com/) - 인터페이스 디자인을 위한 웹 기반 협업 툴
+- [Zoom](https://zoom.us/) - 화상 회의 
+- [Github](https://github.com/) - Git협업 오픈소스 플랫폼
+- [Google slides](https://www.google.com/intl/ko_kr/slides/about/) - 협업 가능한 웹 기반 프레젠테이션 제작 툴
 
 ### DevOps
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Github codespace](https://github.com/features/codespaces) - 웹 브라우저에서 돌아가는 클라우드 기반 개발 플랫폼
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Pm2](https://pm2.keymetrics.io/) - Node.js 프로세스 매니저
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Nginx](https://www.nginx.com/) - 가벼움과 높은 성능을 목표로하는 웹 서버
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
-- <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white" width="40px">[Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
+<img src="https://img.shields.io/badge/Codespaces-181717?style=for-the-badge&logo=Github&logoColor=white"><img src="https://img.shields.io/badge/PM2-2B037A?style=for-the-badge&logo=PM2&logoColor=white"><img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=Nginx&logoColor=white"><img src="https://img.shields.io/badge/LetsEncrypt-003A70?style=for-the-badge&logo=letsencrypt&logoColor=white"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
+
+- [Github codespace](https://github.com/features/codespaces) - 웹 브라우저에서 돌아가는 클라우드 기반 개발 플랫폼
+- [Pm2](https://pm2.keymetrics.io/) - Node.js 프로세스 매니저
+- [Nginx](https://www.nginx.com/) - 가벼움과 높은 성능을 목표로하는 웹 서버
+- [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
+- [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
 ## :taco:프로젝트 사용법 (Getting Started)
 ### Clone
