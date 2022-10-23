@@ -20,7 +20,7 @@ import AddFriend from "./pages/AddFriend";
 import UnreadPeoples from "./pages/UnreadPeoples";
 import { useSocketIO } from "./hooks/useSocketIO";
 import { globalSocketFunction } from "./common/globalSocket";
-import AllClearStatisticsTab from "./pages/AllClearStatistics/AllClearStatisticsTab";
+import AllClearStatistics from "./pages/AllClearStatistics/AllClearStatistics";
 import ReportAllClear from "./pages/ReportAllClear";
 
 
@@ -118,8 +118,8 @@ export default function App() {
                 options={{ headerShown: false }}
               />          
               <Stack.Screen
-                name="AllClearStatisticsTab"
-                component={AllClearStatisticsTab}
+                name="AllClearStatistics"
+                component={AllClearStatistics}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
