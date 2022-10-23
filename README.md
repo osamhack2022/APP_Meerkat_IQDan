@@ -9,7 +9,7 @@
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/osamhack2022/APP_Meerkat_IQDan"></a>
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues"><img alt="GitHub forks" src="https://img.shields.io/github/issues/osamhack2022/APP_Meerkat_IQDan"></a>
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues"><img alt="GitHub forks" src="https://img.shields.io/github/issues-closed/osamhack2022/APP_Meerkat_IQDan"></a>
-	<a href="https://github.com/osamhack2021/WEB_Millage_ICM/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/osamhack2021/WEB_Millage_ICM"></a>
+	<a href="https://github.com/osamhack2021/WEB_Millage_ICM/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/osamhack2022/APP_Meerkat_IQDan"></a>
 </p>
 
 
@@ -18,7 +18,7 @@
 | 
 <a href="">Presentation</a> 
 | 
-<a href="https://bit.ly/osam-handover-video">Demo Video</a>
+<a href="">Demo Video</a>
 </p>
 
 
@@ -44,15 +44,31 @@
 * 웹 필수 요건: Chrome x.x버전 이상, Firefox x.x버전 이상 
 
 ## 기술 스택 (Technology Used) 
-### Server(back-end)
-- Node.js 16.17.0 
-- Express
-- Socket.io
-- MariaDB
-- Prisma
- 
-### Front-end
--  React Native
+### Frontend
+- [React Native](https://reactnative.dev/) - React.js를 사용한 Cross-Platform 앱 프레임워크 
+- [Expo](https://expo.dev/) - React Native 개발/배포를 쉽게 도와주는 플랫폼
+
+### Backend
+- [Node.js](https://nodejs.org/ko/) - 비동기 서버용 JavaScript 런타임
+- [Express.js](https://expressjs.com/) - Node.js용 웹 애플리케이션 프레임워크
+- [Socket.io](https://socket.io/) - WebSocket을 통한 실시간 통신 라이브러리
+- [MariaDB](https://mariadb.org/) - MySQL에 기반을 둔 관계형 데이터베이스 관리 시스템
+- [Prisma](https://www.prisma.io/) - Node.js와 Typescript를 위한 ORM (Object Relational Mapping)
+
+### Design & Collaboration 
+- [Figma](https://www.figma.com/) - 인터페이스 디자인을 위한 웹 기반 협업 툴
+- [Zoom](https://zoom.us/) - 화상 회의 
+- [Github](https://github.com/) - Git협업 오픈소스 플랫폼
+- [Google slides](https://www.google.com/intl/ko_kr/slides/about/) - 협업 가능한 웹 기반 프레젠테이션 제작 툴
+
+### DevOps
+- [Github codespace](https://github.com/features/codespaces) - 웹 브라우저에서 돌아가는 클라우드 기반 개발 플랫폼
+- [Pm2](https://pm2.keymetrics.io/) - Node.js 프로세스 매니저
+- [Redis](https://redis.io/) - 메모리에서 돌아가는 Key-Value 구조 비관계형 데이터베이스 관리 시스템
+- [Nginx](https://www.nginx.com/) - 가벼움과 높은 성능을 목표로하는 웹 서버
+- [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
+- [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술들을 사용해 컨테이너 단위로 실행하고 관리
+- [Kubernetes](https://kubernetes.io/) - Docker 컨테이너들을 자동 배포, 스케일링 등을 제공하는 관리시스템
 
 ## 프로젝트 사용법 (Getting Started)
 ```bash
