@@ -15,7 +15,6 @@ export default function EventFriendBox(props: UserProfile) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 68,
     width: 50,
     marginRight: 8,
     alignItems: "center",
@@ -31,5 +30,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: "noto-reg",
     lineHeight: 25,
+    textAlign: "center",
   }
 });

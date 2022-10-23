@@ -47,7 +47,7 @@ const EventFriendList = (props: {users: User[]}) => {
     >
       {
         props.users.map((user) => 
-          <EventFriendBox key={user.uid} name={`${user.militaryRank} ${user.name}`} image={user.image}/>
+          <EventFriendBox key={user.uid} name={`${user.name}`} image={user.image}/>
         )
       }
     </ScrollView>
