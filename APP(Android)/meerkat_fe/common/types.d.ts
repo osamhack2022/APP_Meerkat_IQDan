@@ -171,7 +171,7 @@ export type FetchState = {
 }
 
 export type AllClearTabParamList = {
-    AllClears: Array<AllClearReport>;
-    Unreads: Array<User>;
-    Problems: Array<AllClearReport>;
+    AllClears: undefined;
+    Unreads: undefined;
+    Problems: undefined;
 }
