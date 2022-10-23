@@ -23,7 +23,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     }, [isNotLoggedIn])
 
     useEffect(() => {
-        api.get("https://code.seholee.com:8090/123").then((res) => {
+        api.get("https://code.seholee.com:8090/").then((res) => {
             setResp(res.status.toString())
         }).catch((err) => {
             setResp(JSON.stringify(err))

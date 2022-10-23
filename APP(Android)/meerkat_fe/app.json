@@ -26,7 +26,7 @@
         "backgroundColor": "#000000"
       },
       "package": "com.seho08.meerkat_fe",
-      "permissions": []
+      "permissions": ["android.permission.ACCESS_NETWORK_STATE", "android.permission.INTERNET"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
