@@ -18,6 +18,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     const [currPage, setCurrPage] = useState<string>("");
     const [resp, setResp] = useState("")
     const [resp2, setResp2] = useState("")
+    const [resp3, setResp3] = useState("")
 
     useEffect(() => {
         if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatroomList"})
@@ -29,6 +30,9 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
         }).catch((err) => {
             setResp(JSON.stringify(err))
         })
+        api.get("https://google.com").then((res) => {
+            setResp3(res.status.toString())
+        }).catch((err) => {setResp3(JSON.stringify(err))})
         fetch('https://code.seholee.com:8090/').then((res) => {
             setResp2(JSON.stringify(res))
         }).catch((err) => {
@@ -59,8 +63,9 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                     <Image source={logo} style={styles.logo} />
                     <Text>{env.dev.apiBaseUrl}</Text>
                 </View>
-                <Text>{resp}</Text>
-                <Text>{resp2}s</Text>
+                <Text>{resp}!@#</Text>
+                <Text>{resp2}!@#</Text>
+                <Text>{resp3}!@#</Text>
                 {showAuthComps()}
             </View>
         </ScrollView>
