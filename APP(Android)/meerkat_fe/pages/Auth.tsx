@@ -19,6 +19,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
     const [resp, setResp] = useState("")
     const [resp2, setResp2] = useState("")
     const [resp3, setResp3] = useState("")
+    const [resp4, setResp4] = useState("")
 
     useEffect(() => {
         if (!isNotLoggedIn) navigation.navigate('Main', {screen: "ChatroomList"})
@@ -29,14 +30,21 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
             setResp(res.status.toString())
         }).catch((err) => {
             setResp(JSON.stringify(err))
+        fetch('https://code.seholee.com:8090/').then((res) => {
+            setResp2("resp2succ" + JSON.stringify(res))
+        }).catch((err) => {
+            setResp2("resp2fail" + JSON.stringify(err))
         })
+        })
+
         api.get("https://google.com").then((res) => {
             setResp3(res.status.toString())
         }).catch((err) => {setResp3(JSON.stringify(err))})
-        fetch('https://code.seholee.com:8090/').then((res) => {
-            setResp2(JSON.stringify(res))
+
+        fetch('https://google.com').then((res) => {
+            setResp4("resp4succ" + JSON.stringify(res))
         }).catch((err) => {
-            setResp2(JSON.stringify(err))
+            setResp4("resp4fail" + JSON.stringify(err))
         })
     }, [])
 
@@ -66,6 +74,7 @@ export default function Auth(props: RootStackScreenProps<"Auth">) {
                 <Text>{resp}!@#</Text>
                 <Text>{resp2}!@#</Text>
                 <Text>{resp3}!@#</Text>
+                <Text>{resp4}!@#</Text>
                 {showAuthComps()}
             </View>
         </ScrollView>
