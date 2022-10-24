@@ -61,7 +61,7 @@
 
 ![](./.images/stacks.png)
 
-<img src="./.images/stacks.png" height=100>
+<img src="./.images/stacks.png" height=750>
 
 ### Frontend
 
