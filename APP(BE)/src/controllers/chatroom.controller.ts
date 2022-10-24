@@ -1,15 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-import { Chatroom, Friends, User } from '@prisma/client';
+import { NextFunction, Response } from 'express';
+import { Chatroom, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import FriendsService from '@services/friends.service';
 import ChatroomService from '@/services/chatroom.service';
-import {
-  ChatroomAndNumOfUnreadMessagesDto,
-  CreateChatroomDto,
-  InviteChatroomDto,
-  PutChatroomKeyDto,
-  UpdateChatroomDto,
-} from '@/dtos/chatroom.dto';
+import { ChatroomAndNumOfUnreadMessagesDto, CreateChatroomDto, InviteChatroomDto, PutChatroomKeyDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
 import { ChatroomWithKey } from '../interfaces/chatroom.interface';
 
 class ChatroomController {
@@ -280,23 +274,23 @@ class ChatroomController {
 
 
   // 채팅방 삭제
-    public removeChat = async (
-      req: RequestWithUser,
-      res: Response,
-      next: NextFunction,
-    ): Promise<void> => {
-      try {
-        const userId = req.user.userId;
-        const chatroomId = Number(req.params.id);
-        await this.chatroomService.removeChat(userId, chatroomId);
-  
-        res.status(200).json({
-          message: `success`,
-        });
-      } catch (error) {
-        next(error);
-      }
-    };
+  public removeChat = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const userId = req.user.userId;
+      const chatroomId = Number(req.params.id);
+      await this.chatroomService.removeChat(userId, chatroomId);
+
+      res.status(200).json({
+        message: `success`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 }
 

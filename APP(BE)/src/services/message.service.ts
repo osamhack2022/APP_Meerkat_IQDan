@@ -1,4 +1,3 @@
-import { HttpException } from '@exceptions/HttpException';
 import prisma from '../db';
 import { isEmpty } from 'class-validator';
 import { Message, User, UsersOnChatrooms } from '@prisma/client';
@@ -7,18 +6,23 @@ import ValidateSerivce from './validate.service';
 
 class MessageService {
   private validateService = new ValidateSerivce();
+
   /**
-   * iMessageDto 있는 chatRoom이 없거나, user가 없거나, user가 chatroom에 없는 경우 throw error
+   * parameter로 받은 iMessageDto를 DB에 저장하고, messageId를 받아옵니다.
    * @param iMessageDto : 저장할 메시지
+   * @throws Error '404 Chatroom does not exist.'
+   * @throws Error '409 User does not exist'
+   * @throws Error '403 You are not a member of this chat room
    * @returns 저장된 message id
    */
   public async storeMessageAndGetId(iMessageDto: IMessageDto): Promise<number> {
+    // validation part
     const chatroom = await prisma.chatroom.findUnique({
       where: {
         chatroomId: iMessageDto.belongChatroomId,
       },
     });
-    if (isEmpty(chatroom)) throw new Error('404 Chatroom does not exist.');
+    if (isEmpty(chatroom)) throw new Error('404 Chatroom does not exist');
 
     const user = await prisma.user.findUnique({
       where: {
@@ -35,7 +39,7 @@ class MessageService {
         },
       }
     })
-    if (isEmpty(usersOnChatrooms)) throw new Error('403 You are not a member of this chat room.');
+    if (isEmpty(usersOnChatrooms)) throw new Error('403 You are not a member of this chat room');
 
     const message = await prisma.message.create({
       data: {
@@ -47,7 +51,6 @@ class MessageService {
         hasQuickReply: iMessageDto.hasQuickReplies
       },
     });
-
 
     // set recent message time for chatroom
     await prisma.chatroom.update({
@@ -63,7 +66,10 @@ class MessageService {
   }
 
   /**
-   * 인자로 받은 chatRoom이 없거나, user가 없거나, user가 chatroom에 없는 경우 throw error
+   * @param findMessagDto
+   * @throw HttpException "400, User does not exist"
+   * @throw HttpException "404, Chatroom does not exist"
+   * @throw HttpException "403, You are not a member of this chat room"
    * @returns client가 속한 방에서 제일 최근에 읽은 messageId 다음 것부터 끝까지 return.
    */
   public async getUnreadChats(findMessagDto: FindMessageDto): Promise<Message[]> {
@@ -72,7 +78,7 @@ class MessageService {
     await this.validateService.checkChatroomExists(findMessagDto.chatroomId);
     await this.validateService.checkUserInChatroom(findMessagDto.userId, findMessagDto.chatroomId);
 
-    // get unread chats FIXME 
+    // FIXME get unread chats
     const unreadChats: Message[] = await prisma.$queryRaw<Message[]>`
     select * from Message m
     where m.messageId >
@@ -87,7 +93,7 @@ class MessageService {
   }
 
   /**
-   * 가장 최근에 본 메세지 번호 update 해주기.
+   * 가장 최근에 본 messageId를 갱신합니다.
    * @param userId
    * @param chatroomId
    * @param messageId
@@ -113,7 +119,7 @@ class MessageService {
   }
 
   /**
-   * @deprecated setRecentReadMessage로 사용.
+   * @deprecated setRecentReadMessage로 사용
    */
   public async updateRecentReadMessage(usersOnChatroomsKeyDto: UsersOnChatroomsKeyDto): Promise<number>{
     // checking part
@@ -121,17 +127,19 @@ class MessageService {
     await this.validateService.checkChatroomExists(usersOnChatroomsKeyDto.chatroomId);
     await this.validateService.checkUserInChatroom(usersOnChatroomsKeyDto.userId, usersOnChatroomsKeyDto.chatroomId);
 
-    // update recent read message id FIXME
+    // FIXME update recent read message id 
     const usersOnChatrooms: UsersOnChatrooms = await prisma.$queryRaw<UsersOnChatrooms>`
     update UsersOnChatrooms set recentReadMessageId = (select max(messageId) from Message)
     where chatroomId = {} and userId = {}`;
     return usersOnChatrooms.recentReadMessageId;
   }
   
-  
-
   /**
-   * get unread people of given message
+   * parameter로 주어진 getUnreadDto의 message를 읽지 않은 사용자 목록을 리턴합니다.
+   * @param getUnreadDto 
+   * @throw HttpException "404, Chatroom does not exist"
+   * @throw HttpException "404, Message does not exist"
+   * @returns 메시지를 읽지 않은 사용자 목록
    */
   public async getUnreadUsers(getUnreadDto: GetUnreadsDto): Promise<User[]> {
     // checking part
@@ -151,8 +159,12 @@ class MessageService {
     return unreadUsers;
   }
 
-    /**
-   * get unread people of given message
+  /**
+   * parameter로 주어진 getReadDto의 message를 읽은 사용자 목록을 리턴합니다.
+   * @param getReadDto 
+   * @throw HttpException "404, Chatroom does not exist"
+   * @throw HttpException "404, Message does not exist"
+   * @returns 메시지를 읽은 사용자 목록
    */
   public async getReadUsers(getReadDto: GetReadsDto): Promise<User[]> {
     // checking part

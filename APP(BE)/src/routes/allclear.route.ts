@@ -5,7 +5,6 @@ import validationMiddleware from "@/middlewares/validation.middleware";
 import { CreateAllClearDto, CreateAllClearResponseDto } from "@/dtos/allclear.dto";
 import { Router } from "express";
 
-
 class AllClearRoutes implements Routes {
   public path = '/allclear';
   public router = Router();

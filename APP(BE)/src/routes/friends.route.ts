@@ -15,8 +15,11 @@ class FriendsRouter implements Routes {
   }
 
   private initializeRoutes() {
+    // 현 사용자의 친구 목록 가져오기
     this.router.get(`${this.path}`, authMiddleware, this.friendsController.getFriendsById);
+    // 친구 생성
     this.router.post(`${this.path}`, validationMiddleware(InputFriendDto, 'body'), authMiddleware, this.friendsController.createFriend);
+    // 친구 삭제
     this.router.delete(`${this.path}`, validationMiddleware(InputFriendDto, 'body'), authMiddleware,this.friendsController.deleteFriend);
     
   }

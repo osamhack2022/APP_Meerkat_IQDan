@@ -1,4 +1,5 @@
 import prisma from "../db"
+
 /**
  * 크론탭으로 job설정해서 주기적으로 메세지를 삭제해줍니다.
  * 아래 함수는 샘플이며, 현재 돌아가고 있지 않습니다. 즉, 
@@ -26,7 +27,7 @@ const removeMessageBatch = async () => {
         })
     }))
 
-    // 시간 지난 메세지 모두 서버에서 삭제.
+    // 시간 지난 메세지 모두 서버에서 삭제
     await Promise.all(chatrooms.map((room, idx) => {
         let readId = 1000000000; // max
         if (room.removeAfterRead) {

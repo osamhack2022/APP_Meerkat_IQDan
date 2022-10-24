@@ -1,12 +1,6 @@
-import {
-  IsDataURI,
-  IsDate,
-  IsDecimal,
-  IsEmail,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsDataURI, IsDecimal, IsOptional, IsString } from 'class-validator';
 
+// 로그인 시 사용하는 DTO
 export class LoginUserDto {
   @IsString()
   public uid: string;
@@ -15,6 +9,7 @@ export class LoginUserDto {
   public password: string;
 }
 
+// 사용자 생성 시 사용하는 DTO
 export class CreateUserDto {
   @IsString()
   public uid: string;
@@ -42,6 +37,7 @@ export class CreateUserDto {
   public image: string;
 }
 
+// 사용자 정보를 읽어올 때 사용하는 DTO
 export class ReadUserDto {
   @IsDecimal()
   public userId: string;
@@ -79,6 +75,7 @@ export class ReadUserDto {
   public image: string;
 }
 
+// 사용자 정보 갱신 시 사용하는 DTO
 export class UpdateUserDto {
   @IsDecimal()
   public userId: string;
@@ -116,6 +113,7 @@ export class UpdateUserDto {
   public image: string;
 }
 
+// 사용자 검색 시 사용하는 DTO
 export class SearchUserDto {
   @IsString()
   public name: string;
@@ -124,6 +122,7 @@ export class SearchUserDto {
   public serviceNumber: string;
 }
 
+// 비밀번호 갱신 시 사용하는 DTO
 export class UpdatePasswordDto {
   @IsString()
   public currentPassword: string;
@@ -132,6 +131,7 @@ export class UpdatePasswordDto {
   public password: string;
 }
 
+// 공개키 갱신 시 사용하는 DTO
 export class updatePublicKeyDto {
   @IsString()
   public publicKey: string;

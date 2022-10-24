@@ -8,12 +8,13 @@ import roomSocketHandler from "./roomSocketHandler";
 import socketMiddleware from "./socketMiddleware";
 import AllClearSerivce from "@/services/allclear.service";
 
-class SocketIO{
+class SocketIO {
     private ioServer: Server;
     private messageService = new MessageSerivce();
     private allClearService = new AllClearSerivce();
 
-    constructor(server: http.Server | https.Server){
+    constructor(server: http.Server | https.Server) {
+        // socket connection을 생성합니다.
         this.ioServer = new Server(server, {
             cors: {
                 origin: "*",
@@ -24,14 +25,14 @@ class SocketIO{
         });
 
         const chatio = this.ioServer.of("/chat");
-        chatio.on("connection", (socket:Socket)=>{
-            // TODO : debug용 console log
+        chatio.on("connection", (socket: Socket) => {
+            ////////// DEBUG : debug용 console log ////////
             console.log("chat namespace new user!!");
+            ///////////////////////////////////////////////
 
             // token validator middleware. if unauthorized, then disconnect.
             socketMiddleware(chatio, socket);
-            // socket.handshake.auth.userId => userId value가 나옴.
-            
+
             // default socket
             defaultSocketHandler(chatio, socket);
             // global socket
@@ -40,12 +41,12 @@ class SocketIO{
             roomSocketHandler(chatio, socket, this.messageService, this.allClearService);
         });
 
-
-        // 다른 connection일 경우 쳐냄.
+        // 다른 connection일 경우 쳐냅니다.
         this.ioServer.on("connection", (socket: Socket) => {
-            // TODO : debug용 console log
-            console.log("disconnect default connection");
             socket.disconnect();
+            ////////// DEBUG : debug용 console log ////////
+            console.log("default namespace new user, cutting them");
+            ///////////////////////////////////////////////
         });
     }
 }

@@ -2,6 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@exceptions/HttpException';
 import { logger } from '@utils/logger';
 
+/**
+ * 오류 발생 시 해당 error를 리턴합니다.
+ * @param error 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 const errorMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
   try {
     const status: number = error.status || 500;

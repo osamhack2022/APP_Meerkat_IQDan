@@ -1,6 +1,7 @@
-import { IsBoolean, IsDataURI, IsDate, IsDecimal, IsEmail, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
 
-export class FindMessageDto{
+// 메시지를 찾을 때 사용하는 DTO
+export class FindMessageDto {
   @IsNumber()
   public chatroomId: number;
 
@@ -8,7 +9,8 @@ export class FindMessageDto{
   public userId: number;
 }
 
-export class UsersOnChatroomsKeyDto{
+// 사용자가 채팅방에 속해있는지 검색할 때 사용하는 DTO
+export class UsersOnChatroomsKeyDto {
   @IsNumber()
   public chatroomId: number;
 
@@ -16,9 +18,10 @@ export class UsersOnChatroomsKeyDto{
   public userId: number;
 }
 
+// 메시지 DTO
 export class IMessageDto {
   @IsNumber()
-  public _id : number;
+  public _id: number;
 
   @IsString()
   public text: string;
@@ -39,7 +42,8 @@ export class IMessageDto {
   public hasQuickReplies: boolean;
 }
 
-export class SetRecentRead {
+// 메시지 읽은 사람 갱신 시 사용하는 DTO
+export class SetRecentReadDto {
   @IsNumber()
   public chatroomId: number;
 
@@ -47,6 +51,7 @@ export class SetRecentRead {
   public recentMessageId: number;
 }
 
+// 메시지를 읽지 않은 사람을 가져올 때 사용하는 DTO
 export class GetUnreadsDto {
   @IsNumber()
   public chatroomId: number;
@@ -55,6 +60,7 @@ export class GetUnreadsDto {
   public messageId: number;
 }
 
+// 메시지를 읽은 사람을 가져올 때 사용하는 DTO
 export class GetReadsDto {
   @IsNumber()
   public chatroomId: number;

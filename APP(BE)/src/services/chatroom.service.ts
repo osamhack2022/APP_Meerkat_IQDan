@@ -1,7 +1,5 @@
-import { ChatRemoveType, Chatroom, User } from '@prisma/client';
+import { ChatRemoveType, Chatroom } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
-import { isEmpty } from '@utils/util';
-import { equals } from 'class-validator';
 import prisma from '../db';
 import { ChatroomWithKey } from '../interfaces/chatroom.interface';
 import { ChatroomAndNumOfUnreadMessagesDto } from '@/dtos/chatroom.dto';

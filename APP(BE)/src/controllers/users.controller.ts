@@ -9,6 +9,7 @@ class UsersController {
   public userService = new userService();
   public authService = new AuthService();
 
+  // 모든 사용자 리스트
   public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const findAllUsersData: User[] = await this.userService.findAllUser();
@@ -19,6 +20,7 @@ class UsersController {
     }
   };
 
+  // id에 해당하는 사용자 정보
   public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.id);
@@ -30,6 +32,7 @@ class UsersController {
     }
   };
 
+  // 나의 정보
   public getUserMe = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = req.user.userId;
@@ -41,6 +44,7 @@ class UsersController {
     }
   };
 
+  // 나의 친구 정보
   public getUserForFriend = async (
     req: Request,
     res: Response,
@@ -56,6 +60,7 @@ class UsersController {
     }
   };
 
+  // 사용자 생성
   public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
@@ -88,7 +93,7 @@ class UsersController {
     }
   };
 
-  // 프로필 사진 변경 (image)
+  // 나의 프로필 사진 변경 (image)
   public updateProfilePic = async (
     req: RequestWithUser,
     res: Response,
@@ -105,7 +110,7 @@ class UsersController {
     }
   };
 
-  // 비밀번호 변경 (password)
+  // 나의 비밀번호 변경 (password)
   public updateUserPw = async (
     req: RequestWithUser,
     res: Response,
@@ -125,6 +130,7 @@ class UsersController {
     }
   };
 
+  // 사용자 삭제
   public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.id);
@@ -136,6 +142,7 @@ class UsersController {
     }
   };
 
+  // 공개키 가져오기
   public getPublicKey = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.id);
@@ -149,6 +156,7 @@ class UsersController {
     }
   };
 
+  // 나의 공개키 갱신
   public updatePublicKey = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const uid = req.user.uid;

@@ -3,6 +3,15 @@ import { validate, ValidationError } from 'class-validator';
 import { RequestHandler } from 'express';
 import { HttpException } from '@exceptions/HttpException';
 
+/**
+ * parameter로 받은 정보가 올바른지 검증합니다.
+ * @param type 
+ * @param value 
+ * @param skipMissingProperties 
+ * @param whitelist 
+ * @param forbidNonWhitelisted 
+ * @returns 
+ */
 const validationMiddleware = (
   type: any,
   value: string | 'body' | 'query' | 'params' = 'body',
