@@ -8,7 +8,9 @@ export default class AllClearSerivce{
     private validateSerivce = new ValidateSerivce();
 
     /**
-     * @returns messageId에 해당하는 AllClear 응답 전체
+     * @param userId
+     * @param messageId
+     * @returns messageId에 해당하는 AllClear response 전체 + 응답한 user 정보
      */
     public async findAllClearResponsesByMessageId(userId : number, messageId: number): Promise<AllClearResponse[]>{
         // validation part
@@ -23,7 +25,7 @@ export default class AllClearSerivce{
         if(isEmpty(allClear)) throw new HttpException(404, 'All clear does not exist.');
         if(allClear.message.senderId !== userId) throw new HttpException(403, 'You are not permitted to access this resource');
 
-        // get all allclear response join user
+        // get all allclear response with user
         const allClearResponses = await prisma.allClearResponse.findMany({
             where:{
                 allClear:{
@@ -34,6 +36,8 @@ export default class AllClearSerivce{
                 user: true,
             }
         });
+
+        // remove sensitive information
         return allClearResponses.map((element)=>{
             delete element.user.password;
             return element;
@@ -41,7 +45,10 @@ export default class AllClearSerivce{
     }
     
     /**
-     * @returns messageId에 해당하는 AllClear 생성 및 리턴
+     * messageId에 해당하는 AllClear 생성 및 리턴합니다.
+     * @param userId
+     * @param messageId
+     * @returns messageId에 해당하는 AllClear
      */
     public async createAllClear(userId: number, messageId: number): Promise<AllClear>{
         // validation part
@@ -59,7 +66,9 @@ export default class AllClearSerivce{
     }
 
     /**
-     * @returns 입력에 해당하는 AllClearResponse 하나를 리턴.
+     * @param userId
+     * @param messageId
+     * @returns userId에 해당하는 사용자가 작성한 AllClearResponse
      */
     public async findAllClearResponse(userId: number, messageId: number): Promise<AllClearResponse>{
         // validation part
@@ -80,8 +89,12 @@ export default class AllClearSerivce{
     }
 
     /**
-     * messageId에 해당하는 AllClear에 userId가 응답.
-     * @returns 기존에 AllClearResponse가 있으면 갱신, 없으면 생성 후 리턴.
+     * messageId에 해당하는 AllClear에 userId가 응답한 내용을 저장합니다.
+     * @param userId
+     * @param messageId
+     * @param type: 응답 타입(이상무, 특이사항)
+     * @param content: 응답 내용
+     * @returns 기존에 AllClearResponse가 있으면 갱신 후 리턴, 없으면 생성 후 리턴.
      */
     public async createAllClearResponse(userId: number, messageId: number, type: AllClearResponseType, content: string): Promise<AllClearResponse>{
         // validation part

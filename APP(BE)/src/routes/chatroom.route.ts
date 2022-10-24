@@ -3,7 +3,7 @@ import ChatroomController from '@/controllers/chatroom.controller';
 import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import validationMiddleware from '@/middlewares/validation.middleware';
-import { CreateChatroomDto, GetChatroomUsersInfoDto, InviteChatroomDto, UpdateChatroomDto} from '@/dtos/chatroom.dto';
+import { CreateChatroomDto, InviteChatroomDto, UpdateChatroomDto } from '@/dtos/chatroom.dto';
 import { PutChatroomKeyDto } from '../dtos/chatroom.dto';
 
 class ChatroomRoute implements Routes {
@@ -21,13 +21,13 @@ class ChatroomRoute implements Routes {
       `${this.path}/my`,
       authMiddleware,
       this.chatroomController.getMyChatrooms
-      )
+    )
     // 해당 유저의 모든 채팅방 정보 + 안읽은 메시지 개수 가져오기
     this.router.get(
       `${this.path}/myUnreads`,
       authMiddleware,
       this.chatroomController.getMyChatroomsAndNumOfUnreads
-      )
+    )
     // 한 개의 채팅방 정보 가져오기
     this.router.get(
       `${this.path}/:id(\\d+)`,
@@ -91,7 +91,7 @@ class ChatroomRoute implements Routes {
       authMiddleware,
       this.chatroomController.removeChat
     )
-    
+
   }
 }
 

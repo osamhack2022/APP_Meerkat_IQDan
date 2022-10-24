@@ -16,7 +16,7 @@ import { logger, stream } from '@utils/logger';
 import http from "http";
 import https from "https";
 import fs from "fs";
-// route
+// socket
 import SocketIO from "./socket/socketio";
 
 class App {
@@ -26,7 +26,6 @@ class App {
   public http_port: string | number;
   public https_port: string | number;
   private credentials: Object;
-
 
   constructor(routes: Routes[]) {
     this.app = express();
@@ -42,6 +41,7 @@ class App {
     this.initializeErrorHandling();
   }
 
+  // start server with socket
   public start() {
     // http server
     const httpServer = http.createServer(this.app);

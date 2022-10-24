@@ -2,11 +2,12 @@ import { NextFunction, Response } from 'express';
 import { Message, User } from '@prisma/client';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import MessageService from '@/services/message.service';
-import { FindMessageDto, GetReadsDto, GetUnreadsDto, SetRecentRead } from '@/dtos/messages.dto';
+import { FindMessageDto, GetReadsDto, GetUnreadsDto, SetRecentReadDto } from '@/dtos/messages.dto';
 
 class MessagesController {
   public messagesService = new MessageService();
 
+  // 채팅방에서 읽지 않은 모든 메시지 리스트 + 최근에 읽은 메시지 ID 업데이트
   public getUnreadMessages = async (
     req: RequestWithUser,
     res: Response,
@@ -17,8 +18,9 @@ class MessagesController {
         chatroomId: Number(req.params.id),
         userId: req.user.userId,
       };
-      const unreadMessage: Message[] = await this.messagesService.getUnreadChats(findMessagDto);
 
+      // 읽지 않은 모든 메시지
+      const unreadMessage: Message[] = await this.messagesService.getUnreadChats(findMessagDto);
       const result = unreadMessage.map(message => {
         return {
           _id: message.messageId,
@@ -49,6 +51,7 @@ class MessagesController {
     }
   };
 
+  // 최근에 읽은 메시지 ID 업데이트 
   public setRecentRead = async (
     req: RequestWithUser,
     res: Response,
@@ -56,7 +59,7 @@ class MessagesController {
   ): Promise<void> => {
     try {
       const userId = req.user.userId;
-      const { chatroomId, recentMessageId } = req.body as SetRecentRead;
+      const { chatroomId, recentMessageId } = req.body as SetRecentReadDto;
 
       await this.messagesService.setRecentReadMessage(userId, chatroomId, recentMessageId);
 
@@ -68,6 +71,7 @@ class MessagesController {
     }
   };
 
+  // 메시지를 읽지 않은 사용자 목록
   public getUnreadPeoples = async (
     req: RequestWithUser,
     res: Response,
@@ -80,7 +84,7 @@ class MessagesController {
       };
 
       const unreadPeoples: User[] = await this.messagesService.getUnreadUsers(getUnreadsDto);
-      const result = unreadPeoples.map((element)=>{
+      const result = unreadPeoples.map((element) => {
         delete element.password;
         return element;
       });
@@ -94,6 +98,7 @@ class MessagesController {
     }
   };
 
+  // 메시지를 읽은 사용자 목록
   public getReadPeoples = async (
     req: RequestWithUser,
     res: Response,
@@ -106,7 +111,7 @@ class MessagesController {
       };
 
       const readPeoples: User[] = await this.messagesService.getReadUsers(getReadsDto);
-      const result = readPeoples.map((element)=>{
+      const result = readPeoples.map((element) => {
         delete element.password;
         return element;
       });

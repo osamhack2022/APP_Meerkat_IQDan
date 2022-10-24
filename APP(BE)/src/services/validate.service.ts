@@ -43,6 +43,7 @@ export default class ValidateSerivce{
 
   /**
    * throw error when message does not exists
+   * @throw HttpException "404, Message does not exist"
    */
    public async checkMessageExists(messageId: number): Promise<Message>{
     const message = await prisma.message.findUnique({ where: { messageId: messageId } });
@@ -52,6 +53,7 @@ export default class ValidateSerivce{
 
   /**
    * throw error when allclear does not exists
+   * @throw HttpException "404, All clear does not exist"
    */
   public async checkAllClearExists(messageId: number): Promise<AllClear>{
     const allClear = await prisma.allClear.findUnique({ where: { messageId: messageId } });
@@ -61,6 +63,7 @@ export default class ValidateSerivce{
 
   /**
    * throw error when allclear exists
+   * @throw HttpException "409, All clear already exist."
    */
    public async checkAllClearAlreadyExists(messageId: number): Promise<AllClear>{
     const allClear = await prisma.allClear.findUnique({ where: { messageId: messageId } });

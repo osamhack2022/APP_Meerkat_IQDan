@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { Friends, User } from '@prisma/client';
 import { FriendDto } from '@dtos/friends.dto';
 import FriendsService from '@services/friends.service';
@@ -7,6 +7,7 @@ import { RequestWithUser } from '@/interfaces/auth.interface';
 class FriendsController {
   public friendsService = new FriendsService();
 
+  // 나의 친구 목록 가져오기
   public getFriendsById = async (
     req: RequestWithUser,
     res: Response,
@@ -29,6 +30,7 @@ class FriendsController {
     }
   };
 
+  // 친구 생성
   public createFriend = async (
     req: RequestWithUser,
     res: Response,
@@ -49,6 +51,7 @@ class FriendsController {
     }
   };
 
+  // 친구 삭제
   public deleteFriend = async (
     req: RequestWithUser,
     res: Response,

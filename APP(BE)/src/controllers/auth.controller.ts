@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { User } from '@prisma/client';
-import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
+import { LoginUserDto } from '@dtos/users.dto';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
 
 class AuthController {
   public authService = new AuthService();
 
-
+  // 로그인
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: LoginUserDto = req.body;
@@ -19,6 +18,7 @@ class AuthController {
     }
   };
 
+  // 로그아웃
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const token=this.authService.getAuthorizationAtCookie(req.headers.cookie);
