@@ -120,7 +120,6 @@ class MessageService {
 
   /**
    * @deprecated setRecentReadMessage로 사용
-   * @see setRecentReadMessage
    */
   public async updateRecentReadMessage(usersOnChatroomsKeyDto: UsersOnChatroomsKeyDto): Promise<number>{
     // checking part
