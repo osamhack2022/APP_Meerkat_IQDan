@@ -158,6 +158,7 @@ class ChatroomService {
    * @param targetUserId
    * @param name
    * @param msgExpTime
+   * @deprecated 현재 미사용중. 모두 multichat으로 통합.
    * @returns 추가된 채팅방 chatroomId 혹은 이미 존재하는 채팅방 chatroomId
    */
   public async create1to1Chat(

@@ -118,30 +118,33 @@ class ChatroomController {
       const { name, targetUserIds, msgExpTime, commanderUserIds, removeAfterRead, removeType } =
         req.body as CreateChatroomDto;
 
-      if (targetUserIds.length === 1) {
-        let chatroomInfo = await this.chatroomService.create1to1Chat(
-          userId,
-          targetUserIds[0],
-          name,
-          msgExpTime,
-          removeAfterRead,
-          removeType
-        );
+      let chatroomInfo = await this.chatroomService.createMultiChat(
+        userId,
+        targetUserIds,
+        name,
+        msgExpTime,
+        commanderUserIds,
+        removeAfterRead,
+        removeType
+      );
 
-        res.status(200).json({ data: chatroomInfo, message: `success` });
-      } else {
-        let chatroomInfo = await this.chatroomService.createMultiChat(
-          userId,
-          targetUserIds,
-          name,
-          msgExpTime,
-          commanderUserIds,
-          removeAfterRead,
-          removeType
-        );
+      res.status(200).json({ data: chatroomInfo, message: `success` });
 
-        res.status(200).json({ data: chatroomInfo, message: `success` });
-      }
+      // 1대1 채팅방 구분하는 부분 현재 막아둠.
+      // if (targetUserIds.length === 1) {
+      //   let chatroomInfo = await this.chatroomService.create1to1Chat(
+      //     userId,
+      //     targetUserIds[0],
+      //     name,
+      //     msgExpTime,
+      //     removeAfterRead,
+      //     removeType
+      //   );
+
+      //   res.status(200).json({ data: chatroomInfo, message: `success` });
+      // } else {
+        
+      // }
     } catch (error) {
       next(error);
     }
