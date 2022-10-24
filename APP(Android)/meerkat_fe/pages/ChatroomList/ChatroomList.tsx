@@ -6,7 +6,8 @@ import {
   Text,
   View,
   ScrollView,
-  TextInput
+  TextInput,
+  Button
 } from 'react-native';
 // comps
 import Searchbar from '../../components/ChatroomList/Searchbar';
@@ -20,87 +21,11 @@ import { SocketContext } from '../../common/Context';
 // thirds
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import Dialog from 'react-native-dialog';
 import { hashMD5 } from '../../common/crypto';
 import { useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connectBelongRooms } from '../../common/globalSocket';
-
-const PasswordSettingPrompt = (props: {
-  visible: boolean;
-  roomId: number;
-  onClose: () => void;
-}) => {
-  let [pw, setPw] = useState('');
-  let ref = useRef<TextInput>(null);
-
-  const apply2ndPassword = async () => {
-    if (pw == '') return;
-    let hash = hashMD5(pw);
-    await AsyncStorage.setItem('2ndPassword-' + props.roomId.toString(), hash);
-    props.onClose();
-  };
-
-  useEffect(() => {
-    if (!props.visible) return;
-    setPw('');
-    setTimeout(() => { ref.current?.focus(); }, 100);
-  }, [props.visible]);
-
-   return (
-     <Dialog.Container visible={props.visible}>
-       <Dialog.Title>2차 비밀번호 설정</Dialog.Title>
-       <Dialog.Description>방을 2차 비밀번호로 암호화하여</Dialog.Description>
-       <Dialog.Description>보안을 강화합니다.</Dialog.Description>
-       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
-       <Dialog.Button onPress={props.onClose} label="취소" />
-       <Dialog.Button onPress={apply2ndPassword} label="확인" />
-     </Dialog.Container>
-   );
-};
-
-const OpenChatPrompt = (props: {
-  visible: boolean;
-  roomId: number;
-  onClose: () => void;
-  onVerify: () => void;
-}) => {
-  let [pw, setPw] = useState('');
-  let ref = useRef<TextInput>(null);
-
-  const confirm = async () => {
-    if (pw == '') return;
-    let hash = hashMD5(pw);
-    let roomKey = '2ndPassword-' + props.roomId.toString();
-    let roomHash = await AsyncStorage.getItem(roomKey);
-    
-    if (hash !== roomHash) {
-      console.log(roomKey, hash, roomHash);
-      Alert.alert("비밀번호가 틀렸습니다.")
-      props.onClose();
-      return;
-    }
-    
-    props.onVerify();
-    props.onClose();
-  };
-
-  useEffect(() => {
-    if (!props.visible) return;
-    setPw('');
-    setTimeout(() => { ref.current?.focus(); }, 100);
-  }, [props.visible]);
-
-   return (
-     <Dialog.Container visible={props.visible}>
-       <Dialog.Title>보안방</Dialog.Title>
-       <Dialog.Description>2차 비밀번호를 입력해야 볼 수 있습니다.</Dialog.Description>
-       <Dialog.Input textInputRef={ref} value={pw} onChangeText={setPw} />
-       <Dialog.Button onPress={props.onClose} label="취소" />
-       <Dialog.Button onPress={confirm} label="확인" />
-     </Dialog.Container>
-   );
-};
+import { PasswordSettingPrompt, OpenChatPrompt } from '../../components/ChatroomList/Prompts';
 
 export default function ChatroomList(
   props: MainTabScreenProps<'ChatroomList'>,
