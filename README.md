@@ -57,13 +57,7 @@
 |20.0+|1.22+|10.6+|
 
 ## :bento: 기술 스택 (Technology Used) 
-![](./.images/techstack.png)
-
-![](./.images/stacks.png)
-
-<img src="./.images/stacks.png" height=500>
-
-<img src="./.images/techstack.png" height=500>
+<img src="./.images/techstacks.png" height=500>
 
 ### Frontend
 
