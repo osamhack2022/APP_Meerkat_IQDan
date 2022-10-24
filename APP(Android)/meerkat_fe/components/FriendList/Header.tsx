@@ -29,6 +29,7 @@ export default function Header(props: HeaderProps) {
 }
 const styles = StyleSheet.create({
   container: {
+    marginTop: 10
   },
   titleContainer: {
     paddingLeft: 15,
