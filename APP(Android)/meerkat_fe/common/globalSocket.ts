@@ -10,7 +10,7 @@ import api from "./api";
 export const globalSocketFunction = (socket: Socket) => {
   socket.connect();
     socket.on('connect', () => {
-      // TODO : console log는 socket 디버깅용, 추후 완성되면 삭제
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('--------------- global socket ---------------');
       
       // 재접속 시 DB에서 속해있는 모든 방의 정보를 가져온 후, 그 방에 전부 접속해야 함.
@@ -18,12 +18,13 @@ export const globalSocketFunction = (socket: Socket) => {
     });
   
     socket.on("disconnect", () => {
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('--------------- global disconnected ---------------');
     });
   
     // if connection error occurs, then use polling first
     socket.on('connect_error', err => {
-      // TODO : console log는 socket 디버깅용, 추후 완성되면 삭제
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('connection error : ' + err.message);
     });
   
@@ -32,18 +33,22 @@ export const globalSocketFunction = (socket: Socket) => {
     });
   
     socket.io.on('reconnect', attempt => {
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log(attempt + '만에 재시도 성공');
     });
   
     socket.io.on('reconnect_attempt', attempt => {
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('재시도 횟수 : ' + attempt + socket.auth);
     });
   
     socket.io.on('reconnect_error', error => {
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('재연결 시도 실패: ' + error);
     });
   
     socket.io.on('reconnect_failed', () => {
+      // DEBUG : console log는 socket 디버깅용, 추후 완성되면 삭제
       console.log('socket reconnect faile ');
     });
   }

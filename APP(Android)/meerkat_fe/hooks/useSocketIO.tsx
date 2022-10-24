@@ -13,7 +13,7 @@ import env from "../env.json";
  * if(socket.connected && isSocketConneted){
  *     socket.emit("event name", "event body")
  * }
- * @returns 
+ * @returns socket
  */
 export function useSocketIO(isNotLoggedIn: boolean, attachFunction:Function | null) {
   const [socket, setSocket] = useState<Socket>(getEmptySocketIO);

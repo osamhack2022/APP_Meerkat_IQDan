@@ -212,7 +212,6 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   }, [superiorOnly, messages]);
 
   // REFACTOR
-  // TODO : refactor
   // 시계 + 읽은 사람 목록
   const ChatTime = (props: any) => {
     const { currentMessage, timeFormat } = props;
