@@ -63,6 +63,8 @@
 
 <img src="./.images/stacks.png" height=500>
 
+<img src="./.images/techstack.png" height=500>
+
 ### Frontend
 
 - [React Native](https://reactnative.dev/) - React.js를 사용한 Cross-Platform 앱 프레임워크 
