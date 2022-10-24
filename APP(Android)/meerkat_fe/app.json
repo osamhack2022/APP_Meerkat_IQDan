@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "meerkat_fe",
-    "slug": "meerkat_fe",
+    "name": "meerkat",
+    "slug": "meerkat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,7 +32,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c8fbcdaf-c7bc-4b1f-8573-59c0d0fb8b7b"
+        "projectId": "b1945ea2-5b25-48cb-b327-3105e3b5177a"
       }
     },
     "sdkVersion": "46.0.0"
