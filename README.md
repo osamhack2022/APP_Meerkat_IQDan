@@ -56,7 +56,7 @@
 | :--: | :--: | :--: |
 |20.0+|1.22+|10.6+|
 
-## :bento:기술 스택 (Technology Used) 
+## :bento: 기술 스택 (Technology Used) 
 ![](./.images/techstack.png)
 
 ### Frontend
@@ -92,7 +92,7 @@
 - [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
 - [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
-## :taco:프로젝트 사용법 (Getting Started)
+## :taco: 프로젝트 사용법 (Getting Started)
 ### Clone
 먼저 프로젝트를 clone해줍니다.
 ```bash
@@ -124,7 +124,7 @@ eas build --profile preview # apk 빌드
 |전형록|[exqt](https://github.com/exqt)|dashchan [at] naver.com| 
 |임동진|[djlim98](https://github.com/djlim98)|ehdwlsdudwo1 [at] gmail.com|
 
-## :kiwi_fruit:저작권 및 사용권 정보 (Copyleft / End User License)
+## :kiwi_fruit: 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
 
 This project is licensed under the terms of the MIT license.
