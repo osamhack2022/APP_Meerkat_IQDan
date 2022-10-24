@@ -15,7 +15,7 @@ import ChatroomLoading from '../../components/ChatroomList/ChatroomLoading';
 import useDoubleFetchAndSave from '../../hooks/useDoubleFetchAndSave';
 // types
 import { ChatroomUnread, MainTabScreenProps } from '../../common/types';
-import Header from '../../components/FriendList/Header';
+import ChatroomListHeader from '../../components/ChatroomList/ChatroomListHeader';
 import { SocketContext } from '../../common/Context';
 // thirds
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -127,36 +127,36 @@ export default function ChatroomList(
   // 서버에서 메시지를 보냈을 때, unread count++
   // socket이 바뀌면 event attach함.
   useEffect(() => {
-    connectBelongRooms(socket);
+    connectBelongRooms(socket)
     socket.on('server:notificateMessage', (content: string) => {
-      reFetch();
-    });
-  }, [socket]);
+      reFetch()
+    })
+  }, [socket])
 
+  // 화면 focus 시 refresh + 현재 rsa key 존재 유무확인.
   useEffect(() => {
     if(isFocused){
-      connectBelongRooms(socket);
-      reFetch();
+      checkPrevKey()
+      refresh()
     }
     
-  }, [isFocused]);
+  }, [isFocused])
 
-  useEffect(() => {
-    if(isFocused){
-      checkPrevKey();
-    }
-    
-  }, [isFocused]);
+  const refresh = () => {
+    connectBelongRooms(socket)
+    reFetch()
+  }
 
+  // rsa 보안키 존재 유무 확인
   const checkPrevKey = async () => {
     const privKey = await AsyncStorage.getItem('PrivateKey');
     if (privKey !== null) {
-      setKeyExists(true);
+      setKeyExists(true)
     }
   }
 
   const handleAddChatroom = () => {
-    navigation.push('AddChatroom');
+    navigation.push('AddChatroom')
   };
 
   const roomsComponent = () => {
@@ -209,7 +209,7 @@ export default function ChatroomList(
 
   return (
     <>
-      <Header categoryName="대화방" onPressAddFriend={handleAddChatroom} />
+      <ChatroomListHeader categoryName="대화방" onPressAdd={handleAddChatroom} refresh={refresh} />
       <PasswordSettingPrompt
         visible={settingPromptVisible}
         roomId={settingPromptRoomId}
