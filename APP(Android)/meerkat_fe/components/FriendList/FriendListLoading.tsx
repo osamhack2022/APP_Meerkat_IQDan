@@ -67,6 +67,7 @@ export default function FriendListLoading() {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: 'white',
+    marginTop: 10
   },
   eventContainer: {
     marginLeft: 17,

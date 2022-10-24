@@ -325,7 +325,7 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    marginTop: 10,
     paddingLeft: 15,
     paddingRight: 15,
     backgroundColor: '#fff',

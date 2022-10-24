@@ -111,7 +111,7 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
                         size={24}
                         color="black"
                     />
-                    나의 프로필
+                    프로필 변경
                 </Text>
             </View>
             <View style={styles.innerContainer}>
@@ -144,7 +144,7 @@ export default function MyProfile(props: RootStackScreenProps<"MyProfile">) {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 50,
+        marginTop: 10,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: "#fff",
