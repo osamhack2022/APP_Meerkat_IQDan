@@ -1,6 +1,6 @@
 // core
 import { useEffect, useState, useRef } from 'react';
-import { Text, StyleSheet, View, ScrollView, Animated } from 'react-native';
+import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // comp
 import MyBox from '../components/FriendList/MyBox';

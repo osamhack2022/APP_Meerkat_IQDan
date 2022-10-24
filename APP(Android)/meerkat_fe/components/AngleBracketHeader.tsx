@@ -31,6 +31,7 @@ export default function AngleBracketHeader(props: HeaderProps) {
 }
 const styles = StyleSheet.create({
   headerContainer: {
+    marginTop: 10,
     flexDirection: 'row',
     backgroundColor: 'white',
     alignItems: 'center',
