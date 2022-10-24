@@ -61,6 +61,8 @@
 
 ![](./.images/stacks.png)
 
+<img src="./.images/stacks.png" height=100>
+
 ### Frontend
 
 - [React Native](https://reactnative.dev/) - React.js를 사용한 Cross-Platform 앱 프레임워크 
