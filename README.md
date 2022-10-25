@@ -39,6 +39,7 @@
 :angel:**메세지 유통기한**: 군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.  [TODO: Wiki Link]
 
 ### :speech_balloon: 2. 군용 채팅 기능
+![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-template.png?raw=true)
 :zap: **충성템플릿**: 여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다. [TODO: Wiki Link]
 
 ![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-summary.png?raw=true)
