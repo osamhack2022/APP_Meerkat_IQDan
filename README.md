@@ -35,7 +35,7 @@
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki/e2ee/encrypt1.png?raw=true)|
 |:---:|
 | :link: **종단간 암호화 (End-to-end Encryption)**|
-| 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. <br> 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. <br> 자세한 내용은 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A2%85%EB%8B%A8%EA%B0%84-%EC%95%94%ED%98%B8%ED%99%94-(End-to-end-Encryption)-%EC%83%81%EC%84%B8)에서 확인할 수 있습니다. | 
+| 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. <br> 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. <br> 자세한 내용은 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A2%85%EB%8B%A8%EA%B0%84-%EC%95%94%ED%98%B8%ED%99%94-(End-to-end-Encryption))에서 확인할 수 있습니다. | 
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-2ndpassword.png?raw=true)|
 |:---:|
