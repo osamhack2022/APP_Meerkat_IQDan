@@ -34,17 +34,17 @@
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/encrypt1.png?raw=true)|
 |:---:|
-| :link: **종단간 암호화 (End-to-end Encryption)** |
-| 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. <br> 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. | 
+| :link: **종단간 암호화 (End-to-end Encryption)**|
+| 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. <br> 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. <br> 자세한 내용은 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A2%85%EB%8B%A8%EA%B0%84-%EC%95%94%ED%98%B8%ED%99%94-(End-to-end-Encryption)-%EC%83%81%EC%84%B8)에서 확인할 수 있습니다. | 
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-2ndpassword.png?raw=true)|
 |:---:|
 |:anchor: **2차 비밀번호**|
-|채팅 기록이 개인 휴대폰에 평문으로 남게되면 누군가 휴대폰을 훔쳐 내용을 보거나 스파이웨어에 의해 정보가 유출될 수 있습니다. <br> 미어캣의 2차 비밀번호 기능을 사용하면 휴대폰에 저장되는 채팅방 내용도 암호화하여 안전하게 채팅 기록을 저장할 수 있습니다.|
+|채팅 기록이 개인 휴대폰에 평문으로 남게되면 누군가 휴대폰을 훔쳐 내용을 보거나 스파이웨어에 의해 정보가 유출될 수 있습니다. 미어캣의 2차 비밀번호 기능을 사용하면 휴대폰에 저장되는 채팅방 내용도 암호화하여 안전하게 채팅 기록을 저장할 수 있습니다.|
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-deletion.png?raw=true)|
 |:---:|
-|:angel:**메세지 유통기한**:| 
+|:angel:**메세지 유통기한**| 
 |군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.|
 
 ### :speech_balloon: 2. 군용 채팅 기능
@@ -80,7 +80,7 @@
 |20.0+|1.22+|10.6+|
 
 ## :bento: 기술 스택 (Technology Used) 
-<img src="./.images/tech_stacks.png" height=500>
+<img src="./.images/tech_stacks.png">
 
 ### Frontend
 
