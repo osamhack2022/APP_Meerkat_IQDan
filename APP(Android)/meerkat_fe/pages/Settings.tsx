@@ -111,10 +111,16 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
   };
   const computedDday = (enlistmentDate: any) => {
     const currentDate = new Date();
-    const enlistmentDateToDate = new Date(enlistmentDate);
+    const altarDateToDate = new Date(enlistmentDate);
+    altarDateToDate.setMonth(altarDateToDate.getMonth()+18);
+    altarDateToDate.setDate(altarDateToDate.getDate()-1);
 
-    const diffDate = currentDate.getTime() - enlistmentDateToDate.getTime();
-    return Math.floor(Math.abs(diffDate / (1000 * 60 * 60 * 24)));
+    const diffDate = currentDate.getTime() - altarDateToDate.getTime();
+    const dDay= Math.floor(diffDate / (1000 * 60 * 60 * 24));
+    if (dDay>0){
+      return '+'+dDay;
+    }
+    return dDay;
   };
 
   const handleMyProfile = () => {
@@ -271,7 +277,7 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
             ]}
           >
             <reactNativePaper.Title style={styles.infoBoxText}>
-              D-{dDay}
+              D{dDay}
             </reactNativePaper.Title>
             <reactNativePaper.Caption style={styles.caption}>
               전역까지
