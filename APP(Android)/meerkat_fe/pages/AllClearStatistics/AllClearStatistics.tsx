@@ -173,7 +173,7 @@ export default function AllClearStatistics(props: AllClearStatisticsProps) {
                 { color: focusedIndex === 2 ? focusedColor : unfocusedColor },
               ]}
             >
-              {clears.length}
+              {unreads.length}
             </Text>
           </Pressable>
         </View>
