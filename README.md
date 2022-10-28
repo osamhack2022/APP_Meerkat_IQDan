@@ -40,8 +40,8 @@
  
 :racehorse: 미어캣으로는 **유례없는 신속한 의사소통**이 가능합니다. <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 반복되는 **보고 양식을 저장**할 수 있는 **충성템플릿** [#](#template)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **상급자의 메시지를 요약**해주는 **명령 요약** 기능 [#](#summarize)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 소대 인원들의 보고를 빛처럼 빠르게 받아볼 수 있는 **이상무 보고** 기능 [#](#noprob)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **상급자의 메시지를 요약**해주는 **명령 요약** [#](#summarize)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 소대 인원들의 보고를 빛처럼 빠르게 받아볼 수 있는 **이상무 보고** [#](#noprob)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 전우들의 근황을 살필 수 있는 군인 특화 **전우 목록** [#](#friends)
 
 ## :bow_and_arrow: 기능설명 (Features)
