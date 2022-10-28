@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/graphs/contributors/"><img alt="contributors" src="https://img.shields.io/github/contributors/osamhack2022/APP_Meerkat_IQDan?color=success"></a>
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/graphs/contributors"><img alt="contributors" src="https://img.shields.io/github/contributors/osamhack2022/APP_Meerkat_IQDan?color=success"></a>
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/osamhack2022/APP_Meerkat_IQDan"></a>
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues"><img alt="closed issues" src="https://img.shields.io/github/issues-closed/osamhack2022/APP_Meerkat_IQDan"></a>
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md"><img alt="GitHub license" src="https://img.shields.io/github/license/osamhack2022/APP_Meerkat_IQDan"></a>
