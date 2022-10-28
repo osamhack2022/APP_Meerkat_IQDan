@@ -20,7 +20,7 @@
 | 
 <a href="">시연 영상</a>
 |
-<a href="https://expo.dev/accounts/hyelie/projects/meerkat/builds/cdb740fe-f2b7-454a-80bc-bca933a84a13">apk 다운로드</a>
+<a href="[https://expo.dev/accounts/hyelie/projects/meerkat/builds/cdb740fe-f2b7-454a-80bc-bca933a84a13](https://expo.dev/artifacts/eas/rpmzr8YnBXg1fPUQ6tuySg.apk)">apk 다운로드</a>
 </p>
 
 
