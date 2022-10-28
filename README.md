@@ -14,13 +14,13 @@
 
 
 <p align="center">
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 문서</a> 
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 위키</a> 
 | 
 <a href="">발표 자료</a> 
 | 
 <a href="">시연 영상</a>
 |
-<a href="https://expo.dev/artifacts/eas/rpmzr8YnBXg1fPUQ6tuySg.apk">apk 다운로드</a>
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EB%8D%B0%EB%AA%A8-%EC%82%AC%EC%9A%A9%EB%B2%95-%EB%B0%8F-FAQ">apk 다운로드</a>
 </p>
 
 
