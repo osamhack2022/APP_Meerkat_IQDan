@@ -38,7 +38,7 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
   const { navigation } = props;
   const { checkIfLoggedIn } = useContext(LoginContext);
   const [user, setUser] = useState<User | null>(null);
-  const [dDay, setDDday] = useState(0);
+  const [dDay, setDDday] = useState<string | number>(0); // TODO: type number로 추후 수정.
   const [pageState, setPageState] = useState<string>('loading');
   const [friends, setFriends] = useState<User[]>([]);
   const [generating, setGenearting] = useState(false);
@@ -109,6 +109,7 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
       setTimeout(() => resolve('slept well'), time * 1000);
     });
   };
+
   const computedDday = (enlistmentDate: any) => {
     const currentDate = new Date();
     const altarDateToDate = new Date(enlistmentDate);
@@ -143,11 +144,11 @@ export default function Settings(props: MainTabScreenProps<'Settings'>) {
   const handleLogout = async () => {
     await AsyncStorage.setItem('userToken', '');
     await AsyncStorage.setItem('userTokenExpiration', '');
-    // FIXME : 로그아웃 시 없애기
-    // const allKeys = await AsyncStorage.getAllKeys()
-    // await Promise.all(allKeys.map((key) => {
-    //   return AsyncStorage.removeItem(key)
-    // }))
+    // FIXME : 로그아웃 시 없애기 => 해놓은 상태임.
+    const allKeys = await AsyncStorage.getAllKeys()
+    await Promise.all(allKeys.map((key) => {
+      return AsyncStorage.removeItem(key)
+    }))
     checkIfLoggedIn();
     navigation.navigate('Auth');
   };
