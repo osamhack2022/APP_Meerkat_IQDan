@@ -23,20 +23,7 @@
 <a href="https://expo.dev/artifacts/eas/rpmzr8YnBXg1fPUQ6tuySg.apk">apk 다운로드</a>
 </p>
 
-<p align="center">
-	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">
-		<img width="150" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki_button.png">
-	</a>
-	<a href="">
-		<img width="150" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/14a9326d0100f96066e752b856dee1eb202e2b0c/.images/presentation_button.png">
-	</a>
-	<a href="">
-		<img width="150" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/movie_button.png">
-	</a>
-	<a href="">
-		<img width="150"  src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/apk_button.png">
-	</a>
-</p>
+
 
 
 ## :telescope: 프로젝트 소개 (Why Meerkat?)
