@@ -14,7 +14,7 @@
 
 
 <p align="center">
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 문서</a> 
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 위키</a> 
 | 
 <a href="">발표 자료</a> 
 | 
