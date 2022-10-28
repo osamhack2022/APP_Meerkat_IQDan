@@ -14,13 +14,13 @@
 
 
 <p align="center">
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 위키</a> 
+<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">개발 문서</a> 
 | 
 <a href="">발표 자료</a> 
 | 
 <a href="">시연 영상</a>
 |
-<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EB%8D%B0%EB%AA%A8-%EC%82%AC%EC%9A%A9%EB%B2%95-%EB%B0%8F-FAQ">apk 다운로드</a>
+<a href="https://expo.dev/artifacts/eas/rpmzr8YnBXg1fPUQ6tuySg.apk">apk 다운로드</a>
 </p>
 
 
@@ -149,8 +149,17 @@ npm install 이후 Expo Go앱으로 실행할 수 있습니다. 자세한 사항
 npx expo start --tunnel # dev용 expo go 실행
 eas build --profile preview # apk 빌드
 ```
+
+## :open_hands: 기여 방법
+개발을 시작하기 전에 [Meerkat 개발 규칙](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EA%B0%9C%EB%B0%9C-%EA%B7%9C%EC%B9%99)을 꼭 읽어 주세요.
+1. [https://github.com/osamhack2022/APP_Meerkat_IQDan/fork](https://github.com/osamhack2022/APP_Meerkat_IQDan/fork)에서 해당 레포지토리를 fork합니다
+2. [Frontend 실행 방법](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Frontend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95), [Backend 환경 구성](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Backend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)을 참고해 개발 환경을 설정합니다.
+2. [Meerkat Git 규칙](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EA%B0%9C%EB%B0%9C-%EA%B7%9C%EC%B9%99#git-%EA%B7%9C%EC%B9%99)을 참고해 `git checkout -b [Github ID]/[feature]` 명령어로 새 브랜치를 만듭니다.
+3. `git stash` - `git fetch origin` - `git rebase -i origin` 이후에 `git add`, `git commit`으로 커밋합니다.
+4. `git push origin [Github ID]/[feature]` 명령어로 브랜치에 푸시합니다.
+5. pull request를 보내주세요.
  
-##   :baby: 팀 정보 (Team Information)
+## :baby: 팀 정보 (Team Information)
 |이름|github|e-mail|
 |---|----|----|
 |이세호|[seho0808](https://github.com/seho0808)| koolee33 [at] gmail.com|
