@@ -33,17 +33,17 @@
 미어캣은 현재 장병들이 사용중인 채팅앱들의 ***보안 대책***을 마련함과 동시에 ***군에 특화된 채팅 기능***들을 제공합니다.
 
 ## :bow_and_arrow: 기능설명 (Features)
-### :lock: 1. 보안 기능 
+### :lock: 1. 보안 기능 <a name="e2ee"></a> 
 
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki/e2ee/normal-chat.png?raw=true)|
 |:---:|
-| :link: **종단간 암호화 (End-to-end Encryption)**|
+| :link: **종단간 암호화 (End-to-end Encryption)** <a name="2ndpw"></a>|
 | 종단간 암호화를 통해 서버에 남기는 기록들을 암호화합니다. <br> 서버에서도 암호화 된 내용을 알 수 없고 오로지 채팅하는 유저들끼리만 내용을 알 수 있습니다. <br> 자세한 내용은 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A2%85%EB%8B%A8%EA%B0%84-%EC%95%94%ED%98%B8%ED%99%94-(End-to-end-Encryption))에서 확인할 수 있습니다. | 
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-2ndpassword.png?raw=true)|
 |:---:|
-|:anchor: **2차 비밀번호**|
+|:anchor: **2차 비밀번호** <a name="expiry"></a>|
 |채팅 기록이 개인 휴대폰에 평문으로 남게되면 누군가 휴대폰을 훔쳐 내용을 보거나 스파이웨어에 의해 정보가 유출될 수 있습니다. 미어캣의 2차 비밀번호 기능을 사용하면 휴대폰에 저장되는 채팅방 내용도 암호화하여 안전하게 채팅 기록을 저장할 수 있습니다.|
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-deletion.png?raw=true)|
@@ -51,20 +51,20 @@
 |:angel:**메세지 유통기한**| 
 |군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.|
 
-### :speech_balloon: 2. 군용 채팅 기능
+### :speech_balloon: 2. 군용 채팅 기능 <a name="template"></a>
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-template.png?raw=true)|
 |:---:|
-|:zap: **충성템플릿**|
+|:zap: **충성템플릿** <a name="summarize"></a>|
 |여러가지 격식을 갖추거나 명령 하달 관련 템플릿을 작성/사용/공유할 수 있습니다.|
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-summary.png?raw=true)|
 |:---:|
-|:star2: **명령요약**|
+|:star2: **명령요약** <a name="noprob"></a>|
 |군에서 채팅을 할 때에 가장 중요한 것은 상급자의 명령입니다. 활성화 시 최상급자의 메시지만 보여집니다.|
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-noproblem.png?raw=true)|
 |:---:|
-|:kick_scooter: **이상무 보고**|
+|:kick_scooter: **이상무 보고** <a name="friends"></a>|
 |분대장, 소대장, 중대장 등이 각종 보고를 빠르게 받아볼 수 있는 기능입니다.|
 
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-friends.png?raw=true)|
