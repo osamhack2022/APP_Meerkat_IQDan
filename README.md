@@ -25,16 +25,16 @@
 
 <p align="center">
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki">
-		<img width="250" alt="demo" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki_button.png">
+		<img width="200" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki_button.png">
 	</a>
 	<a href="">
-		<img width="250" alt="docs" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/presentation_button.png">
+		<img width="200" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/presentation_button.png">
 	</a>
 	<a href="">
-		<img width="250" alt="issues" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/movie_button.png">
+		<img width="200" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/movie_button.png">
 	</a>
 	<a href="">
-		<img width="250" alt="issues" src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/apk_button.png">
+		<img width="200"  src="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/apk_button.png">
 	</a>
 </p>
 
