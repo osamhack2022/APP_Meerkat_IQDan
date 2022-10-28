@@ -33,16 +33,16 @@
 미어캣은 현재 장병들이 사용중인 채팅앱들의 ***보안 대책***을 마련함과 동시에 ***군에 특화된 채팅 기능***들을 제공합니다.
 
 :dark_sunglasses: 미어캣으로는 **더욱 안전한 채팅**이 가능합니다. <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **종단간 암호화**[#](#e2ee)는 기기 밖에 있는 모든 메시지를 암호화합니다. <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **2차 비밀번호**[#](#2ndpw)는 휴대폰에 저장되어있는 메시지 또한 암호화합니다. <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 서버와 채팅방 멤버들의 **메시지 자동 삭제 주기**[#](#expiry)를 정할 수 있습니다. 
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **종단간 암호화**는 기기 밖에 있는 모든 메시지를 암호화합니다. [#](#e2ee) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **2차 비밀번호**는 휴대폰에 저장되어있는 메시지 또한 암호화합니다. [#](#2ndpw)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 서버와 채팅방 멤버들의 **메시지 자동 삭제 주기**를 정할 수 있습니다. [#](#expiry)
 
  
 :racehorse: 미어캣으로는 **유례없는 신속한 의사소통**이 가능합니다. <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 반복되는 **보고 양식을 저장**[#](#template)할 수 있는 충성템플릿 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **상급자의 메시지를 요약**[#](#summarize)해주는 명령 요약 기능 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 소대 인원들의 보고를 빛처럼 빠르게 받아볼 수 있는 **이상무 보고**[#](#noprob) 기능 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 전우들의 근황을 살필 수 있는 군인 특화 **전우 목록**[#](#friends)
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 반복되는 **보고 양식을 저장**할 수 있는 **충성템플릿** [#](#template)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **상급자의 메시지를 요약**해주는 **명령 요약** 기능 [#](#summarize)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 소대 인원들의 보고를 빛처럼 빠르게 받아볼 수 있는 **이상무 보고** 기능 [#](#noprob)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 전우들의 근황을 살필 수 있는 군인 특화 **전우 목록** [#](#friends)
 
 ## :bow_and_arrow: 기능설명 (Features)
 ### :lock: 1. 보안 기능 <a name="e2ee"></a> 
