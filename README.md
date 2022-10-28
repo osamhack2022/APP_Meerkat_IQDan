@@ -7,8 +7,8 @@
 <p align="center">
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/graphs/contributors/"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/osamhack2022/APP_Meerkat_IQDan?color=success"></a>
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/osamhack2022/APP_Meerkat_IQDan"></a>
-	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues?q=is%3Aissue+is%3Aopen"><img alt="GitHub issues" src="https://img.shields.io/github/issues/osamhack2022/APP_Meerkat_IQDan"></a>
-	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues?q=is%3Aissue+is%3Aclosed"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/osamhack2022/APP_Meerkat_IQDan"></a>
+	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues"><img alt="open issues" src="https://img.shields.io/github/issues/open-raw/osamhack2022/APP_Meerkat_IQDan"></a>
+	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/issues"><img alt="closed issues" src="https://img.shields.io/github/issues/closed-raw/osamhack2022/APP_Meerkat_IQDan"></a>
 	<a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md"><img alt="GitHub license" src="https://img.shields.io/github/license/osamhack2022/APP_Meerkat_IQDan"></a>
 </p>
 
