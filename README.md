@@ -104,7 +104,7 @@
 <br>
 
 ## :bento: 기술 스택 (Technology Used) 
-<img src="./.images/tech_stacks.png" >
+<img src="./.images/tech_stacks.png" width=500>
 
 ### Frontend
 
