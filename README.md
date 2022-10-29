@@ -167,48 +167,6 @@ eas build --profile preview # apk 빌드
 |전형록|프론트엔드 개발|<a href="https://github.com/exqt"><img src="http://img.shields.io/badge/exqt-green?style=social&logo=github"/></a>|<a href="dashchan@naver.com"><img src="https://img.shields.io/badge/dashchan@naver.com-green?logo=naver&style=social"/></a>|
 |임동진|백엔드 개발 및 UI 디자인|<a href="https://github.com/djlim98"><img src="http://img.shields.io/badge/djlim98-green?style=social&logo=github"/></a>|ehdwlsdudwo1 [at] gmail.com|<a href="ehdwlsdudwo1@gmail.com"><img src="https://img.shields.io/badge/ehdwlsdudwo1@gmail.com-green?logo=gmail&style=social"/></a>|
 
-
-
-
-
-<table>
- <tr>
-	  <td></td>
-	  <td align='center'>이름</td>
-	  <td align='center'>역할</td>
-	  <td align='center'>GitHub</td>
-	  <td align='center'>Contacts</td>
- </tr>
- <tr>
-	  <td align='center'><img src="https://i.imgur.com/5NlzJuu_d.webp?maxwidth=760&fidelity=grand" width="50" height="63"></td>
-	  <td align='center'>김상영</td>
-	  <td align='center'>팀장, 암호화 개발자</td>
-	  <td align='center'><a href="https://github.com/s3kim2018"><img src="http://img.shields.io/badge/s3kim2018-green?style=social&logo=github"/></a></td>
-	  <td align='center'><a href="s3kim2018@berkeley.edu"><img src="https://img.shields.io/badge/s3kim2018@berkeley.edu-green?logo=gmail&style=social"/></a></td>
- </tr>
- <tr>
-	  <td align='center'><img src="https://cdn-icons-png.flaticon.com/512/6142/6142226.png" width="50" height="63"></td>
-	  <td align='center'>최윤성</td>
-	  <td align='center'>프론트엔드(WEB) 개발자</td>
-	  <td align='center'><a href="https://github.com/marunemo"><img src="http://img.shields.io/badge/marunemo-green?style=social&logo=github"/></a></td>
-	  <td align='center'><a href="chys3697@gmail.com"><img src="https://img.shields.io/badge/chys3697@gmail.com-green?logo=gmail&style=social"/></a></td>
- </tr>
- <tr>
-	 <td align='center'><img src="https://cdn-icons-png.flaticon.com/512/6142/6142226.png" width="50" height="63"></td>
-  <td align='center'>김형민</td>
-  <td align='center'>프론트엔드(APP) 개발자</td>
-  <td align='center'><a href="https://github.com/gudmin0526"><img src="http://img.shields.io/badge/gudmin0526-green?style=social&logo=github"/></a></td>
-  <td align='center'><a href="gudmin0526@gmail.com"><img src="https://img.shields.io/badge/gudmin0526@gmail.com-green?logo=gmail&style=social"/></a></td>
- </tr>
- <tr>
-	  <td align='center'><img src="https://user-images.githubusercontent.com/52823519/195992813-c10b8189-7a98-4e8c-8f08-53ef9cdb7803.png" width="50" height="63"></td>
-	  <td align='center'>조영효</td>
-	  <td align='center'>백엔드 개발자</td>
-	  <td align='center'><a href="https://github.com/yhcho0405"><img src="http://img.shields.io/badge/yhcho0405-green?style=social&logo=github"/></a></td>
-	  <td align='center'><a href="yhcho0405@kakao.com"><img src="https://img.shields.io/badge/yhcho0405@kakao.com-green?logo=gmail&style=social"/></a></td>
- </tr>
-</table>
-
 ## :kiwi_fruit: 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
 
