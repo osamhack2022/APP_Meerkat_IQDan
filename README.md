@@ -47,7 +47,6 @@
 ## :bow_and_arrow: 기능설명 (Features)
 ### :lock: 1. 보안 기능 <a name="e2ee"></a> 
 
-
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/wiki/e2ee/normal-chat.png?raw=true)|
 |:---:|
 | :link: **종단간 암호화 (End-to-end Encryption)** <a name="2ndpw"></a>|
@@ -83,6 +82,8 @@
 |:---:|
 |:crossed_swords: **전우 목록**| 
 |전우들의 전역일, 근황 등을 살펴볼 수 있습니다.|
+
+이외 모든 기능과 UI는 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A0%84%EC%B2%B4-UI)
 
 ## :milky_way: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
 ### :calling: Mobile
