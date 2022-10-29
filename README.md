@@ -135,9 +135,10 @@ git clone https://github.com/osamhack2022/APP_Meerkat_IQDan.git
 ```
 
 ### Backend
-docker, docker-compose, MariaDB 설정 후 아래 커맨드들로 실행할 수 있습니다.
+docker, MariaDB, SSL 설정 후 아래 커맨드들로 실행할 수 있습니다.
 자세한 사항은 [Backend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Backend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요.
 ```bash
+npm i
 npm run prisma:migrate:dev       # schema.prisma 변경 사항 반영
 npm run dev                      # node로 dev 환경 실행
 npm run deploy:dev               # pm2로 dev 환경 실행
@@ -146,8 +147,9 @@ npm run deploy:dev               # pm2로 dev 환경 실행
 ### Frontend
 npm install 이후 Expo Go앱으로 실행할 수 있습니다. 자세한 사항은 [Frontend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Frontend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요
 ```bash
+npm i
 npx expo start --tunnel # dev용 expo go 실행
-eas build --profile preview # apk 빌드
+npx expo build --profile preview # apk 빌드
 ```
 
 ## :open_hands: 기여 방법
