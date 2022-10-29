@@ -23,8 +23,7 @@
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EB%8D%B0%EB%AA%A8-%EC%82%AC%EC%9A%A9%EB%B2%95-%EB%B0%8F-FAQ">apk 다운로드</a>
 </p>
 
-
-
+<br>
 
 ## :telescope: 프로젝트 소개 (Why Meerkat?)
 
@@ -43,6 +42,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: **상급자의 메시지를 요약**해주는 :star2:**명령 요약** [#](#summarize)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 소대 인원들의 보고를 빛처럼 빠르게 받아볼 수 있는 :kick_scooter:**이상무 보고** [#](#noprob)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: 전우들의 근황을 살필 수 있는 군인 특화 :crossed_swords:**전우 목록** [#](#friends)
+
+<br>
 
 ## :bow_and_arrow: 기능설명 (Features)
 ### :lock: 1. 보안 기능 <a name="e2ee"></a> 
@@ -83,7 +84,9 @@
 |:crossed_swords: **전우 목록**| 
 |전우들의 전역일, 근황 등을 살펴볼 수 있습니다.|
 
-이외 모든 기능과 UI는 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A0%84%EC%B2%B4-UI)
+이외 모든 기능과 UI는 [Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A0%84%EC%B2%B4-UI)에서 확인하실 수 있습니다.
+
+<br>
 
 ## :milky_way: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
 ### :calling: Mobile
@@ -95,6 +98,8 @@
 |Docker|Nginx|MariaDB|
 | :--: | :--: | :--: |
 |20.0+|1.22+|10.6+|
+
+<br>
 
 ## :bento: 기술 스택 (Technology Used) 
 <img src="./.images/tech_stacks.png">
@@ -127,6 +132,8 @@
 - [Letsencrypt](https://letsencrypt.org/ko/) - 무료로 TLS 인증서를 발급해주는 비영리 기관 
 - [Docker](https://www.docker.com/) - 응용 프로그램들을 프로세스 격리 기술을 사용해 컨테이너 단위로 실행하고 관리
 
+<br>
+
 ## :taco: 프로젝트 사용법 (Getting Started)
 ### Clone
 먼저 프로젝트를 clone해줍니다.
@@ -153,6 +160,8 @@ npx expo start --tunnel          # dev용 expo go 실행
 npx expo build --profile preview # apk 빌드
 ```
 
+<br>
+
 ## :open_hands: 기여 방법
 개발을 시작하기 전에 [Meerkat 개발 규칙](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EA%B0%9C%EB%B0%9C-%EA%B7%9C%EC%B9%99)을 꼭 읽어 주세요.
 1. [https://github.com/osamhack2022/APP_Meerkat_IQDan/fork](https://github.com/osamhack2022/APP_Meerkat_IQDan/fork)에서 해당 레포지토리를 fork합니다
@@ -162,6 +171,8 @@ npx expo build --profile preview # apk 빌드
 4. `git push origin [Github ID]/[feature]` 명령어로 브랜치에 푸시합니다.
 5. pull request를 보내주세요.
  
+<br>
+ 
 ## :baby: 팀 정보 (Team Information)
 |이름|역할|Github|Contact|
 |:---|----|----|----|
@@ -169,6 +180,8 @@ npx expo build --profile preview # apk 빌드
 |정혜일|풀스택 개발|<a href="https://github.com/hyelie"><img src="http://img.shields.io/badge/hyelie-green?style=social&logo=github"/></a>|<a href="hyelie@postech.ac.kr"><img src="https://img.shields.io/badge/hyelie@postech.ac.kr-green?logo=microsoft-outlook&style=social"/></a>|
 |전형록|프론트엔드 개발|<a href="https://github.com/exqt"><img src="http://img.shields.io/badge/exqt-green?style=social&logo=github"/></a>|<a href="dashchan@naver.com"><img src="https://img.shields.io/badge/dashchan@naver.com-green?logo=naver&style=social"/></a>|
 |임동진|백엔드 개발 및 UI 디자인|<a href="https://github.com/djlim98"><img src="http://img.shields.io/badge/djlim98-green?style=social&logo=github"/></a>|<a href="ehdwlsdudwo1@gmail.com"><img src="https://img.shields.io/badge/ehdwlsdudwo1@gmail.com-green?logo=gmail&style=social"></a>|
+
+<br>
 
 ## :kiwi_fruit: 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
