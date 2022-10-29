@@ -165,7 +165,7 @@ eas build --profile preview # apk 빌드
 |팀장 이세호|PM, 풀스택 개발|<a href="https://github.com/seho0808"><img src="http://img.shields.io/badge/seho0808-green?style=social&logo=github"/></a>|<a href="koolee33@gmail.com"><img src="https://img.shields.io/badge/koolee33@gmail.com-green?logo=gmail&style=social"/></a>
 |정혜일|풀스택 개발|<a href="https://github.com/hyelie"><img src="http://img.shields.io/badge/hyelie-green?style=social&logo=github"/></a>|<a href="hyelie@postech.ac.kr"><img src="https://img.shields.io/badge/hyelie@postech.ac.kr-green?logo=microsoft-outlook&style=social"/></a>|
 |전형록|프론트엔드 개발|<a href="https://github.com/exqt"><img src="http://img.shields.io/badge/exqt-green?style=social&logo=github"/></a>|<a href="dashchan@naver.com"><img src="https://img.shields.io/badge/dashchan@naver.com-green?logo=naver&style=social"/></a>|
-|임동진|백엔드 개발 및 UI 디자인|<a href="https://github.com/djlim98"><img src="http://img.shields.io/badge/djlim98-green?style=social&logo=github"/></a>|ehdwlsdudwo1 [at] gmail.com|<a href="ehdwlsdudwo1@gmail.com"><img src="https://img.shields.io/badge/ehdwlsdudwo1@gmail.com-green?logo=gmail&style=social"></a>|
+|임동진|백엔드 개발 및 UI 디자인|<a href="https://github.com/djlim98"><img src="http://img.shields.io/badge/djlim98-green?style=social&logo=github"/></a>|<a href="ehdwlsdudwo1@gmail.com"><img src="https://img.shields.io/badge/ehdwlsdudwo1@gmail.com-green?logo=gmail&style=social"></a>|
 
 ## :kiwi_fruit: 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/license.md)
