@@ -135,7 +135,7 @@ git clone https://github.com/osamhack2022/APP_Meerkat_IQDan.git
 ```
 
 ### Backend
-docker, MariaDB, SSL 설정 후 아래 커맨드들로 실행할 수 있습니다.
+Docker, SSL, MariaDB 설정 후 아래 커맨드들로 실행할 수 있습니다.
 자세한 사항은 [Backend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Backend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요.
 ```bash
 npm i
