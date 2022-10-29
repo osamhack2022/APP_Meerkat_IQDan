@@ -18,7 +18,7 @@
 | 
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/meerkat_presentation.pdf">발표 자료</a> 
 | 
-<a href="">시연 영상</a>
+<a href="https://drive.google.com/file/d/1O_0msA6RPSYDh-8WhqDaQXVTHI3V0ici/view?usp=drivesdk">시연 영상</a>
 |
 <a href="https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EB%8D%B0%EB%AA%A8-%EC%82%AC%EC%9A%A9%EB%B2%95-%EB%B0%8F-FAQ">apk 다운로드</a>
 </p>
