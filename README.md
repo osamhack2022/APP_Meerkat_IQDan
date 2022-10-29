@@ -86,7 +86,7 @@
 
 <br>
 
-이외 모든 기능은 [UI WIki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A0%84%EC%B2%B4-UI)에서, 구현 방식은 [로직 Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki#%EB%AF%B8%EC%96%B4%EC%BA%A3-%EB%A1%9C%EC%A7%81) 확인하실 수 있습니다.
+이외 모든 기능은 [UI WIki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/%EC%A0%84%EC%B2%B4-UI)에서, 구현 방식은 [로직 Wiki](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki#%EB%AF%B8%EC%96%B4%EC%BA%A3-%EB%A1%9C%EC%A7%81)에서 확인하실 수 있습니다.
 
 <br>
 
