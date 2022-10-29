@@ -148,7 +148,7 @@ npm run deploy:dev               # pm2로 dev 환경 실행
 npm install 이후 Expo Go앱으로 실행할 수 있습니다. 자세한 사항은 [Frontend 위키 문서](https://github.com/osamhack2022/APP_Meerkat_IQDan/wiki/Frontend-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)를 참고해주세요
 ```bash
 npm i
-npx expo start --tunnel # dev용 expo go 실행
+npx expo start --tunnel          # dev용 expo go 실행
 npx expo build --profile preview # apk 빌드
 ```
 
