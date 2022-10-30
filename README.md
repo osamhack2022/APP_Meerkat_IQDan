@@ -183,7 +183,7 @@ npm install 이후 Expo Go앱으로 실행할 수 있습니다. 자세한 사항
 ```bash
 npm i
 npx expo start --tunnel          # dev용 expo go 실행
-npx expo build --profile preview # apk 빌드
+eas build --profile preview      # apk 빌드
 ```
 
 <br>
