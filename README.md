@@ -1,7 +1,7 @@
 # 미어캣 - 빠르고 안전한 군용 채팅앱
 
 <p align="center">
-	<img src="./.images/new_logo.png">
+	<img src="./.images/banner.png">
 </p>
 
 <p align="center">
