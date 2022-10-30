@@ -90,6 +90,12 @@
 
 <br>
 
+## Meerkat Brand Identity
+<img src="./.images/bi/frame.png">
+
+
+<br>
+
 ## :milky_way: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
 ### :calling: Mobile
 |Expo|Android|iOS|
