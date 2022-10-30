@@ -100,7 +100,6 @@ export default function useMessage(
 
   /**
    * 로컬에 새로온 메시지 저장하기.
-   * - TODO: 로컬에 저장할 때 방비번 asyncstorage에 존재하면 암호화해서 저장.
    * @param newMessages 이미 복호화된 메세지이어야함.
    */
   const saveNewMessagesToLocal = async (newMessages: IMessage[]) => {
@@ -156,7 +155,6 @@ export default function useMessage(
    * 로컬에서 메세지 가져오기.
    * 처음에만 로컬에서 가져오고, 그 다음부터는 로컬에는 저장만함.
    * - 여긴 일반 E2EE 적용 안해도 되는 곳임.
-   * - TODO: 로컬에서 가져올때 현재 방의 방비번 asyncstorage에 존재하면 복호화해서 리턴.
    */
   const fetchMessagesFromLocal = async () => {
     const messagePointers = await AsyncStorage.getItem(

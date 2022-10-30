@@ -58,7 +58,6 @@ import { QuickReplies } from 'react-native-gifted-chat/lib/QuickReplies';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const { chatroomId, roomHas2ndPw, _2ndPw  } = props.route.params; // 현 채팅방의 chatroomId
-  console.log(roomHas2ndPw, _2ndPw)
   const { navigation } = props;
 
   // userId 가져오기
