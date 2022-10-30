@@ -70,7 +70,7 @@
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-deletion.png?raw=true)|
 |:---:|
 |:angel:**메세지 유통기한**| 
-|군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다.|
+|군의 메시지들은 유출되면 안되기에 최대한 빠르게 메시지를 삭제하도록 채팅방마다 자동 삭제 시간을 설정할 수 있습니다. 서버에서는 무조건적으로 설정 시간 뒤에 삭제되며, 채팅방에 속한 모든 기기의 메시지 또한 지구상에서 삭제 옵션으로 유통기한을 정할 수 있습니다. |
 
 ### :speech_balloon: 2. 군용 채팅 기능 <a name="template"></a>
 |![](https://github.com/osamhack2022/APP_Meerkat_IQDan/blob/main/.images/ui-template.png?raw=true)|
