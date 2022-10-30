@@ -91,7 +91,7 @@
 <br>
 
 ## Meerkat Brand Identity
-<img src="./.images/bi/frame.png">
+<img src="./.images/wiki/bi/frame2.png">
 
 
 <br>
