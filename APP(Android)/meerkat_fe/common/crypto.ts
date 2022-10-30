@@ -58,10 +58,10 @@ export const hashMD5 = (s: string) => {
 /////////
 // MKE // 
 /////////
-
+// MeerKatEncryption -  2차 비번으로 aes암호화.
 
 /**
- * @deprecated 
+ * 2차 비번 암호화
  * @param msg 
  * @param key 
  * @returns
@@ -73,7 +73,7 @@ export const encryptMKE = (msg: string, key: string) => {
 }
 
 /**
- * @deprecated 
+ * 2차 비번 암호화
  * @param msg 
  * @param key 
  * @returns

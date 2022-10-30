@@ -88,7 +88,8 @@ export default function AllClearStatistics(props: AllClearStatisticsProps) {
   // hardware back press action
   useEffect(() => {
     const backAction = () => {
-      navigation.navigate('Chat', { chatroomId: chatroomId });
+      // navigation.navigate('Chat', { chatroomId: chatroomId });
+      navigation.pop()
       return true;
     };
 
@@ -106,7 +107,8 @@ export default function AllClearStatistics(props: AllClearStatisticsProps) {
         <AngleBracketHeader
           categoryName={'통계 확인'}
           onPressBack={() =>
-            navigation.navigate('Chat', { chatroomId: chatroomId })
+            // navigation.navigate('Chat', { chatroomId: chatroomId })
+            navigation.pop()
           }
         />
 

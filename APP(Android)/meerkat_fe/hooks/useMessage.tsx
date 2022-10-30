@@ -19,7 +19,7 @@ import {
 } from '../common/types.d';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Socket } from 'socket.io-client';
-import { decryptAES, decryptRSA, encryptAES } from '../common/crypto';
+import { decryptAES, decryptMKE, decryptRSA, encryptAES, encryptMKE } from '../common/crypto';
 import { isEmpty } from '../common/isEmpty';
 
 /**
@@ -42,6 +42,8 @@ export default function useMessage(
   userId: number,
   IMessageUsersInfo: Map<number, IMessageUser>,
   socket: Socket,
+  has2ndPw: boolean,
+  _2ndPw: string,
 ) {
   const [messages, setMessages] = useState<IMessage[]>([]);
 
@@ -117,7 +119,13 @@ export default function useMessage(
 
     try {
       await Promise.all(
-        newMessages.map(message => {
+        newMessages.map((message: IMessage) => {
+          if (has2ndPw) { // 2차 비번 있으면 2차 비번으로 암호화.
+            return AsyncStorage.setItem(
+              'message' + message._id.toString(),
+              JSON.stringify({...message, text: encryptMKE(message.text, _2ndPw)})
+            )
+          }
           return AsyncStorage.setItem(
             'message' + message._id.toString(),
             JSON.stringify(message),
@@ -175,6 +183,13 @@ export default function useMessage(
       'chatroom' + chatroomId + 'pointers',
       JSON.stringify(res.map(msg => msg._id)),
     );
+
+    // 2차 비밀번호 있으면 복호화해주기
+    if (has2ndPw) {
+      return res.map((m: IMessage) => {
+        return {...m, text: decryptMKE(m.text, _2ndPw)}
+      })
+    }
 
     return res;
   };

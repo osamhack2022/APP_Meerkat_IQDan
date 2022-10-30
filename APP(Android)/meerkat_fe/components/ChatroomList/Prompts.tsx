@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 // thirds
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { hashMD5 } from '../../common/crypto';
+import { encryptMKE, hashMD5 } from '../../common/crypto';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { IMessage } from 'react-native-gifted-chat';
 
 export const PasswordSettingPrompt = (props: {
   visible: boolean;
@@ -20,12 +21,47 @@ export const PasswordSettingPrompt = (props: {
   let [pw, setPw] = useState('');
   let ref = useRef<TextInput>(null);
 
+  // 2차 비번 해싱해서 저장
   const apply2ndPassword = async () => {
     if (pw == '') return;
     let hash = hashMD5(pw);
     await AsyncStorage.setItem('2ndPassword-' + props.roomId.toString(), hash);
+    encryptLocalMesssages(props.roomId.toString())
     props.onClose();
   };
+
+  // 해당 방에 대하여  로컬에 저장된 메시지 암호화
+  const encryptLocalMesssages = async (chatroomId: string) => {
+    const messages = await getLocalMesssages(chatroomId)
+    await Promise.all(messages.map((m: IMessage) => {
+      const encryptedMessage = {...m, text: encryptMKE(m.text, pw)} // 2차 비번으로 메시지 암호화
+      return AsyncStorage.setItem('message' + m._id, JSON.stringify(encryptedMessage)) // 암호화된 메시지 저장
+    }))
+  }
+
+  // 해당 방에 대하여 로컬에 저장된 메시지 가져오기
+  const getLocalMesssages = async (chatroomId: string) => {
+    const messagePointers = await AsyncStorage.getItem(
+      'chatroom' + chatroomId + 'pointers',
+    );
+    if (messagePointers === null) {
+      // 로컬에 저장된 메시지가 없다면 빈 리스트 리턴.
+      return [];
+    }
+    const newIMessages: string[] = await Promise.all(
+      JSON.parse(messagePointers).map((pointer: number) => {
+        return AsyncStorage.getItem('message' + pointer); // pointer is alias for messageId or _id.
+      }),
+    );
+
+    // null인 메세지 모두 거르기.
+    const nullFiltered = newIMessages.filter(m => m !== null);
+    const res = nullFiltered.map(message => {
+      return JSON.parse(message) as IMessage;
+    });
+
+    return res
+  }
 
   useEffect(() => {
     if (!props.visible) return;
@@ -61,7 +97,7 @@ export const OpenChatPrompt = (props: {
   visible: boolean;
   roomId: number;
   onClose: () => void;
-  onVerify: () => void;
+  onVerify: (pw: string) => void;
 }) => {
   let [pw, setPw] = useState('');
   let ref = useRef<TextInput>(null);
@@ -79,7 +115,7 @@ export const OpenChatPrompt = (props: {
       return;
     }
     
-    props.onVerify();
+    props.onVerify(pw);
     props.onClose();
   };
 

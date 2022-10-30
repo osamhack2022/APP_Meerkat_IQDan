@@ -66,7 +66,7 @@ export default function ReportAllClear(props: ReportAllClearProps) {
   // hardware back press action
   useEffect(() => {
     const backAction = () => {
-      navigation.navigate('Chat', { chatroomId: chatroomId });
+      navigation.navigate('Chat', { chatroomId: chatroomId, roomHas2ndPw: false, _2ndPw: ''});
       return true;
     };
 
@@ -110,7 +110,8 @@ export default function ReportAllClear(props: ReportAllClearProps) {
       })
       .then(() => {
         Alert.alert('보고가 완료되었습니다.');
-        navigation.navigate('Chat', { chatroomId: chatroomId });
+        // navigation.navigate('Chat', { chatroomId: chatroomId }); // push와 pop으로 state 유지 (2차 비번 때문에)
+        navigation.pop()
       })
       .catch(e => {
         console.log(e.response);
@@ -144,7 +145,7 @@ export default function ReportAllClear(props: ReportAllClearProps) {
       <AngleBracketHeader
         categoryName={'보고하기'}
         onPressBack={() =>
-          navigation.navigate('Chat', { chatroomId: chatroomId })
+          navigation.pop()
         }
       />
 

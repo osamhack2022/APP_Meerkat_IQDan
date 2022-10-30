@@ -125,7 +125,7 @@ export default function ChatroomList(
             setOpenPromptRoomId(room.chatroomId);
           }}
           onPressUnlock={() => {
-            navigation.push('Chat', { chatroomId: room.chatroomId});
+            navigation.push('Chat', { chatroomId: room.chatroomId, roomHas2ndPw: false, _2ndPw: ''});
           }}
         />
       );
@@ -148,8 +148,8 @@ export default function ChatroomList(
         onClose={() => {
           setOpenPromptVisible(false);
         }}
-        onVerify={() => {
-          navigation.push('Chat', { chatroomId: openPromptRoomId});
+        onVerify={(pw: string) => {
+          navigation.push('Chat', { chatroomId: openPromptRoomId, roomHas2ndPw: true, _2ndPw: pw});
         }} 
       />
       <View style={styles.container}>

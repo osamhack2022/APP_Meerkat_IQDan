@@ -135,7 +135,7 @@ export interface AllClear{
 export type RootStackParamList = {
     Auth: undefined;
     Main: NavigatorScreenParams<TabParamList>;
-    Chat: {chatroomId: number};
+    Chat: {chatroomId: number, roomHas2ndPw: boolean, _2ndPw: string};
     MyProfile: undefined;
     ChangePw: undefined;
     AddChatroom: undefined;

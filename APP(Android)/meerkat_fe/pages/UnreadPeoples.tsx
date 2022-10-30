@@ -36,7 +36,8 @@ export default function UnreadPeoples(props: UnreadsPeopleProps) {
   // hardware back press action
   useEffect(() => {
     const backAction = () => {
-      navigation.navigate('Chat', { chatroomId: chatroomId });
+      // navigation.navigate('Chat', { chatroomId: chatroomId });
+      navigation.pop()
       return true;
     };
 
@@ -114,7 +115,8 @@ return (
   <>
     <ChatroomHeader
       onPressBack={() =>
-        navigation.navigate('Chat', { chatroomId: chatroomId })
+        // navigation.navigate('Chat', { chatroomId: chatroomId })
+        navigation.pop()
       }
       name={''}
     />

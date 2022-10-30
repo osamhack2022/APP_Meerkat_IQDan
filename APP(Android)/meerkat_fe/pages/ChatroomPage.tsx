@@ -57,7 +57,8 @@ import RemovalCountdown from '../components/RemovalCountdown';
 import { QuickReplies } from 'react-native-gifted-chat/lib/QuickReplies';
 
 export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
-  const { chatroomId } = props.route.params; // 현 채팅방의 chatroomId
+  const { chatroomId, roomHas2ndPw, _2ndPw  } = props.route.params; // 현 채팅방의 chatroomId
+  console.log(roomHas2ndPw, _2ndPw)
   const { navigation } = props;
 
   // userId 가져오기
@@ -123,7 +124,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
     sendNewMessageToServer,
     getNewMessagesFromSocket,
     onSend,
-  } = useMessage(chatroomId, userId, IMessageUsersInfo, socket);
+  } = useMessage(chatroomId, userId, IMessageUsersInfo, socket, roomHas2ndPw, _2ndPw);
   useRemoveMessage(messages, setMessages, chatroomInfo, setRemoveCountdown); // 메세지 자동 삭제.
   const [filteredMessages, setFilteredMessages] = useState<IMessage[]>([]);
 
@@ -220,7 +221,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         <View style={styles.myEyeIconWrapper}>
           <Pressable
             onPress={() =>
-              navigation.navigate('UnreadPeoples', {
+              navigation.push('UnreadPeoples', {
                 chatroomId: chatroomId,
                 messageId: currentMessage._id,
               })
@@ -245,7 +246,7 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
         <View style={styles.othersEyeIconWrapper}>
           <Pressable
             onPress={() =>
-              navigation.navigate('UnreadPeoples', {
+              navigation.push('UnreadPeoples', {
                 chatroomId: chatroomId,
                 messageId: currentMessage._id,
               })
@@ -262,12 +263,12 @@ export default function ChatroomPage(props: RootStackScreenProps<'Chat'>) {
   const onQuickReply = (quickReplies: Reply[]) => {
     const quickReply = quickReplies[0];
     if (quickReply.value === QuickReplyType.REPORT) {
-      navigation.navigate('ReportAllClear', {
+      navigation.push('ReportAllClear', {
         chatroomId: chatroomId,
         messageId: quickReply.messageId,
       });
     } else if (quickReply.value === QuickReplyType.STATISTICS) {
-      navigation.navigate('AllClearStatistics', {
+      navigation.push('AllClearStatistics', {
         chatroomId: chatroomId,
         messageId: quickReply.messageId,
       });
