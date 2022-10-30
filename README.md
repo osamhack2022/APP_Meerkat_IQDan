@@ -90,8 +90,14 @@
 
 <br>
 
-## Meerkat Brand Identity
+## :brown_heart: Meerkat Brand Identity
 <img src="./.images/wiki/bi/frame2.png">
+
+
+<img src="./.images/wiki/bi/planet2.png">
+
+
+<img src="./.images/wiki/bi/mockup_round.png">
 
 
 <br>
