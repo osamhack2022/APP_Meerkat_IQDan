@@ -94,7 +94,7 @@
 <img src="./.images/wiki/bi/frame2.png">
 
 
-<img src="./.images/wiki/bi/planet3.png">
+<img src="./.images/wiki/bi/planet4.png">
 
 
 <img src="./.images/wiki/bi/mockup_round.png">
